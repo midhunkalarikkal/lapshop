@@ -1,0 +1,39 @@
+<%-include("../userpartials/header.ejs")%>
+    <div id="screen-size"></div>
+
+    <section class="one">
+        <div class="container container-one">
+            <div class="box col-8 col-md-6 col-lg-4">
+                <div class="input-box">
+                    <header class="my-4 fs-4">Sign Up</header>
+                    <form action="/" method="post">
+                        <div class="d-flex">
+                            <div class="input-field">
+                                <input type="text" class="input" id="fullname" name="fullname" required>
+                                <label for="fullname">OTP</label>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" class="input" id="fullname" name="fullname" required>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" class="input" id="fullname" name="fullname" required>
+                            </div>
+                            <div class="input-field">
+                                <input type="text" class="input" id="fullname" name="fullname" required>
+                            </div>
+                        </div>
+
+                        <div class="input-field">
+                            <button type="submit" class="btn submit "
+                                style="background-color: #50c878; color: rgb(0, 0, 0); font-size: 15px; font-weight: 600;">Verify
+                                otp</button>
+                        </div>
+                    </form>
+                    <div class="signin mb-2">
+                        <span><a href="/register">Didn't recieved otp</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <%-include("../userpartials/footer.ejs")%>

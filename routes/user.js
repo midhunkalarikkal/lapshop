@@ -9,5 +9,7 @@ const userController = require('../controller/user/userController')
 
 userRouter.get('/login',userController.getLogin)
 userRouter.get('/register',userController.getRegister)
+userRouter.post('/register',userController.postRegister)
+userRouter.get('/otp',userController.getOtp)
 
 module.exports = userRouter
