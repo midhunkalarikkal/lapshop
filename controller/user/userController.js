@@ -49,9 +49,9 @@ const getOtp = async(req,res)=>{
     }
 }
 
-const getHome = async(req,res)=>{
+const getNavbar = async(req,res)=>{
     try{
-        res.render("user/home")
+        res.render("userpartials/Navbar")
     }catch(error){
         console.log(error.message)
     }
@@ -62,5 +62,5 @@ module.exports = {
     getRegister,
     postRegister,
     getOtp,
-    getHome,
+    getNavbar,
 }
