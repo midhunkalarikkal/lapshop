@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span {
+    font-family: 'Anton', sans-serif;
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+html {
+    scrollbar-width: thin;
+    scrollbar-color: transparent transparent;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body::before {
+    display: block;
+    content: "";
+    height: 30px;
+}
+
+.custom-text-color {
+    color: #2b7ffe;
+}
+
+.custom-bg-color {
+    color: #2b7ffe;
+}
+
+
+#screen-size {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px;
+    z-index: 9999;
+}
+
+/*Navbar start*/
+.search-input{
+    background-color: #000000;
+    border-color: #50c878;
+}
+.input-group input::placeholder {
+    color: rgb(148, 148, 148); 
+    opacity: 1;
+}
+.input-group-text{
+    background-color: #50c878;
+    border-color: #50c878;
+}
+/*Navbar end*/
+
+/*Very small devices*/
+@media (max-width: 576px) {
+
+    #screen-size::before {
+        content: "Extra Small (xs)";
+    }
+
+}
+
+/* XS / SM devices*/
+@media (min-width: 576px) and (max-width: 767px) {
+
+    #screen-size::before {
+        content: "Small (sm)";
+    }
+
+}
+
+/* MD devices*/
+@media (min-width: 768px) and (max-width: 991px) {
+
+    #screen-size::before {
+        content: "Medium (md)";
+    }
+
+}
+
+/* LG devices*/
+@media (min-width: 992px) and (max-width: 1199px) {
+
+    #screen-size::before {
+        content: "Large (lg)";
+    }
+
+    /*Navbar start*/
+
+    .nav-item {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .user-name {
+        display: none;
+    }
+
+    .navlinkuser {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    /*Navbar end*/
+
+}
+
+
+/* XL devices*/
+@media (min-width: 1200px) {
+
+    #screen-size::before {
+        content: "Extra Large (xl)";
+    }
+
+    /*Navbar start*/
+
+    .navbar-nav .nav-link {
+        color: white;
+    }
+
+    .nav-item {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    .navlinkuser {
+        display: flex;
+        justify-content: center;
+    }
+
+    .user-name {
+        display: flex;
+        margin-left: 10px;
+    }
+
+    /*Navbar end*/
+}

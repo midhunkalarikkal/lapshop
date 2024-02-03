@@ -45,7 +45,15 @@ const getOtp = async(req,res)=>{
     try{
         res.render('user/otpvalidation',{title : "LapShop otp"})
     }catch(error){
-        console.log(error)
+        console.log(error.message)
+    }
+}
+
+const getHome = async(req,res)=>{
+    try{
+        res.render("user/home")
+    }catch(error){
+        console.log(error.message)
     }
 }
 
@@ -54,4 +62,5 @@ module.exports = {
     getRegister,
     postRegister,
     getOtp,
+    getHome,
 }
