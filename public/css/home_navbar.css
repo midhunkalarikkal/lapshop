@@ -6,7 +6,7 @@ h3,
 h4,
 h5,
 h6,
-span {
+span, a {
     font-family: 'Anton', sans-serif;
     font-family: 'Saira Semi Condensed', sans-serif;
 }
@@ -71,6 +71,29 @@ body::before {
     border-color: #50c878;
 }
 /*Navbar end*/
+
+/* Header start */
+
+.header{
+    background-color: #101010;
+}
+
+.header-nav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.header-darklight{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.address a{
+    color: #ffffff;
+}
+/* Header end */
 
 /*Very small devices*/
 @media (max-width: 576px) {
