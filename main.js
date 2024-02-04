@@ -40,6 +40,7 @@ app.use('/',userRoute)
 
 //Static file serving
 app.use('/static', express.static(path.join(__dirname, "public")))
+app.use('/script', express.static(path.join(__dirname,"scripts")));
 
 app.use(morgan('dev'))
 
