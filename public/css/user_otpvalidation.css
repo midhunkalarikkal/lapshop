@@ -4,33 +4,40 @@
 font-family: 'Saira Semi Condensed', sans-serif;
 }
 
-body{
-    background-image:-webkit-linear-gradient(top, 
-    rgba(0,0,0,0.9) 0%, 
-    rgba(0,0,0,0) 20%,
-    rgba(0,0,0,0) 80%,
-    rgba(0,0,0,0.9) 100%
-  ),
-  -webkit-linear-gradient(left, 
-    rgba(0,0,0,0.9) 0%, 
-    rgba(0,0,0,0) 20%,
-    rgba(0,0,0,0) 80%,
-    rgba(0,0,0,0.9) 100%
-  ), url("../images/Bg/desktop/bg1.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    padding: 0 20px 0 20px;
-    background-color: black;
+h1,h2,h3,h4,h5,h6,span,a{
+  font-family: 'Anton', sans-serif;
+font-family: 'Saira Semi Condensed', sans-serif;
 }
 
+/* Background image */
+body{
+  background-image:-webkit-linear-gradient(top, 
+  rgba(0,0,0,0.9) 0%, 
+  rgba(0,0,0,0) 20%,
+  rgba(0,0,0,0) 80%,
+  rgba(0,0,0,0.9) 100%
+  ),
+  -webkit-linear-gradient(left, 
+  rgba(0,0,0,0.9) 0%, 
+  rgba(0,0,0,0) 20%,
+  rgba(0,0,0,0) 80%,
+  rgba(0,0,0,0.9) 100%
+  ), url("../images/Bg/desktop/bg1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 0 20px 0 20px;
+  background-color: black;
+}
+
+/* Form container */
 .container-one{
-    /* background-color: aqua; */
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Form box */
 .box {
     display: flex;
     align-items: center;
@@ -104,15 +111,20 @@ body{
     }
 }
 
+/* For p tag */
 .paragraph{
     font-size: 15px;
 }
 
-.submit:hover {
-    background: rgba(37, 95, 156, 0.937);
-    color: #fff;
+/* Verify otp button */
+#submit{
+  background-color: #50c878;
+  font-size: 15px;
+  color: black;
+  font-weight: 600;
 }
 
+/* Didnt get otp button */
 .signin {
     text-align: center;
     font-size: small;
@@ -125,14 +137,16 @@ body{
     transition: .5s;
 }
 
+
 .signin a{
-    font-weight: 700;
+  font-weight: 600;
 }
 
 span a:hover {
-    text-decoration: none;
-    color: #50c878;
+  text-decoration: none;
+  color: #50c878;
 }
+/* Didnt get otp button */
 
 #screen-size {
     position: fixed;

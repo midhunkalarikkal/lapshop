@@ -44,7 +44,10 @@ app.use('/script', express.static(path.join(__dirname,"scripts")));
 
 app.use(morgan('dev'))
 
-
+app.get("/submitError", (req, res) => {
+    const errorMessage = req.query.message;
+    res.render("user/registration", { title: "LapShop Register", type: "danger", message: errorMessage });
+});
 
 app.listen(PORT,()=>{
     console.log(`Server is listening to the port 3000 http://localhost:${PORT}`)

@@ -82,7 +82,7 @@ body{
 }
 
 .input {
-    height: 45px;
+    height: 35px;
     width: 100%;
     background: transparent;
     border: none;
@@ -135,6 +135,17 @@ body{
   font-weight: 600;
 }
 
+/* Add !important to override other styles */
+.invalid-email {
+  border-bottom-color: red !important; 
+}
+
+.invalid-input {
+  border-bottom: 2px solid red;
+}
+/* Form box */
+
+/* text with button under the main button of the box */
 .signin {
     text-align: center;
     font-size: small;
@@ -219,7 +230,7 @@ span a:hover {
   }
 
 
-  input:-webkit-autofill,
+input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active{

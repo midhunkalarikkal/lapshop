@@ -1,6 +1,39 @@
 require('dotenv').config()
 const bcrypt = require('bcrypt')
 const User = require('../../models/userModel')
+const nodemailer = require('nodemailer')
+
+const transporter = nodemailer.createTransport({
+    service : "gmail",
+    host: "smtp.gmail.com",
+    port: 465,
+    secure: true,
+    auth: {
+      user: "lapshopotp@gmail.com",
+      pass: "nyxnnbafpfqznvvh",
+    // user : "blckchainmedicine@gmail.com",
+    // pass : "shggbhblxfkmvbbo"
+    },
+  });
+
+  const mailOptions = {
+    from: 'lapshopotp@gmail.com', // sender address
+    to: "midhunkalarikkalp@gmail.com", // list of receivers
+    subject: "Hello ✔ from nodemailer", // Subject line
+    text: "Hello world?", // plain text body
+    html: "<b>Hello world?</b>", // html body
+  }
+
+  const sendMail = async (transporter, mailOptions)=>{
+    try{
+        await transporter.sendMail(mailOptions)
+        console.log("Email sended succesfullly")
+    }catch(err){
+        console.log(err)
+    }
+  }
+
+  sendMail(transporter, mailOptions)
 
 const getLogin = async(req,res)=>{
     try{
@@ -20,14 +53,10 @@ const getRegister = async(req,res)=>{
 
 const postRegister = async(req,res)=>{
     try{
-
+        // for if the user is exist or not
         const existingUser = await User.findOne({email : req.body.email})
         if(existingUser){
             return res.render('user/registration',{title : "LapShop Register", type : "danger",message : "User already exists"})
-        }
-
-        if(req.body.password !== req.body.confirmpassword){
-            return res.render('user/registration',{title : "LapShop Register",type : "danger", message : 'Password is not matching'})
         }
 
         const user = new User({

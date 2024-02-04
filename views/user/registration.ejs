@@ -6,30 +6,33 @@
             <div class="box col-8 col-md-6 col-lg-4">
                 <div class="input-box">
                     <header class="my-4 fs-4">Sign Up</header>
-                    <form action="/register" method="POST">
+                    <form action="/register" method="POST" id="registrationForm">
                         <div class="input-field">
                             <input type="text" class="input" id="fullname" name="fullname" required>
                             <label for="fullname">First and last name</label>
                         </div>
                         <div class="input-field">
-                            <input type="email" class="input" id="email" name="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+                            <input type="text" class="input email-input" id="email" name="email" required
+                                onblur="validateEmail()">
                             <label for="email">Email</label>
-                            <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
                         <div class="input-field">
                             <input type="text" class="input" id="phone" name="phone" required>
                             <label for="phone">Mobile number</label>
                         </div>
+                        <small id="phoneError" class="text-danger d-none">Please enter a valid 10-digit phone number.</small>
                         <div class="input-field">
                             <input type="password" class="input" id="pass" name="password" required>
                             <label for="pass">Password</label>
                         </div>
                         <div class="input-field">
-                            <input type="   password" class="input" id="confirmpass" name="confirmpassword" required required oninput="checkPasswordMatch()">
+                            <input type="   password" class="input" id="confirmpass" name="confirmpassword" required
+                                required onmouseleave="checkPasswordMatch()">
                             <label for="confirmpassword">Confirm password</label>
                         </div>
                         <div class="input-field">
-                            <p class="paragraph text-light small">To verify your email we will send you a OTP to your email.
+                            <p class="paragraph text-light small">To verify your email we will send you a OTP to your
+                                email.
                             </p>
                         </div>
                         <div class="input-field">
@@ -39,13 +42,14 @@
                     <div class="signin mb-2">
                         <span>Already have an account, <a href="/login">Sign in</a></span>
                         <% if(message){ %>
-                            <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
+                            <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
+                                style="padding: 5px; font-size: 14px;">
                                 <!-- <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button> -->
                                 <strong>
                                     <%= message %>
                                 </strong>
                             </div>
-                        <% } %>
+                            <% } %>
                     </div>
                 </div>
             </div>
