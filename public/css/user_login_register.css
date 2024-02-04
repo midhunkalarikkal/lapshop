@@ -9,6 +9,7 @@ h1,h2,h3,h4,h5,h6,span,a{
 font-family: 'Saira Semi Condensed', sans-serif;
 }
 
+/* Forgot password in login */
 .fp{
   text-decoration: none;
   color: white;
@@ -16,45 +17,49 @@ font-family: 'Saira Semi Condensed', sans-serif;
 }
 
 .fp:hover{
-  color: white;
+  color: #50c878;
 }
+/* Forgot password in login */
 
+/* Background image */
 body{
-    background-image:-webkit-linear-gradient(top, 
-    rgba(0,0,0,0.9) 0%, 
-    rgba(0,0,0,0) 20%,
-    rgba(0,0,0,0) 80%,
-    rgba(0,0,0,0.9) 100%
+  background-image:-webkit-linear-gradient(top, 
+  rgba(0,0,0,0.9) 0%, 
+  rgba(0,0,0,0) 20%,
+  rgba(0,0,0,0) 80%,
+  rgba(0,0,0,0.9) 100%
   ),
   -webkit-linear-gradient(left, 
-    rgba(0,0,0,0.9) 0%, 
-    rgba(0,0,0,0) 20%,
-    rgba(0,0,0,0) 80%,
-    rgba(0,0,0,0.9) 100%
+  rgba(0,0,0,0.9) 0%, 
+  rgba(0,0,0,0) 20%,
+  rgba(0,0,0,0) 80%,
+  rgba(0,0,0,0.9) 100%
   ), url("../images/Bg/desktop/bg1.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    padding: 0 20px 0 20px;
-    background-color: black;
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 0 20px 0 20px;
+  background-color: black;
 }
+/* Background image */
 
+/* Form container */
 .container-one{
-    /* background-color: aqua; */
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+/* Form box */
 .box {
-    display: flex;
-    align-items: center;
-    position: relative;
-    background-color: rgb(25, 25, 25);
-    padding: 20px;  
-    justify-content: center;
-    height: auto;
-    border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  position: relative;
+  background-color: rgb(25, 25, 25);
+  padding: 20px;  
+  justify-content: center;
+  height: auto;
+  border-radius: 0.25rem;
 }
 
 .input-box {
@@ -123,9 +128,11 @@ body{
     font-size: 15px;
 }
 
-.submit:hover {
-    background: rgba(37, 95, 156, 0.937);
-    color: #fff;
+#submit{
+  background-color: #50c878;
+  font-size: 15px;
+  color: black;
+  font-weight: 600;
 }
 
 .signin {
