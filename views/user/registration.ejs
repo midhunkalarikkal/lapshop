@@ -12,8 +12,9 @@
                             <label for="fullname">First and last name</label>
                         </div>
                         <div class="input-field">
-                            <input type="email" class="input" id="email" name="email" required>
+                            <input type="email" class="input" id="email" name="email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                             <label for="email">Email</label>
+                            <div class="invalid-feedback">Please enter a valid email address.</div>
                         </div>
                         <div class="input-field">
                             <input type="text" class="input" id="phone" name="phone" required>

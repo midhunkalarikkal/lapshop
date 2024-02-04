@@ -4,6 +4,21 @@
 font-family: 'Saira Semi Condensed', sans-serif;
 }
 
+h1,h2,h3,h4,h5,h6,span,a{
+  font-family: 'Anton', sans-serif;
+font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+.fp{
+  text-decoration: none;
+  color: white;
+  font-size: small;
+}
+
+.fp:hover{
+  color: white;
+}
+
 body{
     background-image:-webkit-linear-gradient(top, 
     rgba(0,0,0,0.9) 0%, 
