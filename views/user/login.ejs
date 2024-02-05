@@ -1,10 +1,28 @@
-<%-include("../userLoginPartials/header.ejs")%>
-<div id="screen-size"></div>
-<section class="one">
-    <div class="container container-one">
-        <div class="box col-8 col-md-6 col-lg-4">
-            <div class="input-box">
-                <header class="my-4 fs-4">Sign In</header>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%=title%>
+    </title>
+    <link rel="icon" type="image/x-icon" href="/static/images/Favicon.png">
+    <link rel='stylesheet' href='/static/css/user_login_register.css' type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8FJ0V7irTLQ8Uo0qcPxh4Plq7G5tGm0rU+1SPhVotteLpBERwTkw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <%-include("../userpartials/Navbar.ejs")%>
+        <div id="screen-size"></div>
+        <div class="container input-box col-8 col-md-6 col-lg-12">
+            <div class="form-box">
+                <header class="my-4 fs-4 title text-center">Sign In</header>
                 <form action="/" method="post">
                     <div class="input-field">
                         <input type="email" class="input" id="email" name="email" required>
@@ -16,26 +34,35 @@
                         <p class="text-center"><a class="text-center fp" href="">Forgot password</a></p>
                     </div>
                     <div class="input-field">
-                        <p class="paragraph text-light small">To verify your email we will send you a OTP to your email.</p>
+                        <p class="paragraph small">To verify your email we will send you a OTP to your email.</p>
                     </div>
                     <div class="input-field">
-                        <button type="submit" class="btn" id="submit">Verify email</button>
+                        <button type="submit" class="btn" id="submit">Sign in</button>
                     </div>
                 </form>
                 <div class="signin mb-2">
                     <span>New to LapShop ?,<a href="/register">Sign Up</a></span>
                     <% if(message){ %>
-                        <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
+                        <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
+                            style="padding: 5px; font-size: 14px;">
                             <!-- <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button> -->
                             <strong>
                                 <%= message %>
                             </strong>
                         </div>
-                    <% } %>
+                        <% } %>
                 </div>
+                </form>
             </div>
         </div>
-    </div>
-</section>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+        <script src="../script/user_script.js"></script>
 
-<%-include("../userLoginPartials/footer.ejs")%>
+</body>
+
+</html>

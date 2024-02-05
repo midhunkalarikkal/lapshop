@@ -88,3 +88,4 @@ document.getElementById("registrationForm").addEventListener("submit", function 
 
 ////////// User registration page form submit after validation end//////////
 
+// Start timer when page loads

@@ -83,6 +83,14 @@ body::before {
     color: var(--secondary-color);
 }
 
+.navbar-dark .navbar-nav .nav-link{
+    color: var(--secondary-color);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover{
+    color: var(--primary-color);
+}
+
 .nav-item a:hover {
     color: var(--primary-color);
 }
@@ -110,6 +118,10 @@ body::before {
     color: var(--primary-color);
 }
 
+.navbar{
+    position: fixed;
+    width: 100%;
+}
 /*Navbar end*/
 
 /* foter start */
@@ -130,18 +142,16 @@ body::before {
     color: var(--secondary-color);
 }
 
-.footer-two-h6{
-    font-size: 12px;
-}
-
-#footer , #footer-two{
+#footer{
     background-color: var(--third-color);
 }
-
-#footer-two .fa-solid , .fa-regular , .fa-brands , p{
-    color: var(--secondary-color);
-}
 /* foter end */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 
 /*Very small devices*/
 @media (max-width: 576px) {

@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
 * {
     font-family: 'Anton', sans-serif;
-font-family: 'Saira Semi Condensed', sans-serif;
+    font-family: 'Saira Semi Condensed', sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6,span,a{
@@ -9,17 +9,14 @@ h1,h2,h3,h4,h5,h6,span,a{
 font-family: 'Saira Semi Condensed', sans-serif;
 }
 
-/* Forgot password in login */
-.fp{
-  text-decoration: none;
-  color: white;
-  font-size: small;
+:root {
+  --primary-color: #50c878;
+  --secondary-color: #f0ffff;
+  --third-color: #1b1b1b;
+  --fourth-color: #f82b50;
+  --fifth-color: #38ed77;
+  --sixth-color: #e4e4e4;
 }
-
-.fp:hover{
-  color: #50c878;
-}
-/* Forgot password in login */
 
 /* Background image */
 body{
@@ -38,40 +35,30 @@ body{
   background-size: cover;
   background-repeat: no-repeat;
   padding: 0 20px 0 20px;
-  background-color: black;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
 }
 /* Background image */
 
-/* Form container */
-.container-one{
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* Form box */
-.box {
+.container {
   display: flex;
+  justify-content: flex-end;
   align-items: center;
-  position: relative;
-  background-color: rgb(25, 25, 25);
-  padding: 20px;  
-  justify-content: center;
-  height: auto;
-  border-radius: 0.25rem;
+  width: 100%;
 }
 
-.input-box {
-    width: 330px;
-    box-sizing: border-box;
+.form-box {
+  background-color: var(--third-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.input-box header {
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 45px;
-    color: #ffffff;
+.title{
+  color: var(--secondary-color)
 }
 
 .input-field {
@@ -86,10 +73,10 @@ body{
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgb(255, 255, 255);
+    border-bottom: 1px solid var(--secondary-color);
     outline: none;
     margin-bottom: 20px;
-    color: white;
+    color: var(--secondary-color);
 }
 
 .input-box .input-field label {
@@ -98,7 +85,7 @@ body{
     left: 10px;
     pointer-events: none;
     transition: .5s;
-    color: #d1d1d1;
+    color: var(--secondary-color);
 }
 
 .input-field input:focus~label {
@@ -113,35 +100,41 @@ body{
 
 .input-field .input:focus,
 .input-field .input:valid {
-    border-bottom: 1px solid #50c878;
+    border-bottom: 1px solid var(--primary-color);
 }
 
 .input-field .forgot-password{
     font-size: small;
-    a{
-        text-decoration: none;
-        color: #e3e3e3;
-    }
+}
+
+.input-field a{
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+
+.fp:hover{
+  color: var(--primary-color);
 }
 
 .paragraph{
     font-size: 15px;
+    color: var(--secondary-color);
 }
 
 #submit{
-  background-color: #50c878;
+  background-color: var(--primary-color);
   font-size: 15px;
-  color: black;
+  color: var(--third-color);
   font-weight: 600;
 }
 
 /* Add !important to override other styles */
 .invalid-email {
-  border-bottom-color: red !important; 
+  border-bottom-color: var(--fourth-color) !important; 
 }
 
 .invalid-input {
-  border-bottom: 2px solid red;
+  border-bottom: 2px solid var(--fourth-color);
 }
 /* Form box */
 
@@ -154,7 +147,7 @@ body{
 
 .signin span, .signin a {
     text-decoration: none;
-    color: #ffffff;
+    color: var(--secondary-color);
     transition: .5s;
 }
 
@@ -164,7 +157,7 @@ body{
 
 span a:hover {
     text-decoration: none;
-    color: #50c878;
+    color: var(--primary-color);
 }
 
 #screen-size {
@@ -181,51 +174,29 @@ span a:hover {
     #screen-size::before {
       content: "Extra Small (xs)";
     }
-
-
   }
   
   @media (min-width: 576px) and (max-width: 767px) {
     #screen-size::before {
       content: "Small (sm)";
-    }
-
-   
+    } 
   }
   
   @media (min-width: 768px) and (max-width: 991px) {
     #screen-size::before {
       content: "Medium (md)";
     }
-
-
   }
   
   @media (min-width: 992px) and (max-width: 1199px) {
     #screen-size::before {
       content: "Large (lg)";
     }
-
-    .container-one{
-        justify-content: flex-end;
-    }
-
-    .box{
-        margin-right: 20vh;
-    }
   }
   
   @media (min-width: 1200px) {
     #screen-size::before {
       content: "Extra Large (xl)";
-    }
-
-    .container-one{
-        justify-content: flex-end;
-    }
-
-    .box{
-        margin-right: 20vh;
     }
   }
 

@@ -35,6 +35,15 @@ const transporter = nodemailer.createTransport({
 
   sendMail(transporter, mailOptions)
 
+  const getHome = async(req,res)=>{
+    try{
+        res.render('user/home')
+    }catch(error){
+        console.log(error)
+    }
+  }
+
+
 const getLogin = async(req,res)=>{
     try{
         res.render('user/login',{title : "LapShop login",type : "",message : ""})
@@ -71,7 +80,7 @@ const postRegister = async(req,res)=>{
 
         if(userData){
             console.log("User added succesfully")
-            return res.render("user/login",{title : "LapShop login",type : "success",message : "Registered successfully"})
+            return res.render("user/otpvalidation",{title : "LapShop otp",type : "success",message : "An otp has been sent to your email"})
         }else{
             console.log("User is not added")
             return res.render("user/registration",{title : "LapShop register",type : "danger",message : error.message})
@@ -84,7 +93,7 @@ const postRegister = async(req,res)=>{
 
 const getOtp = async(req,res)=>{
     try{
-        res.render('user/otpvalidation',{title : "LapShop otp"})
+        res.render('user/otpvalidation',{title : "LapShop otp",type: " ",message : ""})
     }catch(error){
         console.log(error.message)
     }
@@ -104,4 +113,5 @@ module.exports = {
     postRegister,
     getOtp,
     getNavbar,
+    getHome
 }

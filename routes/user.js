@@ -12,5 +12,6 @@ userRouter.get('/register',userController.getRegister)
 userRouter.post('/register',userController.postRegister)
 userRouter.get('/otp',userController.getOtp)
 userRouter.get('/navbar',userController.getNavbar)
+userRouter.get('/home',userController.getHome)
 
 module.exports = userRouter

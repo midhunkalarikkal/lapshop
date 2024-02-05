@@ -1,12 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
 * {
     font-family: 'Anton', sans-serif;
-font-family: 'Saira Semi Condensed', sans-serif;
+    font-family: 'Saira Semi Condensed', sans-serif;
 }
 
 h1,h2,h3,h4,h5,h6,span,a{
   font-family: 'Anton', sans-serif;
 font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+:root {
+  --primary-color: #50c878;
+  --secondary-color: #f0ffff;
+  --third-color: #1b1b1b;
+  --fourth-color: #f82b50;
+  --fifth-color: #38ed77;
+  --sixth-color: #e4e4e4;
 }
 
 /* Background image */
@@ -26,39 +35,31 @@ body{
   background-size: cover;
   background-repeat: no-repeat;
   padding: 0 20px 0 20px;
-  background-color: black;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+/* Background image */
+
+.container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
 }
 
-/* Form container */
-.container-one{
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.form-box {
+  background-color: var(--third-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: 25rem;
 }
 
-/* Form box */
-.box {
-    display: flex;
-    align-items: center;
-    position: relative;
-    background-color: rgb(25, 25, 25);
-    padding: 20px;  
-    justify-content: center;
-    height: auto;
-    border-radius: 0.25rem;
-}
-
-.input-box {
-    width: 330px;
-    box-sizing: border-box;
-}
-
-.input-box header {
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 45px;
-    color: #ffffff;
+.title{
+  color: var(--secondary-color)
 }
 
 .input-field {
@@ -69,14 +70,14 @@ body{
 }
 
 .input {
-    height: 45px;
+    height: 35px;
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px solid rgb(255, 255, 255);
+    border-bottom: 1px solid var(--secondary-color);
     outline: none;
     margin-bottom: 20px;
-    color: white;
+    color: var(--secondary-color);
 }
 
 .input-box .input-field label {
@@ -85,7 +86,7 @@ body{
     left: 10px;
     pointer-events: none;
     transition: .5s;
-    color: #d1d1d1;
+    color: var(--secondary-color);
 }
 
 .input-field input:focus~label {
@@ -100,31 +101,45 @@ body{
 
 .input-field .input:focus,
 .input-field .input:valid {
-    border-bottom: 1px solid #50c878;
+    border-bottom: 1px solid var(--primary-color);
 }
 
 .input-field .forgot-password{
     font-size: small;
-    a{
-        text-decoration: none;
-        color: #e3e3e3;
-    }
 }
 
-/* For p tag */
+.input-field a{
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+
+.fp:hover{
+  color: var(--primary-color);
+}
+
 .paragraph{
     font-size: 15px;
+    color: var(--secondary-color);
 }
 
-/* Verify otp button */
 #submit{
-  background-color: #50c878;
+  background-color: var(--primary-color);
   font-size: 15px;
-  color: black;
+  color: var(--third-color);
   font-weight: 600;
 }
 
-/* Didnt get otp button */
+/* Add !important to override other styles */
+.invalid-email {
+  border-bottom-color: var(--fourth-color) !important; 
+}
+
+.invalid-input {
+  border-bottom: 2px solid var(--fourth-color);
+}
+/* Form box */
+
+/* text with button under the main button of the box */
 .signin {
     text-align: center;
     font-size: small;
@@ -133,20 +148,18 @@ body{
 
 .signin span, .signin a {
     text-decoration: none;
-    color: #ffffff;
+    color: var(--secondary-color);
     transition: .5s;
 }
 
-
 .signin a{
-  font-weight: 600;
+    font-weight: 700;
 }
 
 span a:hover {
-  text-decoration: none;
-  color: #50c878;
+    text-decoration: none;
+    color: var(--primary-color);
 }
-/* Didnt get otp button */
 
 #screen-size {
     position: fixed;
@@ -162,37 +175,23 @@ span a:hover {
     #screen-size::before {
       content: "Extra Small (xs)";
     }
-
-
   }
   
   @media (min-width: 576px) and (max-width: 767px) {
     #screen-size::before {
       content: "Small (sm)";
-    }
-
-   
+    } 
   }
   
   @media (min-width: 768px) and (max-width: 991px) {
     #screen-size::before {
       content: "Medium (md)";
     }
-
-
   }
   
   @media (min-width: 992px) and (max-width: 1199px) {
     #screen-size::before {
       content: "Large (lg)";
-    }
-
-    .container-one{
-        justify-content: flex-end;
-    }
-
-    .box{
-        margin-right: 20vh;
     }
   }
   
@@ -200,13 +199,16 @@ span a:hover {
     #screen-size::before {
       content: "Extra Large (xl)";
     }
-
-    .container-one{
-        justify-content: flex-end;
-    }
-
-    .box{
-        margin-right: 20vh;
-    }
   }
-   
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px rgb(25, 25, 25) inset !important;
+}
+
+input:-webkit-autofill{
+  -webkit-text-fill-color: rgb(255, 255, 255) !important;
+}

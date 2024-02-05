@@ -15,6 +15,7 @@
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel='stylesheet' href='/static/css/home_navbar.css' type="text/css" />
+    <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
 </head>
 
 <body>
@@ -48,34 +49,33 @@
                 <div class="collapse navbar-collapse" id="navmenu">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item ">
-                            <a href="#contact" class="nav-link">Home</a>
+                            <a href="/home" class="nav-link">Home</a>
                         </li>
                         <li class="nav-item ">
-                            <a href="#contact" class="nav-link">All</a>
+                            <a href="/all" class="nav-link">All</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#contact" class="nav-link">Gaming</a>
+                            <a href="/gaming" class="nav-link">Gaming</a>
                         </li>
                         <li class="nav-item">
-                            <a href="#contact" class="nav-link">Ultrabook</a>
+                            <a href="/ultrabok" class="nav-link">Ultrabook</a>
                         </li>
                         <li class="dropdown nav-item dropnav">
                             <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                 aria-expanded="false">Account
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">New customer? <span class="signup">Sign
-                                            Up</span></a>
-                                </li>
+                                <li><a class="dropdown-item" href="/register">New customer? <span class="signup">Sign Up</span></a></li>
+                                <li><a class="dropdown-item" href="/login">Login</a></li>
                                 <hr>
-                                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-user"></i> My Profile</a>
+                                <li><a class="dropdown-item" href="/userprofile"><i class="fa-solid fa-user"></i> My Profile</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-folder"></i> Orders</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-heart"></i> Wishlist</a>
+                                <li><a class="dropdown-item" href="/orders"><i class="fa-solid fa-folder"></i> Orders</a></li>
+                                <li><a class="dropdown-item" href="/wishlist"><i class="fa-solid fa-heart"></i> Wishlist</a>
                                 </li>
-                                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-window-restore"></i>
+                                <li><a class="dropdown-item" href="/reward"><i class="fa-solid fa-window-restore"></i>
                                         Rewards</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fa-solid fa-gift"></i> Gift cards</a>
+                                <li><a class="dropdown-item" href="/giftcard"><i class="fa-solid fa-gift"></i> Gift cards</a>
                                 </li>
                             </ul>
                         </li>
@@ -102,66 +102,4 @@
     </nav>
     <!-- Navbar end -->
 
-    <!-- footer start -->
-    <section class="text-light" id="footer">
-        <div class="container-fluid">
-            <div class="row p-5 d-flex justify-content-center">
-                <div class="col-6 col-md-3 mt-2 mt-lg-0">
-                    <div class="footer-section">
-                        <h6>Get to know us</h6>
-                        <p>lapshopofficial@gmail.com</p>
-                        <p>+918057974230</p>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3 mt-2 mt-lg-0">
-                    <div class="footer-section">
-                        <h6>Let us help you</h6>
-                        <p>Your account</p>
-                        <p>Help</p>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3 mt-2 mt-lg-0">
-                    <div class="footer-section">
-                        <h6>Connect with us</h6>
-                        <p>Facebook</p>
-                        <p>Instagram</p>
-                        <p>Twitter</p>
-                    </div>
-                </div>
-                <div class="col-6 col-md-3 mt-2 mt-lg-0">
-                    <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
-                        <div class="d-flex flex-column align-items-center justify-content-center">
-                            <h1>LapShop</h1>
-                            <p>Discover Your Digital World with Us.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section class=" p-2 text-light" id="footer-two">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-2 d-flex justify-content-evenly mt-2 mt-md-0">
-                    <i class="fa-solid fa-credit-card"></i>
-                    <i class="fa-regular fa-credit-card"></i>
-                    <i class="fa-brands fa-cc-apple-pay"></i>
-                    <i class="fa-brands fa-cc-mastercard"></i>
-                    <i class="fa-brands fa-cc-visa"></i>
-                </div>
-            </div>
-            <div class="row text-center p-4">
-                <hr>
-                <p style="font-size: 12px;">&copy; All rights reservered lapshop</p>
-            </div>
-        </div>
-    </section>
-    <!-- footer end -->
-
-    <!--Bootstrap-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-        </script>
-</body>
-
-</html>
+    
