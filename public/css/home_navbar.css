@@ -8,6 +8,7 @@ h5,
 h6,
 span,
 a,
+p,
 .input-group input::placeholder {
     font-family: 'Anton', sans-serif;
     font-family: 'Saira Semi Condensed', sans-serif;
@@ -19,6 +20,7 @@ a,
     --third-color: #1b1b1b;
     --fourth-color: #f82b50;
     --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
 }
 
 * {
@@ -109,6 +111,37 @@ body::before {
 }
 
 /*Navbar end*/
+
+/* foter start */
+.footer-section h6 {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--sixth-color);
+}
+
+.footer-section p {
+    margin-bottom: 1px;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--secondary-color);
+}
+
+.footer-section h1{
+    color: var(--secondary-color);
+}
+
+.footer-two-h6{
+    font-size: 12px;
+}
+
+#footer , #footer-two{
+    background-color: var(--third-color);
+}
+
+#footer-two .fa-solid , .fa-regular , .fa-brands , p{
+    color: var(--secondary-color);
+}
+/* foter end */
 
 /*Very small devices*/
 @media (max-width: 576px) {
