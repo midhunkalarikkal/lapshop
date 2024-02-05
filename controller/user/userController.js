@@ -101,7 +101,7 @@ const getOtp = async(req,res)=>{
 
 const getNavbar = async(req,res)=>{
     try{
-        res.render("userpartials/Navbar")
+        res.render("user/test")
     }catch(error){
         console.log(error.message)
     }

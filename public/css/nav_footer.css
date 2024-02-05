@@ -28,14 +28,22 @@ p,
     padding: 0;
 }
 
-::-webkit-scrollbar {
-    width: 0;
-    background: transparent;
+html,
+body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
 }
 
-html {
-    scrollbar-width: thin;
-    scrollbar-color: transparent transparent;
+/* Hide scrollbar for WebKit browsers */
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/* Optional: Apply scrollbar styles for other browsers */
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 body {
@@ -147,10 +155,12 @@ body::before {
 }
 /* foter end */
 
-footer {
-    position: fixed;
+#footer {
     bottom: 0;
     width: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
 }
 
 /*Very small devices*/
