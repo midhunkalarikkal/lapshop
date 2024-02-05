@@ -10,7 +10,7 @@
                 <header class="my-4 fs-4 title text-center">Sign In</header>
                 <form action="/" method="post">
                     <div class="input-field">
-                        <input type="email" class="input" id="email" name="email" required>
+                        <input type="text" class="input" id="email" name="email" required onblur="validateEmail()">
                         <label for="email">Email</label>
                     </div>
                     <div class="input-field">
