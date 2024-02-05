@@ -37,7 +37,7 @@ const transporter = nodemailer.createTransport({
 
   const getHome = async(req,res)=>{
     try{
-        res.render('user/home')
+        res.render('user/home',{title : "LapShop home"})
     }catch(error){
         console.log(error)
     }
