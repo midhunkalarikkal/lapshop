@@ -7,12 +7,12 @@
         <div class="container input-box col-8 col-md-6 col-lg-12">
             <div class="form-box">
                 <header class="my-4 fs-4 title text-center">Enter OTP</header>
-                <form action="/" method="post">
+                <form action="/registerotp" method="post">
                     <div class="d-flex">
                         <div class="input-field">
                             <input type="text" class="input" id="otp" name="otp" required>
                         </div>
-                        <div class="input-field">
+                        <!-- <div class="input-field">
                             <input type="text" class="input" id="otp" name="otp" required>
                         </div>
                         <div class="input-field">
@@ -25,8 +25,8 @@
                             <input type="text" class="input" id="otp" name="otp" required>
                         </div>
                         <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp" required>
-                        </div>
+                            <input type="text" class="input" id="otp" name="otp" required> -->
+                        <!-- </div> -->
                     </div>
                     <div class="input-field">
                         <button type="submit" class="btn" id="submit">Verify otp</button>
@@ -76,9 +76,10 @@
 
     // Start timer when page loads
     window.onload = function () {
-        var oneMinute = 60,
+        var oneMinute = 5,
             display = document.getElementById('timerDisplay'),
             link = document.getElementById('resendOtp');
         startTimer(oneMinute, display, link);
     };
+
         </script>

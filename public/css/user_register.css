@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+* {
+    font-family: 'Anton', sans-serif;
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+h1,h2,h3,h4,h5,h6,span,a{
+  font-family: 'Anton', sans-serif;
+font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+:root {
+  --primary-color: #50c878;
+  --secondary-color: #f0ffff;
+  --third-color: #1b1b1b;
+  --fourth-color: #f82b50;
+  --fifth-color: #38ed77;
+  --sixth-color: #e4e4e4;
+  --seventh-color: #b7b7b7;
+}
+
+/* Background image */
+.view{
+  background-image:-webkit-linear-gradient(top, 
+  rgba(0,0,0,0.9) 0%, 
+  rgba(0,0,0,0) 20%,
+  rgba(0,0,0,0) 80%,
+  rgba(0,0,0,0.9) 100%
+  ),
+  -webkit-linear-gradient(left, 
+  rgba(0,0,0,0.9) 0%, 
+  rgba(0,0,0,0) 20%,
+  rgba(0,0,0,0) 80%,
+  rgba(0,0,0,0.9) 100%
+  ), url("../images/Bg/desktop/bg1.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  padding: 0 20px 0 20px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+}
+/* Background image */
+
+.container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.form-box {
+  background-color: var(--third-color);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  width: auto;
+}
+
+.title{
+  color: var(--secondary-color);
+}
+
+.input-field {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 0 10px 0 10px;
+}
+
+.input {
+    height: 35px;
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--secondary-color);
+    outline: none;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+.input-box .input-field label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    pointer-events: none;
+    transition: .5s;
+    color: var(--seventh-color);
+}
+
+.input-field input:focus~label {
+    top: -10px;
+    font-size: 13px;
+}
+
+.input-field input:valid~label {
+    top: -10px;
+    font-size: 13px;
+}
+
+.input-field .input:focus,
+.input-field .input:valid {
+    border-bottom: 1px solid var(--primary-color);
+}
+
+.input-field .forgot-password{
+    font-size: small;
+}
+
+.input-field a{
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+
+.paragraph{
+    font-size: 15px;
+    color: var(--secondary-color);
+}
+
+#submit{
+  background-color: var(--primary-color);
+  font-size: 15px;
+  color: var(--third-color);
+  font-weight: 600;
+}
+
+/* Add !important to override other styles */
+.invalid-email {
+  border-bottom-color: var(--fourth-color) !important; 
+}
+
+.invalid-input {
+  border-bottom: 2px solid var(--fourth-color);
+}
+/* Form box */
+
+/* text with button under the main button of the box */
+.signin {
+    text-align: center;
+    font-size: small;
+    margin-top: 25px;
+}
+
+.signin span, .signin a {
+    text-decoration: none;
+    color: var(--secondary-color);
+    transition: .5s;
+}
+
+.signin a{
+    font-weight: 700;
+}
+
+span a:hover {
+    text-decoration: none;
+    color: var(--primary-color);
+}
+
+#screen-size {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px;
+    z-index: 9999;
+  }
+  
+  @media (max-width: 576px) {
+    #screen-size::before {
+      content: "Extra Small (xs)";
+    }
+  }
+  
+  @media (min-width: 576px) and (max-width: 767px) {
+    #screen-size::before {
+      content: "Small (sm)";
+    } 
+  }
+  
+  @media (min-width: 768px) and (max-width: 991px) {
+    #screen-size::before {
+      content: "Medium (md)";
+    }
+  }
+  
+  @media (min-width: 992px) and (max-width: 1199px) {
+    #screen-size::before {
+      content: "Large (lg)";
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    #screen-size::before {
+      content: "Extra Large (xl)";
+    }
+  }
+
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active{
+    -webkit-box-shadow: 0 0 0 30px rgb(25, 25, 25) inset !important;
+}
+
+input:-webkit-autofill{
+  -webkit-text-fill-color: rgb(255, 255, 255) !important;
+}
