@@ -26,7 +26,7 @@ function checkPasswordMatch() {
 }
 ////////// User registration page password mismatching indicator end//////////
 
-////////// User registration page email validation checking indicator start//////////
+////////// User registration page and login page email validation checking indicator start//////////
 function validateEmail() {
     var emailInput = document.getElementById("email");
     var email = emailInput.value;
@@ -88,4 +88,3 @@ document.getElementById("registrationForm").addEventListener("submit", function 
 
 ////////// User registration page form submit after validation end//////////
 
-// Start timer when page loads
