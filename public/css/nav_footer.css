@@ -69,16 +69,6 @@ body::before {
 
 /*Navbar start*/
 
-.dropdown .dropdown-menu a {
-    color: var(--third-color);
-}
-
-.dropdown-menu .dropdown-item:hover,
-.dropdown-menu .dropdown-item:focus {
-    background-color: var(--third-color);
-    color: var(--secondary-color);
-}
-
 .navbar-brand {
     color: var(--secondary-color);
 }
@@ -91,11 +81,11 @@ body::before {
     color: var(--secondary-color);
 }
 
-.navbar-dark .navbar-nav .nav-link{
+ .navbar-nav .nav-link{
     color: var(--secondary-color);
 }
 
-.navbar-dark .navbar-nav .nav-link:hover{
+.navbar-nav .nav-link:hover{
     color: var(--primary-color);
 }
 
@@ -129,6 +119,14 @@ body::before {
 .navbar{
     position: fixed;
     width: 100%;
+}
+
+ .logo a:hover{
+    color: var(--secondary-color);
+}
+
+.logout a:hover{
+    color: var(--secondary-color);
 }
 /*Navbar end*/
 

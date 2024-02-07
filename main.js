@@ -25,8 +25,8 @@ app.use(session({
 }))
 
 //middlewares
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+// app.use(express.urlencoded({ extended: true }))
+// app.use(express.json())
 app.use(morgan('dev'))
 
 //view engine setup
@@ -43,10 +43,10 @@ app.use('/',userRoute)
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
 
-app.get("/submitError", (req, res) => {
-    const errorMessage = req.query.message;
-    res.render("user/registration", { title: "LapShop Register", type: "danger", message: errorMessage });
-});
+// app.get("/submitError", (req, res) => {
+//     const errorMessage = req.query.message;
+//     res.render("user/registration", { title: "LapShop Register", type: "danger", message: errorMessage });
+// });
 
 const PORT = process.env.PORT || 4000
 app.listen(PORT,()=>{

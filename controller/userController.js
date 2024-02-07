@@ -1,6 +1,6 @@
 require('dotenv').config()
 const bcrypt = require('bcrypt')
-const User = require('../../models/userModel')
+const User = require('../models/userModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -128,7 +128,7 @@ const postRegisterOtp = async (req, res) => {
                     res.render('user/registration',{title : "LapShop register" , tpe : "danger" , message : "Registration has been failed."})
                 }
             }else{
-                res.render('user/registration',{title : "LapShop register" , tpe : "danger" , message : "User already exist."})
+                res.render('user/registration',{title : "LapShop register" , type : "danger" , message : "User already exist."})
               }   
             }else{
               res.render("user/otpvalidation",{title : "LapShop otp", type : "danger" , message : "Invalid OTP"});
@@ -156,9 +156,13 @@ const postLogin = async (req, res) => {
                     console.log(err);
                     return res.status(500).send('An error occurred while comparing the passwords.');
                 } if (result) {
-                    // Passwords match
-                    req.session.user = user;
-                    return res.render("user/home", { title: "LapShop login" })
+                    // Passwords match then check use is blocked or not
+                    if(user.isblocked){
+                        res.render('user/login',{title : "LapShop login", type : "danger" , message : "Your account is blocked."})
+                    }else{
+                        req.session.user = user;
+                        return res.render("user/home", { title: "LapShop login" })
+                    }
                 } else {
                     // Passwords don't match    
                     return res.render("user/login", { title: "LapShop login", type: "danger", message: "Incorrect password" })
@@ -172,19 +176,32 @@ const postLogin = async (req, res) => {
     }
 }
 
-
-const getHome = async (req, res) => {
+// To get the user login page
+const getLogin = async (req, res) => {
     try {
-        res.render('user/home', { title: "LapShop home" })
+        if(req.session.user){
+            return res.redirect('/')
+        }else{
+            return res.render('user/login', { title: "LapShop login", type: "", message: "" })
+        }
     } catch (error) {
         console.log(error)
     }
 }
 
+const UsergetLogout = async(req,res)=>{
+    try{
+        req.session.user = false;
+        res.redirect('/')
+    }catch(error){
+        console.log(error.message)
+    }
+}
 
-const getLogin = async (req, res) => {
+
+const getHome = async (req, res) => {
     try {
-        res.render('user/login', { title: "LapShop login", type: "", message: "" })
+        return res.render('user/home', { title: "LapShop home" })
     } catch (error) {
         console.log(error)
     }
@@ -198,23 +215,17 @@ const getRegister = async (req, res) => {
     }
 }
 
-const getRegisterOtp = async (req, res) => {
-    try {
-        res.render('user/otpvalidation', { title: "LapShop otp", type: "", message: "" })
-    } catch (error) {
-        console.log(error.message)
-    }
-}
+
 
 
 
 module.exports = {
+    getHome,
     getLogin,
+    UsergetLogout,
     getRegister,
     postRegister,
-    getRegisterOtp,
     postRegisterOtp,
-    getHome,
     postLogin,
 }
 

@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 adminRouter.use(bodyParser.json());
 adminRouter.use(bodyParser.urlencoded({extended:true}));
 
-const adminController = require('../controller/admin/adminController')
+const adminController = require('../controller/adminController')
 
 adminRouter.get('/',adminController.getadminlogin)
 
