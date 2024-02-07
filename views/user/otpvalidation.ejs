@@ -7,26 +7,26 @@
         <div class="container input-box col-8 col-md-6 col-lg-12">
             <div class="form-box">
                 <header class="my-4 fs-4 title text-center">Enter OTP</header>
-                <form action="/registerotp" method="post">
+                <form action="/otpverify" method="post">
                     <div class="d-flex">
                         <div class="input-field">
                             <input type="text" class="input" id="otp" name="otp" required>
                         </div>
-                        <!-- <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp" required>
+                        <div class="input-field">
+                            <input type="text" class="input" id="otp" name="otp2" required>
                         </div>
                         <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp" required>
+                            <input type="text" class="input" id="otp" name="otp3" required>
                         </div>
                         <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp" required>
+                            <input type="text" class="input" id="otp" name="otp4" required>
                         </div>
                         <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp" required>
+                            <input type="text" class="input" id="otp" name="otp5" required>
                         </div>
                         <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp" required> -->
-                        <!-- </div> -->
+                            <input type="text" class="input" id="otp" name="otp6" required>
+                        </div>
                     </div>
                     <div class="input-field">
                         <button type="submit" class="btn" id="submit">Verify otp</button>
@@ -34,12 +34,9 @@
                 </form>
                 <div class="signin mb-2">
                     <span id="resendOtp"><a href="">Resend OTP</a></span>
-                    <!-- Span for displaying timer -->
-                    <span id="timerDisplay" style="display:none;"></span>
                     <% if(message){ %>
                         <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
                             style="padding: 5px; font-size: 14px;">
-                            <!-- <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button> -->
                             <strong>
                                 <%= message %>
                             </strong>
@@ -50,36 +47,53 @@
             </div>
         </div>
     </section>
-    <%-include("../userpartials/footer.ejs")%>
-        
-        <script>
-             function startTimer(duration, display, link) {
-        var timer = duration, minutes, seconds;
-        link.style.display = "none"; // Hide the resend OTP link when timer starts
-        display.style.display = "block"; // Show the timer display
-        var interval = setInterval(function () {
-            minutes = parseInt(timer / 60, 10);
-            seconds = parseInt(timer % 60, 10);
+    <script>
+        // Get all input fields
+const otpInputs = document.querySelectorAll('.input');
 
-            minutes = minutes < 10 ? "0" + minutes : minutes;
-            seconds = seconds < 10 ? "0" + seconds : seconds;
+// Attach input event listener to each input field
+otpInputs.forEach((input, index) => {
+    input.addEventListener('input', (event) => {
+        // Automatically move to the next input field if a character is entered
+        if (event.target.value.length === 1 && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus();
+        }
+    });
 
-            display.textContent = minutes + ":" + seconds;
-
-            if (--timer < 0) {
-                clearInterval(interval); // Stop the timer
-                display.style.display = "none"; // Hide the timer display when timer stops
-                link.style.display = "inline"; // Show the resend OTP link when timer stops
+    // Prevent pasting into input fields
+    input.addEventListener('paste', (event) => {
+        event.preventDefault();
+        const clipboardData = event.clipboardData || window.clipboardData;
+        const pastedText = clipboardData.getData('text');
+        // Split pasted text into individual characters
+        const pastedChars = pastedText.split('');
+        // Assign each character to the corresponding input field
+        pastedChars.forEach((char, i) => {
+            if (index + i < otpInputs.length && otpInputs[index + i].value.length === 0) {
+                otpInputs[index + i].value = char;
+                if (index + i < otpInputs.length - 1) {
+                    otpInputs[index + i + 1].focus();
+                }
             }
-        }, 1000);
-    }
+        });
+    });
 
-    // Start timer when page loads
-    window.onload = function () {
-        var oneMinute = 5,
-            display = document.getElementById('timerDisplay'),
-            link = document.getElementById('resendOtp');
-        startTimer(oneMinute, display, link);
-    };
+    // Arrow key navigation
+    input.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowRight' && index < otpInputs.length - 1) {
+            otpInputs[index + 1].focus(); // Focus on the next input field
+        } else if (event.key === 'ArrowLeft') {
+            event.preventDefault(); // Prevent default behavior of the left arrow key
+            if (index > 0) {
+                otpInputs[index - 1].focus(); // Focus on the previous input field
+                otpInputs[index - 1].setSelectionRange(otpInputs[index - 1].value.length, otpInputs[index - 1].value.length); // Set cursor position to end of value
+            }
+        } else if (event.key.length === 1 && otpInputs[index].value.length > 0) {
+            event.preventDefault(); // Prevent typing if field already contains a value
+        }
+    });
+});
 
-        </script>
+
+    </script>
+    <%-include("../userpartials/footer.ejs")%>

@@ -50,5 +50,5 @@ app.get("/submitError", (req, res) => {
 });
 
 app.listen(PORT,()=>{
-    console.log(`Server is listening to the port 3000 http://localhost:${PORT}`)
+    console.log(`Server is listening to the port http://localhost:${PORT}`)
 })

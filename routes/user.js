@@ -7,13 +7,15 @@ userRouter.use(bodyParser.urlencoded({extended : true}))
 
 const userController = require('../controller/user/userController')
 
-userRouter.get('/login',userController.getLogin)
+userRouter.get('/',userController.getHome)
+
 userRouter.get('/register',userController.getRegister)
 userRouter.post('/register',userController.postRegister)
-userRouter.get('/otp',userController.getOtp)
-userRouter.post('/registerotp',userController.postOtp)
-userRouter.get('/navbar',userController.getNavbar)
-userRouter.get('/home',userController.getHome)
+
+userRouter.get('/otp',userController.getRegisterOtp)
+userRouter.post('/otpverify',userController.postRegisterOtp)
+
+userRouter.get('/login',userController.getLogin)
 userRouter.post('/login',userController.postLogin)
 
 module.exports = userRouter

@@ -113,6 +113,10 @@ font-family: 'Saira Semi Condensed', sans-serif;
   color: var(--secondary-color);
 }
 
+.input {
+  text-align: center; /* Center-align the text */
+}
+
 .fp:hover{
   color: var(--primary-color);
 }
