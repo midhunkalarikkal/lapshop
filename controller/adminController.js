@@ -18,7 +18,7 @@ const postadminlogin = async (req, res) => {
           password: "admin123"
         }; 
         if(email==adminData.email && password==adminData.password){
-            req.session.admin = adminData;
+            req.session.adminData = adminData
             return res.render('admin/adminhome',{title : "LapShop Admin"});
         }else{
             return res.render("admin/adminlogin", { title: "Lapshop admin", type: "danger", message: "Invalid credentials" })
@@ -30,7 +30,20 @@ const postadminlogin = async (req, res) => {
 
     const getAdminHome = async(req,res)=>{
         try{
-            return res.render("admin/adminhome",{title : "LapShop Admin"})
+            if(req.session.adminData){
+                return res.render("admin/adminhome",{title : "LapShop Admin"})
+            }else{
+                res.redirect('/')
+            }
+        }catch(error){
+            console.log(error.message)
+        }
+    }
+
+    const getadminLogout = async(req,res)=>{
+        try{
+            req.session.adminData = false
+            res.render('admin/adminlogin',{title : "Lapdhop Admin", type : "success" , message : "Logout successfully"})
         }catch(error){
             console.log(error.message)
         }
@@ -41,5 +54,6 @@ const postadminlogin = async (req, res) => {
 module.exports = {
     getadminlogin,
     postadminlogin,
-    getAdminHome
+    getAdminHome,
+    getadminLogout
 }
