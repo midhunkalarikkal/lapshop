@@ -97,8 +97,16 @@ const postRegister = async (req, res) => {
 // Verifying the otp and saving the user in db
 const postRegisterOtp = async (req, res) => {
     try {
-        const enteredOtp = req.body.otp
-        if(enteredOtp === saveOtp){
+        const enteredOtp = req.body
+        const otp1 = enteredOtp.otp;
+        const otp2 = enteredOtp.otp2;
+        const otp3 = enteredOtp.otp3;
+        const otp4 = enteredOtp.otp4;
+        const otp5 = enteredOtp.otp5;
+        const otp6 = enteredOtp.otp6;
+        const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
+        console.log(concatenatedOTP)
+        if(concatenatedOTP === saveOtp){
 
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
 
@@ -197,6 +205,7 @@ const getRegisterOtp = async (req, res) => {
         console.log(error.message)
     }
 }
+
 
 
 module.exports = {
