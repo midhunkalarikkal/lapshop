@@ -17,4 +17,6 @@ adminRouter.get('/logout',adminController.getadminLogout)
 
 adminRouter.get('/users',adminController.getadminusers)
 
+adminRouter.post('/block:userId',adminController.adminblockuser)
+
 module.exports = adminRouter

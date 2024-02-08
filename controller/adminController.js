@@ -62,6 +62,21 @@ const postadminlogin = async (req, res) => {
         }
     }
 
+    const adminblockuser = async(req,res)=>{
+        try{
+            let user = await User.findById(req.params.userId);
+        console.log(user);
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found' });
+        }
+        user.isblocked = req.body.blockStatus === 'block';
+        await user.save();
+        res.json({ success: true });            
+        }catch(error){
+            console.log(error.message)
+        }
+    }
+
 
 
 module.exports = {
@@ -69,5 +84,6 @@ module.exports = {
     postadminlogin,
     getAdminHome,
     getadminLogout,
-    getadminusers
+    getadminusers,
+    adminblockuser
 }
