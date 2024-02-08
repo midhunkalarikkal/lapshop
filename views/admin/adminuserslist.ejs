@@ -1,68 +1,68 @@
 <%-include("../adminpartials/admin_navbar.ejs")%>
-<head>
-    <link href="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.css" rel="stylesheet">
-</head>
 
-<div class="container mt-5">
-    <div class="row">
-      <div class="col-md-10 offset-md-1">
-        <h1>Users</h1>
-        <% if(message) { %>
-            <div class="alert alert-dismissible fade show alert-<%=(message.type)%>" role="alert">
-                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
-                <strong>
-                    <%= message.message %>
-                </strong>
+    <head>
+        <link href="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.css" rel="stylesheet">
+    </head>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <h1>Users</h1>
+                <% if(message) { %>
+                    <div class="alert alert-dismissible fade show alert-<%=(message.type)%>" role="alert">
+                        <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                        <strong>
+                            <%= message.message %>
+                        </strong>
+                    </div>
+                <%}%>
+                    <div class="table-responsive ">
+                        <% if(users !="" ){ %>
+                            <table class="table text-center my-4">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center text-dark">ID</th>
+                                        <th class="text-center text-dark">Name</th>
+                                        <th class="text-center text-dark">Email</th>
+                                        <th class="text-center text-dark">Phone</th>
+                                        <th class="text-center text-dark">Options</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% users.forEach((row,index)=> { %>
+                                        <tr class="align-middle">
+                                            <td>
+                                                <%= index+1 %>
+                                            </td>
+                                            <td>
+                                                <%= row.fullname %>
+                                            </td>
+                                            <td>
+                                                <%= row.email %>
+                                            </td>
+                                            <td>
+                                                <%= row.phone %>
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isblocked) { %>checked<% } %>>
+                                                <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                                <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isblocked) { %>checked<% } %>>
+                                                <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>                
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                </tbody>
+                            </table>
+                        <% } else {%>
+                    <h1 class="test-cnter test-seceondary mt-5">No Users found in the Databse</h1>                                    <% } %>
+                </div>
             </div>
-            <%}%>
-        <div class="table-responsive ">
-            <% if(users != "" ){ %>
-                <table class="table text-center my-4">  
-                    <thead>
-                        <tr>
-                            <th class="text-center text-dark">ID</th>
-                            <th class="text-center text-dark">Name</th>
-                            <th class="text-center text-dark">Email</th>
-                            <th class="text-center text-dark">Phone</th>
-                            <th class="text-center text-dark">Options</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% users.forEach((row,index)=> { %>
-                            <tr class="align-middle">
-                                <td>
-                                    <%= index+1 %>
-                                </td>
-                                <td>
-                                    <%= row.fullname %>
-                                </td>
-                                <td>
-                                    <%= row.email %>
-                                </td>
-                                <td>
-                                    <%= row.phone %>
-                                </td>
-                                <td>
-                                    <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isblocked) { %>checked<% } %>>
-                                    <label for="block_<%= row._id %>" class="text-danger">Block</label>
-                                    <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isblocked) { %>checked<% } %>>
-                                    <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
-                                </td>
-                            </tr>
-                            <% }) %>
-                    </tbody>
-                </table>
-                <% } else {%>
-                    <h1 class="test-cnter test-seceondary mt-5">No Users found in the Databse</h1>
-                    <% } %>
         </div>
-      </div>
     </div>
-  </div>
-  
- 
-  <script>
-    //For alert message
+
+
+    <script>
+        //For alert message
         setTimeout(function () {
             const alert = document.querySelector('.alert');
             if (alert) {
@@ -70,58 +70,60 @@
             }
         }, 3000);
 
-    //For block and unblock user
-    document.querySelectorAll('.user-switch').forEach(function(userSwitch){
-    userSwitch.addEventListener('change', function() {
-        var userId = this.dataset.userId;
-        var blockStatus = this.value;
+        //For block and unblock user
+        document.querySelectorAll('.user-switch').forEach(function (userSwitch) {
+            userSwitch.addEventListener('change', function () {
+                var userId = this.dataset.userId;
+                var blockStatus = this.value;
 
-        // Confirm the action with a modal dialog
-        if (confirm('Are you sure you want to change the block status?')) {
-            // Send a POST request to the server
-            fetch('/admin/block'+userId, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ blockStatus: blockStatus })
-            })
-            .then(response => {
-                // Check if the response is successful
-                if (response.ok) {
-                    return response.json();
+                // Confirm the action with a modal dialog
+                if (confirm('Are you sure you want to change the block status?')) {
+                    // Send a POST request to the server
+                    fetch(`/admin/block${userId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ blockStatus: blockStatus })
+                    })
+                        .then(response => {
+                            // Check if the response is successful
+                            if (response.ok) {
+                                return response.json();
+                            } else {
+                                throw new Error('Failed to update user block status.');
+                            }
+                        })
+                        .then(data => {
+                            // Handle the response data
+                            alert('User block status has been updated.');
+                            updateRadioButtons(userId, blockStatus);
+                        })
+                        .catch(error => {
+                            // Handle errors
+                            alert(error.message);
+                        });
                 } else {
-                    throw new Error('Failed to update user block status.');
+                    // Action cancelled
+                    location.reload();
                 }
-            })
-            .then(data => {
-                // Handle the response data
-                alert('User block status has been updated.');
-                const blockRadio = document.getElementById(`block_${userId}`);
-                const unblockRadio = document.getElementById(`unblock_${userId}`);
-
-                if (blockStatus === 'block') {
-                    blockRadio.checked = true;
-                    unblockRadio.checked = false;
-                } else {
-                    blockRadio.checked = false;
-                    unblockRadio.checked = true;
-                }
-                })
-            .catch(error => {
-                // Handle errors
-                alert(error.message);
             });
-        } else {
-            // Action cancelled
-            location.reload();
+        });
+
+        function updateRadioButtons(userId, blockStatus) {
+            const blockRadio = document.getElementById(`block_${userId}`);
+            const unblockRadio = document.getElementById(`unblock_${userId}`);
+
+            if (blockStatus === 'block') {
+                blockRadio.checked = true;
+                unblockRadio.checked = false;
+            } else {
+                blockRadio.checked = false;
+                unblockRadio.checked = true;
+            }
         }
-    });
-});
-
-  </script>
-
-  
 
 
-<%-include("../adminpartials/admin_footer.ejs")%>
+    </script>
+
+    <%-include("../adminpartials/admin_footer.ejs")%>

@@ -65,7 +65,6 @@ const postadminlogin = async (req, res) => {
     const adminblockuser = async(req,res)=>{
         try{
             let user = await User.findById(req.params.userId);
-        console.log(user);
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
