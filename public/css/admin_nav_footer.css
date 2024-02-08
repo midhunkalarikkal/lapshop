@@ -1,0 +1,240 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+p,
+.input-group input::placeholder {
+    font-family: 'Anton', sans-serif;
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+:root {
+    --primary-color: #50c878;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/* Hide scrollbar for WebKit browsers */
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/* Optional: Apply scrollbar styles for other browsers */
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body::before {
+    display: block;
+    content: "";
+    height: 30px;
+}
+
+#screen-size {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 5px;
+    z-index: 9999;
+}
+
+#page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  #content-wrap {
+    flex: 1;
+  }
+
+/*Navbar start*/
+
+.navbar-brand {
+    color: var(--secondary-color);
+}
+
+.navbar {
+    background-color: var(--third-color);
+}
+
+.nav-item a {
+    color: var(--secondary-color);
+}
+
+ .navbar-nav .nav-link{
+    color: var(--secondary-color);
+}
+
+.navbar-nav .nav-link:hover{
+    color: var(--primary-color);
+}
+
+.nav-item a:hover {
+    color: var(--primary-color);
+}
+
+.search-input {
+    background-color: var(--third-color);
+    border-color: var(--primary-color);
+}
+
+.input-group input::placeholder {
+    color: rgb(148, 148, 148);
+    opacity: 1;
+}
+
+.input-group-text {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.input-group-text .fa-magnifying-glass{
+    color: var(--third-color);
+}
+
+.fa-solid {
+    color: var(--primary-color);
+}
+
+.navbar{
+    position: fixed;
+    width: 100%;
+}
+
+ .logo a:hover{
+    color: var(--secondary-color);
+}
+
+.logout a:hover{
+    color: var(--secondary-color);
+}
+/*Navbar end*/
+
+/* foter start */
+.footer-section h6 {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--sixth-color);
+}
+
+.footer-section p {
+    margin-bottom: 1px;
+    font-size: 11px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--secondary-color);
+}
+
+.footer-section h1{
+    color: var(--secondary-color);
+}
+
+#footer{
+    background-color: var(--third-color);
+}
+/* foter end */
+
+#footer {
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/*Very small devices*/
+@media (max-width: 576px) {
+
+    #screen-size::before {
+        content: "Extra Small (xs)";
+    }
+
+    .navbar-nav {
+        margin-top: 1rem;
+    }
+}
+
+/* XS / SM devices*/
+@media (min-width: 576px) and (max-width: 767px) {
+
+    #screen-size::before {
+        content: "Small (sm)";
+    }
+
+    .navbar-nav {
+        margin-top: 1rem;
+    }
+}
+
+/* MD devices*/
+@media (min-width: 768px) and (max-width: 991px) {
+
+    #screen-size::before {
+        content: "Medium (md)";
+    }
+}
+
+/* LG devices*/
+@media (min-width: 992px) and (max-width: 1199px) {
+
+    #screen-size::before {
+        content: "Large (lg)";
+    }
+
+    /*Navbar start*/
+
+    .nav-item {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    /*Navbar end*/
+
+}
+
+
+/* XL devices*/
+@media (min-width: 1200px) {
+
+    #screen-size::before {
+        content: "Extra Large (xl)";
+    }
+
+    /*Navbar start*/
+
+    .nav-item {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
+
+    /*Navbar end*/
+}

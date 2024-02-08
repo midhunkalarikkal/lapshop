@@ -33,7 +33,7 @@ const postadminlogin = async (req, res) => {
             if(req.session.adminData){
                 return res.render("admin/adminhome",{title : "LapShop Admin"})
             }else{
-                res.redirect('/')
+                res.redirect('/admin')
             }
         }catch(error){
             console.log(error.message)
@@ -49,11 +49,24 @@ const postadminlogin = async (req, res) => {
         }
     }
 
+    const getadminusers = async(req,res)=>{
+        try{
+            if(req.session.adminData){
+                return res.render('admin/adminuserslist',{title : "LapShop Admin"})
+            }else{
+                res.redirect('/admin')
+            }
+        }catch(error){
+            console.log(error.message)
+        }
+    }
+
 
 
 module.exports = {
     getadminlogin,
     postadminlogin,
     getAdminHome,
-    getadminLogout
+    getadminLogout,
+    getadminusers
 }

@@ -15,4 +15,6 @@ adminRouter.get('/home',adminController.getAdminHome)
 
 adminRouter.get('/logout',adminController.getadminLogout)
 
+adminRouter.get('/users',adminController.getadminusers)
+
 module.exports = adminRouter
