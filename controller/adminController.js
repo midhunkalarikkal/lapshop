@@ -1,4 +1,4 @@
-
+const User = require('../models/userModel')
 
 const getadminlogin = async (req, res) => {
     try {
@@ -52,7 +52,8 @@ const postadminlogin = async (req, res) => {
     const getadminusers = async(req,res)=>{
         try{
             if(req.session.adminData){
-                return res.render('admin/adminuserslist',{title : "LapShop Admin"})
+                const userData = await User.find();       
+                    return res.render('admin/adminuserslist',{title : "LapShop Admin",type : "", message : "", users : userData})
             }else{
                 res.redirect('/admin')
             }

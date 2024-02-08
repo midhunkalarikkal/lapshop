@@ -1,39 +1,74 @@
 <%-include("../adminpartials/admin_navbar.ejs")%>
+<head>
+    <link href="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.css" rel="stylesheet">
+</head>
 
 <div class="container mt-5">
     <div class="row">
       <div class="col-md-10 offset-md-1">
         <h1>Users</h1>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">No</th>
-                <th scope="col">Full name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Phone</th>
-                <th scope="col">Image</th>
-                <th scope="col">Pr Address</th>
-                <th scope="col">Options</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>1</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-              </tr>
-              <!-- Add more rows here -->
-            </tbody>
-          </table>
+        <% if(message) { %>
+            <div class="alert alert-dismissible fade show alert-<%=(message.type)%>" role="alert">
+                <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button>
+                <strong>
+                    <%= message.message %>
+                </strong>
+            </div>
+            <%}%>
+        <div class="table-responsive ">
+            <% if(users !="" ){ %>
+                <table class="table text-center my-4">
+                    <thead>
+                        <tr>
+                            <th class="text-center text-dark">ID</th>
+                            <!-- <th class="text-center text-dark">Image</th> -->
+                            <th class="text-center text-dark">Name</th>
+                            <th class="text-center text-dark">Email</th>
+                            <th class="text-center text-dark">Phone</th>
+                            <th class="text-center text-dark">Pr Address</th>
+                            <th class="text-center text-dark">Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% users.forEach((row,index)=> { %>
+                            <tr class="align-middle">
+                                <td>
+                                    <%= index %>
+                                </td>
+                                <!-- <td><img src=" <%= row.image %> " width="50" class="img-thumbnal" />
+                                </td> -->
+                                <td>
+                                    <%= row.fullname %>
+                                </td>
+                                <td>
+                                    <%= row.email %>
+                                </td>
+                                <td>
+                                    <%= row.phone %>
+                                </td>
+                                <td>
+                                    <%= row.address %>
+                                </td>
+                                <td>
+                                    <input type="radio" id="block_<%= row._id %>" name="block_<%= row._id %>" value="block">
+                                    <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                    <input type="radio" id="unblock_<%= row._id %>" name="block_<%= row._id %>" value="unblock">
+                                    <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
+                                </td>
+                            </tr>
+                            <% }) %>
+                    </tbody>
+                </table>
+                <% } else {%>
+                    <h1 class="test-cnter test-seceondary mt-5">No Users found in the Databse</h1>
+                    <% } %>
         </div>
       </div>
     </div>
   </div>
+  
+  <script src="https://cdn.datatables.net/v/bs4/dt-1.13.8/datatables.min.js"></script>
+
   
 
 
