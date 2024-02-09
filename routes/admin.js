@@ -19,4 +19,8 @@ adminRouter.get('/users',adminController.getadminusers)
 
 adminRouter.post('/block:userId',adminController.adminblockuser)
 
+adminRouter.get("/category",adminController.getAdminCategory)
+
+adminRouter.post('/addCategory',adminController.adminAddNewCategory)
+
 module.exports = adminRouter

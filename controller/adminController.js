@@ -1,5 +1,8 @@
 const User = require('../models/userModel')
+const Category = require('../models/categoryModel')
+const Product = require('../models/productModel')
 
+//To get the admin login page
 const getadminlogin = async (req, res) => {
     try {
         return res.render("admin/adminlogin", { title: "Lapshop admin", type: "", message: "" })
@@ -8,74 +11,110 @@ const getadminlogin = async (req, res) => {
     }
 }
 
+
+//To post the admin login data to server for checking and give access
 const postadminlogin = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
         console.log(req.body)
         const adminData = {
-          email : "admin@gmail.com",
-          password: "admin123"
-        }; 
-        if(email==adminData.email && password==adminData.password){
+            email: "admin@gmail.com",
+            password: "admin123"
+        };
+        if (email == adminData.email && password == adminData.password) {
             req.session.adminData = adminData
-            return res.render('admin/adminhome',{title : "LapShop Admin"});
-        }else{
+            return res.render('admin/adminhome', { title: "LapShop Admin" });
+        } else {
             return res.render("admin/adminlogin", { title: "Lapshop admin", type: "danger", message: "Invalid credentials" })
         }
-      } catch (error) {
+    } catch (error) {
         console.log(error.message)
-      }
     }
+}
 
-    const getAdminHome = async(req,res)=>{
-        try{
-            if(req.session.adminData){
-                return res.render("admin/adminhome",{title : "LapShop Admin"})
-            }else{
-                res.redirect('/admin')
-            }
-        }catch(error){
-            console.log(error.message)
+//To get admin homepage
+const getAdminHome = async (req, res) => {
+    try {
+        if (req.session.adminData) {
+            return res.render("admin/adminhome", { title: "LapShop Admin" })
+        } else {
+            res.redirect('/admin')
         }
+    } catch (error) {
+        console.log(error.message)
     }
+}
 
-    const getadminLogout = async(req,res)=>{
-        try{
-            req.session.adminData = false
-            res.render('admin/adminlogin',{title : "Lapdhop Admin", type : "success" , message : "Logout successfully"})
-        }catch(error){
-            console.log(error.message)
+//To logout from admin page
+const getadminLogout = async (req, res) => {
+    try {
+        req.session.adminData = false
+        res.render('admin/adminlogin', { title: "Lapdhop Admin", type: "success", message: "Logout successfully" })
+    } catch (error) {
+        console.log(error.message)
+    }
+}
+
+//To get all users data in admin page
+const getadminusers = async (req, res) => {
+    try {
+        if (req.session.adminData) {
+            const userData = await User.find();
+            return res.render('admin/adminuserslist', { title: "LapShop Admin", type: "", message: "", users: userData })
+        } else {
+            res.redirect('/admin')
         }
+    } catch (error) {
+        console.log(error.message)
     }
+}
 
-    const getadminusers = async(req,res)=>{
-        try{
-            if(req.session.adminData){
-                const userData = await User.find();       
-                    return res.render('admin/adminuserslist',{title : "LapShop Admin",type : "", message : "", users : userData})
-            }else{
-                res.redirect('/admin')
-            }
-        }catch(error){
-            console.log(error.message)
-        }
-    }
 
-    const adminblockuser = async(req,res)=>{
-        try{
-            let user = await User.findById(req.params.userId);
+//To block a user by admin
+const adminblockuser = async (req, res) => {
+    try {
+        let user = await User.findById(req.params.userId);
         if (!user) {
             return res.status(404).json({ success: false, message: 'User not found' });
         }
         user.isblocked = req.body.blockStatus === 'block';
         await user.save();
-        res.json({ success: true });            
-        }catch(error){
-            console.log(error.message)
-        }
+        res.json({ success: true });
+    } catch (error) {
+        console.log(error.message)
     }
+}
 
+//To get the category page
+const getAdminCategory = async(req,res)=>{
+    try{
+        if(!req.session.adminData){
+            res.redirect('/admin')
+        }else{
+            res.render("admin/adminCategory",{title : "LapShop Admin"})
+        }
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//To add a new category
+const adminAddNewCategory = async (req, res) => {
+    try {
+        if (req.session.adminData) {
+            const { categoryName } = req.body;
+            const newCategory = new Category({ categoryName: categoryName });
+            const savedCategory = await newCategory.save();
+            res.status(201).json({ message: "Category created successfully", data: savedCategory });
+        } else {
+            res.redirect('/admin');
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
 
 
 module.exports = {
@@ -84,5 +123,7 @@ module.exports = {
     getAdminHome,
     getadminLogout,
     getadminusers,
-    adminblockuser
+    adminblockuser,
+    getAdminCategory,
+    adminAddNewCategory
 }
