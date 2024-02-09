@@ -78,7 +78,7 @@ body::before {
 }
 
 .nav-item a {
-    color: var(--secondary-color);
+    color: var(--third-color);
 }
 
  .navbar-nav .nav-link{
@@ -91,6 +91,7 @@ body::before {
 
 .nav-item a:hover {
     color: var(--primary-color);
+    background-color: var(--third-color);
 }
 
 .search-input {

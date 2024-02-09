@@ -37,6 +37,10 @@ const productSchema = new mongoose.Schema({
         type : Number,
         require :  true
     },
+    images : {
+        type : Array,
+        require :  true
+    },
     created : {
         type : Date,
         requird : true,

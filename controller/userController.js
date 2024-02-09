@@ -147,7 +147,7 @@ const postLogin = async (req, res) => {
 
         if (user) {
             if (user.isblocked) {
-                return res.render("user/login", { title: "LapShop login", type: "danger", message: "Contact us" })
+                return res.render("user/login", { title: "LapShop login", type: "danger", message: "Account is blocked, please contact us" })
             }
 
             //password matching
