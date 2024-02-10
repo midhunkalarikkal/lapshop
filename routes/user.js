@@ -20,6 +20,6 @@ userRouter.get('/login',userController.getLogin)
 //To post the user login data and give access to user home page
 userRouter.post('/login',userController.postLogin)
 //To logout user
-userRouter.get('/logout',userController.UsergetLogout)
+userRouter.get('/logout',userController.getLogout)
 
 module.exports = userRouter

@@ -189,7 +189,7 @@ const getLogin = async (req, res) => {
     }
 }
 
-const UsergetLogout = async(req,res)=>{
+const getLogout = async(req,res)=>{
     try{
         req.session.user = false;
         res.redirect('/')
@@ -222,7 +222,7 @@ const getRegister = async (req, res) => {
 module.exports = {
     getHome,
     getLogin,
-    UsergetLogout,
+    getLogout,
     getRegister,
     postRegister,
     postRegisterOtp,

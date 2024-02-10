@@ -3,7 +3,7 @@ const Category = require('../models/categoryModel')
 const Product = require('../models/productModel')
 
 //To get the admin login page
-const getadminlogin = async (req, res) => {
+const getAdminlogin = async (req, res) => {
     try {
         return res.render("admin/adminlogin", { title: "Lapshop admin", type: "", message: "" })
     } catch (error) {
@@ -13,7 +13,7 @@ const getadminlogin = async (req, res) => {
 
 
 //To post the admin login data to server for checking and give access
-const postadminlogin = async (req, res) => {
+const postAdminlogin = async (req, res) => {
     try {
         const email = req.body.email;
         const password = req.body.password;
@@ -47,7 +47,7 @@ const getAdminHome = async (req, res) => {
 }
 
 //To logout from admin page
-const getadminLogout = async (req, res) => {
+const getAdminLogout = async (req, res) => {
     try {
         req.session.adminData = false
         res.render('admin/adminlogin', { title: "Lapdhop Admin", type: "success", message: "Logout successfully" })
@@ -57,7 +57,7 @@ const getadminLogout = async (req, res) => {
 }
 
 //To get all users data in admin page
-const getadminusers = async (req, res) => {
+const getAdminUsers = async (req, res) => {
     try {
         if (req.session.adminData) {
             const userData = await User.find();
@@ -72,7 +72,7 @@ const getadminusers = async (req, res) => {
 
 
 //To block a user by admin
-const adminblockuser = async (req, res) => {
+const adminBlockUser = async (req, res) => {
     try {
         let user = await User.findById(req.params.userId);
         if (!user) {
@@ -118,12 +118,12 @@ const adminAddNewCategory = async (req, res) => {
 
 
 module.exports = {
-    getadminlogin,
-    postadminlogin,
+    getAdminlogin,
+    postAdminlogin,
     getAdminHome,
-    getadminLogout,
-    getadminusers,
-    adminblockuser,
+    getAdminLogout,
+    getAdminUsers,
+    adminBlockUser,
     getAdminCategory,
     adminAddNewCategory
 }

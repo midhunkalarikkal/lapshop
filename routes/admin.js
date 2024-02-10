@@ -7,17 +7,17 @@ adminRouter.use(bodyParser.urlencoded({extended:true}));
 
 const adminController = require('../controller/adminController')
 
-adminRouter.get('/',adminController.getadminlogin)
+adminRouter.get('/',adminController.getAdminlogin)
 
-adminRouter.post('/login',adminController.postadminlogin)
+adminRouter.post('/login',adminController.postAdminlogin)
 
 adminRouter.get('/home',adminController.getAdminHome)
 
-adminRouter.get('/logout',adminController.getadminLogout)
+adminRouter.get('/logout',adminController.getAdminLogout)
 
-adminRouter.get('/users',adminController.getadminusers)
+adminRouter.get('/users',adminController.getAdminUsers)
 
-adminRouter.post('/block:userId',adminController.adminblockuser)
+adminRouter.post('/block:userId',adminController.adminBlockUser)
 
 adminRouter.get("/category",adminController.getAdminCategory)
 
