@@ -92,7 +92,8 @@ const getAdminCategory = async(req,res)=>{
         if(!req.session.adminData){
             res.redirect('/admin')
         }else{
-            res.render("admin/adminCategory",{title : "LapShop Admin"})
+            const categoryData = await Category.find()
+            res.render("admin/adminCategory",{title : "LapShop Admin",category : categoryData})
         }
     }catch(error){
         console.log(error.message)
@@ -104,7 +105,13 @@ const adminAddNewCategory = async (req, res) => {
     try {
         if (req.session.adminData) {
             const { categoryName } = req.body;
-            const newCategory = new Category({ categoryName: categoryName });
+
+            const existingCategory = await Category.findOne({ name: categoryName });
+            if (existingCategory) {
+                return res.status(400).json({ error: "Category already exists" });
+            }
+
+            const newCategory = new Category({ name: categoryName });
             const savedCategory = await newCategory.save();
             res.status(201).json({ message: "Category created successfully", data: savedCategory });
         } else {

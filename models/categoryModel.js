@@ -1,9 +1,14 @@
 const mongoose = require('mongoose')
 
 const categorySchema = new mongoose.Schema({
-    categoryName : {
-        type : Array,
+    name: {
+        type : String,
         requird : true
+    },
+    isBlocked : {
+        type : Boolean,
+        required : true,
+        default : false
     },
     created : {
         type : Date,

@@ -10,87 +10,46 @@
         </div>
         <div class="row d-flex flex-row align-items-center justify-content-center">
             <div class="table-responsive col-8">
+                <% if(category !=""){ %>
                 <table class="table text-center my-4">
                     <thead>
                         <tr>
                             <th class="text-center text-dark">Nos</th>
                             <th class="text-center text-dark">Category</th>
+                            <th class="text-center text-dark">Controls</th>
                             <th class="text-center text-dark">Options</th>
                         </tr>
                     </thead>
                     <tbody>
+                        <% category.forEach((row,index) => { %>
                         <tr class="align-middle">
                             <td>
-                                1
+                                <%= index+1 %>
                             </td>
                             <td>
-                                Ultrabook
+                                <%= row.name %>
+                            </td>
+                            <td>
+                                <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isblocked) { %>checked<% } %>>
+                                <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isblocked) { %>checked<% } %>>
+                                <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>                
                             </td>
                             <td>
                                 <a href="" class="text-success"><i
                                     class="fas fa-edit fa-lg mx-1"></i></a>
-                            <a href="" class="text-danger"><i
+                                <a href="" class="text-danger"><i
                                     class="fas fa-trash fa-lg mx-1"></i></a>
                             </td>
                         </tr>
-                        <tr class="align-middle">
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                Ultrabook
-                            </td>
-                            <td>
-                                <a href="" class="text-success"><i
-                                    class="fas fa-edit fa-lg mx-1"></i></a>
-                            <a href="" class="text-danger"><i
-                                    class="fas fa-trash fa-lg mx-1"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="align-middle">
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                Ultrabook
-                            </td>
-                            <td>
-                                <a href="" class="text-success"><i
-                                    class="fas fa-edit fa-lg mx-1"></i></a>
-                            <a href="" class="text-danger"><i
-                                    class="fas fa-trash fa-lg mx-1"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="align-middle">
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                Ultrabook
-                            </td>
-                            <td>
-                                <a href="" class="text-success"><i
-                                    class="fas fa-edit fa-lg mx-1"></i></a>
-                            <a href="" class="text-danger"><i
-                                    class="fas fa-trash fa-lg mx-1"></i></a>
-                            </td>
-                        </tr>
-                        <tr class="align-middle">
-                            <td>
-                                1
-                            </td>
-                            <td>
-                                Ultrabook
-                            </td>
-                            <td>
-                                <a href="" class="text-success"><i
-                                    class="fas fa-edit fa-lg mx-1"></i></a>
-                            <a href="" class="text-danger"><i
-                                    class="fas fa-trash fa-lg mx-1"></i></a>
-                            </td>
-                        </tr>
+                        <% }); %>
                     </tbody>
                 </table>
+                <% } else {%>
+                    <div class="alert alert-info text-center" role="alert">
+                        No categories found in the database.
+                    </div>
+                    <% } %>   
             </div>
         </div>
     </div>
@@ -122,38 +81,53 @@
 
 
         <script>
-            //For alert message
-            setTimeout(function () {
-                const alert = document.querySelector('.alert');
-                if (alert) {
-                    alert.style.display = 'none';
-                }
-            }, 3000);
 
             //to send the categoryname to adminController
             document.getElementById("save").addEventListener("click", async function() {
-            const categoryName = document.getElementById("categoryName").value;
+    const categoryName = document.getElementById("categoryName").value;
 
-            try {
-                const response = await fetch("/admin/addCategory", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ categoryName: categoryName })
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log(data); // Handle successful response from server
-                } else {
-                    console.error("Error:", response.statusText); // Handle error response from server
-                }
-            } catch (error) {
-                console.error("Error:", error); // Handle network errors
-            }
+    try {
+        const response = await fetch("/admin/addCategory", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ categoryName: categoryName })
         });
-            
+
+        if (response.ok) {
+            const data = await response.json();
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: data.message
+            }).then(() => {
+                $('#exampleModal').modal('hide');
+            });
+        } else if (response.status === 400) {
+            const errorData = await response.json();
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: errorData.error
+            });
+        } else {
+            // Handle other error cases
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An unexpected error occurred. Please try again.'
+            });
+        }
+    } catch (error) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Network error. Please try again.'
+        });
+    }
+});
+
         </script>
 
         <%-include("../adminpartials/admin_footer.ejs")%>
