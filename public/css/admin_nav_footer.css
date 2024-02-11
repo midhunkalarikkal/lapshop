@@ -73,6 +73,10 @@ body::before {
     min-height: 100vh;
   }
 
+  .view{
+    min-height: 100vh;
+  }
+
 /*Navbar start*/
 
 .navbar-brand {
