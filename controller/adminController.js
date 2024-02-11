@@ -11,7 +11,6 @@ const getAdminlogin = async (req, res) => {
     }
 }
 
-
 //To post the admin login data to server for checking and give access
 const postAdminlogin = async (req, res) => {
     try {
@@ -88,15 +87,15 @@ const adminBlockUser = async (req, res) => {
 }
 
 //To get the category page
-const getAdminCategory = async(req,res)=>{
-    try{
-        if(!req.session.adminData){
+const getAdminCategory = async (req, res) => {
+    try {
+        if (!req.session.adminData) {
             return res.redirect('/admin')
-        }else{
+        } else {
             const categoryData = await Category.find()
-            return res.render("admin/adminCategory",{title : "LapShop Admin",category : categoryData})
+            return res.render("admin/adminCategory", { title: "LapShop Admin", category: categoryData })
         }
-    }catch(error){
+    } catch (error) {
         console.log(error.message)
     }
 }
@@ -126,17 +125,17 @@ const adminAddNewCategory = async (req, res) => {
 
 
 //To block a category
-const adminBlockCategory = async(req,res)=>{
-    try{
-        let category = await Category.findById({_id : req.params.categoryId})
-        if(!category){
-            return res.status(404).json({success : false, message : "Category not found"})
-        }else{
+const adminBlockCategory = async (req, res) => {
+    try {
+        let category = await Category.findById({ _id: req.params.categoryId })
+        if (!category) {
+            return res.status(404).json({ success: false, message: "Category not found" })
+        } else {
             category.isBlocked = req.body.blockStatus === 'block';
             await category.save();
             return res.json({ success: true });
         }
-    }catch(error){
+    } catch (error) {
         console.log(error.message)
         res.status(500).json({ success: false, message: 'Internal server error' });
     }
