@@ -1,6 +1,20 @@
 const User = require('../models/userModel')
 const Category = require('../models/categoryModel')
 const Product = require('../models/productModel')
+const multer = require('multer')
+
+var storage = multer.diskStorage({
+    destination: function (req, res, cb) {
+        cb(null, "../public/images/CategoryImages")
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + "_" + Date.now() + "_" + file.originalname)
+    }
+})
+
+var upload = multer({
+    storage: storage
+}).single("image")
 
 //To get the admin login page
 const getAdminlogin = async (req, res) => {
@@ -104,14 +118,23 @@ const getAdminCategory = async (req, res) => {
 const adminAddNewCategory = async (req, res) => {
     try {
         if (req.session.adminData) {
-            const { categoryName } = req.body;
+            const { categoryName, categoryDesc } = req.body;
+
+            // Check if a file was uploaded
+            if (!req.file) {
+                return res.status(400).json({ error: "No image uploaded" });
+            }
 
             const existingCategory = await Category.findOne({ name: categoryName });
             if (existingCategory) {
                 return res.status(400).json({ error: "Category already exists" });
             }
 
-            const newCategory = new Category({ name: categoryName });
+            const newCategory = new Category({
+                name: categoryName,
+                desc: categoryDesc,
+                image: req.file.filename
+            });
             const savedCategory = await newCategory.save();
             return res.status(201).json({ message: "Category created successfully", data: savedCategory });
         } else {
@@ -141,6 +164,14 @@ const adminBlockCategory = async (req, res) => {
     }
 }
 
+const adminEditCategory = async(req,es)=>{
+    try{
+        
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 
 module.exports = {
     getAdminlogin,
@@ -151,5 +182,6 @@ module.exports = {
     adminBlockUser,
     getAdminCategory,
     adminAddNewCategory,
-    adminBlockCategory
+    adminBlockCategory,
+    adminEditCategory
 }

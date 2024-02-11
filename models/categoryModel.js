@@ -5,6 +5,14 @@ const categorySchema = new mongoose.Schema({
         type : String,
         requird : true
     },
+    image : {
+        type : String,
+        required : true
+    },
+    desc : {
+        type : String,
+        required : true
+    },
     isBlocked : {
         type : Boolean,
         required : true,

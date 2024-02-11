@@ -18,9 +18,11 @@
                     <thead>
                         <tr>
                             <th class="text-center text-dark">Nos</th>
-                            <th class="text-center text-dark">Category</th>
+                            <th class="text-center text-dark">Image</th>
+                            <th class="text-center text-dark">Name</th>
+                            <th class="text-center text-dark">Description</th>
                             <th class="text-center text-dark">Controls</th>
-                            <th class="text-center text-dark">Options</th>
+                            <th class="text-center text-dark">Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -30,7 +32,13 @@
                                     <%= index+1 %>
                                 </td>
                                 <td>
+                                    <img src=" /static/images/CategoryImages/<%= row.image %> " width="50" class="img-thumbnal"/>
+                                </td>
+                                <td>
                                     <%= row.name %>
+                                </td>
+                                <td>
+                                    <%= row.desc %>
                                 </td>
                                 <td>
                                     <input type="radio" class="category-switch" data-category-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isBlocked) { %>checked<% } %>>
@@ -39,8 +47,7 @@
                                     <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
                                 </td>
                                 <td>
-                                    <a href="" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
-                                    <a href="" class="text-danger"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                                    <a href="/edit/<%= row._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
                                 </td>
                             </tr>
                         <% }); %>
@@ -68,6 +75,14 @@
                             <label for="categoryName" class="form-label">Category Name</label>
                             <input type="text" class="form-control" id="categoryName" name="categoryName">
                         </div>
+                        <div class="mb-3">
+                            <label for="categoryDescription" class="form-label">Category Description</label>
+                            <input type="text" class="form-control" id="categoryDescription" name="categoryDescription">
+                        </div>
+                        <div class="mb-3">
+                            <label for="CategoryImg" class="form-label mx-2">Select image</label>
+                             <input type="file" name="image" id="categoryImg" class="form-control form-control-md">
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -84,14 +99,18 @@
         ////// To add new category through fetch \\\\\
         document.getElementById("save").addEventListener("click", async function () {
             const categoryName = document.getElementById("categoryName").value;
+            const categoryDesc = document.getElementById("categoryDescription").value;
+            const categoryImg = document.getElementById("categoryImg").files[0];
+
+            const formData = new FormData(); // Create a FormData object
+            formData.append('categoryName', categoryName);
+            formData.append('categoryDesc', categoryDesc);
+            formData.append('categoryImg', categoryImg);
 
             try {
                 const response = await fetch("/admin/addCategory", {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ categoryName: categoryName })
+                    body: formData // Pass the FormData object directly as the body
                 });
 
                 if (response.ok) {
@@ -127,7 +146,7 @@
             }
         });
 
-        //////For blocking and unblocking the category start\\\\\\
+        ////// For blocking and unblocking the category start\\\\\\
         document.querySelectorAll('.category-switch').forEach(function (userSwitch) {
             userSwitch.addEventListener('change', function () {
                 var categoryId = this.dataset.categoryId;
