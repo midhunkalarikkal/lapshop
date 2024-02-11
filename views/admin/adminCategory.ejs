@@ -47,7 +47,7 @@
                                     <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
                                 </td>
                                 <td>
-                                    <a href="/edit/<%= row._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    <a href="/edit/<%= row._id %>" id="edit-category" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
                                 </td>
                             </tr>
                         <% }); %>
@@ -217,6 +217,7 @@
                 unblockRadio.checked = true;
             }
         }
+        
      </script>
 
 <!-- Admin footer -->
