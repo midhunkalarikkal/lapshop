@@ -1,42 +1,44 @@
-<head>
-    <link rel='stylesheet' href='/static/css/user_login_register.css' type="text/css" />
-</head>
+<!-- User navbar -->
 <%-include("../userpartials/Navbar.ejs")%>
 
-    <div id="screen-size"></div>
-    <section class="view">
-        <div class="container input-box">
-            <div class="form-box col-12 col-md-6 col-lg-4">
-                <header class="my-4 fs-4 title text-center">Sign In</header>
-                <form action="/login" method="post">
-                    <div class="input-field">
-                        <input type="text" class="input" id="email" name="email" required onblur="validateEmail()">
-                        <label for="email">Email</label>
-                    </div>
-                    <div class="input-field">
-                        <input type="password" class="input" id="password" name="password" required>
-                        <label for="password">Password</label>
-                        <p class="text-center"><a class="text-center fp" href="">Forgot password</a></p>
-                    </div>
-                    <div class="input-field">
-                        <button type="submit" class="btn" id="submit">Sign in</button>
-                    </div>
-                </form>
-                <div class="signin mb-2">
-                    <span>New to LapShop ?,<a href="/register">Sign Up</a></span>
-                    <% if(message){ %>
-                        <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
-                            style="padding: 5px; font-size: 14px;">
-                            <!-- <button class="btn-close" type="button" data-bs-dismiss="alert" aria-label="close"></button> -->
-                            <strong>
-                                <%= message %>
-                            </strong>
-                        </div>
-                        <% } %>
+<head>
+    <!-- User login page css -->
+    <link rel='stylesheet' href='/static/css/user_login_register.css' type="text/css" />
+</head>
+
+<div id="screen-size"></div>
+<section class="view">
+    <div class="container input-box">
+        <div class="form-box col-12 col-md-6 col-lg-4">
+            <header class="my-4 fs-4 title text-center">Sign In</header>
+            <form action="/login" method="post">
+                <div class="input-field">
+                    <input type="text" class="input" id="email" name="email" required onblur="validateEmail()">
+                    <label for="email">Email</label>
                 </div>
-                </form>
+                <div class="input-field">
+                    <input type="password" class="input" id="password" name="password" required>
+                    <label for="password">Password</label>
+                    <p class="text-center"><a class="text-center fp" href="">Forgot password</a></p>
+                </div>
+                <div class="input-field">
+                    <button type="submit" class="btn" id="submit">Sign in</button>
+                </div>
+            </form>
+            <div class="signin mb-2">
+                <span>New to LapShop ?,<a href="/register">Sign Up</a></span>
+                <% if(message){ %>
+                    <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
+                        <strong> <%= message %> </strong>
+                    </div>
+                <% } %>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <%-include("../userpartials/footer.ejs")%>
+<!--  Validation script for login form -->
+<script src="../script/user_script.js"></script>
+
+<!-- User footer -->
+ <%-include("../userpartials/footer.ejs")%>

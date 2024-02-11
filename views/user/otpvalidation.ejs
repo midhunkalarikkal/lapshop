@@ -1,59 +1,59 @@
+<!-- User navbar -->
+<%-include("../userpartials/Navbar.ejs")%>
+
 <head>
+    <!-- User otp page css -->
     <link rel='stylesheet' href='/static/css/user_otpvalidation.css' type="text/css" />
 </head>
-    <%-include("../userpartials/Navbar.ejs")%>
-        <div id="screen-size"></div>
-        <section class="view">
-        <div class="container input-box col-8 col-md-6 col-lg-12">
-            <div class="form-box">
-                <header class="my-4 fs-4 title text-center">Enter OTP</header>
-                <form action="/otpverify" method="post">
-                    <div class="d-flex">
-                        <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp" required>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp2" required>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp3" required>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp4" required>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp5" required>
-                        </div>
-                        <div class="input-field">
-                            <input type="text" class="input" id="otp" name="otp6" required>
-                        </div>
+
+<div id="screen-size"></div>
+<section class="view">
+    <div class="container input-box col-8 col-md-6 col-lg-12">
+        <div class="form-box">
+            <header class="my-4 fs-4 title text-center">Enter OTP</header>
+            <form action="/otpverify" method="post">
+                <div class="d-flex">
+                    <div class="input-field">
+                        <input type="text" class="input" id="otp" name="otp" required>
                     </div>
                     <div class="input-field">
-                        <button type="submit" class="btn" id="submit">Verify otp</button>
+                        <input type="text" class="input" id="otp" name="otp2" required>
                     </div>
-                </form>
-                <div class="signin mb-2">
-                    <span id="resendOtp"><a href="">Resend OTP</a></span>
-                    <% if(message){ %>
-                        <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
-                            style="padding: 5px; font-size: 14px;">
-                            <strong>
-                                <%= message %>
-                            </strong>
-                        </div>
-                        <% } %>
+                    <div class="input-field">
+                        <input type="text" class="input" id="otp" name="otp3" required>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" class="input" id="otp" name="otp4" required>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" class="input" id="otp" name="otp5" required>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" class="input" id="otp" name="otp6" required>
+                    </div>
                 </div>
-                </form>
+                <div class="input-field">
+                    <button type="submit" class="btn" id="submit">Verify otp</button>
+                </div>
+            </form>
+            <div class="signin mb-2">
+                <span id="resendOtp"><a href="">Resend OTP</a></span>
+                <% if(message){ %>
+                    <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
+                        <strong> <%= message %> </strong>
+                    </div>
+                <% } %>
             </div>
         </div>
-    </section>
-    <script>
-        // Get all input fields
-const otpInputs = document.querySelectorAll('.input');
+    </div>
+</section>
 
-// Attach input event listener to each input field
-otpInputs.forEach((input, index) => {
-    input.addEventListener('input', (event) => {
+<!-- Script for otp form -->
+<script>
+    const otpInputs = document.querySelectorAll('.input');
+    // Attach input event listener to each input field
+    otpInputs.forEach((input, index) => {
+        input.addEventListener('input', (event) => {
         // Automatically move to the next input field if a character is entered
         if (event.target.value.length === 1 && index < otpInputs.length - 1) {
             otpInputs[index + 1].focus();
@@ -93,7 +93,7 @@ otpInputs.forEach((input, index) => {
         }
     });
 });
+</script>
 
-
-    </script>
-    <%-include("../userpartials/footer.ejs")%>
+<!-- User footer -->
+<%-include("../userpartials/footer.ejs")%>
