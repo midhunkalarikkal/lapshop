@@ -28,5 +28,9 @@ adminRouter.post('/addCategory', upload.single('categoryImg'),adminController.ad
 
 adminRouter.post('/categoryblock:categoryId',adminController.adminBlockCategory)
 
+adminRouter.get('/categoryEdit/:categoryId',adminController.getCategoryForEditing)
+
+adminRouter.post('/update/:categoryId',upload.single('categoryImg'),adminController.updateCategory)
+
 
 module.exports = adminRouter

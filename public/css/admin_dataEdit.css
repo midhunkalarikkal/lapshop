@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+p,
+label,
+.btn,
+.form-control{
+    font-family: 'Anton', sans-serif;
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+
+:root {
+  --primary-color: #50c878;
+  --secondary-color: #f0ffff;
+  --third-color: #1b1b1b;
+  --fourth-color: #f82b50;
+  --fifth-color: #38ed77;
+  --sixth-color: #e4e4e4;
+}
+
+.view{
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0 20px 0 20px;
+    min-height: 100vh;
+    display: flex;
+}
+
+.main{  
+    height: auto;  
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px 1px rgba(0, 0, 0, 0.2);
+}

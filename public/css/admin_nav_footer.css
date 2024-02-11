@@ -73,10 +73,6 @@ body::before {
     min-height: 100vh;
   }
 
-  #content-wrap {
-    flex: 1;
-  }
-
 /*Navbar start*/
 
 .navbar-brand {

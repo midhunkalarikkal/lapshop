@@ -155,13 +155,53 @@ const adminBlockCategory = async (req, res) => {
     }
 }
 
-const adminEditCategory = async(req,es)=>{
-    try{
-        
-    }catch(error){
-        console.log(error.message)
+//Edit category from admin category page
+const getCategoryForEditing = async (req, res) => {
+    try {
+        const categoryId = req.params.categoryId;
+        const category = await Category.findById(categoryId);
+        if (!category) {
+            return res.status(404).json({ error: "Category not found" });
+        }
+        return res.render('admin/adminEditCategory',{title : "LapShop Admin", category : category})
+    } catch (error) {
+        console.error('Error fetching category data:', error);
+        res.status(500).json({ error: "Internal server error" });
     }
-}
+};
+
+//To update the category
+const updateCategory = async (req, res) => {
+    try {
+        const { categoryName, categoryDesc } = req.body;
+        const categoryId = req.params.categoryId;
+
+         // Check if a file was uploaded with the request
+         if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        // Check if category exists
+        const existingCategory = await Category.findById(categoryId);
+        if (!existingCategory) {
+            return res.status(404).json({ error: "Category not found" });
+        }else{
+            const oldImageFilename = existingCategory.image;
+             // Update category data
+            existingCategory.name = categoryName;
+            existingCategory.desc = categoryDesc;
+            existingCategory.image = req.file.filename;
+            await existingCategory.save();
+
+            const imagePath = path.join(__dirname, "../public/images/CategoryImages", oldImageFilename);
+            fs.unlinkSync(imagePath);
+            res.redirect('/admin/category')
+        }
+    } catch (error) {
+        console.error('Error updating category:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
 
 
 module.exports = {
@@ -174,5 +214,6 @@ module.exports = {
     getAdminCategory,
     adminAddNewCategory,
     adminBlockCategory,
-    adminEditCategory
+    getCategoryForEditing,
+    updateCategory
 }
