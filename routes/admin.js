@@ -23,4 +23,6 @@ adminRouter.get("/category",adminController.getAdminCategory)
 
 adminRouter.post('/addCategory',adminController.adminAddNewCategory)
 
+adminRouter.post('/categoryblock:categoryId',adminController.adminBlockCategory)
+
 module.exports = adminRouter

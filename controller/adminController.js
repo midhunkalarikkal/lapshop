@@ -80,9 +80,10 @@ const adminBlockUser = async (req, res) => {
         }
         user.isblocked = req.body.blockStatus === 'block';
         await user.save();
-        res.json({ success: true });
+        return res.json({ success: true });
     } catch (error) {
         console.log(error.message)
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -90,10 +91,10 @@ const adminBlockUser = async (req, res) => {
 const getAdminCategory = async(req,res)=>{
     try{
         if(!req.session.adminData){
-            res.redirect('/admin')
+            return res.redirect('/admin')
         }else{
             const categoryData = await Category.find()
-            res.render("admin/adminCategory",{title : "LapShop Admin",category : categoryData})
+            return res.render("admin/adminCategory",{title : "LapShop Admin",category : categoryData})
         }
     }catch(error){
         console.log(error.message)
@@ -113,13 +114,31 @@ const adminAddNewCategory = async (req, res) => {
 
             const newCategory = new Category({ name: categoryName });
             const savedCategory = await newCategory.save();
-            res.status(201).json({ message: "Category created successfully", data: savedCategory });
+            return res.status(201).json({ message: "Category created successfully", data: savedCategory });
         } else {
-            res.redirect('/admin');
+            return res.redirect('/admin');
         }
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+//To block a category
+const adminBlockCategory = async(req,res)=>{
+    try{
+        let category = await Category.findById({_id : req.params.categoryId})
+        if(!category){
+            return res.status(404).json({success : false, message : "Category not found"})
+        }else{
+            category.isBlocked = req.body.blockStatus === 'block';
+            await category.save();
+            return res.json({ success: true });
+        }
+    }catch(error){
+        console.log(error.message)
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -132,5 +151,6 @@ module.exports = {
     getAdminUsers,
     adminBlockUser,
     getAdminCategory,
-    adminAddNewCategory
+    adminAddNewCategory,
+    adminBlockCategory
 }
