@@ -11,18 +11,18 @@
     </div>
     <!-- Heading and category adding button end -->
     <!-- Table row start -->
-    <div class="row d-flex flex-row align-items-center justify-content-center">
-        <div class="table-responsive col-8">
+    <div class="row d-flex flex-row align-items-center justify-content-center mt-4">
+        <div class="table-responsive col-md-10">
             <% if(category !="" ){ %>
-                <table class="table text-center my-4">
+                <table class="table text-center table-striped my-4 p-1">
                     <thead>
-                        <tr>
-                            <th class="text-center text-dark">Nos</th>
-                            <th class="text-center text-dark">Image</th>
-                            <th class="text-center text-dark">Name</th>
-                            <th class="text-center text-dark">Description</th>
-                            <th class="text-center text-dark">Controls</th>
-                            <th class="text-center text-dark">Edit</th>
+                        <tr class="table-dark">
+                            <th class="text-center text-light">Nos</th>
+                            <th class="text-center text-light">Image</th>
+                            <th class="text-center text-light">Name</th>
+                            <th class="text-center text-light">Description</th>
+                            <th class="text-center text-light">Controls</th>
+                            <th class="text-center text-light">Edit</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -188,6 +188,7 @@
                                 text: 'Category block status has been updated.'
                             });
                             updateRadioButtons(categoryId, blockStatus);
+                            location.reload();
                         })
                         .catch(error => {
                             // Handle errors
@@ -218,6 +219,13 @@
                 unblockRadio.checked = true;
             }
         }
+
+        //Script for the data table
+        $(document).ready(function(){
+            $("table").DataTable({
+                order : [0, 'desc']
+            })
+        })
         
      </script>
 

@@ -1,5 +1,6 @@
 <!-- Admin header -->
 <%-include("../adminpartials/admin_navbar.ejs")%>
+
 <section class="view">
 <div class="container mt-5">
     <div class="row">
@@ -7,14 +8,14 @@
             <h1>Users</h1>
                 <div class="table-responsive ">
                     <% if(users !="" ){ %>
-                        <table class="table text-center my-4">
+                        <table class="table text-center table-striped my-5 p-1">
                                 <thead>
-                                    <tr>
-                                        <th class="text-center text-dark">ID</th>
-                                        <th class="text-center text-dark">Name</th>
-                                        <th class="text-center text-dark">Email</th>
-                                        <th class="text-center text-dark">Phone</th>
-                                        <th class="text-center text-dark">Options</th>
+                                    <tr class="table-dark">
+                                        <th class="text-center text-light">ID</th>
+                                        <th class="text-center text-light">Name</th>
+                                        <th class="text-center text-light">Email</th>
+                                        <th class="text-center text-light">Phone</th>
+                                        <th class="text-center text-light">Options</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -53,7 +54,6 @@
 
 <!-- Script for block and unblock the user -->
     <script>
-
     document.querySelectorAll('.user-switch').forEach(function(userSwitch) {
         userSwitch.addEventListener('change', function () {
             var userId = this.dataset.userId;
@@ -125,7 +125,13 @@
             }
         }
 
-
+        //Script for the data table
+        $(document).ready(function(){
+            $("table").DataTable({
+                order : [0, 'desc']
+            })
+        })
     </script>
-
+    
+    <!-- Admin footer -->
     <%-include("../adminpartials/admin_footer.ejs")%>
