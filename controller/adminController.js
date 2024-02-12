@@ -62,7 +62,7 @@ const getAdminUsers = async (req, res) => {
     try {
         if (req.session.adminData) {
             const userData = await User.find();
-            return res.render('admin/adminuserslist', { title: "LapShop Admin", type: "", message: "", users: userData })
+            return res.render('admin/adminUsersList', { title: "LapShop Admin", type: "", message: "", users: userData })
         } else {
             res.redirect('/admin')
         }
@@ -95,7 +95,7 @@ const getAdminCategory = async (req, res) => {
             return res.redirect('/admin')
         } else {
             const categoryData = await Category.find()
-            return res.render("admin/adminCategory", { title: "LapShop Admin", category: categoryData })
+            return res.render("admin/adminCategoryList", { title: "LapShop Admin", category: categoryData })
         }
     } catch (error) {
         console.log(error.message)
@@ -206,7 +206,7 @@ const updateCategory = async (req, res) => {
 const getAdminProducts = async(req,res)=>{
     try{
         if(req.session.adminData){
-            return res.render('admin/adminProduct',{title : "LapShop Admin"})
+            return res.render('admin/adminProductsList',{title : "LapShop Admin"})
         }else{
             return res.redirect('/admin')
         }
