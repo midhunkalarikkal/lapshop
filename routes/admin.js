@@ -32,5 +32,9 @@ adminRouter.get('/categoryEdit/:categoryId',adminController.getCategoryForEditin
 
 adminRouter.post('/update/:categoryId',upload.single('categoryImg'),adminController.updateCategory)
 
+adminRouter.get('/products',adminController.getAdminProducts)
+
+adminRouter.get('/adminAddProduct',adminController.getAdminAddProduct)
+
 
 module.exports = adminRouter

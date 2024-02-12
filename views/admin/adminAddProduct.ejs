@@ -1,0 +1,177 @@
+<!-- Admin navbar -->
+<%-include("../adminpartials/admin_navbar.ejs")%>
+
+<head>
+    <!-- Css for the admin data edit form -->
+    <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
+</head>
+
+<body>
+    <section class="view">
+        <div class="container d-flex align-items-center justify-content-center">
+            <div class="main col-12 col-lg-10 m-3 mt-5">
+                <form action="/admin/addProduct" method="POST" enctype="multipart/form-data">
+                    <div class="p-5">
+                        <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new product</h4>
+                        <div class="input-box d-md-flex">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3 col-md-10">
+                                    <label for="productName" class="form-label">Product name</label>
+                                    <input type="text" class="form-control" name="productName" id="productName" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productBrand" class="form-label">Product brand</label>
+                                    <input type="text" class="form-control" name="productBrand" id="productBrand" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productColour" class="form-label">Product colour</label>
+                                    <input type="text" class="form-control" name="productColour" id="productColour" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productStock" class="form-label">Product Stock</label>
+                                    <input type="text" class="form-control" name="productStock" id="productStock" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productRealPrice" class="form-label">Product real price</label>
+                                    <input type="text" class="form-control" name="productRealPrice" id="productRealPrice" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productfferPrice" class="form-label">Product offer price</label>
+                                    <input type="text" class="form-control" name="productOfferPrice" id="productOfferPrice" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
+                                    <input type="text" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productCategory" class="form-label">Product category</label>
+                                    <select class="form-select" name="productCategory" id="productCategory" required>
+                                        <option value="">Select product Category</option>
+                                        <option value="description1">Description 1</option>
+                                        <option value="description2">Description 2</option>
+                                        <option value="description3">Description 3</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productDescription" class="form-label">Product description</label>
+                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="mt-5 d-md-block d-none">
+                                    <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Add Product</button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3 col-md-10">
+                                    <label for="productImageOne" class="form-label">Product image 1</label>
+                                    <input type="file" class="form-control" name="productImageOne" id="productImageOne" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productImagetwo" class="form-label">Product image 2</label>
+                                    <input type="file" class="form-control" name="productImageTow" id="productImageTwo" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productImageThree" class="form-label">Product image 3</label>
+                                    <input type="file" class="form-control" name="productImageThree" id="productImageThree" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productImageFour" class="form-label">Product image 4</label>
+                                    <input type="file" class="form-control" name="productImageFour" id="productImageFour" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productImageFive" class="form-label">Product image 5</label>
+                                    <input type="file" class="form-control" name="productImageFive" id="productImageFive" required>
+                                </div>
+                                <!-- Image start -->
+                                <div class="mb-3 col-md-10">
+                                    <div class="row">
+                                        <div class="col-4 col-md-6">
+                                            <div class="thumbnail">
+                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 1">
+                                                <div class="caption">
+                                                    <h6>Image 1</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 col-md-6">
+                                            <div class="thumbnail">
+                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 2">
+                                                <div class="caption">
+                                                    <h6>Image 2</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Third image in first row for below md screen it will none in  and above md -->
+                                        <div class="col-4 col-md-6 d-block d-md-none">
+                                            <div class="thumbnail">
+                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 3">
+                                                <div class="caption">
+                                                    <h6>Image 3</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-4 col-md-6 d-none d-md-block">
+                                            <div class="thumbnail">
+                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 3">
+                                                <div class="caption">
+                                                    <h6>Image 3</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-4 col-md-6">
+                                            <div class="thumbnail">
+                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 4">
+                                                <div class="caption">
+                                                    <h6>Image 4</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- Fifth image second row for below md screen it will block in and above md -->
+                                        <div class="col-4 col-md-6 d-block d-md-none">
+                                            <div class="thumbnail">
+                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 5">
+                                                <div class="caption">
+                                                    <h6>Image 5</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row d-none d-md-block">
+                                        <div class="col-4 col-md-6">
+                                            <div class="thumbnail">
+                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 5">
+                                                <div class="caption">
+                                                    <h6>Image 5</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Image end -->
+                                
+                            </div>
+                            <div class="mt-4 d-block d-md-none">
+                                <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Add Product</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>  
+        </div>
+    </section>
+
+    <!-- Script for the viewing of selected image -->
+    <script>
+
+       //Cancel button goBack function
+       function goBack() {
+        window.history.back();
+        }
+    </script>
+
+<!-- Admin foter -->
+<%-include("../adminpartials/admin_footer.ejs")%>

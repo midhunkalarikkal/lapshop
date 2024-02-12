@@ -1,11 +1,10 @@
 const User = require('../models/userModel')
 const Category = require('../models/categoryModel')
 const Product = require('../models/productModel')
-const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 
-//To get the admin login page
+// To get the admin login page
 const getAdminlogin = async (req, res) => {
     try {
         return res.render("admin/adminlogin", { title: "Lapshop admin", type: "", message: "" })
@@ -14,7 +13,7 @@ const getAdminlogin = async (req, res) => {
     }
 }
 
-//To post the admin login data to server for checking and give access
+// To post the admin login data to server for checking and give access
 const postAdminlogin = async (req, res) => {
     try {
         const email = req.body.email;
@@ -35,7 +34,7 @@ const postAdminlogin = async (req, res) => {
     }
 }
 
-//To get admin homepage
+// To get admin homepage
 const getAdminHome = async (req, res) => {
     try {
         if (req.session.adminData) {
@@ -48,7 +47,7 @@ const getAdminHome = async (req, res) => {
     }
 }
 
-//To logout from admin page
+// To logout from admin page
 const getAdminLogout = async (req, res) => {
     try {
         req.session.adminData = false
@@ -58,7 +57,7 @@ const getAdminLogout = async (req, res) => {
     }
 }
 
-//To get all users data in admin page
+// To get all users data in admin page
 const getAdminUsers = async (req, res) => {
     try {
         if (req.session.adminData) {
@@ -73,7 +72,7 @@ const getAdminUsers = async (req, res) => {
 }
 
 
-//To block a user by admin
+// To block a user by admin
 const adminBlockUser = async (req, res) => {
     try {
         let user = await User.findById(req.params.userId);
@@ -89,7 +88,7 @@ const adminBlockUser = async (req, res) => {
     }
 }
 
-//To get the category page
+// To get the category page
 const getAdminCategory = async (req, res) => {
     try {
         if (!req.session.adminData) {
@@ -103,7 +102,7 @@ const getAdminCategory = async (req, res) => {
     }
 }
 
-//To add a new category
+// To add a new category
 const adminAddNewCategory = async (req, res) => {
     try {
         if (req.session.adminData) {
@@ -138,7 +137,7 @@ const adminAddNewCategory = async (req, res) => {
 }
 
 
-//To block a category
+// To block a category
 const adminBlockCategory = async (req, res) => {
     try {
         let category = await Category.findById({ _id: req.params.categoryId })
@@ -155,7 +154,7 @@ const adminBlockCategory = async (req, res) => {
     }
 }
 
-//Edit category from admin category page
+// Edit category from admin category page
 const getCategoryForEditing = async (req, res) => {
     try {
         const categoryId = req.params.categoryId;
@@ -170,7 +169,7 @@ const getCategoryForEditing = async (req, res) => {
     }
 };
 
-//To update the category
+// To update the category
 const updateCategory = async (req, res) => {
     try {
         const { categoryName, categoryDesc } = req.body;
@@ -203,6 +202,31 @@ const updateCategory = async (req, res) => {
     }
 };
 
+// To get the product page
+const getAdminProducts = async(req,res)=>{
+    try{
+        if(req.session.adminData){
+            return res.render('admin/adminProduct',{title : "LapShop Admin"})
+        }else{
+            return res.redirect('/admin')
+        }
+    }catch(error){
+        console.log(error);
+    }
+}
+
+// To get the Admin New Product adding page
+const getAdminAddProduct = async(req,res)=>{
+    try{
+        if(req.session.adminData){
+            return res.render('admin/adminAddProduct',{title : "LapShop"})
+        }
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 
 module.exports = {
     getAdminlogin,
@@ -215,5 +239,7 @@ module.exports = {
     adminAddNewCategory,
     adminBlockCategory,
     getCategoryForEditing,
-    updateCategory
+    updateCategory,
+    getAdminProducts,
+    getAdminAddProduct
 }

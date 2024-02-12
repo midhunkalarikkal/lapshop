@@ -1,0 +1,94 @@
+<!-- Admin header -->
+<%-include("../adminpartials/admin_navbar.ejs")%>
+
+<section class="view">
+    <div class="container mt-5">
+        <!-- Heading and category adding button start -->
+        <div class="row">
+            <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
+                <h1>Products</h1>
+                <button type="button" class="btn btn-outline-success btn-sm" id="addProduct" >Add new product</button>
+            </div>
+        </div>
+        <!-- Heading and category adding button end -->
+        <!-- Table row start -->
+        <div class="row d-flex flex-row align-items-center justify-content-center mt-4">
+            <div class="table-responsive col-md-10">
+                    
+                        <table class="table text-center table-striped my-5 p-1">
+                                <thead>
+                                    <tr class="table-dark">
+                                        <th class="text-center text-light">ID</th>
+                                        <th class="text-center text-light">Name</th>
+                                        <th class="text-center text-light">Brand</th>
+                                        <th class="text-center text-light">Category</th>
+                                        <th class="text-center text-light">Real Price</th>
+                                        <th class="text-center text-light">Off Price</th>
+                                        <th class="text-center text-light">Controls</th>
+                                        <th class="text-center text-light">Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                        <tr class="align-middle">
+                                            <td>
+                                                1
+                                            </td>
+                                            <td>
+                                                Vivobook
+                                            </td>
+                                            <td>
+                                                Asus
+                                            </td>
+                                            <td>
+                                                Ultrabook
+                                            </td>
+                                            <td>
+                                                80000
+                                            </td>
+                                            <td>
+                                                68000
+                                            </td>
+                                            <td>
+                                                <input type="radio" class="user-switch">
+                                                <label for="block" class="text-danger">Block</label>
+                                                <input type="radio" class="user-switch">
+                                                <label for="unblock" class="text-success">Unblock</label>                
+                                            </td>
+                                            <td>
+                                                <a href="" class="text-success edit-category"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                            </td>
+                                        </tr>
+                                    
+                                </tbody>
+                            </table>
+                        
+                    <div class="alert alert-info text-center" role="alert">No Users found in the database.</div>
+            
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Script for block and unblock the user -->
+    <script>
+
+         // Get the button element
+        var addButton = document.getElementById('addProduct');
+        
+        // Add a click event listener to the button
+        addButton.addEventListener('click', function() {
+            // Redirect to the next page
+            window.location.href = 'adminAddProduct';
+        });
+        
+        //Script for the data table
+        $(document).ready(function(){
+            $("table").DataTable({
+                order : [0, 'desc']
+            })
+        })
+    </script>
+    
+    <!-- Admin footer -->
+    <%-include("../adminpartials/admin_footer.ejs")%>

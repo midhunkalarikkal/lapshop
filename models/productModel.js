@@ -18,28 +18,36 @@ const productSchema = new mongoose.Schema({
         requird : true
     },
     category : {
-        type : Object,
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Category',
         requird : true
     },
-    quantity : {
+    noOfStock : {
         type : Number,
         requird : true
     },
-    realprice : {
+    realPrice : {
         type : Number,
         require :  true
     },
-    offerprice : {
+    offerPrice : {
         type : Number,
         require :  true
     },
-    discountpercentage : {
+    discountPercentage : {
         type : Number,
         require :  true
     },
-    images : {
-        type : Array,
+    images : [
+        {
+        type : String,
         require :  true
+        },
+    ],
+    isBlocked : {
+        type : Boolean,
+        require : true,
+        default : false
     },
     created : {
         type : Date,
