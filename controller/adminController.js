@@ -220,11 +220,65 @@ const getAdminAddProduct = async(req,res)=>{
     try{
         if(req.session.adminData){
             const categories = await Category.find()
-            return res.render('admin/adminAddProduct',{title : "LapShop", categories})
+            return res.render('admin/adminAddProduct',{title : "LapShop Admin", categories , productAdded : false , productExists : false , error : false})
+        }else{
+            return res.redirect('/admin')
         }
     }catch(error){
         console.log("Error fetching category",error)
         res.status(500).json({ error : "Internal server error"})
+    }
+}
+
+// To post the add product form data to database
+const postAdminAddProduct = async(req,res)=>{
+    try{
+        if(req.session.adminData){
+            const { productName , productBrand , productColour , productStock , 
+                productRealPrice , productOfferPrice , productDiscountPercentage , 
+                productCategory , productDescription} = req.body
+
+                const productImages = req.files.map((file) => file.filename)
+                
+                const categories = await Category.find()
+                
+                // For checking the existing product
+                const existingProduct = await Product.findOne({ name : productName , description : productDescription , colour : productColour})
+                console.log(existingProduct)
+                if(existingProduct){
+                    for (const imageName of productImages) {
+                        const imagePath = path.join(__dirname, "../public/images/ProductImages", imageName);
+                        try {
+                            await fs.promises.unlink(imagePath);
+                        } catch (error) {
+                            console.error("Error deleting image:", error);
+                        }
+                    }
+                    return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories})
+                }else{
+                    const newProduct = new Product({
+                        name: productName,
+                        brand: productBrand,
+                        description: productDescription,
+                        colour: productColour,
+                        category: productCategory,
+                        noOfStock: productStock,
+                        realPrice: productRealPrice,
+                        offerPrice: productOfferPrice,
+                        discountPercentage: productDiscountPercentage,
+                        images: productImages
+                    })
+
+                    const productData = await newProduct.save()
+                    return res.render('admin/adminAddProduct',{title : "LapShop Admin", productAdded : true , productExists : false , error : false , categories})
+                    
+                }
+            }else{
+                return res.redirect('/admin')
+            }
+        }catch(error){
+            console.log("Error",error)
+            res.status(500).json({ error : "Internal server error"})
     }
 }
 
@@ -242,5 +296,6 @@ module.exports = {
     getCategoryForEditing,
     updateCategory,
     getAdminProducts,
-    getAdminAddProduct
+    getAdminAddProduct,
+    postAdminAddProduct
 }

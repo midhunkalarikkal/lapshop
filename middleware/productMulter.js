@@ -4,10 +4,10 @@ const imageTypes = /jpeg|jpg|png|gif|svg|webp/;
 
 ////// Storage definition \\\\\\
 
-// For the category images
+// For the product images
 const storage = multer.diskStorage({
   destination:function(req,file,cb){
-    cb(null,path.join(__dirname,'../public/images/CategoryImages'));
+    cb(null,path.join(__dirname,'../public/images/ProductImages'));
   },
   filename:function(req,file,cb){
     const name = Date.now()+'-'+file.originalname;
@@ -17,8 +17,8 @@ const storage = multer.diskStorage({
 
 ////// Image uploader \\\\\\
 
-// For the category images
-const upload = multer({
+// For the product images
+const uploadProduct = multer({
   storage: storage,
   fileFilter: function(req, file, cb) {
     const extname = imageTypes.test(path.extname(file.originalname).toLowerCase());
@@ -35,4 +35,4 @@ const upload = multer({
 });
 
 
-module.exports = upload
+module.exports = uploadProduct

@@ -29,19 +29,19 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productStock" class="form-label">Product Stock</label>
-                                    <input type="text" class="form-control" name="productStock" id="productStock" value="" required>
+                                    <input type="number" class="form-control" name="productStock" id="productStock" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productRealPrice" class="form-label">Product real price</label>
-                                    <input type="text" class="form-control" name="productRealPrice" id="productRealPrice" value="" required>
+                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productfferPrice" class="form-label">Product offer price</label>
-                                    <input type="text" class="form-control" name="productOfferPrice" id="productOfferPrice" value="" required>
+                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
-                                    <input type="text" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
+                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productCategory" class="form-label">Product category</label>
@@ -62,50 +62,50 @@
                                     <button type="submit" class="btn btn-primary">Add Product</button>
                                 </div>
                             </div>
+                        </form>
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageOne" class="form-label">Product image 1</label>
-                                    <input type="file" class="form-control" name="productImageOne" id="productImageOne" required>
+                                    <input type="file" class="form-control" name="productImages" id="productImageOne" required onchange="displayImage(this , 'imageOne')">
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImagetwo" class="form-label">Product image 2</label>
-                                    <input type="file" class="form-control" name="productImageTow" id="productImageTwo" required>
+                                    <input type="file" class="form-control" name="productImages" id="productImageTwo" required onchange="displayImage(this , 'imageTwo')">
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageThree" class="form-label">Product image 3</label>
-                                    <input type="file" class="form-control" name="productImageThree" id="productImageThree" required>
+                                    <input type="file" class="form-control" name="productImages" id="productImageThree" required onchange="displayImage(this , 'imageThree')">
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageFour" class="form-label">Product image 4</label>
-                                    <input type="file" class="form-control" name="productImageFour" id="productImageFour" required>
+                                    <input type="file" class="form-control" name="productImages" id="productImageFour" required onchange="displayImage(this , 'imageFour')">
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageFive" class="form-label">Product image 5</label>
-                                    <input type="file" class="form-control" name="productImageFive" id="productImageFive" required>
+                                    <input type="file" class="form-control" name="productImages" id="productImageFive" required onchange="displayImage(this , 'imageFive')">
                                 </div>
                                 <!-- Image start -->
                                 <div class="mb-3 col-md-10">
                                     <div class="row">
-                                        <div class="col-4 col-md-6">
+                                        <div class="col-4">
                                             <div class="thumbnail">
-                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 1">
+                                                <img class="img-fluid" id="imageOne" src="" alt="">
                                                 <div class="caption">
                                                     <h6>Image 1</h6>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-4 col-md-6">
+                                        <div class="col-4">
                                             <div class="thumbnail">
-                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 2">
+                                                <img class="img-fluid" id="imageTwo" src="" alt="">
                                                 <div class="caption">
                                                     <h6>Image 2</h6>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Third image in first row for below md screen it will none in  and above md -->
-                                        <div class="col-4 col-md-6 d-block d-md-none">
+                                        <div class="col-4">
                                             <div class="thumbnail">
-                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 3">
+                                                <img class="img-fluid" id="imageThree" src="" alt="">
                                                 <div class="caption">
                                                     <h6>Image 3</h6>
                                                 </div>
@@ -113,42 +113,23 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-4 col-md-6 d-none d-md-block">
+                                        <div class="col-4">
                                             <div class="thumbnail">
-                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 3">
-                                                <div class="caption">
-                                                    <h6>Image 3</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4 col-md-6">
-                                            <div class="thumbnail">
-                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 4">
+                                                <img class="img-fluid" id="imageFour" src="" alt="">
                                                 <div class="caption">
                                                     <h6>Image 4</h6>
                                                 </div>
                                             </div>
                                         </div>
-                                        <!-- Fifth image second row for below md screen it will block in and above md -->
-                                        <div class="col-4 col-md-6 d-block d-md-none">
+                                        <div class="col-4">
                                             <div class="thumbnail">
-                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 5">
+                                                <img class="img-fluid" id="imageFive" src="" alt="">
                                                 <div class="caption">
                                                     <h6>Image 5</h6>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="row d-none d-md-block">
-                                        <div class="col-4 col-md-6">
-                                            <div class="thumbnail">
-                                                <img class="img-fluid" src="../../static/images/CategoryImages/1707744274832-Ultrabook.jpg" alt="Image 5">
-                                                <div class="caption">
-                                                    <h6>Image 5</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        </div>    
+                                    </div>   
                                 </div>
                                 
                                 <!-- Image end -->
@@ -160,17 +141,56 @@
                             </div>
                         </div>
                     </div>
-                </form>
+                
             </div>  
         </div>
     </section>
 
+    <% if (productAdded) { %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Product added successfully!',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => {
+                window.location.href = '/admin/adminAddProduct';
+            });
+        </script>
+    <% } else if (productExists) { %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            Swal.fire("Error", "Product already exists!", "error");
+        </script>
+    <% } else if (error) { %>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+        <script>
+            Swal.fire("Error", "<%= error %>", "error");
+        </script>
+    <% } %>
+    
+
     <!-- Script for the viewing of selected image -->
     <script>
+        // To display the selected image in the preview
+        function displayImage(input , targetId){
+            const file = input.files[0]
+
+            if(file){
+                const reader = new FileReader()
+
+                reader.onload = function(e){
+                    const image = document.getElementById(targetId)
+                    image.src = e.target.result
+                }
+                reader.readAsDataURL(file)
+            }
+        }
 
        //Cancel button goBack function
        function goBack() {
-        window.history.back();
+        window.location.href = '/admin/products'
         }
     </script>
 

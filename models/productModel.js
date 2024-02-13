@@ -1,11 +1,11 @@
 const mongoose = require('mongoose')
 
 const productSchema = new mongoose.Schema({
-    brand : {
-        type : Array,
+    name : {
+        type : String,
         requird : true
     },
-    name : {
+    brand : {
         type : String,
         requird : true
     },

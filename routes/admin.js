@@ -2,6 +2,7 @@ const express = require('express')
 const adminRouter = express.Router()
 const bodyParser = require('body-parser')
 const upload = require("../middleware/multer");
+const uploadproducts = require('../middleware/productMulter')
 
 adminRouter.use(express.static('../public'))
 
@@ -35,6 +36,8 @@ adminRouter.post('/update/:categoryId',upload.single('categoryImg'),adminControl
 adminRouter.get('/products',adminController.getAdminProducts)
 
 adminRouter.get('/adminAddProduct',adminController.getAdminAddProduct)
+
+adminRouter.post('/addProduct', uploadproducts.array('productImages',12),adminController.postAdminAddProduct)
 
 
 module.exports = adminRouter
