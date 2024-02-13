@@ -45,11 +45,12 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productCategory" class="form-label">Product category</label>
-                                    <select class="form-select" name="productCategory" id="productCategory" required>
-                                        <option value="">Select product Category</option>
-                                        <option value="description1">Description 1</option>
-                                        <option value="description2">Description 2</option>
-                                        <option value="description3">Description 3</option>
+                                    <select class="form-select" name="productCategory" id="productCategory" required>    
+                                        <% categories.forEach(category => { %>
+                                            <option value="<%= category._id %>">
+                                                <%= category.name%>
+                                            </option>
+                                           <% }) %> 
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-10">

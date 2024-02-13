@@ -219,11 +219,12 @@ const getAdminProducts = async(req,res)=>{
 const getAdminAddProduct = async(req,res)=>{
     try{
         if(req.session.adminData){
-            return res.render('admin/adminAddProduct',{title : "LapShop"})
+            const categories = await Category.find()
+            return res.render('admin/adminAddProduct',{title : "LapShop", categories})
         }
-
     }catch(error){
-        console.log(error.message)
+        console.log("Error fetching category",error)
+        res.status(500).json({ error : "Internal server error"})
     }
 }
 
