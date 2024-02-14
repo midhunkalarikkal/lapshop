@@ -284,6 +284,23 @@ const postAdminAddProduct = async(req,res)=>{
     }
 }
 
+// To block or unblock a product by admin
+const adminBlockProduct = async(req,res)=>{
+    try {
+        let product = await Product.findById({ _id : req.params.productId })
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" })
+        } else {
+            product.isBlocked = req.body.blockStatus === 'block';
+            await product.save();
+            return res.json({ success: true });
+        }
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+}
+
 
 module.exports = {
     getAdminlogin,
@@ -299,5 +316,7 @@ module.exports = {
     updateCategory,
     getAdminProducts,
     getAdminAddProduct,
-    postAdminAddProduct
+    postAdminAddProduct,
+    adminBlockProduct
+    
 }
