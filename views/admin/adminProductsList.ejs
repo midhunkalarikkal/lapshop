@@ -16,7 +16,7 @@
         <!-- Table row start -->
         <div class="row d-flex flex-row align-items-center justify-content-center mt-4">
             <div class="table-responsive col-lg-10">
-                    
+                    <% if(productData != ""){  %>
                         <table class="table text-center table-striped my-5 p-1">
                                 <thead>
                                     <tr class="table-dark">
@@ -26,30 +26,34 @@
                                         <th class="text-center text-light">Category</th>
                                         <th class="text-center text-light">Real Price</th>
                                         <th class="text-center text-light">Off Price</th>
+                                        <th class="text-center text-light">Stock</th>
                                         <th class="text-center text-light">Controls</th>
                                         <th class="text-center text-light">Edit</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    <% productData.forEach((product,index)=> {%>
                                         <tr class="align-middle">
                                             <td>
-                                                1
+                                                <%= index+1 %>
                                             </td>
                                             <td>
-                                                Vivobook
+                                                <%= product.name%>
                                             </td>
                                             <td>
-                                                Asus
+                                                <%= product.brand %>
                                             </td>
                                             <td>
-                                                Ultrabook
+                                                <%= product.category.name %>
                                             </td>
                                             <td>
-                                                80000
+                                                <%= product.realPrice %>
                                             </td>
                                             <td>
-                                                68000
+                                                <%= product.offerPrice %>
+                                            </td>
+                                            <td>
+                                                <%= product.noOfStock %>
                                             </td>
                                             <td>
                                                 <input type="radio" class="user-switch">
@@ -61,12 +65,12 @@
                                                 <a href="" class="text-success edit-category"><i class="fas fa-edit fa-lg mx-1"></i></a>
                                             </td>
                                         </tr>
-                                    
+                                    <% }) %>
                                 </tbody>
                             </table>
-                        
-                    <div class="alert alert-info text-center" role="alert">No Users found in the database.</div>
-            
+                            <% } else {%>
+                                <div class="alert alert-info text-center" role="alert">No Products found in the database.</div>
+                     <% } %>
             </div>
         </div>
     </div>

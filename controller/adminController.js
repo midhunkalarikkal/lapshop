@@ -206,7 +206,9 @@ const updateCategory = async (req, res) => {
 const getAdminProducts = async(req,res)=>{
     try{
         if(req.session.adminData){
-            return res.render('admin/adminProductsList',{title : "LapShop Admin"})
+            const productData = await Product.find().populate('category')
+            // const categoryData = await Category.find()
+            return res.render('admin/adminProductsList',{title : "LapShop Admin" , productData})
         }else{
             return res.redirect('/admin')
         }
