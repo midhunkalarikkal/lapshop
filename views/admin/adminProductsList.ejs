@@ -95,7 +95,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Send a POST request to the server
-                    fetch(`/admin/productBlock${productId}`, {
+                    fetch(`/admin/blockProduct${productId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'

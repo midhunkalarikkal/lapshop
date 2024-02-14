@@ -21,13 +21,13 @@ adminRouter.get('/logout',adminController.getAdminLogout)
 
 adminRouter.get('/users',adminController.getAdminUsers)
 
-adminRouter.post('/block:userId',adminController.adminBlockUser)
+adminRouter.post('/blockUser:userId',adminController.adminBlockUser)
 
 adminRouter.get("/category",adminController.getAdminCategory)
 
 adminRouter.post('/addCategory', upload.single('categoryImg'),adminController.adminAddNewCategory)
 
-adminRouter.post('/categoryblock:categoryId',adminController.adminBlockCategory)
+adminRouter.post('/blockCategory:categoryId',adminController.adminBlockCategory)
 
 adminRouter.get('/categoryEdit/:categoryId',adminController.getCategoryForEditing)
 
@@ -39,6 +39,6 @@ adminRouter.get('/adminAddProduct',adminController.getAdminAddProduct)
 
 adminRouter.post('/addProduct', uploadproducts.array('productImages',12),adminController.postAdminAddProduct)
 
-adminRouter.post('/productBlock:productId',adminController.adminBlockProduct)
+adminRouter.post('/blockProduct:productId',adminController.adminBlockProduct)
 
 module.exports = adminRouter
