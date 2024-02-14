@@ -41,4 +41,6 @@ adminRouter.post('/addProduct', uploadproducts.array('productImages',12),adminCo
 
 adminRouter.post('/blockProduct:productId',adminController.adminBlockProduct)
 
+adminRouter.get('/editProduct:productId',adminController.adminEditProduct)
+
 module.exports = adminRouter

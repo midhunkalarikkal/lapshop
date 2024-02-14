@@ -71,7 +71,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Send a POST request to the server
-                    fetch(`/admin/block${userId}`, {
+                    fetch(`/admin/blockUser${userId}`, {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -93,7 +93,7 @@
                             title: 'Success!',
                             text: 'User block status has been updated.'
                         });
-                        updateRadioButtons(userId, blockStatus);
+                        
                     })
                     .catch(error => {
                         // Handle errors
@@ -111,26 +111,12 @@
         });
     });
 
-        ////// Function to check or uncheck the radio buttons \\\\\\
-        function updateRadioButtons(userId, blockStatus) {
-            const blockRadio = document.getElementById(`block_${userId}`);
-            const unblockRadio = document.getElementById(`unblock_${userId}`);
-
-            if (blockStatus === 'block') {
-                blockRadio.checked = true;
-                unblockRadio.checked = false;
-            } else {
-                blockRadio.checked = false;
-                unblockRadio.checked = true;
-            }
-        }
-
-        //Script for the data table
-        $(document).ready(function(){
-            $("table").DataTable({
-                order : [0, 'desc']
-            })
-        })
+    //Script for the data table
+    $(document).ready(function(){
+        $("table").DataTable({
+            order : [0, 'desc']
+        })    
+    })
     </script>
     
     <!-- Admin footer -->

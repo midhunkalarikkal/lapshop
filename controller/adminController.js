@@ -301,6 +301,42 @@ const adminBlockProduct = async(req,res)=>{
     }
 }
 
+// To edit a specific product
+const adminEditProduct = async(req,res)=>{
+    try {
+        const productId = req.params.productId;
+        console.log(productId)
+        const product = await Product.findById(productId);
+        const categories = await Category.find()
+
+        if (!product) {
+            return res.status(404).json({ error: "product not found" });
+        }
+        return res.render('admin/adminEditProduct',{title : "LapShop Admin", productAdded : false , productExists : false , error : false,product , categories})
+    } catch (error) {
+        console.error('Error fetching product data:', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+// To Update a specific product from edit product page
+const adminUpdateProduct = async(req,res)=>{
+    try{
+        if(req.session.adminData){
+            const { productName , productBrand , productColour , productStock , 
+                productRealPrice , productOfferPrice , productDiscountPercentage , 
+                productCategory , productDescription} = req.body
+
+                const productNewImages = req.files.map((file) => file.filename)
+
+                
+        }
+
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 
 module.exports = {
     getAdminlogin,
@@ -317,6 +353,7 @@ module.exports = {
     getAdminProducts,
     getAdminAddProduct,
     postAdminAddProduct,
-    adminBlockProduct
+    adminBlockProduct,
+    adminEditProduct
     
 }
