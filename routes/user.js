@@ -21,5 +21,9 @@ userRouter.get('/login',userController.getLogin)
 userRouter.post('/login',userController.postLogin)
 //To logout user
 userRouter.get('/logout',userController.getLogout)
+//To get the otp page
+userRouter.get('/otp',userController.getotppage)
+//To resend otp
+userRouter.post('/resendotp',userController.resendOtp)
 
 module.exports = userRouter

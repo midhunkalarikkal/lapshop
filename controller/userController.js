@@ -74,6 +74,13 @@ const postRegister = async (req, res) => {
     try {
         const otp = generateOtp()
         saveOtp = otp;
+        console.log("SaveOtp before =",saveOtp)
+        
+        function clearSaveOtp() {
+            saveOtp = ""; 
+            console.log("SaveOtp after =",saveOtp)
+        }
+        setTimeout(clearSaveOtp, 30000);
 
         enteredFullname = req.body.fullname;
         enteredEmail = req.body.email;
@@ -106,6 +113,8 @@ const postRegisterOtp = async (req, res) => {
         const otp6 = enteredOtp.otp6;
         const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         console.log(concatenatedOTP)
+
+        
         if(concatenatedOTP === saveOtp){
 
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
@@ -133,6 +142,7 @@ const postRegisterOtp = async (req, res) => {
             }else{
               res.render("user/otpvalidation",{title : "LapShop otp", type : "danger" , message : "Invalid OTP"});
             }
+        
     } catch (error) {
         console.log("postRegisterotp error")
         console.log(error.message)
@@ -215,6 +225,31 @@ const getRegister = async (req, res) => {
     }
 }
 
+const getotppage = async(req,res)=>{
+    try{
+        res.render('user/otpvalidation',{title : "LapShop otp", type : "", message : ""})
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+
+// For resending the otp
+const resendOtp = async(req,res)=>{
+    try{
+        const otp = generateOtp()
+        saveOtp = otp;
+        sendOtpMail(enteredEmail,otp);
+        function clearSaveOtp() {
+            saveOtp = ""; 
+            console.log("SaveOtp after resend =",saveOtp)
+        }
+        setTimeout(clearSaveOtp, 30000);
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 
 
 
@@ -227,5 +262,7 @@ module.exports = {
     postRegister,
     postRegisterOtp,
     postLogin,
+    getotppage,
+    resendOtp
 }
 
