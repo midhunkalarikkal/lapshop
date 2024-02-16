@@ -387,6 +387,19 @@ const adminUpdateProduct = async(req,res)=>{
     }
 }
 
+// To get the Home carousel page
+const getAdminHomeCarousel = async(req,res)=>{
+    try{
+        if(req.session.adminData){
+            return res.render('admin/adminHomeCarouselList',{ title : "LpShop Admin"})
+        }else{
+            res.redirect('/admin')
+        }
+    }catch{
+        console.log(error.message)
+    }
+}
+
 
 module.exports = {
     getAdminlogin,
@@ -406,6 +419,7 @@ module.exports = {
     adminBlockProduct,
     adminEditProduct,
     adminDeleteProductImage,
-    adminUpdateProduct
+    adminUpdateProduct,
+    getAdminHomeCarousel
     
 }

@@ -47,4 +47,6 @@ adminRouter.post('/deleteProductImage',adminController.adminDeleteProductImage)
 
 adminRouter.post('/updateProduct/:productId',uploadproducts.array('productImages',12),adminController.adminUpdateProduct)
 
+adminRouter.get('/homeCarousel',adminController.getAdminHomeCarousel)
+
 module.exports = adminRouter
