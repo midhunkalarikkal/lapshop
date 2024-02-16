@@ -20,11 +20,11 @@
     cursor: pointer;
     font-size: 20px;
     color: #fff;
-    z-index: 1; /* Ensure it's above the image */
+    z-index: 1; 
 }
 
 .close-btn:hover {
-    color: red; /* Change color on hover if desired */
+    color: red; 
 }
 
 .close-btn-background {
@@ -46,7 +46,7 @@
     <section class="view">
         <div class="container d-flex align-items-center justify-content-center">
             <div class="main col-12 col-lg-10 m-3 mt-5">
-                <form action="/admin/updateProduct" method="POST" enctype="multipart/form-data">
+                <form action="/admin/updateProduct/<%= product._id %>" method="POST" enctype="multipart/form-data">
                     <div class="p-5">
                         <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit product [<%= product._id %>]</h4>
                         <div class="input-box d-md-flex">
@@ -94,31 +94,31 @@
                                     <textarea class="form-control" name="productDescription" id="productDescription" rows="3"  required><%= product.description %></textarea>
                                 </div>
                                 <div class="mt-5 d-md-block d-none">
-                                    <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Add Product</button>
+                                    <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
-                        </form>
+                        
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageOne" class="form-label">Product image 1</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageOne"  onchange="displayImage(this , 'imageOne')">
+                                    <input type="file" class="form-control" name="productImages" id="productImageOne" accept="image/" multiple="false"  onchange="displayImage(this , 'image1')" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImagetwo" class="form-label">Product image 2</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageTwo" onchange="displayImage(this , 'imageTwo')">
+                                    <input type="file" class="form-control" name="productImages" id="productImageTwo" accept="image/" multiple="false" onchange="displayImage(this , 'image2')" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageThree" class="form-label">Product image 3</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageThree" onchange="displayImage(this , 'imageThree')">
+                                    <input type="file" class="form-control" name="productImages" id="productImageThree" accept="image/" multiple="false" onchange="displayImage(this , 'image3')" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageFour" class="form-label">Product image 4</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageFour" onchange="displayImage(this , 'imageFour')">
+                                    <input type="file" class="form-control" name="productImages" id="productImageFour" accept="image/" multiple="false"  onchange="displayImage(this , 'image4')" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productImageFive" class="form-label">Product image 5</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageFive" onchange="displayImage(this , 'imageFive')">
+                                    <input type="file" class="form-control" name="productImages" id="productImageFive" accept="image/" multiple="false" onchange="displayImage(this , 'image5')" required>
                                 </div>
                                 <!-- Image start -->
                                 
@@ -129,12 +129,12 @@
                                             <div class="col-4">
                                                 <div class="thumbnail">
                                                     <!-- Close button -->
-                                                    <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>')">&times;</button>
+                                                    <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>','<%= product._id %>','<%= product.images[i]%>',event)">&times;</button>
                                                     <!-- Background square for the button -->
                                                     <div class="close-btn-background"></div>
                                                     <img class="img-fluid" id="image<%= i + 1 %>" src="/static/images/ProductImages/<%= product.images[i] %>" alt="">
                                                     <div class="caption">
-                                                        <h6 id="imageOneTitle">Image <%= i + 1 %></h6>
+                                                        <h6 id="image<%= i + 1 %>Title">Image <%= i + 1 %></h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -146,62 +146,41 @@
                                             <div class="col-4">
                                                 <div class="thumbnail">
                                                     <!-- Close button -->
-                                                    <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>')">&times;</button>
+                                                    <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>','<%= product._id %>','<%= product.images[i]%>',event)">&times;</button>
                                                     <!-- Background square for the button -->
                                                     <div class="close-btn-background"></div>
                                                     <img class="img-fluid" id="image<%= i + 1 %>" src="/static/images/ProductImages/<%= product.images[i] %>" alt="">
                                                     <div class="caption">
-                                                        <h6 id="imageOneTitle">Image <%= i + 1 %></h6>
+                                                        <h6 id="image<%= i + 1 %>Title">Image <%= i + 1 %></h6>
                                                     </div>
                                                 </div>
                                             </div>
                                         <% } %>
                                     </div>
-                                    
-                                </div>
+
+                                </div> 
+                            </div>
                             
                                 <!-- Image end -->
                                 
                             </div>
                             <div class="mt-4 d-block d-md-none">
-                                <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Add Product</button>
+                                <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
+                    </form>
                     </div>
                 
             </div>  
         </div>
     </section>
-
-    <% if (productAdded) { %>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Product added successfully!',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                window.location.href = '/admin/adminAddProduct';
-            });
-        </script>
-    <% } else if (productExists) { %>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            Swal.fire("Error", "Product already exists!", "error");
-        </script>
-    <% } else if (error) { %>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            Swal.fire("Error", "<%= error %>", "error");
-        </script>
-    <% } %>
     
 
     <!-- Script for the viewing of selected image -->
     <script>
         // To display the selected image in the preview
+       
         function displayImage(input , targetId){
             const file = input.files[0]
 
@@ -217,8 +196,32 @@
         }
 
        //Cancel button goBack function
-       function goBack() {
+       function goBack(event) {
+        event.preventDefault();
         window.location.href = '/admin/products'
+        }
+
+        // For the deletion of the existing images in databse
+        function deleteImage(imageId, productId, productImage,event) {
+            event.preventDefault();
+            fetch('/admin/deleteProductImage', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ productId : productId, productImage : productImage }),
+            })
+            .then(response => {
+                if (response.ok) {
+                    // Image deleted successfully, clear the src attribute
+                    document.getElementById(imageId).src = '';
+                } else {
+                    console.error('Failed to delete image');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
         }
 
 

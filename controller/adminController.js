@@ -319,19 +319,69 @@ const adminEditProduct = async(req,res)=>{
     }
 }
 
+const adminDeleteProductImage = async(req,res)=>{
+    try{
+        const productId = req.body.productId
+        const imageName = req.body.productImage
+
+        console.log(productId, imageName)
+
+        const product = await Product.findById(productId)
+
+        if(!product){
+            res.status(404).json({ message: 'Product not found' });
+        }else{
+            product.images.splice(imageName,1)
+            const imagePath = path.join(__dirname, "../public/images/ProductImages", imageName);
+            try {
+                await fs.promises.unlink(imagePath);
+            } catch (error) {
+                console.error("Error deleting image:", error);
+            }
+            await product.save()
+            res.json({ message: 'Image deleted successfully' });
+        }
+    }catch(error){
+        console.log(error.message)
+        res.status(500).json({ message: 'Error occurred while deleting image' });
+    }
+}
+
 // To Update a specific product from edit product page
 const adminUpdateProduct = async(req,res)=>{
     try{
-        if(req.session.adminData){
+        
+            const product = await Product.findById(req.params.productId)
+
+            if(!product){
+                return res.status(400).json({message : "Product not found"})
+            }
+
             const { productName , productBrand , productColour , productStock , 
                 productRealPrice , productOfferPrice , productDiscountPercentage , 
                 productCategory , productDescription} = req.body
 
-                const productNewImages = req.files.map((file) => file.filename)
 
-                
-        }
+                product.name = productName;
+                product.brand = productBrand;
+                product.description = productDescription;
+                product.colour = productColour;
+                product.noOfStock = productStock;
+                product.realPrice = productRealPrice;
+                product.offerPrice = productOfferPrice;
+                product.discountPercentage = productDiscountPercentage;
+                product.category = productCategory;
 
+                if(req.files){
+                    req.files.forEach(file => {
+                        product.images.push(file.filename)
+                    })
+                }
+
+                await product.save()
+
+                res.redirect('/admin/Products')
+        
     }catch(error){
         console.log(error.message)
     }
@@ -354,6 +404,8 @@ module.exports = {
     getAdminAddProduct,
     postAdminAddProduct,
     adminBlockProduct,
-    adminEditProduct
+    adminEditProduct,
+    adminDeleteProductImage,
+    adminUpdateProduct
     
 }
