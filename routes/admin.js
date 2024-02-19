@@ -3,6 +3,7 @@ const adminRouter = express.Router()
 const bodyParser = require('body-parser')
 const upload = require("../middleware/multer");
 const uploadproducts = require('../middleware/productMulter')
+const uploadHomeCarousel = require('../middleware/homeCarouselMulter')
 
 adminRouter.use(express.static('../public'))
 
@@ -48,5 +49,9 @@ adminRouter.post('/deleteProductImage',adminController.adminDeleteProductImage)
 adminRouter.post('/updateProduct/:productId',uploadproducts.array('productImages',12),adminController.adminUpdateProduct)
 
 adminRouter.get('/homeCarousel',adminController.getAdminHomeCarousel)
+
+adminRouter.post('/addHomeCarousel',uploadHomeCarousel.single('homeCarouselImage'),adminController.postAdminHomeCarousel)
+
+adminRouter.post('/blockHomeCarousel/:homeCarouselId',adminController.adminBlockHomeCarousel)
 
 module.exports = adminRouter

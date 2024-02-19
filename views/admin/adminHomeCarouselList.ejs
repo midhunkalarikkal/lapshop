@@ -1,65 +1,70 @@
 <!-- Admin header -->
 <%-include("../adminpartials/admin_navbar.ejs")%>
+
 <section class="view">
-<div class="container mt-5">
-    <!-- Heading and category adding button start -->
-    <div class="row">
-        <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
-            <h1>Home Carousel</h1>
-            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new carousel</button>
+    <div class="container mt-5">
+        <!-- Heading and category adding button start -->
+        <div class="row">
+            <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
+                <h1>Home Carousel</h1>
+                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new carousel</button>
+            </div>
         </div>
-    </div>
-    <!-- Heading and category adding button end -->
-    <!-- Table row start -->
-    <div class="row d-flex flex-row align-items-center justify-content-center mt-4">
-        <div class="table-responsive col-md-10">
-            
-                <table class="table text-center table-striped my-4 p-1">
-                    <thead>
-                        <tr class="table-dark">
-                            <th class="text-center text-light">Nos</th>
-                            <th class="text-center text-light">Image</th>
-                            <th class="text-center text-light">Name</th>
-                            <th class="text-center text-light">Description</th>
-                            <th class="text-center text-light">Controls</th>
-                            <th class="text-center text-light">Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        
-                            <tr class="align-middle">
-                                <td>
-                                    1
-                                </td>
-                                <td>
-                                    image
-                                </td>
-                                <td>
-                                    name
-                                </td>
-                                <td>
-                                    description
-                                </td>
-                                <td>
-                                    <input type="radio" class="category-switch" data-category-id="" id="" name="" value="block">
-                                    <label for="" class="text-danger">Block</label>
-                                    <input type="radio" class="category-switch" data-category-id="" id="" name="" value="unblock">
-                                    <label for="" class="text-success">Unblock</label>
-                                </td>
-                                <td>
-                                    <a href="/admin/categoryEdit/" class="text-success edit-category"><i class="fas fa-edit fa-lg mx-1"></i></a>
-                                </td>
+        <!-- Heading and category adding button end -->
+        <!-- Table row start -->
+        <div class="row d-flex flex-row align-items-center justify-content-center mt-4">
+            <div class="table-responsive col-md-10">
+                <% if(homeCarousel != "" ){%>
+                    <table class="table text-center table-striped my-4 p-1">
+                        <thead>
+                            <tr class="table-dark">
+                                <th class="text-center text-light">Nos</th>
+                                <th class="text-center text-light">Image</th>
+                                <th class="text-center text-light">Tagline</th>
+                                <th class="text-center text-light">Description</th>
+                                <th class="text-center text-light">Controls</th>
+                                <th class="text-center text-light">Edit</th>
+                                <th class="text-center text-light">Delete</th>
                             </tr>
-                        
-                    </tbody>
-                </table>
-            
-                <div class="alert alert-info text-center" role="alert">No categories found in the database.</div>
-            
-        </div>
-    </div> 
-    <!-- Table row end -->
-</div>
+                        </thead>
+                        <tbody>
+                            <% homeCarousel.forEach((row,index)=> { %>
+                                <tr class="align-middle">
+                                    <td>
+                                        <%= index+1 %>
+                                    </td>
+                                    <td>
+                                        <img src=" /static/images/HomeCarousels/<%= row.image %> " width="50" class="img-thumbnal"/>
+                                    </td>
+                                    <td>
+                                        <%= row.tagline %>
+                                    </td>
+                                    <td>
+                                        <%= row.desc %>
+                                    </td>
+                                    <td>
+                                        <input type="radio" class="homeCarousel-switch" data-hc-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isBlocked) { %>checked<% } %>>
+                                        <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                        <input type="radio" class="homeCarousel-switch" data-hc-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isBlocked) { %>checked<% } %>>
+                                        <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/homeCarouselEdit/" class="text-success edit-homeCarousel"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/homeCarouselDelete/" class="text-danger delete- homeCarousel"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                    <% } else {%>
+                    <div class="alert alert-info text-center" role="alert">No home carousels found in the database.</div>
+                <% } %>
+            </div>
+        </div> 
+        <!-- Table row end -->
+    </div>
 </section>       
 
     <!-- Modal start -->
@@ -67,22 +72,22 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Carousel</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Home Carousel</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="mb-3">
-                            <label for="categoryName" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="categoryName" name="categoryName">
+                            <label for="homeCarouselTagline" class="form-label">Tagline</label>
+                            <input type="text" class="form-control" id="homeCarouselTagline" name="homeCarouselTagline">
                         </div>
                         <div class="mb-3">
-                            <label for="categoryDescription" class="form-label">Category Description</label>
-                            <input type="text" class="form-control" id="categoryDescription" name="categoryDescription">
+                            <label for="homeCarouselDescription" class="form-label">Description</label>
+                            <input type="text" class="form-control" id="homeCarouselDescription" name="homeCarouselDescription">
                         </div>
                         <div class="mb-3">
-                            <label for="CategoryImg" class="form-label mx-2">Select image</label>
-                             <input type="file" name="image" id="categoryImg" class="form-control form-control-md">
+                            <label for="homeCarouselImage" class="form-label mx-2">Select image</label>
+                             <input type="file" name="homeCarouselImage" id="homeCarouselImage" class="form-control form-control-md">
                         </div>
                     </form>
                 </div>
@@ -95,25 +100,26 @@
     </div>
     <!-- Modal end -->
 
-    <!-- Script for category adding, category blocking -->
+    <!-- Script for home carousel adding and blocking -->
     <script>
-        ////// To add new category through fetch \\\\\
+        ////// To add new home carousel through fetch \\\\\
         document.getElementById("save").addEventListener("click", async function () {
-            const categoryName = document.getElementById("categoryName").value;
-            const categoryDesc = document.getElementById("categoryDescription").value;
-            const categoryImg = document.getElementById("categoryImg").files[0];
+            const homeCarouselTagline = document.getElementById("homeCarouselTagline").value;
+            const homeCarouselDescription = document.getElementById("homeCarouselDescription").value;
+            const homeCarouselImage = document.getElementById("homeCarouselImage").files[0];
 
             const formData = new FormData(); // Create a FormData object
-            formData.append('categoryName', categoryName);
-            formData.append('categoryDesc', categoryDesc);
-            formData.append('categoryImg', categoryImg);
+            formData.append('homeCarouselTagline', homeCarouselTagline);
+            formData.append('homeCarouselDescription', homeCarouselDescription);
+            formData.append('homeCarouselImage', homeCarouselImage);
 
             try {
-                const response = await fetch("/admin/addCategory", {
+                const response = await fetch("/admin/addHomeCarousel", {
                     method: "POST",
-                    body: formData // Pass the FormData object directly as the body
+                    body: formData
                 });
-
+                
+                $('#exampleModal').modal('hide');
                 if (response.ok) {
                     const data = await response.json();
                     Swal.fire({
@@ -121,7 +127,7 @@
                         title: 'Success!',
                         text: data.message
                     }).then(() => {
-                        $('#exampleModal').modal('hide');
+                        location.reload();
                     });
                 } else if (response.status === 400) {
                     const errorData = await response.json();
@@ -148,36 +154,37 @@
         });
 
         ////// For blocking and unblocking the category start\\\\\\
-        document.querySelectorAll('.category-switch').forEach(function (userSwitch) {
-            userSwitch.addEventListener('change', function () {
-                var categoryId = this.dataset.categoryId;
-                var blockStatus = this.value;
-                
-                // Confirm the action with a modal dialog
-                Swal.fire({
-                    title: 'Confirmation',
-                    text: 'Are you sure you want to change the block status?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Send a POST request to the server
-                        fetch(`/admin/blockCategory${categoryId}`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({ blockStatus: blockStatus })
-                        })
-                        .then(response => {
+        document.querySelectorAll('.homeCarousel-switch').forEach(function (homeCarouselSwitch) {
+            homeCarouselSwitch.addEventListener('change', function () {
+            var homeCarouselId = this.dataset.hcId;
+            var blockStatus = this.value
+
+            // Confirm the action with a modal dialog
+            Swal.fire({
+                title: 'Confirmation',
+                text: 'Are you sure you want to change the block status?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send a POST request to the server
+                    fetch(`/admin/blockHomeCarousel/${homeCarouselId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ blockStatus: blockStatus })
+                    })
+                    .then(response => {
+                            
                             // Check if the response is successful
                             if (response.ok) {
                                 return response.json();
                             } else {
-                                throw new Error('Failed to update cattegory block status.');
+                                throw new Error('Failed to update home carousel block status.');
                             }
                         })
                         .then(data => {
@@ -185,8 +192,11 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success!',
-                                text: 'Category block status has been updated.'
-                            });
+                                text: 'Home carousel block status has been updated.'
+                            }).then(() => {
+                        // Reload the page or do any other necessary action
+                        location.reload();
+                    });
                         })
                         .catch(error => {
                             // Handle errors

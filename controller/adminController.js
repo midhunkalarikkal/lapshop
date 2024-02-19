@@ -1,6 +1,7 @@
 const User = require('../models/userModel')
 const Category = require('../models/categoryModel')
 const Product = require('../models/productModel')
+const HomeCarousel = require('../models/homeCarousel')
 const fs = require('fs')
 const path = require('path')
 
@@ -319,6 +320,7 @@ const adminEditProduct = async(req,res)=>{
     }
 }
 
+//To delete a product image from pedit product page
 const adminDeleteProductImage = async(req,res)=>{
     try{
         const productId = req.body.productId
@@ -391,12 +393,65 @@ const adminUpdateProduct = async(req,res)=>{
 const getAdminHomeCarousel = async(req,res)=>{
     try{
         if(req.session.adminData){
-            return res.render('admin/adminHomeCarouselList',{ title : "LpShop Admin"})
+            const homeCarousel = await HomeCarousel.find()
+            return res.render('admin/adminHomeCarouselList',{ title : "LpShop Admin", homeCarousel})
         }else{
             res.redirect('/admin')
         }
     }catch{
         console.log(error.message)
+    }
+}
+
+//To add a new home carousel
+const postAdminHomeCarousel = async(req,res)=>{
+    try{
+        if (req.session.adminData) {
+            const { homeCarouselTagline, homeCarouselDescription } = req.body;
+
+            // Check if a file was uploaded
+            if (!req.file) {
+                return res.status(400).json({ error: "No image uploaded" });
+            }
+
+            const existingHomeCarousel = await HomeCarousel.findOne({ tagline: homeCarouselTagline });
+            if (existingHomeCarousel) {
+                const imagePath = path.join(__dirname, "../public/images/HomeCarouselImages", req.file.filename);
+                fs.unlinkSync(imagePath);
+                return res.status(400).json({ error: "Home carousel already exists" });
+            }
+
+            const newHomeCarousel = new HomeCarousel({
+                tagline: homeCarouselTagline,
+                desc: homeCarouselDescription,
+                image: req.file.filename
+            });
+            const savedHomeCarousel = await newHomeCarousel.save();
+            return res.status(201).json({ message: "home Carousel added successfully", data: savedHomeCarousel });
+        } else {
+            return res.redirect('/admin');
+        }
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//To block home carousel by admin
+const adminBlockHomeCarousel = async (req, res) => {
+    try {
+        const homeCarousel = await HomeCarousel.findById({_id : req.params.homeCarouselId});
+        console.log(homeCarousel);
+
+        if (!homeCarousel) {
+            return res.status(404).json({ success: false, message: "Home carousel not found" });
+        } else {
+            homeCarousel.isBlocked = req.body.blockStatus === 'block';
+            await homeCarousel.save();
+            return res.json({ success: true });
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -420,6 +475,8 @@ module.exports = {
     adminEditProduct,
     adminDeleteProductImage,
     adminUpdateProduct,
-    getAdminHomeCarousel
+    getAdminHomeCarousel,
+    postAdminHomeCarousel,
+    adminBlockHomeCarousel
     
 }

@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const homeCarouselSchema = new mongoose.Schema({
-    name: {
+    tagline: {
         type : String,
         requird : true
     },
