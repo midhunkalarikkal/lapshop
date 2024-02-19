@@ -54,4 +54,6 @@ adminRouter.post('/addHomeCarousel',uploadHomeCarousel.single('homeCarouselImage
 
 adminRouter.post('/blockHomeCarousel/:homeCarouselId',adminController.adminBlockHomeCarousel)
 
+adminRouter.delete('/homeCarouselDelete/:homeCarouselId',adminController.adminDeleteHomeCarousel)
+
 module.exports = adminRouter

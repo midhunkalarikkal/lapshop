@@ -455,6 +455,26 @@ const adminBlockHomeCarousel = async (req, res) => {
     }
 }
 
+//To delete a home carousel
+const adminDeleteHomeCarousel = async (req, res) => {
+    try {
+        if (req.session.adminData) {
+            const homeCarousel = await HomeCarousel.findByIdAndDelete(req.params.homeCarouselId);
+            if (!homeCarousel) {
+                return res.status(404).json({ success: false, message: "Home carousel not found" });
+            } else {
+                return res.status(200).json({ success: true, message: "Home carousel deleted successfully" });
+            }
+        } else {
+            return res.redirect('/admin');
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
+
+
 
 module.exports = {
     getAdminlogin,
@@ -477,6 +497,7 @@ module.exports = {
     adminUpdateProduct,
     getAdminHomeCarousel,
     postAdminHomeCarousel,
-    adminBlockHomeCarousel
+    adminBlockHomeCarousel,
+    adminDeleteHomeCarousel
     
 }
