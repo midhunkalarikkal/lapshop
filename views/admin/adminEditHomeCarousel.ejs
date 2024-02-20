@@ -1,0 +1,81 @@
+<!-- Admin navbar -->
+<%-include("../adminpartials/admin_navbar.ejs")%>
+
+<head>
+    <!-- Css for the admin data edit form -->
+    <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
+</head>
+
+<body>
+    <section class="view">
+        <div class="container d-flex align-items-center justify-content-center">
+            <div class="main col-12 col-lg-10">
+                <form action="/admin/updateHomeCarousel/<%= homeCarousel._id %>" method="POST" enctype="multipart/form-data">
+                    <div class="p-5">
+                        <div class="input-box d-md-flex">
+                            <div class="col-12 col-md-8">
+                                <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit Home Carousel</h4>
+                                <div class="mb-3 col-lg-10">
+                                    <label for="homeCarouselTagline" class="form-label">Tagline</label>
+                                    <input type="text" class="form-control" name="homeCarouselTagline" id="homeCarouselTagline" value="<%= homeCarousel.tagline %>" required>
+                                </div>
+                                <div class="mb-3 col-lg-10">
+                                    <label for="homeCarouselDesc" class="form-label">Description</label>
+                                    <input type="text" class="form-control" name="homeCarouselDesc" id="homeCarouselDesc" value="<%= homeCarousel.desc %>" required>
+                                </div>
+                                <div class="mb-3 col-lg-10">
+                                      <label for="homeCarouselImage" class="form-label">Category image</label>
+                                      <input type="file" class="form-control" name="homeCarouselImage" id="homeCarouselImage" required onchange="displayImage()">
+                                </div>
+                                <div class="mt-4 d-md-block d-none">
+                                    <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 d-flex flex-md-column align-items-center justify-content-md-center">
+                                <div class="old-image">
+                                    <h6>Existing image</h6>
+                                    <img src="/static/images/HomeCarousels/<%= homeCarousel.image %>" width="100" class="thumbnail img-fluid" alt="">
+                                </div>
+                                <div class="new-image mt-md-2 mx-5 mx-md-0">
+                                    <h6>Selected image</h6>
+                                    <img src="" id="newImage" width="100" class="thumbnail img-fluid" alt="">
+                                </div>
+                            </div>
+                            <div class="mt-4 d-block d-md-none">
+                                <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>  
+        </div>
+    </section>
+
+    <!-- Script for the viewing of selected image -->
+    <script>
+        function displayImage() {
+           const input = document.getElementById('categoryImage');
+           const file = input.files[0];
+           if (file) {
+               const reader = new FileReader();
+               reader.onload = function (e) {
+                   const img = document.getElementById('newImage');
+                   img.src = e.target.result;
+               };
+               reader.readAsDataURL(file);
+           } else {
+               const img = document.getElementById('newImage');
+               img.src = '';
+           }
+       }
+
+       //Cancel button goBack function
+       function goBack() {
+        window.location.href = '/admin/homeCarousel'
+        }
+    </script>
+
+<!-- Admin footer -->
+<%-include("../adminpartials/admin_footer.ejs")%>

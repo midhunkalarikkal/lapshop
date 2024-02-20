@@ -63,7 +63,7 @@ const getAdminUsers = async (req, res) => {
     try {
         if (req.session.adminData) {
             const userData = await User.find();
-            return res.render('admin/adminUsersList', { title: "LapShop Admin", type: "", message: "", users: userData })
+            return res.render('admin/adminUsersList', { title: "LapShop Admin",  users: userData })
         } else {
             res.redirect('/admin')
         }
@@ -427,7 +427,7 @@ const postAdminHomeCarousel = async(req,res)=>{
                 image: req.file.filename
             });
             const savedHomeCarousel = await newHomeCarousel.save();
-            return res.status(201).json({ message: "home Carousel added successfully", data: savedHomeCarousel });
+            return res.status(201).json({ message: "home Carousel added successfully" , data : savedHomeCarousel});
         } else {
             return res.redirect('/admin');
         }
@@ -459,10 +459,14 @@ const adminBlockHomeCarousel = async (req, res) => {
 const adminDeleteHomeCarousel = async (req, res) => {
     try {
         if (req.session.adminData) {
-            const homeCarousel = await HomeCarousel.findByIdAndDelete(req.params.homeCarouselId);
+            const homeCarousel = await HomeCarousel.findById(req.params.homeCarouselId);
+            console.log(homeCarousel.image)
             if (!homeCarousel) {
                 return res.status(404).json({ success: false, message: "Home carousel not found" });
             } else {
+                const imagePath = path.join(__dirname, "../public/images/HomeCarousels", homeCarousel.image);
+                fs.unlinkSync(imagePath);
+                await HomeCarousel.findByIdAndDelete(req.params.homeCarouselId);
                 return res.status(200).json({ success: true, message: "Home carousel deleted successfully" });
             }
         } else {
@@ -473,6 +477,62 @@ const adminDeleteHomeCarousel = async (req, res) => {
         return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
+
+//To edit a home carousel
+const adminEditHomeCarousel = async(req,res)=>{
+    try{
+        if(req.session.adminData){
+               const homeCarousel = await HomeCarousel.findOne({_id : req.params.homeCarouselId})
+               console.log(homeCarousel)
+               if(!homeCarousel){
+                    return res.status(404).json({success : false, message : "Home carousel not found"})
+               }else{
+                    return res.render('admin/adminEditHomeCarousel',{title : "LapShop Admin",homeCarousel})
+               } 
+        }else{
+            return res.redirect('/admin')
+        }
+
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ success: false, message: "Internal server error" });
+
+    }
+}
+
+//To update the edited home carousel
+const adminUpdateHomeCarousel = async(req,res)=>{
+    try {
+        const { homeCarouselTagline, homeCarouselDesc } = req.body;
+
+        const hcId = req.params.homeCarouselId;
+
+         // Check if a file was uploaded with the request
+         if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        // Check if home carousel exists
+        const existingHomeCarousel = await HomeCarousel.findById(hcId);
+        if (!existingHomeCarousel) {
+            return res.status(404).json({ error: "Home Carousel not found" });
+        }else{
+            const oldImageFilename = existingHomeCarousel.image;
+             // Update home carousel data
+            existingHomeCarousel.tagline = homeCarouselTagline;
+            existingHomeCarousel.desc = homeCarouselDesc;
+            existingHomeCarousel.image = req.file.filename;
+            await existingHomeCarousel.save();
+
+            const imagePath = path.join(__dirname, "../public/images/HomeCarousels", oldImageFilename);
+            fs.unlinkSync(imagePath);
+            res.redirect('/admin/homeCarousel')
+        }
+    } catch (error) {
+        console.error('Error updating home carousel', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
 
 
 
@@ -498,6 +558,8 @@ module.exports = {
     getAdminHomeCarousel,
     postAdminHomeCarousel,
     adminBlockHomeCarousel,
-    adminDeleteHomeCarousel
+    adminDeleteHomeCarousel,
+    adminEditHomeCarousel,
+    adminUpdateHomeCarousel
     
 }
