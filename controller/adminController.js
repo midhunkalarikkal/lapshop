@@ -588,6 +588,56 @@ const adminBlockBrand = async(req,res)=>{
     }
 }
 
+//To edit brand from brand list page
+const adminEditBrand = async(req,res)=>{
+    try{
+        const brand = await Brand.findOne({_id : req.params.brandId})
+        console.log(brand)
+        if(!brand){
+            return res.status(404).json({success : false, message : "Brand not found"})
+       }else{
+            return res.render('admin/adminEditBrand',{title : "LapShop Admin",brand})
+       } 
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ success: false, message: "Internal server error" });
+
+    }
+}
+
+//To update the edited brand
+const adminUpdateBrand = async(req,res)=>{
+    try {
+        const { brandName } = req.body;
+
+        const brandId = req.params.brandId;
+
+         // Check if a file was uploaded with the request
+         if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        // Check if home carousel exists
+        const existingBrand = await Brand.findById(brandId);
+        if (!existingBrand) {
+            return res.status(404).json({ error: "Brand not found" });
+        }else{
+            const oldImageFilename = existingBrand.image;
+             // Update brand data
+            existingBrand.name = brandName;
+            existingBrand.image = req.file.filename;
+            await existingBrand.save();
+
+            const imagePath = path.join(__dirname, "../public/images/BrandImages", oldImageFilename);
+            fs.unlinkSync(imagePath);
+            res.redirect('/admin/brands')
+        }
+    } catch (error) {
+        console.error('Error updating brand', error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
 
 
 module.exports = {
@@ -617,6 +667,8 @@ module.exports = {
     adminUpdateHomeCarousel,
     getAdminBrands,
     adminAddNewBrand,
-    adminBlockBrand
+    adminBlockBrand,
+    adminEditBrand,
+    adminUpdateBrand
     
 }

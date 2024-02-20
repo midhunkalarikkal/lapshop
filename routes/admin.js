@@ -68,4 +68,8 @@ adminRouter.post('/addBrand',adminAuth.isAdminLoggedIn,uploadBrand.single('brand
 
 adminRouter.post('/blockBrand/:brandId',adminAuth.isAdminLoggedIn,adminController.adminBlockBrand)
 
+adminRouter.get('/brandEdit/:brandId',adminAuth.isAdminLoggedIn,adminController.adminEditBrand)
+
+adminRouter.post('/updateBrand/:brandId',uploadBrand.single('brandImage'),adminController.adminUpdateBrand)
+
 module.exports = adminRouter
