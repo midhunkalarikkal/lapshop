@@ -552,13 +552,16 @@ const getAdminBrands = async(req,res)=>{
 const adminAddNewBrand = async(req,res)=>{
     try{
         const { brandName } = req.body
-        console.log(req.body)
+        console.log(brandName)
+
         const existbrand = await Brand.findOne({name : brandName})
-        if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded" });
-        }
-        if(existbrand){
-            res.status(400).json({message : "Brand already exist"})
+        if (existbrand) {
+            const newImage = req.file.filename
+            const imagePath = path.join(__dirname, "../public/images/BrandImages", newImage);
+            fs.unlinkSync(imagePath);
+            return res.status(409).json({ message : "Brand already exist" })
+        }else if(!req.file){
+            return res.status(400).json({ message: "Image is not selected." })
         }else{
             const newBrand = new Brand({
                 name: brandName,
@@ -569,6 +572,7 @@ const adminAddNewBrand = async(req,res)=>{
         } 
     }catch(error){
         console.log(error.message)
+        return res.status(500).json({ error: "Internal server error" });
     }
 }
 

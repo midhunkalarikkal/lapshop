@@ -74,7 +74,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="brandImg" class="form-label mx-2">Select image</label>
-                             <input type="file" name="brandImg" id="brandImg" class="form-control form-control-md">
+                             <input type="file" name="brandImg" id="brandImg" class="form-control form-control-md" required>
                         </div>
                     </form>
                 </div>
@@ -120,10 +120,16 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.error
+                        text: errorData.message
+                    });
+                }else if (response.status === 409) {
+                    const errorData = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: errorData.message
                     });
                 } else {
-                    // Handle other error cases
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
