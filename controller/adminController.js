@@ -224,7 +224,8 @@ const getAdminAddProduct = async(req,res)=>{
     try{
         if(req.session.adminData){
             const categories = await Category.find()
-            return res.render('admin/adminAddProduct',{title : "LapShop Admin", categories , productAdded : false , productExists : false , error : false})
+            const brands = await Brand.find()
+            return res.render('admin/adminAddProduct',{title : "LapShop Admin", categories , brands , productAdded : false , productExists : false , error : false})
         }else{
             return res.redirect('/admin')
         }
@@ -245,6 +246,8 @@ const postAdminAddProduct = async(req,res)=>{
                 const productImages = req.files.map((file) => file.filename)
                 
                 const categories = await Category.find()
+
+                const brands = await Brand.find()
                 
                 // For checking the existing product
                 const existingProduct = await Product.findOne({ name : productName , description : productDescription , colour : productColour})
@@ -258,7 +261,7 @@ const postAdminAddProduct = async(req,res)=>{
                             console.error("Error deleting image:", error);
                         }
                     }
-                    return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories})
+                    return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories , brands})
                 }else{
                     const newProduct = new Product({
                         name: productName,
@@ -275,7 +278,6 @@ const postAdminAddProduct = async(req,res)=>{
 
                     const productData = await newProduct.save()
                     return res.render('admin/adminAddProduct',{title : "LapShop Admin", productAdded : true , productExists : false , error : false , categories})
-                    
                 }
             }else{
                 return res.redirect('/admin')
@@ -310,11 +312,12 @@ const adminEditProduct = async(req,res)=>{
         console.log(productId)
         const product = await Product.findById(productId);
         const categories = await Category.find()
+        const brands = await Brand.find()
 
         if (!product) {
             return res.status(404).json({ error: "product not found" });
         }
-        return res.render('admin/adminEditProduct',{title : "LapShop Admin", productAdded : false , productExists : false , error : false,product , categories})
+        return res.render('admin/adminEditProduct',{title : "LapShop Admin", productAdded : false , productExists : false , error : false,product , categories , brands})
     } catch (error) {
         console.error('Error fetching product data:', error);
         res.status(500).json({ error: "Internal server error" });

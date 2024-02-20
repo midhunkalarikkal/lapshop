@@ -20,8 +20,14 @@
                                     <input type="text" class="form-control" name="productName" id="productName" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
-                                    <label for="productBrand" class="form-label">Product brand</label>
-                                    <input type="text" class="form-control" name="productBrand" id="productBrand" value="" required>
+                                    <label for="productBrand" class="form-label">Product Brand</label>
+                                    <select class="form-select" name="productBrand" id="productBrand" required>    
+                                        <% brands.forEach(brand => { %>
+                                            <option value="<%= brand._id %>">
+                                                <%= brand.name%>
+                                            </option>
+                                           <% }) %> 
+                                    </select>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productColour" class="form-label">Product colour</label>
