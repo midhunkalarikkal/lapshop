@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const Category = require('../models/categoryModel')
 const Product = require('../models/productModel')
 const HomeCarousel = require('../models/homeCarousel')
+const Brand = require('../models/brandModel')
 const fs = require('fs')
 const path = require('path')
 
@@ -534,6 +535,40 @@ const adminUpdateHomeCarousel = async(req,res)=>{
     }
 }
 
+//To get the brands page
+const getAdminBrands = async(req,res)=>{
+    try{
+        const brandData = await Brand.find()
+        return res.render('admin/adminBrandsList',{title : "LapShop Admin" , brand : brandData})
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+//To add new brand
+const adminAddNewBrand = async(req,res)=>{
+    try{
+        const { brandName } = req.body
+        console.log(req.body)
+        const existbrand = await Brand.findOne({name : brandName})
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+        if(existbrand){
+            res.status(400).json({message : "Brand already exist"})
+        }else{
+            const newBrand = new Brand({
+                name: brandName,
+                image: req.file.filename
+            });
+            const savedBrand = await newBrand.save();
+            return res.status(201).json({ message: "Brand saved successfully", data: savedBrand });
+        } 
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 
 
 module.exports = {
@@ -560,6 +595,8 @@ module.exports = {
     adminBlockHomeCarousel,
     adminDeleteHomeCarousel,
     adminEditHomeCarousel,
-    adminUpdateHomeCarousel
+    adminUpdateHomeCarousel,
+    getAdminBrands,
+    adminAddNewBrand
     
 }

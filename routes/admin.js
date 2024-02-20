@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const upload = require("../middleware/multer");
 const uploadproducts = require('../middleware/productMulter')
 const uploadHomeCarousel = require('../middleware/homeCarouselMulter')
+const uploadBrand = require('../middleware/brandMulter')
+const adminAuth = require('../middleware/isAdminLoggedIn.js')
 
 adminRouter.use(express.static('../public'))
 
@@ -59,5 +61,9 @@ adminRouter.delete('/homeCarouselDelete/:homeCarouselId',adminController.adminDe
 adminRouter.get('/homeCarouselEdit/:homeCarouselId',adminController.adminEditHomeCarousel)
 
 adminRouter.post('/updateHomeCarousel/:homeCarouselId',uploadHomeCarousel.single('homeCarouselImage'),adminController.adminUpdateHomeCarousel)
+
+adminRouter.get('/brands',adminAuth.isAdminLoggedIn,adminController.getAdminBrands)
+
+adminRouter.post('/addBrand',adminAuth.isAdminLoggedIn,uploadBrand.single('brandImg'),adminController.adminAddNewBrand)
 
 module.exports = adminRouter
