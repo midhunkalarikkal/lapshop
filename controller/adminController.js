@@ -569,6 +569,25 @@ const adminAddNewBrand = async(req,res)=>{
     }
 }
 
+//To block and unblock a brand
+const adminBlockBrand = async(req,res)=>{
+    try {
+        const brand = await Brand.findById({_id : req.params.brandId});
+        console.log(Brand);
+
+        if (!brand) {
+            return res.status(404).json({ success: false, message: "Brand not found" });
+        } else {
+            brand.isBlocked = req.body.blockStatus === 'block';
+            await brand.save();
+            return res.json({ success: true });
+        }
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+}
+
 
 
 module.exports = {
@@ -597,6 +616,7 @@ module.exports = {
     adminEditHomeCarousel,
     adminUpdateHomeCarousel,
     getAdminBrands,
-    adminAddNewBrand
+    adminAddNewBrand,
+    adminBlockBrand
     
 }
