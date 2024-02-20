@@ -112,14 +112,14 @@ const adminAddNewCategory = async (req, res) => {
 
             // Check if a file was uploaded
             if (!req.file) {
-                return res.status(400).json({ error: "No image uploaded" });
+                return res.status(400).json({ message : "No image uploaded" });
             }
-
-            const existingCategory = await Category.findOne({ name: categoryName });
+            
+            const existingCategory = await Category.findOne({ name: { $regex: new RegExp(`^${categoryName}$`, "i") } });
             if (existingCategory) {
                 const imagePath = path.join(__dirname, "../public/images/CategoryImages", req.file.filename);
                 fs.unlinkSync(imagePath);
-                return res.status(400).json({ error: "Category already exists" });
+                return res.status(409).json({ message : "Category already exists" });
             }
 
             const newCategory = new Category({
@@ -177,25 +177,24 @@ const updateCategory = async (req, res) => {
         const { categoryName, categoryDesc } = req.body;
         const categoryId = req.params.categoryId;
 
-         // Check if a file was uploaded with the request
-         if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded" });
-        }
-
+         
         // Check if category exists
         const existingCategory = await Category.findById(categoryId);
         if (!existingCategory) {
             return res.status(404).json({ error: "Category not found" });
         }else{
             const oldImageFilename = existingCategory.image;
+            console.log("Old image =",oldImageFilename)
+            if (req.file) {
+                console.log("New image =",req.file.filename);
+                existingCategory.image = req.file.filename
+                const imagePath = path.join(__dirname, "../public/images/CategoryImages", oldImageFilename);
+                fs.unlinkSync(imagePath);
+            }
              // Update category data
             existingCategory.name = categoryName;
             existingCategory.desc = categoryDesc;
-            existingCategory.image = req.file.filename;
             await existingCategory.save();
-
-            const imagePath = path.join(__dirname, "../public/images/CategoryImages", oldImageFilename);
-            fs.unlinkSync(imagePath);
             res.redirect('/admin/category')
         }
     } catch (error) {

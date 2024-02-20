@@ -128,10 +128,16 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.error
+                        text: errorData.message
+                    });
+                }else if (response.status === 409) {
+                    const errorData = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: errorData.message
                     });
                 } else {
-                    // Handle other error cases
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
