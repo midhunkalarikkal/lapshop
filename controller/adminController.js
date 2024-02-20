@@ -613,26 +613,24 @@ const adminUpdateBrand = async(req,res)=>{
     try {
         const { brandName } = req.body;
 
-        const brandId = req.params.brandId;
-
-         // Check if a file was uploaded with the request
-         if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded" });
-        }
-
-        // Check if home carousel exists
+        const brandId = req.params.brandId;       
+        
         const existingBrand = await Brand.findById(brandId);
         if (!existingBrand) {
             return res.status(404).json({ error: "Brand not found" });
         }else{
             const oldImageFilename = existingBrand.image;
-             // Update brand data
-            existingBrand.name = brandName;
-            existingBrand.image = req.file.filename;
-            await existingBrand.save();
+            console.log("Old image =",oldImageFilename)
 
-            const imagePath = path.join(__dirname, "../public/images/BrandImages", oldImageFilename);
-            fs.unlinkSync(imagePath);
+            //If new image is uploaded
+            if (req.file){
+                console.log("Ne image =",req.file.filename);
+                existingBrand.image = req.file.filename;
+                const imagePath = path.join(__dirname, "../public/images/BrandImages", oldImageFilename);
+                fs.unlinkSync(imagePath);
+            }
+            existingBrand.name = brandName;
+            await existingBrand.save();
             res.redirect('/admin/brands')
         }
     } catch (error) {
