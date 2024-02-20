@@ -554,7 +554,10 @@ const adminAddNewBrand = async(req,res)=>{
         const { brandName } = req.body
         console.log(brandName)
 
-        const existbrand = await Brand.findOne({name : brandName})
+        const existbrand = await Brand.findOne({
+            name: { $regex: new RegExp(`^${brandName}$`, "i") }
+          });
+        
         if (existbrand) {
             const newImage = req.file.filename
             const imagePath = path.join(__dirname, "../public/images/BrandImages", newImage);
