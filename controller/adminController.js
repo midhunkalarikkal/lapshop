@@ -12,6 +12,7 @@ const getAdminlogin = async (req, res) => {
         return res.render("admin/adminlogin", { title: "Lapshop admin", type: "", message: "" })
     } catch (error) {
         console.log(error.message)
+        res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -39,11 +40,7 @@ const postAdminlogin = async (req, res) => {
 // To get admin homepage
 const getAdminHome = async (req, res) => {
     try {
-        if (req.session.adminData) {
             return res.render("admin/adminhome", { title: "LapShop Admin" })
-        } else {
-            res.redirect('/admin')
-        }
     } catch (error) {
         console.log(error.message)
     }
@@ -62,12 +59,8 @@ const getAdminLogout = async (req, res) => {
 // To get all users data in admin page
 const getAdminUsers = async (req, res) => {
     try {
-        if (req.session.adminData) {
             const userData = await User.find();
             return res.render('admin/adminUsersList', { title: "LapShop Admin",  users: userData })
-        } else {
-            res.redirect('/admin')
-        }
     } catch (error) {
         console.log(error.message)
     }
@@ -93,12 +86,8 @@ const adminBlockUser = async (req, res) => {
 // To get the category page
 const getAdminCategory = async (req, res) => {
     try {
-        if (!req.session.adminData) {
-            return res.redirect('/admin')
-        } else {
-            const categoryData = await Category.find()
-            return res.render("admin/adminCategoryList", { title: "LapShop Admin", category: categoryData })
-        }
+        const categoryData = await Category.find()
+        return res.render("admin/adminCategoryList", { title: "LapShop Admin", category: categoryData })
     } catch (error) {
         console.log(error.message)
     }
@@ -107,7 +96,7 @@ const getAdminCategory = async (req, res) => {
 // To add a new category
 const adminAddNewCategory = async (req, res) => {
     try {
-        if (req.session.adminData) {
+        
             const { categoryName, categoryDesc } = req.body;
 
             // Check if a file was uploaded
@@ -129,9 +118,7 @@ const adminAddNewCategory = async (req, res) => {
             });
             const savedCategory = await newCategory.save();
             return res.status(201).json({ message: "Category created successfully", data: savedCategory });
-        } else {
-            return res.redirect('/admin');
-        }
+
     } catch (error) {
         console.log(error.message);
         res.status(500).json({ error: "Internal server error" });
@@ -206,13 +193,11 @@ const updateCategory = async (req, res) => {
 // To get the product page
 const getAdminProducts = async(req,res)=>{
     try{
-        if(req.session.adminData){
+        
             const productData = await Product.find().populate([ {path : "category"},{path : "brand"}])
             // const categoryData = await Category.find()
             return res.render('admin/adminProductsList',{title : "LapShop Admin" , productData})
-        }else{
-            return res.redirect('/admin')
-        }
+        
     }catch(error){
         console.log(error);
     }
@@ -221,13 +206,9 @@ const getAdminProducts = async(req,res)=>{
 // To get the Admin New Product adding page
 const getAdminAddProduct = async(req,res)=>{
     try{
-        if(req.session.adminData){
             const categories = await Category.find()
             const brands = await Brand.find()
             return res.render('admin/adminAddProduct',{title : "LapShop Admin", categories , brands , productAdded : false , productExists : false , error : false})
-        }else{
-            return res.redirect('/admin')
-        }
     }catch(error){
         console.log("Error fetching category",error)
         res.status(500).json({ error : "Internal server error"})
@@ -397,12 +378,8 @@ const adminUpdateProduct = async(req,res)=>{
 // To get the Home carousel page
 const getAdminHomeCarousel = async(req,res)=>{
     try{
-        if(req.session.adminData){
-            const homeCarousel = await HomeCarousel.find()
-            return res.render('admin/adminHomeCarouselList',{ title : "LpShop Admin", homeCarousel})
-        }else{
-            res.redirect('/admin')
-        }
+         const homeCarousel = await HomeCarousel.find()
+        return res.render('admin/adminHomeCarouselList',{ title : "LpShop Admin", homeCarousel})
     }catch{
         console.log(error.message)
     }
@@ -411,7 +388,7 @@ const getAdminHomeCarousel = async(req,res)=>{
 //To add a new home carousel
 const postAdminHomeCarousel = async(req,res)=>{
     try{
-        if (req.session.adminData) {
+
             const { homeCarouselTagline, homeCarouselDescription } = req.body;
 
             // Check if a file was uploaded
@@ -433,9 +410,6 @@ const postAdminHomeCarousel = async(req,res)=>{
             });
             const savedHomeCarousel = await newHomeCarousel.save();
             return res.status(201).json({ message: "home Carousel added successfully" , data : savedHomeCarousel});
-        } else {
-            return res.redirect('/admin');
-        }
     }catch(error){
         console.log(error.message)
     }
@@ -463,7 +437,7 @@ const adminBlockHomeCarousel = async (req, res) => {
 //To delete a home carousel
 const adminDeleteHomeCarousel = async (req, res) => {
     try {
-        if (req.session.adminData) {
+        
             const homeCarousel = await HomeCarousel.findById(req.params.homeCarouselId);
             console.log(homeCarousel.image)
             if (!homeCarousel) {
@@ -474,9 +448,7 @@ const adminDeleteHomeCarousel = async (req, res) => {
                 await HomeCarousel.findByIdAndDelete(req.params.homeCarouselId);
                 return res.status(200).json({ success: true, message: "Home carousel deleted successfully" });
             }
-        } else {
-            return res.redirect('/admin');
-        }
+        
     } catch (error) {
         console.log(error.message);
         return res.status(500).json({ success: false, message: "Internal server error" });
@@ -486,7 +458,7 @@ const adminDeleteHomeCarousel = async (req, res) => {
 //To edit a home carousel
 const adminEditHomeCarousel = async(req,res)=>{
     try{
-        if(req.session.adminData){
+        
                const homeCarousel = await HomeCarousel.findOne({_id : req.params.homeCarouselId})
                console.log(homeCarousel)
                if(!homeCarousel){
@@ -494,9 +466,6 @@ const adminEditHomeCarousel = async(req,res)=>{
                }else{
                     return res.render('admin/adminEditHomeCarousel',{title : "LapShop Admin",homeCarousel})
                } 
-        }else{
-            return res.redirect('/admin')
-        }
 
     }catch(error){
         console.log(error.message)

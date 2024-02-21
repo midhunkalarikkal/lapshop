@@ -18,49 +18,49 @@ adminRouter.get('/',adminController.getAdminlogin)
 
 adminRouter.post('/login',adminController.postAdminlogin)
 
-adminRouter.get('/home',adminController.getAdminHome)
+adminRouter.get('/home',adminAuth.isAdminLoggedIn,adminController.getAdminHome)
 
 adminRouter.get('/logout',adminController.getAdminLogout)
 
-adminRouter.get('/users',adminController.getAdminUsers)
+adminRouter.get('/users',adminAuth.isAdminLoggedIn,adminController.getAdminUsers)
 
-adminRouter.post('/blockUser:userId',adminController.adminBlockUser)
+adminRouter.post('/blockUser:userId',adminAuth.isAdminLoggedIn,adminController.adminBlockUser)
 
-adminRouter.get("/category",adminController.getAdminCategory)
+adminRouter.get("/category",adminAuth.isAdminLoggedIn,adminController.getAdminCategory)
 
-adminRouter.post('/addCategory', upload.single('categoryImg'),adminController.adminAddNewCategory)
+adminRouter.post('/addCategory',adminAuth.isAdminLoggedIn,upload.single('categoryImg'),adminController.adminAddNewCategory)
 
-adminRouter.post('/blockCategory:categoryId',adminController.adminBlockCategory)
+adminRouter.post('/blockCategory:categoryId',adminAuth.isAdminLoggedIn,adminController.adminBlockCategory)
 
-adminRouter.get('/categoryEdit/:categoryId',adminController.getCategoryForEditing)
+adminRouter.get('/categoryEdit/:categoryId',adminAuth.isAdminLoggedIn,adminController.getCategoryForEditing)
 
-adminRouter.post('/update/:categoryId',upload.single('categoryImg'),adminController.updateCategory)
+adminRouter.post('/update/:categoryId',adminAuth.isAdminLoggedIn,upload.single('categoryImg'),adminController.updateCategory)
 
-adminRouter.get('/products',adminController.getAdminProducts)
+adminRouter.get('/products',adminAuth.isAdminLoggedIn,adminController.getAdminProducts)
 
-adminRouter.get('/adminAddProduct',adminController.getAdminAddProduct)
+adminRouter.get('/adminAddProduct',adminAuth.isAdminLoggedIn,adminController.getAdminAddProduct)
 
-adminRouter.post('/addProduct', uploadproducts.array('productImages',12),adminController.postAdminAddProduct)
+adminRouter.post('/addProduct',adminAuth.isAdminLoggedIn,uploadproducts.array('productImages',12),adminController.postAdminAddProduct)
 
-adminRouter.post('/blockProduct:productId',adminController.adminBlockProduct)
+adminRouter.post('/blockProduct:productId',adminAuth.isAdminLoggedIn,adminController.adminBlockProduct)
 
-adminRouter.get('/editProduct:productId',adminController.adminEditProduct)
+adminRouter.get('/editProduct:productId',adminAuth.isAdminLoggedIn,adminController.adminEditProduct)
 
-adminRouter.post('/deleteProductImage',adminController.adminDeleteProductImage)
+adminRouter.post('/deleteProductImage',adminAuth.isAdminLoggedIn,adminController.adminDeleteProductImage)
 
-adminRouter.post('/updateProduct/:productId',uploadproducts.array('productImages',12),adminController.adminUpdateProduct)
+adminRouter.post('/updateProduct/:productId',adminAuth.isAdminLoggedIn,uploadproducts.array('productImages',12),adminController.adminUpdateProduct)
 
-adminRouter.get('/homeCarousel',adminController.getAdminHomeCarousel)
+adminRouter.get('/homeCarousel',adminAuth.isAdminLoggedIn,adminController.getAdminHomeCarousel)
 
-adminRouter.post('/addHomeCarousel',uploadHomeCarousel.single('homeCarouselImage'),adminController.postAdminHomeCarousel)
+adminRouter.post('/addHomeCarousel',adminAuth.isAdminLoggedIn,uploadHomeCarousel.single('homeCarouselImage'),adminController.postAdminHomeCarousel)
 
-adminRouter.post('/blockHomeCarousel/:homeCarouselId',adminController.adminBlockHomeCarousel)
+adminRouter.post('/blockHomeCarousel/:homeCarouselId',adminAuth.isAdminLoggedIn,adminController.adminBlockHomeCarousel)
 
-adminRouter.delete('/homeCarouselDelete/:homeCarouselId',adminController.adminDeleteHomeCarousel)
+adminRouter.delete('/homeCarouselDelete/:homeCarouselId',adminAuth.isAdminLoggedIn,adminController.adminDeleteHomeCarousel)
 
-adminRouter.get('/homeCarouselEdit/:homeCarouselId',adminController.adminEditHomeCarousel)
+adminRouter.get('/homeCarouselEdit/:homeCarouselId',adminAuth.isAdminLoggedIn,adminController.adminEditHomeCarousel)
 
-adminRouter.post('/updateHomeCarousel/:homeCarouselId',uploadHomeCarousel.single('homeCarouselImage'),adminController.adminUpdateHomeCarousel)
+adminRouter.post('/updateHomeCarousel/:homeCarouselId',adminAuth.isAdminLoggedIn,uploadHomeCarousel.single('homeCarouselImage'),adminController.adminUpdateHomeCarousel)
 
 adminRouter.get('/brands',adminAuth.isAdminLoggedIn,adminController.getAdminBrands)
 
@@ -70,6 +70,6 @@ adminRouter.post('/blockBrand/:brandId',adminAuth.isAdminLoggedIn,adminControlle
 
 adminRouter.get('/brandEdit/:brandId',adminAuth.isAdminLoggedIn,adminController.adminEditBrand)
 
-adminRouter.post('/updateBrand/:brandId',uploadBrand.single('brandImage'),adminController.adminUpdateBrand)
+adminRouter.post('/updateBrand/:brandId',adminAuth.isAdminLoggedIn,uploadBrand.single('brandImage'),adminController.adminUpdateBrand)
 
 module.exports = adminRouter
