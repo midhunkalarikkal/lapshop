@@ -6,7 +6,8 @@ const productSchema = new mongoose.Schema({
         requird : true
     },
     brand : {
-        type : String,
+        type : mongoose.Schema.Types.ObjectId,
+        ref : 'Brand',
         requird : true
     },
     description : {

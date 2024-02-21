@@ -11,32 +11,73 @@
 
 .close-btn {
     position: absolute;
-    top: 5px;
-    right: 7px;
+    top: 4px;
+    right: 6px;
     transform: translate(50%, -50%);
     padding: 0;
     background: transparent;
     border: none;
     cursor: pointer;
-    font-size: 20px;
-    color: #fff;
+    font-size: 25px;
+    color: #ff1616;
     z-index: 1; 
 }
 
-.close-btn:hover {
-    color: red; 
-}
 
 .close-btn-background {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 7px;
+    right: 6.5px;
     transform: translate(50%, -50%);
-    width: 30px; /* Adjust as needed */
-    height: 30px; /* Adjust as needed */
-    background-color: rgba(255, 255, 255, 0.5); /* White with 50% opacity */
+    width: 13px; /* Adjust as needed */
+    height: 13px; /* Adjust as needed */
+    background-color: rgba(194, 194, 194, 0.82); /* White with 50% opacity */
     z-index: 0; /* Ensure it's behind the button */
 }
+
+input[type="file"]{
+            display: none;
+        }
+
+        .file-label{
+            display: block;
+            position: relative;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            padding: 12px 0;
+            margin: auto;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .num-of-files{
+            text-align: center;
+            margin: 20px 0 30px 0;
+        }
+
+        #images{
+            position: relative;
+            margin: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        figure{
+            width: 25%;
+        }
+        
+        img{
+            width: 100%;
+        }
+        figcaption{
+            text-align: center;
+            font-size: 13px;
+            margin-top: 3px;
+        }
 
   
     </style>
@@ -48,7 +89,7 @@
             <div class="main col-12 col-lg-10 m-3 mt-5">
                 <form action="/admin/updateProduct/<%= product._id %>" method="POST" enctype="multipart/form-data">
                     <div class="p-5">
-                        <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit product [<%= product._id %>]</h4>
+                        <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit product</h4>
                         <div class="input-box d-md-flex">
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
@@ -58,26 +99,6 @@
                                 <div class="mb-3 col-md-10">
                                     <label for="productBrand" class="form-label">Product brand</label>
                                     <input type="text" class="form-control" name="productBrand" id="productBrand" value="<%= product.brand %>" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productColour" class="form-label">Product colour</label>
-                                    <input type="text" class="form-control" name="productColour" id="productColour" value="<%= product.colour %>" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productStock" class="form-label">Product Stock</label>
-                                    <input type="number" class="form-control" name="productStock" id="productStock" value="<%= product.noOfStock %>" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productRealPrice" class="form-label">Product real price</label>
-                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="<%= product.realPrice %>" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productfferPrice" class="form-label">Product offer price</label>
-                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="<%= product.offerPrice %>" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
-                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="<%= product.discountPercentage %>" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productCategory" class="form-label">Product category</label>
@@ -93,6 +114,18 @@
                                     <label for="productDescription" class="form-label">Product description</label>
                                     <textarea class="form-control" name="productDescription" id="productDescription" rows="3"  required><%= product.description %></textarea>
                                 </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productColour" class="form-label">Product colour</label>
+                                    <input type="text" class="form-control" name="productColour" id="productColour" value="<%= product.colour %>" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productStock" class="form-label">Product Stock</label>
+                                    <input type="number" class="form-control" name="productStock" id="productStock" value="<%= product.noOfStock %>" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productRealPrice" class="form-label">Product real price</label>
+                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="<%= product.realPrice %>" required>
+                                </div>
                                 <div class="mt-5 d-md-block d-none">
                                     <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
                                     <button type="submit" class="btn btn-primary">Save changes</button>
@@ -101,62 +134,44 @@
                         
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
-                                    <label for="productImageOne" class="form-label">Product image 1</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageOne" accept="image/" multiple="false"  onchange="displayImage(this , 'image1')" required>
+                                    <label for="productfferPrice" class="form-label">Product offer price</label>
+                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="<%= product.offerPrice %>" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
-                                    <label for="productImagetwo" class="form-label">Product image 2</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageTwo" accept="image/" multiple="false" onchange="displayImage(this , 'image2')" required>
+                                    <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
+                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="<%= product.discountPercentage %>" required>
                                 </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productImageThree" class="form-label">Product image 3</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageThree" accept="image/" multiple="false" onchange="displayImage(this , 'image3')" required>
+                                <div class="mt-5 col-md-10">
+                                    <input type="file" id="file-input" name="productImages" accept="image/png, image/jpeg" onchange="preview()" multiple>
+                                    <label for="file-input" id="file-label" class="file-label bg-primary">
+                                        <i class="fas fa-upload"></i> &nbsp;<span id="fileLabelSpan"></span>
+                                    </label>
+                                    <p id="num-of-files" class="num-of-files">No Files Chosen</p>
+                                    <div id="images"></div>
                                 </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productImageFour" class="form-label">Product image 4</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageFour" accept="image/" multiple="false"  onchange="displayImage(this , 'image4')" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productImageFive" class="form-label">Product image 5</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageFive" accept="image/" multiple="false" onchange="displayImage(this , 'image5')" required>
-                                </div>
+                                <div id="imageCount" style="display: none;" data-image-count="<%= product.images.length %>"></div>
                                 <!-- Image start -->
                                 
-                                <div class="mb-3  col-md-10">
-                                    <h5>Image previews</h5>
-                                    <div class="row">
-                                        <% for (let i = 0; i < 3; i++) { %>
-                                            <div class="col-4">
-                                                <div class="thumbnail">
-                                                    <!-- Close button -->
-                                                    <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>','<%= product._id %>','<%= product.images[i]%>',event)">&times;</button>
-                                                    <!-- Background square for the button -->
-                                                    <div class="close-btn-background"></div>
-                                                    <img class="img-fluid" id="image<%= i + 1 %>" src="/static/images/ProductImages/<%= product.images[i] %>" alt="">
-                                                    <div class="caption">
-                                                        <h6 id="image<%= i + 1 %>Title">Image <%= i + 1 %></h6>
-                                                    </div>
+                                <div class="col-md-10">
+                                    <h6>Existing Images</h6>
+                                    <div class="row d-flex flex-row" style="justify-content: space-evenly; flex-wrap: wrap;">
+                                        <% for (let i = 0; i < product.images.length; i++) { %>
+                                        <div class="col-4" id="image<%= i + 1 %>">
+                                            <div class="thumbnail">
+                                                 <!-- Close button -->
+                                                <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>','<%= product._id %>','<%= product.images[i]%>',event)">&times;</button>
+                                                <!-- Background square for the button -->
+                                                <div class="close-btn-background"></div>
+                                                <img class="img-fluid" id="image<%= i + 1 %>" src="/static/images/ProductImages/<%= product.images[i] %>" alt="">
+                                                <div class="caption">
+                                                    <h6 id="image<%= i + 1 %>">Image <%= i+1 %></h6>
                                                 </div>
                                             </div>
+                                        </div>
                                         <% } %>
-                                    </div>
+                                    </div>   
                                     
-                                    <div class="row">
-                                        <% for (let i = 3; i < 5; i++) { %>
-                                            <div class="col-4">
-                                                <div class="thumbnail">
-                                                    <!-- Close button -->
-                                                    <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>','<%= product._id %>','<%= product.images[i]%>',event)">&times;</button>
-                                                    <!-- Background square for the button -->
-                                                    <div class="close-btn-background"></div>
-                                                    <img class="img-fluid" id="image<%= i + 1 %>" src="/static/images/ProductImages/<%= product.images[i] %>" alt="">
-                                                    <div class="caption">
-                                                        <h6 id="image<%= i + 1 %>Title">Image <%= i + 1 %></h6>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <% } %>
-                                    </div>
+                                
 
                                 </div> 
                             </div>
@@ -180,18 +195,78 @@
     <!-- Script for the viewing of selected image -->
     <script>
         // To display the selected image in the preview
-       
-        function displayImage(input , targetId){
-            const file = input.files[0]
+        var existImageCount = document.getElementById('imageCount').dataset.imageCount;
+        let fileInput = document.getElementById('file-input');
+        let imageContainer = document.getElementById('images');
+        let numOfFiles = document.getElementById('num-of-files');
+        let fileLabel = document.getElementById('file-label')
+        let fileLabelSpan = document.getElementById('fileLabelSpan')
+        let maxImages = 5;
+        console.log(existImageCount , typeof(existImageCount))
 
-            if(file){
-                const reader = new FileReader()
+        if(existImageCount == 5){
+            fileInput.disabled = true
+            fileLabel.disabled = true
+            numOfFiles.textContent = "This product have already 5 images, cant upload anymore"
+            numOfFiles.style.color = "red"
+            fileLabelSpan.textContent = "Cant select images";
+        }else{
+            fileLabelSpan.textContent = `Select ${5-existImageCount} images`;
+        }
+        
+        function check(){
+            if(existImageCount < 5){
+                fileInput.disabled = false
+                fileLabel.disabled = false
+                numOfFiles.textContent = `${fileInput.files.length} Files selected`;
+                numOfFiles.style.color = "black"
+                fileLabelSpan.textContent = `Select ${5-existImageCount} images`;
+        }
+        console.log("check function called")
+    }
+        
+        function preview(){
+            imageContainer.innerHTML = "";
+            let selectedFiles = fileInput.files;
 
-                reader.onload = function(e){
-                    const image = document.getElementById(targetId)
-                    image.src = e.target.result
+            if (selectedFiles.length > maxImages) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `You can only select up to ${maxImages} images.`,
+                });
+                fileInput.value = "";
+                numOfFiles.textContent = "No files chosen";
+                return;
+            }
+
+            if (selectedFiles.length > maxImages - existImageCount) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `You can only select up to ${maxImages - existImageCount} images now.`,
+                });
+                fileInput.value = "";
+                numOfFiles.textContent = "No files chosen";
+                return;
+            }
+
+
+            numOfFiles.textContent = `${fileInput.files.length} Files selected`;
+
+            for(i of fileInput.files){
+                let reader = new FileReader();
+                let figure = document.createElement("figure");
+                let figCap = document.createElement("figcaption");
+                figCap.innerText = i.name;
+                figure.appendChild(figCap);
+                reader.onload=()=>{
+                    let img = document.createElement("img");
+                    img.setAttribute("src",reader.result);
+                    figure.insertBefore(img,figCap);
                 }
-                reader.readAsDataURL(file)
+                imageContainer.appendChild(figure);
+                reader.readAsDataURL(i);
             }
         }
 
@@ -203,6 +278,10 @@
 
         // For the deletion of the existing images in databse
         function deleteImage(imageId, productId, productImage,event) {
+            existImageCount--
+            
+            console.log("Product id = ",productId)
+            console.log("image Name =",productImage)
             event.preventDefault();
             fetch('/admin/deleteProductImage', {
                 method: 'POST',
@@ -213,8 +292,9 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Image deleted successfully, clear the src attribute
-                    document.getElementById(imageId).src = '';
+                    check()
+                    let thumbnail = document.getElementById(imageId);
+                    thumbnail.parentElement.removeChild(thumbnail);
                 } else {
                     console.error('Failed to delete image');
                 }
@@ -223,7 +303,6 @@
                 console.error('Error:', error);
             });
         }
-
 
     </script>
 

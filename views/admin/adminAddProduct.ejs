@@ -4,6 +4,53 @@
 <head>
     <!-- Css for the admin data edit form -->
     <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
+    <!-- Custom css -->
+    <style>
+        input[type="file"]{
+            display: none;
+        }
+
+        .file-label{
+            display: block;
+            position: relative;
+            color: white;
+            font-size: 18px;
+            text-align: center;
+            padding: 12px 0;
+            margin: auto;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .num-of-files{
+            text-align: center;
+            margin: 20px 0 30px 0;
+        }
+
+        #images{
+            position: relative;
+            margin: auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        figure{
+            width: 25%;
+        }
+        
+        img{
+            width: 100%;
+        }
+        figcaption{
+            text-align: center;
+            font-size: 13px;
+            margin-top: 3px;
+        }
+
+    </style>
 </head>
 
 <body>
@@ -30,26 +77,6 @@
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-10">
-                                    <label for="productColour" class="form-label">Product colour</label>
-                                    <input type="text" class="form-control" name="productColour" id="productColour" value="" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productStock" class="form-label">Product Stock</label>
-                                    <input type="number" class="form-control" name="productStock" id="productStock" value="" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productRealPrice" class="form-label">Product real price</label>
-                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productfferPrice" class="form-label">Product offer price</label>
-                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
-                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
-                                </div>
-                                <div class="mb-3 col-md-10">
                                     <label for="productCategory" class="form-label">Product category</label>
                                     <select class="form-select" name="productCategory" id="productCategory" required>    
                                         <% categories.forEach(category => { %>
@@ -63,91 +90,48 @@
                                     <label for="productDescription" class="form-label">Product description</label>
                                     <textarea class="form-control" name="productDescription" id="productDescription" rows="3" required></textarea>
                                 </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productColour" class="form-label">Product colour</label>
+                                    <input type="text" class="form-control" name="productColour" id="productColour" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productStock" class="form-label">Product Stock</label>
+                                    <input type="number" class="form-control" name="productStock" id="productStock" value="" required>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productRealPrice" class="form-label">Product real price</label>
+                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="" required>
+                                </div>
                                 <div class="mt-5 d-md-block d-none">
                                     <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
                                     <button type="submit" class="btn btn-primary">Add Product</button>
                                 </div>
                             </div>
-                        </form>
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
-                                    <label for="productImageOne" class="form-label">Product image 1</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageOne" required onchange="displayImage(this , 'imageOne')">
+                                    <label for="productfferPrice" class="form-label">Product offer price</label>
+                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
-                                    <label for="productImagetwo" class="form-label">Product image 2</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageTwo" required onchange="displayImage(this , 'imageTwo')">
+                                    <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
+                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
                                 </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productImageThree" class="form-label">Product image 3</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageThree" required onchange="displayImage(this , 'imageThree')">
+                                <div class="my-5 col-md-10">
+                                    <input type="file" id="file-input" name="productImages" accept="image/png, image/jpeg" onchange="preview()" multiple>
+                                    <label for="file-input" class="file-label bg-primary">
+                                        <i class="fas fa-upload"></i> &nbsp; Select images
+                                    </label>
+                                    <p id="num-of-files" class="num-of-files">No Files Chosen</p>
+                                    <div id="images"></div>
                                 </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productImageFour" class="form-label">Product image 4</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageFour" required onchange="displayImage(this , 'imageFour')">
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="productImageFive" class="form-label">Product image 5</label>
-                                    <input type="file" class="form-control" name="productImages" id="productImageFive" required onchange="displayImage(this , 'imageFive')">
-                                </div>
-                                <!-- Image start -->
-                                <div class="mb-3 col-md-10">
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <div class="thumbnail">
-                                                <img class="img-fluid" id="imageOne" src="" alt="">
-                                                <div class="caption">
-                                                    <h6>Image 1</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="thumbnail">
-                                                <img class="img-fluid" id="imageTwo" src="" alt="">
-                                                <div class="caption">
-                                                    <h6>Image 2</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="thumbnail">
-                                                <img class="img-fluid" id="imageThree" src="" alt="">
-                                                <div class="caption">
-                                                    <h6>Image 3</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-4">
-                                            <div class="thumbnail">
-                                                <img class="img-fluid" id="imageFour" src="" alt="">
-                                                <div class="caption">
-                                                    <h6>Image 4</h6>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-4">
-                                            <div class="thumbnail">
-                                                <img class="img-fluid" id="imageFive" src="" alt="">
-                                                <div class="caption">
-                                                    <h6>Image 5</h6>
-                                                </div>
-                                            </div>
-                                        </div>    
-                                    </div>   
-                                </div>
-                                
-                                <!-- Image end -->
-                                
                             </div>
                             <div class="mt-4 d-block d-md-none">
                                 <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Add Product</button>
-                            </div>
+                            </div>  
                         </div>
                     </div>
-                
+                </form>
             </div>  
         </div>
     </section>
@@ -180,17 +164,42 @@
     <!-- Script for the viewing of selected image -->
     <script>
         // To display the selected image in the preview
-        function displayImage(input , targetId){
-            const file = input.files[0]
+        let fileInput = document.getElementById('file-input');
+        let imageContainer = document.getElementById('images');
+        let numOfFiles = document.getElementById('num-of-files');
+        let maxImages = 5;
 
-            if(file){
-                const reader = new FileReader()
 
-                reader.onload = function(e){
-                    const image = document.getElementById(targetId)
-                    image.src = e.target.result
+        function preview(){
+            imageContainer.innerHTML = "";
+            let selectedFiles = fileInput.files;
+
+            if (selectedFiles.length > maxImages) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: `You can only select up to ${maxImages} images.`,
+                });
+                fileInput.value = "";
+                numOfFiles.textContent = "No files chosen";
+                return;
+            }
+
+            numOfFiles.textContent = `${fileInput.files.length} Files selected`;
+
+            for(i of fileInput.files){
+                let reader = new FileReader();
+                let figure = document.createElement("figure");
+                let figCap = document.createElement("figcaption");
+                figCap.innerText = i.name;
+                figure.appendChild(figCap);
+                reader.onload=()=>{
+                    let img = document.createElement("img");
+                    img.setAttribute("src",reader.result);
+                    figure.insertBefore(img,figCap);
                 }
-                reader.readAsDataURL(file)
+                imageContainer.appendChild(figure);
+                reader.readAsDataURL(i);
             }
         }
 

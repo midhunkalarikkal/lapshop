@@ -76,8 +76,10 @@
     </div>
 </section>
 
+<!-- Script for the sweet alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Script for block and unblock the user -->
-    <script>
+<script>
         document.querySelectorAll('.prod-switch').forEach(function(userSwitch) {
         userSwitch.addEventListener('change', function () {
             var productId = this.dataset.productId;
@@ -139,6 +141,20 @@
             addButton.addEventListener('click', function() {
             window.location.href = 'adminAddProduct';
         });
+
+        // Check if the URL contains a success message
+        const urlParams = new URLSearchParams(window.location.search);
+        const successMessage = urlParams.get('success');
+        console.log('Success message:', successMessage);
+
+        // If a success message is present, show it using SweetAlert
+        if (successMessage) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: successMessage,
+            });
+        }
         
         //Script for the data table
         $(document).ready(function(){
@@ -147,6 +163,7 @@
             })
         })
     </script>
+    
     
     <!-- Admin footer -->
     <%-include("../adminpartials/admin_footer.ejs")%>

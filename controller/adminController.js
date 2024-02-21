@@ -207,7 +207,7 @@ const updateCategory = async (req, res) => {
 const getAdminProducts = async(req,res)=>{
     try{
         if(req.session.adminData){
-            const productData = await Product.find().populate('category')
+            const productData = await Product.find().populate([ {path : "category"},{path : "brand"}])
             // const categoryData = await Category.find()
             return res.render('admin/adminProductsList',{title : "LapShop Admin" , productData})
         }else{
@@ -237,50 +237,46 @@ const getAdminAddProduct = async(req,res)=>{
 // To post the add product form data to database
 const postAdminAddProduct = async(req,res)=>{
     try{
-        if(req.session.adminData){
-            const { productName , productBrand , productColour , productStock , 
-                productRealPrice , productOfferPrice , productDiscountPercentage , 
-                productCategory , productDescription} = req.body
-
-                const productImages = req.files.map((file) => file.filename)
+        
+        const { productName , productBrand , productColour , productStock , 
+            productRealPrice , productOfferPrice , productDiscountPercentage , 
+            productCategory , productDescription} = req.body
+            
+        const existingProduct = await Product.findOne({ name : productName , description : productDescription , colour : productColour})
+        const productImages = req.files.map((file) => file.filename)
                 
-                const categories = await Category.find()
+        const categories = await Category.find()
 
-                const brands = await Brand.find()
-                
-                // For checking the existing product
-                const existingProduct = await Product.findOne({ name : productName , description : productDescription , colour : productColour})
-                console.log(existingProduct)
-                if(existingProduct){
-                    for (const imageName of productImages) {
-                        const imagePath = path.join(__dirname, "../public/images/ProductImages", imageName);
-                        try {
-                            await fs.promises.unlink(imagePath);
-                        } catch (error) {
-                            console.error("Error deleting image:", error);
-                        }
-                    }
-                    return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories , brands})
-                }else{
-                    const newProduct = new Product({
-                        name: productName,
-                        brand: productBrand,
-                        description: productDescription,
-                        colour: productColour,
-                        category: productCategory,
-                        noOfStock: productStock,
-                        realPrice: productRealPrice,
-                        offerPrice: productOfferPrice,
-                        discountPercentage: productDiscountPercentage,
-                        images: productImages
-                    })
-
-                    const productData = await newProduct.save()
-                    return res.render('admin/adminAddProduct',{title : "LapShop Admin", productAdded : true , productExists : false , error : false , categories})
+        const brands = await Brand.find()
+           
+        if(existingProduct){
+            for (const imageName of productImages) {
+                const imagePath = path.join(__dirname, "../public/images/ProductImages", imageName);
+                try {
+                    await fs.promises.unlink(imagePath);
+                } catch (error) {
+                    console.error("Error deleting image:", error);
                 }
-            }else{
-                return res.redirect('/admin')
             }
+            return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories , brands})
+        }else{
+            const newProduct = new Product({
+                name: productName,
+                brand: productBrand,
+                description: productDescription,
+                colour: productColour,
+                category: productCategory,
+                noOfStock: productStock,
+                realPrice: productRealPrice,
+                offerPrice: productOfferPrice,
+                discountPercentage: productDiscountPercentage,
+                images: productImages
+            })
+
+            const productData = await newProduct.save()
+            return res.render('admin/adminAddProduct',{title : "LapShop Admin", productAdded : true , productExists : false , error : false , categories , brands})
+        }
+            
         }catch(error){
             console.log("Error",error)
             res.status(500).json({ error : "Internal server error"})
@@ -329,14 +325,20 @@ const adminDeleteProductImage = async(req,res)=>{
         const productId = req.body.productId
         const imageName = req.body.productImage
 
-        console.log(productId, imageName)
+        console.log("Product id = ",productId)
+        console.log("image Name =",imageName)
 
         const product = await Product.findById(productId)
 
         if(!product){
             res.status(404).json({ message: 'Product not found' });
         }else{
-            product.images.splice(imageName,1)
+            // product.images.splice(imageName,1)
+            await Product.findOneAndUpdate(
+                { _id: productId }, 
+                { $pull: { images: imageName } },
+                { new: true } 
+              )
             const imagePath = path.join(__dirname, "../public/images/ProductImages", imageName);
             try {
                 await fs.promises.unlink(imagePath);
@@ -384,8 +386,8 @@ const adminUpdateProduct = async(req,res)=>{
                 }
 
                 await product.save()
-
-                res.redirect('/admin/Products')
+                console.log('Redirect URL:', '/admin/Products?success=Product updated successfully');
+                return res.redirect('/admin/Products?success=Product updated successfully');
         
     }catch(error){
         console.log(error.message)
