@@ -1,6 +1,7 @@
 const express = require('express')
 const userRouter = express.Router()
 const bodyParser = require('body-parser')
+const uploadProfileImage = require('../middleware/userProfile')
 
 userRouter.use(bodyParser.json());
 userRouter.use(bodyParser.urlencoded({extended:true}));
@@ -29,5 +30,7 @@ userRouter.post('/resendotp',userController.resendOtp)
 userRouter.get('/userProfile',userController.getUserProfile)
 //To post user updated info
 userRouter.post('/updateUserInfo',userController.postUserUpdatedInfo)
+//To add profile image
+userRouter.post('/uploadProfileImage',uploadProfileImage.single('profileImg'),userController.postUserProfileImage)
 
 module.exports = userRouter

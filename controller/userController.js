@@ -268,7 +268,7 @@ const getUserProfile = async(req,res)=>{
 const postUserUpdatedInfo = async(req,res)=>{
     try{
         const { userName, email, phone, userId } = req.body;
-        
+
         const updateUser = await User.findByIdAndUpdate(userId, { fullname: userName, email: email, phone: phone },
             { new: true } );
         
@@ -281,6 +281,28 @@ const postUserUpdatedInfo = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         res.status(500).json({ message : "Internal server error "})
+    }
+}
+
+//To upload profile image
+const postUserProfileImage = async(req,res)=>{
+    try{
+        const userId = req.body.userId
+        
+        if(!req.file){
+            res.status(400).json({ message : "Image is not uploaded correctly"})
+        }
+
+        const updateUserImage = await User.findByIdAndUpdate(userId, {profileimage : req.file.filename})
+        if (updateUserImage) {
+            return res.status(200).json({ message: "Profile image uploaded successfully" });
+        } else {
+            return res.status(500).json({ message: "Failed to update profile image" });
+        }
+        
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error"})
     }
 }
 
@@ -299,6 +321,7 @@ module.exports = {
     getotppage,
     resendOtp,
     getUserProfile,
-    postUserUpdatedInfo
+    postUserUpdatedInfo,
+    postUserProfileImage
 }
 
