@@ -1,0 +1,181 @@
+<!-- User navbar -->
+<%-include("../userpartials/Navbar.ejs")%>
+
+<head>
+    <!-- User home css file -->
+    <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
+    <style>
+        .gradient-custom {
+            background: #f6d365;
+            background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+            background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+        }
+    </style>
+</head>
+
+
+<!-- User home banner -->
+<section class="view">
+        <div class="container mt-3 py-3 h-100">
+          <div class="row d-flex justify-content-center">
+            <div class="col-10 col-md-12 col-lg-10 mb-4 mb-lg-0 mt-lg-5">
+                <div class="heading">
+                    <h2>Your profile details</h2>
+                </div>
+              <div class="card mb-3" style="border-radius: .5rem;">
+                <div class="row g-0">
+                <% if(userData != ""){ %>
+                  <div class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center"
+                    style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                    alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px;" />
+                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#profileImageModal"><i class="fas fa-edit"></i> Cahnge profile image</button>
+                    <div class="name-date mt-2">
+                        <h5>Hi, <span><%= userData.fullname %></span></h5>
+                        <p>Joined on : <%= formattedDate %></p>
+                    </div>
+                  </div>
+                  <div class="col-md-8">
+                    <div class="card-body p-4">
+
+                      <h5>Information</h5>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-md-4 mb-3">
+                          <h6>Email</h6>
+                          <p class="text-muted"><%= userData.email %></p>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                          <h6>Phone</h6>
+                          <p class="text-muted"><%= userData.phone %></p>
+                        </div>
+                        <div class="col-md-4 mb-3 my-md-auto">
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#informationModal"><i class="fas fa-edit"></i> Edit</button>
+                        </div>
+                      </div>
+                      <% } %>
+
+                      <h5>Primary address</h5>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-md-8 mb-3">
+                          <p>No address added</p>
+                        </div>
+                        <div class="col-md-4 mb-3 my-md-auto">
+                            <button class="btn btn-primary btn-sm">Add address</button>
+                        </div>
+                      </div>
+
+                      <h5>Security</h5>
+                      <hr class="mt-0 mb-4">
+                      <div class="row pt-1">
+                        <div class="col-md-8 mb-3">
+                          <h6>Change password</h6>
+                          <p class="text-muted">Cahnge your password once in 6 months</p>
+                        </div>
+                        <div class="col-md-4 mb-3 my-md-auto">
+                            <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Change</button>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+</section>
+
+<!-- Modal start -->
+
+<div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="informationModalLabel">Edit user information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="userInfoForm">
+                    <% if(userData != ""){ %>
+                    <div class="mb-3">
+                        <label for="userName" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="userName" name="userName" value="<%= userData.fullname %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="email" name="email" value="<%= userData.email %>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label">Phone no</label>
+                        <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>">
+                    </div>
+                    <div class="mb-3" style="display: none;">
+                        <label for="userId" class="form-label">User id</label>
+                        <input type="text" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
+                    </div>
+                    <% } %>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" id="saveUserInfo" class="btn btn-primary">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal end -->
+
+<!-- Script to post the user information data -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.getElementById('saveUserInfo').addEventListener('click', function() {
+        // Get form data
+        const formData = {
+            userName: document.getElementById('userName').value,
+            email: document.getElementById('email').value,
+            phone: document.getElementById('phone').value,
+            userId: document.getElementById('userId').value
+        };
+
+        console.log(formData);
+
+        // Send POST request to server
+        fetch('/updateUserInfo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); 
+            } else {
+                throw new Error('Failed to update user information');
+            }
+        })
+        .then(data => {
+            Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: data.message || 'User updated successfully'
+        })
+        $('#informationModal').modal('hide');
+        location.reload();
+    })
+    .catch(error => {
+        // Show error message using SweetAlert
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: error.message || 'Failed to update user information'
+        });
+    });
+});
+</script>
+
+<!-- User footer -->
+<%-include("../userpartials/footer.ejs")%>

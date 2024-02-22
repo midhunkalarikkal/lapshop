@@ -25,5 +25,9 @@ userRouter.get('/logout',userController.getLogout)
 userRouter.get('/otp',userController.getotppage)
 //To resend otp
 userRouter.post('/resendotp',userController.resendOtp)
+//To get user profile
+userRouter.get('/userProfile',userController.getUserProfile)
+//To post user updated info
+userRouter.post('/updateUserInfo',userController.postUserUpdatedInfo)
 
 module.exports = userRouter

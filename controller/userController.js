@@ -250,6 +250,40 @@ const resendOtp = async(req,res)=>{
     }
 }
 
+//To get the user profile page
+const getUserProfile = async(req,res)=>{
+    try{
+        const userId = req.session?.user?._id
+        const userData = await User.findById(userId)
+        const createdDate = new Date(userData.created);
+        const formattedDate = createdDate.toISOString().split('T')[0];
+        res.render('user/profile',{title : "Lapshop profile" , userData , session : req.session, formattedDate})
+    }catch(error){
+        console.log(error.message)
+        res.status(500).json({ message : "Internal server error"})
+    }
+}
+
+// To update the user information
+const postUserUpdatedInfo = async(req,res)=>{
+    try{
+        const { userName, email, phone, userId } = req.body;
+        
+        const updateUser = await User.findByIdAndUpdate(userId, { fullname: userName, email: email, phone: phone },
+            { new: true } );
+        
+        if (!updateUser) {
+            return res.status(404).json({ message: "User not found" });
+        } else {
+            return res.status(200).json({ message: "User updated successfully", user: updateUser });
+        }
+
+    }catch(error){
+        console.log(error.message)
+        res.status(500).json({ message : "Internal server error "})
+    }
+}
+
 
 
 
@@ -263,6 +297,8 @@ module.exports = {
     postRegisterOtp,
     postLogin,
     getotppage,
-    resendOtp
+    resendOtp,
+    getUserProfile,
+    postUserUpdatedInfo
 }
 

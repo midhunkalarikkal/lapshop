@@ -161,7 +161,6 @@ body::before {
 #footer{
     background-color: var(--third-color);
 }
-/* foter end */
 
 #footer {
     bottom: 0;
@@ -170,6 +169,8 @@ body::before {
     right: 0;
     z-index: 1000;
 }
+/* foter end */
+
 
 /*Very small devices*/
 @media (max-width: 576px) {
