@@ -13,8 +13,8 @@ config.mongooseConnection();
 //session
 app.use(cookieParser())
 app.use(session({
-    name : "user",
-    secret: "my secret key",
+    name : process.env.SESSION_NAME,
+    secret: process.env.SESSION_SECRET,
     saveUninitialized: true,
     resave: false,
     cookie: {

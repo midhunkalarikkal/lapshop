@@ -6,6 +6,7 @@ const crypto = require("crypto")
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const express = require('express')
+const { isNullOrUndefined } = require('util')
 const app = express()
 
 app.use(session({
@@ -189,11 +190,7 @@ const postLogin = async (req, res) => {
 // To get the user login page
 const getLogin = async (req, res) => {
     try {
-        if(req.session.user){
-            return res.redirect('/')
-        }else{
-            return res.render('user/login', { title: "LapShop login", type: "", message: "" })
-        }
+        return res.render('user/login', { title: "LapShop login", type: "", message: "" })
     } catch (error) {
         console.log(error)
     }
@@ -201,7 +198,7 @@ const getLogin = async (req, res) => {
 
 const getLogout = async(req,res)=>{
     try{
-        req.session.user = false;
+        req.session.user = null 
         res.redirect('/')
     }catch(error){
         console.log(error.message)
