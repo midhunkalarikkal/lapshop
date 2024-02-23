@@ -98,7 +98,13 @@ input[type="file"]{
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productBrand" class="form-label">Product brand</label>
-                                    <input type="text" class="form-control" name="productBrand" id="productBrand" value="<%= product.brand %>" required>
+                                    <select class="form-select" name="productBrand" id="productBrand" required>    
+                                        <% brands.forEach(brand => { %>
+                                            <option value="<%= brand._id %>" <%= brand._id.toString() === product.brand.toString() ? 'selected' : "" %>>
+                                                <%= brand.name %>
+                                            </option>
+                                           <% }) %> 
+                                    </select>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productCategory" class="form-label">Product category</label>

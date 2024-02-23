@@ -1,12 +1,12 @@
 require('dotenv').config()
 const bcrypt = require('bcrypt')
 const User = require('../models/userModel')
+const Product = require('../models/productModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
 const session = require('express-session')
 const express = require('express')
-const { isNullOrUndefined } = require('util')
 const app = express()
 
 app.use(session({
@@ -306,7 +306,8 @@ const postUserProfileImage = async(req,res)=>{
 //To get the shop page
 const getUserShop = async(re,res)=>{
     try{
-        res.render('user/shop',{title : "LapShop"})
+        const productData = await Product.find()
+        res.render('user/shop',{title : "LapShop" , productData})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error"})
