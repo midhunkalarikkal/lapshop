@@ -306,6 +306,16 @@ const postUserProfileImage = async(req,res)=>{
     }
 }
 
+//To get the shop page
+const getUserShop = async(re,res)=>{
+    try{
+        res.render('user/shop',{title : "LapShop"})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error"})
+    }
+}
+
 
 
 
@@ -322,6 +332,7 @@ module.exports = {
     resendOtp,
     getUserProfile,
     postUserUpdatedInfo,
-    postUserProfileImage
+    postUserProfileImage,
+    getUserShop
 }
 

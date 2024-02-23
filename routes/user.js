@@ -33,4 +33,6 @@ userRouter.post('/updateUserInfo',userController.postUserUpdatedInfo)
 //To add profile image
 userRouter.post('/uploadProfileImage',uploadProfileImage.single('profileImg'),userController.postUserProfileImage)
 
+userRouter.get('/shop',userController.getUserShop)
+
 module.exports = userRouter
