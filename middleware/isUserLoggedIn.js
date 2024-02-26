@@ -1,3 +1,5 @@
+const User = require('../models/userModel')
+
 const isUserLoggedIn = async (req, res, next) => {
     try {
         if (req.session.user) {
@@ -24,7 +26,8 @@ const isUserLoggedOut = async (req, res, next) => {
     }
 };
 
+
 module.exports = {
     isUserLoggedIn,
-    isUserLoggedOut
+    isUserLoggedOut,
 };

@@ -23,6 +23,7 @@ let enteredFullname;
 let enteredEmail;
 let enteredPhone;
 let enteredPassword;
+let userDetails;
 
 //Generating otp function
 const generateOtp = () => {
@@ -92,13 +93,13 @@ const postRegister = async (req, res) => {
 
         if (!userEmail){
             sendOtpMail(enteredEmail,otp);
-            return res.render('user/otpvalidation', { title: "LapShop OTP verification", type: "success", message: "Check your email for otp" })
+            return res.render('user/otpvalidation', { type: "success", message: "Check your email for otp", userDetails})
         } else {
-            return res.render('user/registration', { title: "LapShop register", type: "danger", message: "Email already registered." })
+            return res.render('user/registration', { type: "danger", message: "Email already registered.", userDetails})
         }
     } catch (error) {
         console.log(error.message)
-        return res.render("user/registration", { title: "LapShop register", type: "danger", message: error.message });
+        return res.render("user/registration", { type: "danger", message: error.message, userDetails});
     }
 }
 
@@ -133,15 +134,15 @@ const postRegisterOtp = async (req, res) => {
             if(!userEmail && !userPhone){
                 const userData = await user.save()
                 if(userData){
-                    res.render('user/login',{title : "LapShop login" , type : "success" , message : "Registration has been successfull."})
+                    res.render('user/login',{type : "success" , message : "Registration has been successfull.", userDetails})
                 }else{
-                    res.render('user/registration',{title : "LapShop register" , tpe : "danger" , message : "Registration has been failed."})
+                    res.render('user/registration',{type : "danger" , message : "Registration has been failed.", userDetails})
                 }
             }else{
-                res.render('user/registration',{title : "LapShop register" , type : "danger" , message : "User already exist."})
+                res.render('user/registration',{type : "danger" , message : "User already exist.", userDetails})
               }   
             }else{
-              res.render("user/otpvalidation",{title : "LapShop otp", type : "danger" , message : "Invalid OTP"});
+              res.render("user/otpvalidation",{type : "danger" , message : "Invalid OTP", userDetails});
             }
         
     } catch (error) {
@@ -158,29 +159,26 @@ const postLogin = async (req, res) => {
 
         if (user) {
             if (user.isblocked) {
-                return res.render("user/login", { title: "LapShop login", type: "danger", message: "Account is blocked, please contact us" })
+                return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails})
             }
-
+            
             //password matching
             bcrypt.compare(password, user.password, function (err, result) {
                 if (err) {
                     console.log(err);
                     return res.status(500).send('An error occurred while comparing the passwords.');
                 } if (result) {
-                    // Passwords match then check use is blocked or not
-                    if(user.isblocked){
-                        res.render('user/login',{title : "LapShop login", type : "danger" , message : "Your account is blocked."})
-                    }else{
                         req.session.user = user;
-                        return res.render("user/home", { title: "LapShop login" })
-                    }
+                        userDetails = req.session.user
+                        console.log(userDetails)
+                        return res.render('user/home',{userDetails})
                 } else {
                     // Passwords don't match    
-                    return res.render("user/login", { title: "LapShop login", type: "danger", message: "Incorrect password" })
+                    return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
                 }
             });
         } else {
-            return res.render("user/login", { title: "LapShop login", type: "danger", message: "No user found" })
+            return res.render("user/login", { type: "danger", message: "No user found", userDetails})
         }
     } catch (error) {
         console.log(error.message)
@@ -190,15 +188,18 @@ const postLogin = async (req, res) => {
 // To get the user login page
 const getLogin = async (req, res) => {
     try {
-        return res.render('user/login', { title: "LapShop login", type: "", message: "" })
+        return res.render('user/login', {type: "", message: "", userDetails})
     } catch (error) {
         console.log(error)
     }
 }
 
+
+//To get the user logout function
 const getLogout = async(req,res)=>{
     try{
         req.session.user = null 
+        userDetails = ""
         res.redirect('/')
     }catch(error){
         console.log(error.message)
@@ -206,25 +207,28 @@ const getLogout = async(req,res)=>{
 }
 
 
+//To get the user home
 const getHome = async (req, res) => {
     try {
-        return res.render('user/home', { title: "LapShop home" })
+        return res.render('user/home',{userDetails})
     } catch (error) {
         console.log(error)
     }
 }
 
+//To get the user register page
 const getRegister = async (req, res) => {
     try {
-        res.render('user/registration', { title: "LapShop Register", type: "", message: "" })
+        res.render('user/registration', { type: "", message: "" , userDetails})
     } catch (error) {
         console.log(error)
     }
 }
 
+//To get the user otp page
 const getotppage = async(req,res)=>{
     try{
-        res.render('user/otpvalidation',{title : "LapShop otp", type : "", message : ""})
+        res.render('user/otpvalidation',{type : "", message : "" , userDetails})
     }catch(error){
         console.log(error.message)
     }
@@ -254,7 +258,7 @@ const getUserProfile = async(req,res)=>{
         const userData = await User.findById(userId)
         const createdDate = new Date(userData.created);
         const formattedDate = createdDate.toISOString().split('T')[0];
-        res.render('user/profile',{title : "Lapshop profile" , userData , session : req.session, formattedDate})
+        res.render('user/profile',{userData, formattedDate , userDetails})
     }catch(error){
         console.log(error.message)
         res.status(500).json({ message : "Internal server error"})
@@ -264,9 +268,9 @@ const getUserProfile = async(req,res)=>{
 // To update the user information
 const postUserUpdatedInfo = async(req,res)=>{
     try{
-        const { userName, email, phone, userId } = req.body;
+        const { userName, phone, userId } = req.body;
 
-        const updateUser = await User.findByIdAndUpdate(userId, { fullname: userName, email: email, phone: phone },
+        const updateUser = await User.findByIdAndUpdate(userId, { fullname: userName, phone: phone },
             { new: true } );
         
         if (!updateUser) {
@@ -307,7 +311,7 @@ const postUserProfileImage = async(req,res)=>{
 const getUserShop = async(re,res)=>{
     try{
         const productData = await Product.find()
-        res.render('user/shop',{title : "LapShop" , productData})
+        res.render('user/shop',{productData , userDetails})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error"})

@@ -13,14 +13,14 @@ const userController = require('../controller/userController')
 userRouter.get('/',userController.getHome)
 //To get the login page
 userRouter.get('/login',userAuth.isUserLoggedOut,userController.getLogin)
+//To post the user login data and give access to user home page
+userRouter.post('/login',userController.postLogin)
 //To get user register page
 userRouter.get('/register',userAuth.isUserLoggedOut,userController.getRegister)
 //To post user registered data to otp page
-userRouter.post('/register',userAuth.isUserLoggedOut,userController.postRegister)
+userRouter.post('/register',userController.postRegister)
 //To verify otp and get the login page
 userRouter.post('/otpverify',userAuth.isUserLoggedOut,userController.postRegisterOtp)
-//To post the user login data and give access to user home page
-userRouter.post('/login',userAuth.isUserLoggedOut,userController.postLogin)
 //To logout user
 userRouter.get('/logout',userAuth.isUserLoggedIn,userController.getLogout)
 //To get the otp page

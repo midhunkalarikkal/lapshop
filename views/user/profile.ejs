@@ -108,10 +108,6 @@
                         <input type="text" class="form-control" id="userName" name="userName" value="<%= userData.fullname %>">
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" value="<%= userData.email %>">
-                    </div>
-                    <div class="mb-3">
                         <label for="phone" class="form-label">Phone no</label>
                         <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>">
                     </div>
@@ -174,7 +170,6 @@
         // Get form data
         const formData = {
             userName: document.getElementById('userName').value,
-            email: document.getElementById('email').value,
             phone: document.getElementById('phone').value,
             userId: document.getElementById('userId').value
         };
