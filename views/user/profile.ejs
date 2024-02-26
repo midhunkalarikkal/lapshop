@@ -28,11 +28,11 @@
                   <div class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center">
                     <% if(userData.profileimage ) { %>
                     <img src="../../static/images/UserProfile/<%= userData.profileimage %>"
-                    alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px;" />
+                    alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#profileImageModal">Update image</button>
                     <% }else{ %>
                         <img src="../../static/images/icons/No profile image.jpg"
-                    alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px;" />
+                    alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
                     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#profileImageModal">Upload image</button>
                     <% } %>
                     <div class="name-date mt-2">
@@ -196,9 +196,12 @@
             icon: 'success',
             title: 'Success!',
             text: data.message || 'User updated successfully'
-        })
-        $('#informationModal').modal('hide');
-        location.reload();
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#informationModal').modal('hide');
+                location.reload();
+            }
+        });
     })
     .catch(error => {
         // Show error message using SweetAlert
