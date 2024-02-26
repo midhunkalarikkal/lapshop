@@ -5,6 +5,8 @@ const Product = require('../models/productModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
+const path = require('path')
+const fs = require('fs')
 const session = require('express-session')
 const express = require('express')
 const app = express()
@@ -289,7 +291,15 @@ const postUserUpdatedInfo = async(req,res)=>{
 const postUserProfileImage = async(req,res)=>{
     try{
         const userId = req.body.userId
-        
+        const user = await User.findById(userId)
+
+        if(user.profileimage){
+            existingimage = user.profileimage
+            console.log(user.profileimage)
+            const imagePath = path.join(__dirname, "../public/images/UserProfile", existingimage);
+            fs.unlinkSync(imagePath);
+        }
+
         if(!req.file){
             res.status(400).json({ message : "Image is not uploaded correctly"})
         }

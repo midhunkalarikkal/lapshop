@@ -263,9 +263,12 @@
             icon: 'success',
             title: 'Success!',
             text: 'Profile image uploaded successfully'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $('#profileImageModal').modal('hide');
+                location.reload();
+            }
         });
-        $('#profileImageModal').modal('hide');
-        location.reload();
     })
     .catch(error => {
         Swal.fire({
