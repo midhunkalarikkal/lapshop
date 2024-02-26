@@ -2,6 +2,7 @@ require('dotenv').config()
 const bcrypt = require('bcrypt')
 const User = require('../models/userModel')
 const Product = require('../models/productModel')
+const Address = require('../models/addressModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -328,6 +329,36 @@ const getUserShop = async(re,res)=>{
     }
 }
 
+//To add user address
+const postUserAddress = async(req,res)=>{
+    try{
+        const { userId, name, addressLine, phone, city, district, state, pincode, country} = req.body
+        console.log("req.body : ",userId, name, addressLine, phone, city, district, state, pincode, country)
+
+        const user = await User.findById(userId)
+        if(!user){
+            return res.status(400).json({ message : "User not found"})
+        }
+        
+            const newAddress = new Address({
+                userId: userId,
+                name: name,
+                addressLine: addressLine,
+                phone: phone,
+                city: city,
+                district: district,
+                state: state,
+                pincode: pincode,
+                country: country
+            })
+            await newAddress.save()
+            return res.status(200).json({ message: "Address added successfully" })
+        } catch (error) {
+            console.log(error.message);
+            return res.status(500).json({ message: "Internal server error" })
+        }
+    }
+
 
 
 
@@ -345,6 +376,7 @@ module.exports = {
     getUserProfile,
     postUserUpdatedInfo,
     postUserProfileImage,
-    getUserShop
+    getUserShop,
+    postUserAddress
 }
 

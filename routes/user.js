@@ -36,4 +36,6 @@ userRouter.post('/uploadProfileImage',userAuth.isUserLoggedIn,uploadProfileImage
 
 userRouter.get('/shop',userController.getUserShop)
 
+userRouter.post('/addAddress',userAuth.isUserLoggedIn,userController.postUserAddress)
+
 module.exports = userRouter
