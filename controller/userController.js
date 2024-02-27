@@ -260,8 +260,10 @@ const getUserProfile = async(req,res)=>{
         const userId = req.session?.user?._id
         const userData = await User.findById(userId)
         const createdDate = new Date(userData.created);
+        const address = await Address.find({userId : userId})
+        console.log(address)
         const formattedDate = createdDate.toISOString().split('T')[0];
-        res.render('user/profile',{userData, formattedDate , userDetails})
+        res.render('user/profile',{userData, formattedDate , userDetails, address})
     }catch(error){
         console.log(error.message)
         res.status(500).json({ message : "Internal server error"})
@@ -359,6 +361,23 @@ const postUserAddress = async(req,res)=>{
         }
     }
 
+//To delete address from user profile
+const postAddressDelete = async (req, res) => {
+    try {
+        const addressId = req.params.addressId;
+        console.log(addressId);
+
+        const deletedAddress = await Address.findByIdAndDelete(addressId);
+        if (!deletedAddress) {
+            return res.status(404).json({ message: "Address not found" });
+        }else{
+            return res.status(200).json({ message: "Address deleted successfully" });
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+}
 
 
 
@@ -377,6 +396,7 @@ module.exports = {
     postUserUpdatedInfo,
     postUserProfileImage,
     getUserShop,
-    postUserAddress
+    postUserAddress,
+    postAddressDelete
 }
 

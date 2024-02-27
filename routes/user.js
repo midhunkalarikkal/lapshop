@@ -38,4 +38,6 @@ userRouter.get('/shop',userController.getUserShop)
 
 userRouter.post('/addAddress',userAuth.isUserLoggedIn,userController.postUserAddress)
 
+userRouter.delete('/deleteAddress/:addressId',userAuth.isUserLoggedIn,userController.postAddressDelete)
+
 module.exports = userRouter

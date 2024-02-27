@@ -1,414 +1,534 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include(".. /userpartials/Navbar.ejs")%>
 
-<head>
-    <!-- User home css file -->
-    <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
-    <style>
-        .gradient-custom {
-            background: #f6d365;
-            background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
-            background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
-        }
-    </style>
-</head>
+    <head>
+        <!-- User home css file -->
+        <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
+        <style>
+            .gradient-custom {
+                background: #f6d365;
+                background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+                background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+            }
+        </style>
+    </head>
 
 
-<!-- User home banner -->
-<section class="view">
+    <!-- User home banner -->
+    <section class="view">
         <div class="container mt-3 py-3 h-100">
-          <div class="row d-flex justify-content-center">
-            <div class="col-10 col-md-12 col-lg-10 mb-4 mb-lg-0 mt-lg-5">
-                <div class="heading">
-                    <h2>Your profile details</h2>
-                </div>
-              <div class="card mb-3" style="border-radius: .5rem;">
-                <div class="row g-0">
-                <% if(userData != ""){ %>
-                  <div class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center">
-                    <% if(userData.profileimage ) { %>
-                    <img src="../../static/images/UserProfile/<%= userData.profileimage %>"
-                    alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#profileImageModal">Update image</button>
-                    <% }else{ %>
-                        <img src="../../static/images/icons/No profile image.jpg"
-                    alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#profileImageModal">Upload image</button>
-                    <% } %>
-                    <div class="name-date mt-2">
-                        <h5>Hi, <span><%= userData.fullname %></span></h5>
-                        <p>Joined on : <%= formattedDate %></p>
+            <div class="row d-flex justify-content-center">
+                <div class="col-10 col-md-12 col-lg-10 mb-4 mb-lg-0 mt-lg-5">
+                    <div class="heading">
+                        <h2>Your profile details</h2>
                     </div>
-                  </div>
-                  <div class="col-md-8">
-                    <div class="card-body p-4">
-
-                      <h5>Information</h5>
-                      <hr class="mt-0 mb-4">
-                      <div class="row pt-1">
-                        <div class="col-md-4 mb-3">
-                          <h6>Email</h6>
-                          <p class="text-muted"><%= userData.email %></p>
+                    <div class="card mb-3" style="border-radius: .5rem;">
+                        <div class="row g-0">
+                            <% if(userData !="" ){ %>
+                                <div
+                                    class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center">
+                                    <% if(userData.profileimage ) { %>
+                                        <img src="../../static/images/UserProfile/<%= userData.profileimage %>"
+                                            alt="Avatar" class="img-fluid mt-5 my-3 "
+                                            style="width: 150px; height: 150px;" />
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                            data-bs-target="#profileImageModal">Update image</button>
+                                        <% }else{ %>
+                                            <img src="../../static/images/icons/No profile image.jpg" alt="Avatar"
+                                                class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
+                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                                data-bs-target="#profileImageModal">Upload image</button>
+                                            <% } %>
+                                                <div class="name-date mt-2">
+                                                    <h5>Hi, <span>
+                                                            <%= userData.fullname %>
+                                                        </span></h5>
+                                                </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body p-4">
+                                        <!-- User information row start -->
+                                        <div class="row pt-1">
+                                            <div class="col-12 d-flex align-items-center">
+                                                <div class="edit-btn col-4">
+                                                    <h5 class="m-0">Information</h5>
+                                                </div>
+                                                <div class="edit-btn col-8 d-flex justify-content-end">
+                                                    <button class="btn btn-primary btn-sm"
+                                                        style="background-color: #f6d46500; color: blue; border: 0;"
+                                                        data-bs-toggle="modal" data-bs-target="#informationModal"><i
+                                                            class="fas fa-edit"></i> Edit</button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="col-12 d-flex">
+                                                <p class="col-4 fw-semibold">Name</p>
+                                                <p class="text-muted col-8">
+                                                    <%= userData.fullname %>
+                                                </p>
+                                            </div>
+                                            <hr>
+                                            <div class="col-12 d-flex">
+                                                <p class="col-4 fw-semibold">Email</p>
+                                                <p class="text-muted col-8">
+                                                    <%= userData.email %>
+                                                </p>
+                                            </div>
+                                            <hr>
+                                            <div class="col-12 d-flex">
+                                                <p class="col-4 fw-semibold">Phone</p>
+                                                <p class="text-muted col-8">
+                                                    <%= userData.phone %>
+                                                </p>
+                                            </div>
+                                            <hr>
+                                            <div class="col-12 d-flex">
+                                                <p class="col-4 fw-semibold">Joined on</p>
+                                                <p class="text-muted col-8">
+                                                    <%= formattedDate %>
+                                                </p>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                        <!-- User information row end -->
+                                        <!-- User address row start -->
+                                        <div class="row pt-1">
+                                            <div class="col-12 d-flex align-items-center">
+                                                <div class="edit-btn col-4">
+                                                    <h5 class="m-0">Address</h5>
+                                                </div>
+                                                <div class="edit-btn col-8 d-flex justify-content-end">
+                                                    <button class="btn btn-primary btn-sm"
+                                                        style="background-color: #f6d46500; color: blue; border: 0;"
+                                                        data-bs-toggle="modal" data-bs-target="#addressModal"><i
+                                                            class="fas fa-add"></i> Add address
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <% } %>
+                                                <% if(address && address.length> 0){ %>
+                                                    <% address.forEach((address,index)=> {%>
+                                                        <div class="col-12 d-flex">
+                                                            <p class="col-4 fw-semibold">Address <%= index+1 %>
+                                                            </p>
+                                                            <div class="address text-muted col-8">
+                                                                <p>
+                                                                    <%= address.name %>, <%= address.addressLine%>,
+                                                                            <span>Phone : <%= address.phone%>,</span>
+                                                                            <%= address.city%>, <span>Pincode : </span>
+                                                                                <%= address.pincode%>, <%=
+                                                                                        address.district%>,
+                                                                                        <%= address.state%>, <%=
+                                                                                                address.country%>
+                                                                </p>
+                                                                <div class="buttons">
+                                                                    <button class="btn btn-primary btn-sm"
+                                                                        style="background-color: #f6d46500; color: blue; border: 0;"
+                                                                        data-bs-toggle="modal"
+                                                                        data-bs-target="#addressModal"><i
+                                                                            class="fas fa-edit"></i> Edit
+                                                                    </button>
+                                                                    <button
+                                                                        class="btn btn-primary btn-sm delete-address-btn"
+                                                                        style="background-color: #f6d46500; color: blue; border: 0;"
+                                                                        data-adid="<%= address._id %>"><i
+                                                                            class="fas fa-trash"></i> Delete
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr>
+                                                        <% }) %>
+                                                            <% }else{ %>
+                                                                <p class="text-muted">No addresses found.</p>
+                                                                <% } %>
+                                        </div>
+                                        <!-- User address row end -->
+                                    </div>
+                                </div>
                         </div>
-                        <div class="col-md-4 mb-3">
-                          <h6>Phone</h6>
-                          <p class="text-muted"><%= userData.phone %></p>
-                        </div>
-                        <div class="col-md-4 mb-3 my-md-auto">
-                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#informationModal"><i class="fas fa-edit"></i> Edit</button>
-                        </div>
-                      </div>
-                      <% } %>
-
-                      <h5>Primary address</h5>
-                      <hr class="mt-0 mb-4">
-                      <div class="row pt-1">
-                        <div class="col-md-8 mb-3">
-                          <p>No address added</p>
-                        </div>
-                        <div class="col-md-4 mb-3 my-md-auto">
-                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addressModal">Add address</button>
-                        </div>
-                      </div>
-
-                      <h5>Security</h5>
-                      <hr class="mt-0 mb-4">
-                      <div class="row pt-1">
-                        <div class="col-md-8 mb-3">
-                          <h6>Change password</h6>
-                          <p class="text-muted">Cahnge your password once in 6 months</p>
-                        </div>
-                        <div class="col-md-4 mb-3 my-md-auto">
-                            <button class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Change</button>
-                        </div>
-                      </div>
-                      
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
-</section>
+    </section>
 
-<!-- User info Modal start -->
-<div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="informationModalLabel">Edit user information</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="userInfoForm">
-                    <% if(userData != ""){ %>
-                    <div class="mb-3">
-                        <label for="userName" class="form-label">Username</label>
-                        <input type="text" class="form-control" id="userName" name="userName" value="<%= userData.fullname %>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone" class="form-label">Phone no</label>
-                        <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>">
-                    </div>
-                    <div class="mb-3" style="display: none;">
-                        <label for="userId" class="form-label">User id</label>
-                        <input type="text" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
-                    </div>
-                    <% } %>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="submit" id="saveUserInfo" class="btn btn-primary">Save</button>
+    <!-- User info Modal start -->
+    <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="informationModalLabel">Edit user information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userInfoForm">
+                        <% if(userData !="" ){ %>
+                            <div class="mb-3">
+                                <label for="userName" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="userName" name="userName"
+                                    value="<%= userData.fullname %>">
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone no</label>
+                                <input type="number" class="form-control" id="phone" name="phone"
+                                    value="<%= userData.phone %>">
+                            </div>
+                            <div class="mb-3" style="display: none;">
+                                <label for="userId" class="form-label">User id</label>
+                                <input type="text" class="form-control" id="userId" name="userId"
+                                    value="<%= userData._id %>">
+                            </div>
+                            <% } %>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" id="saveUserInfo" class="btn btn-primary">Save</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- User info Modal end -->
+    <!-- User info Modal end -->
 
-<!-- User image Modal start -->
- <div class="modal fade" id="profileImageModal" tabindex="-1" aria-labelledby="profileImageModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="profileImageModalLabel">Profile image</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="userImageForm">
-                    <div class="mb-3">
-                        <label for="image" class="form-label mx-2">Select image</label>
-                        <input type="file" name="image" id="image" class="form-control form-control-md" onchange="previewImage()">
-                    </div>
-                    <div class="mb-3 text-center">
-                        <div class="image">
-                            <img id="preview" class="thumbnail img-fluid" src="" alt="" style="width: 150px; height: auto;">
-                        </div>
-                    </div>
-                    <div class="mb-3" style="display: none;">
-                        <label for="userId" class="form-label">User id</label>
-                        <input type="text" class="form-control" id="userIdFromImage" name="userId" value="<%= userData._id %>">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" id="saveUserImage" class="btn btn-primary">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- User image Modal end -->
-
-<!-- User address Modal start -->
-<div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addressModalLabel">Add your address</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="userAddressForm">
-                    <div class="row">
-                    <div class="col-md-6">
+    <!-- User image Modal start -->
+    <div class="modal fade" id="profileImageModal" tabindex="-1" aria-labelledby="profileImageModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="profileImageModalLabel">Profile image</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userImageForm">
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" name="name" value="" required>
+                            <label for="image" class="form-label mx-2">Select image</label>
+                            <input type="file" name="image" id="image" class="form-control form-control-md"
+                                onchange="previewImage()">
                         </div>
-                        <div class="mb-3">
-                            <label for="addressLine" class="form-label">Address Line</label>
-                            <input type="text" class="form-control" id="addressLine" name="addressLine" value="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="city" class="form-label">City</label>
-                            <input type="text" class="form-control" id="city" name="city" value="" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="district" class="form-label">District</label>
-                            <input type="text" class="form-control" id="district" name="district" value="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="state" class="form-label">State</label>
-                            <input type="text" class="form-control" id="state" name="state" value="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="pincode" class="form-label">Pincode</label>
-                            <input type="text" class="form-control" id="pincode" name="pincode" value="" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="country" class="form-label">Country</label>
-                            <input type="text" class="form-control" id="country" name="country" value="" required>
+                        <div class="mb-3 text-center">
+                            <div class="image">
+                                <img id="preview" class="thumbnail img-fluid" src="" alt=""
+                                    style="width: 150px; height: auto;">
+                            </div>
                         </div>
                         <div class="mb-3" style="display: none;">
                             <label for="userId" class="form-label">User id</label>
-                            <input type="text" class="form-control" id="userIdAddress" name="userIdAddress" value="<%= userData._id %>">
+                            <input type="text" class="form-control" id="userIdFromImage" name="userId"
+                                value="<%= userData._id %>">
                         </div>
-                    </div>
+                    </form>
                 </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" id="saveUserAddress" class="btn btn-primary">Save</button>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="saveUserImage" class="btn btn-primary">Save</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- User address Modal end -->
+    <!-- User image Modal end -->
 
-<!-- Script to post the user information data -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- User address Modal start -->
+    <div class="modal fade" id="addressModal" tabindex="-1" aria-labelledby="addressModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addressModalLabel">Add your address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userAddressForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="addressLine" class="form-label">Address Line</label>
+                                    <input type="text" class="form-control" id="addressLine" name="addressLine" value=""
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone" class="form-label">Phone</label>
+                                    <input type="text" class="form-control" id="phone" name="phone" value="" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="city" class="form-label">City</label>
+                                    <input type="text" class="form-control" id="city" name="city" value="" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="district" class="form-label">District</label>
+                                    <input type="text" class="form-control" id="district" name="district" value=""
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="state" class="form-label">State</label>
+                                    <input type="text" class="form-control" id="state" name="state" value="" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="pincode" class="form-label">Pincode</label>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" value=""
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="country" class="form-label">Country</label>
+                                    <input type="text" class="form-control" id="country" name="country" value=""
+                                        required>
+                                </div>
+                                <div class="mb-3" style="display: none;">
+                                    <label for="userId" class="form-label">User id</label>
+                                    <input type="text" class="form-control" id="userIdAddress" name="userIdAddress"
+                                        value="<%= userData._id %>">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="saveUserAddress" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- User address Modal end -->
 
-<script>
-    //To update the user information
-    document.getElementById('saveUserInfo').addEventListener('click', function() {
-        // Get form data
-        const formData = {
-            userName: document.getElementById('userName').value,
-            phone: document.getElementById('phone').value,
-            userId: document.getElementById('userId').value
-        };
+    <!-- Script to post the user information data -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        console.log(formData);
+    <script>
+        //To update the user information
+        document.getElementById('saveUserInfo').addEventListener('click', function () {
+            // Get form data
+            const formData = {
+                userName: document.getElementById('userName').value,
+                phone: document.getElementById('phone').value,
+                userId: document.getElementById('userId').value
+            };
 
-        // Send POST request to server
-        fetch('/updateUserInfo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json(); 
+            console.log(formData);
+
+            // Send POST request to server
+            fetch('/updateUserInfo', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to update user information');
+                    }
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message || 'User updated successfully'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#informationModal').modal('hide');
+                            location.reload();
+                        }
+                    });
+                })
+                .catch(error => {
+                    // Show error message using SweetAlert
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: error.message || 'Failed to update user information'
+                    });
+                });
+        });
+
+        // Function to handle image preview
+        function previewImage() {
+            const preview = document.getElementById('preview');
+            const file = document.getElementById('image').files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                preview.src = reader.result;
+            };
+
+            if (file) {
+                reader.readAsDataURL(file);
             } else {
-                throw new Error('Failed to update user information');
+                preview.src = "../../static/images/icons/No profile image.jpg"; // If no file selected, display default image
             }
-        })
-        .then(data => {
-            Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: data.message || 'User updated successfully'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $('#informationModal').modal('hide');
-                location.reload();
-            }
-        });
-    })
-    .catch(error => {
-        // Show error message using SweetAlert
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: error.message || 'Failed to update user information'
-        });
-    });
-});
-
-// Function to handle image preview
-    function previewImage() {
-        const preview = document.getElementById('preview');
-        const file = document.getElementById('image').files[0];
-        const reader = new FileReader();
-
-        reader.onloadend = function () {
-            preview.src = reader.result;
-        };
-
-        if (file) {
-            reader.readAsDataURL(file);
-        } else {
-            preview.src = "../../static/images/icons/No profile image.jpg"; // If no file selected, display default image
         }
-    }
 
-    // Function to handle image upload
-    document.getElementById('saveUserImage').addEventListener('click', function() {
-        const userProfileImageInput = document.getElementById("image").files[0];
-        const userId = document.getElementById('userIdFromImage').value;
+        // Function to handle image upload
+        document.getElementById('saveUserImage').addEventListener('click', function () {
+            const userProfileImageInput = document.getElementById("image").files[0];
+            const userId = document.getElementById('userIdFromImage').value;
 
-    if (!userProfileImageInput) {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Please select an image'
-        });
-        return;
-    }
-
-    const formData = new FormData();
-    formData.append('profileImg', userProfileImageInput);
-    formData.append('userId', userId);
-
-    console.log(formData)
-
-    fetch('/uploadProfileImage', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Failed to upload profile image');
-        }
-    })
-    .then(data => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'Profile image uploaded successfully'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $('#profileImageModal').modal('hide');
-                location.reload();
+            if (!userProfileImageInput) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Please select an image'
+                });
+                return;
             }
+
+            const formData = new FormData();
+            formData.append('profileImg', userProfileImageInput);
+            formData.append('userId', userId);
+
+            console.log(formData)
+
+            fetch('/uploadProfileImage', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to upload profile image');
+                    }
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Profile image uploaded successfully'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#profileImageModal').modal('hide');
+                            location.reload();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: error.message || 'Failed to upload profile image'
+                    });
+                });
         });
-    })
-    .catch(error => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: error.message || 'Failed to upload profile image'
+
+        // To add new address
+        document.getElementById('saveUserAddress').addEventListener('click', function () {
+            const userId = document.getElementById('userIdAddress').value;
+            const name = document.getElementById('name').value;
+            const addressLine = document.getElementById('addressLine').value;
+            const phone = document.getElementById('phone').value;
+            const city = document.getElementById('city').value;
+            const district = document.getElementById('district').value;
+            const state = document.getElementById('state').value;
+            const pincode = document.getElementById('pincode').value;
+            const country = document.getElementById('country').value;
+
+            const formData = {
+                userId: userId,
+                name: name,
+                addressLine: addressLine,
+                phone: phone,
+                city: city,
+                district: district,
+                state: state,
+                pincode: pincode,
+                country: country
+            };
+
+            console.log(formData);
+            const jsonData = JSON.stringify(formData);
+
+            fetch('/addAddress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: jsonData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Failed to add address');
+                    }
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Address added successfully.'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#addressModal').modal('hide');
+                            location.reload();
+                        }
+                    });
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: error.message || 'Failed to add address'
+                    });
+                });
         });
-    });
-});
 
-// To add address
-document.getElementById('saveUserAddress').addEventListener('click', function() {
-    const userId = document.getElementById('userIdAddress').value;
-    const name = document.getElementById('name').value;
-    const addressLine = document.getElementById('addressLine').value;
-    const phone = document.getElementById('phone').value;
-    const city = document.getElementById('city').value;
-    const district = document.getElementById('district').value;
-    const state = document.getElementById('state').value;
-    const pincode = document.getElementById('pincode').value;
-    const country = document.getElementById('country').value;
+        // Add event listener to delete buttons
+        document.querySelectorAll('.delete-address-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                const addressId = this.dataset.adid;
 
-    // Create an object to hold the form data
-    const formData = {
-        userId: userId,
-        name: name,
-        addressLine: addressLine,
-        phone: phone,
-        city: city,
-        district: district,
-        state: state,
-        pincode: pincode,
-        country: country
-    };
-
-    console.log(formData);
-
-    const jsonData = JSON.stringify(formData);
-
-    fetch('/addAddress', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: jsonData
-    })
-    .then(response => {
-        if (response.ok) {
-            return response.json();
-        } else {
-            throw new Error('Failed to add address');
-        }
-    })
-    .then(data => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'Address added successfully.'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $('#addressModal').modal('hide');
-                location.reload();
-            }
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Are you sure?',
+                    text: 'You are about to delete this address.',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch(`/deleteAddress/${addressId}`, {
+                            method: 'DELETE'
+                        })
+                            .then(response => {
+                                if (response.ok) {
+                                    return response.json(); // Parse JSON response
+                                } else {
+                                    throw new Error('Failed to delete address');
+                                }
+                            })
+                            .then(data => {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message || 'Address deleted successfully.'
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            })
+                            .catch(error => {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: error.message || 'Failed to delete address'
+                                });
+                            });
+                    }
+                });
+            });
         });
-    })
-    .catch(error => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: error.message || 'Failed to add address'
-        });
-    });
-});
-</script>
 
-<!-- User footer -->
-<%-include("../userpartials/footer.ejs")%>
+    </script>
+
+    <!-- User footer -->
+    <%-include("../userpartials/footer.ejs")%>
