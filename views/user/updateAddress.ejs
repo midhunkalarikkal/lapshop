@@ -19,53 +19,67 @@
                                         <div class="mb-3 col-md-10">
                                             <label for="Name" class="form-label">Name</label>
                                             <input type="text" class="form-control" name="name" id="name"
-                                                value="<%= userAddress.name %>" required>
+                                                value="<%= userAddress.name %>" required onmouseleave="validateName()">
+                                            <span id="nameError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="AddressLine" class="form-label">Address line</label>
                                             <textarea class="form-control" name="addressLine" id="addressLine" rows="1"
-                                                required><%= userAddress.addressLine %></textarea>
+                                                required
+                                                onmouseleave="validateAddressLine()"><%= userAddress.addressLine %></textarea>
+                                            <span id="addressLineError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="Phone" class="form-label">Phone</label>
                                             <input type="text" class="form-control" name="phone" id="phone"
-                                                value="<%= userAddress.phone %>" required>
+                                                value="<%= userAddress.phone %>" required
+                                                onmouseleave="validatePhone()">
+                                            <span id="phoneError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="City" class="form-label">City</label>
                                             <input type="text" class="form-control" name="city" id="city"
-                                                value="<%= userAddress.city %>" required>
+                                                value="<%= userAddress.city %>" required onmouseleave="validateCity()">
+                                            <span id="cityError" class="text-danger"></span>
                                         </div>
                                         <div class="mt-5 d-md-block d-none">
                                             <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                            <button type="submit" id="submitButton" class="btn btn-primary">Save changes</button>
+                                            <button type="submit" id="submitButton" class="btn btn-primary">Save
+                                                changes</button>
                                         </div>
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="mb-3 col-md-10">
                                             <label for="District" class="form-label">District</label>
                                             <input type="text" class="form-control" name="district" id="district"
-                                                value="<%= userAddress.district %>" required>
+                                                value="<%= userAddress.district %>" required
+                                                onmouseleave="validateDistrict()">
+                                            <span id="districtError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="State" class="form-label">State</label>
                                             <input type="text" class="form-control" name="state" id="state"
-                                                value="<%= userAddress.state %>" required>
+                                                value="<%= userAddress.state %>" required
+                                                onmouseleave="validateState()">
+                                            <span id="stateError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="Pincode" class="form-label">Pincode</label>
                                             <input type="text" class="form-control" name="pincode" id="pincode"
-                                                value="<%= userAddress.pincode %>" required>
+                                                value="<%= userAddress.pincode %>" required
+                                                onmouseleave="validatePincode()">
+                                            <span id="pincodeError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="Country" class="form-label">Country</label>
                                             <input type="text" class="form-control" name="country" id="country"
-                                                value="<%= userAddress.country %>" required>
+                                                value="<%= userAddress.country %>" required readonly>
                                         </div>
                                     </div>
                                     <div class="mt-4 d-block d-md-none">
                                         <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                        <button type="submit" id="submitButton" class="btn btn-primary">Save changes</button>
+                                        <button type="submit" id="submitButton" class="btn btn-primary">Save
+                                            changes</button>
                                     </div>
                                 </div>
                                 <% } %>
@@ -78,60 +92,228 @@
 
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
-            //To submit the form
-            document.getElementById('submitButton').addEventListener('click', handleSubmit);
-    async function handleSubmit(event) {
-        event.preventDefault();
-        
-        const form = document.querySelector('form');
-        const formData = {
-            name: document.getElementById('name').value,
-            addressLine: document.getElementById('addressLine').value,
-            phone: document.getElementById('phone').value,
-            city: document.getElementById('city').value,
-            district: document.getElementById('district').value,
-            state: document.getElementById('state').value,
-            pincode: document.getElementById('pincode').value,
-            country: document.getElementById('country').value
-        };
-        
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+            ////// Validation function for name input \\\\\\
+            function validateName() {
+                const nameInput = document.getElementById('name');
+                const name = nameInput.value.trim();
+                const nameError = document.getElementById('nameError');
+
+                const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
+
+                if (!namePattern.test(name)) {
+                    nameInput.classList.add('is-invalid');
+                    nameError.textContent = 'Name must start and end with an alphabet, contain only alphabets and spaces.';
+                    return false;
+                } else if (name.length < 5 || name.length > 25) {
+                    nameInput.classList.add('is-invalid');
+                    nameError.textContent = 'Name must be between 5 and 25 characters long';
+                    return false;
+                } else {
+                    nameInput.classList.remove('is-invalid');
+                    nameError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for phone input \\\\\\
+            function validatePhone() {
+                const phoneInput = document.getElementById('phone');
+                const phone = phoneInput.value.trim();
+                const phoneError = document.getElementById('phoneError');
+
+                const phonePattern = /^\d{10}$/;
+
+                if (!phonePattern.test(phone)) {
+                    phoneInput.classList.add('is-invalid');
+                    phoneError.textContent = 'Phone number must contain only 10 digits';
+                    return false;
+                } else {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for phone input \\\\\\
+            function validateAddressLine() {
+                const addressLineInput = document.getElementById('addressLine');
+                const addressLine = addressLineInput.value
+                const addressLineError = document.getElementById('addressLineError');
+
+                if (addressLine.length < 5) {
+                    addressLineInput.classList.add('is-invalid');
+                    addressLineError.textContent = 'Address line must be at least 5 characters';
+                    return false;
+                } else if (addressLine.length > 40) {
+                    addressLineInput.classList.add('is-invalid');
+                    addressLineError.textContent = 'Address line must be less than 40 characters';
+                    return false;
+                } else {
+                    addressLineInput.classList.remove('is-invalid');
+                    addressLineError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for phone input \\\\\\
+            function validatePincode() {
+                const pincodeInput = document.getElementById('pincode');
+                const pincode = pincodeInput.value;
+                const pincodeError = document.getElementById('pincodeError');
+                const pincodePattern = /^[1-9]\d{5}$/;
+
+                if (!pincodePattern.test(pincode)) {
+                    pincodeInput.classList.add('is-invalid');
+                    pincodeError.textContent = 'Pin code must be six digits long, starting with a digit between 1 and 9.';
+                    return false;
+                } else {
+                    pincodeInput.classList.remove('is-invalid');
+                    pincodeError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for city input \\\\\\
+            function validateCity() {
+                const cityInput = document.getElementById('city');
+                const city = cityInput.value.trim();
+                const cityError = document.getElementById('cityError');
+
+                const cityPattern = /^[a-zA-Z\s]+$/;
+
+                if (!cityPattern.test(city)) {
+                    cityInput.classList.add('is-invalid');
+                    cityError.textContent = 'City must contain only alphabets and spaces';
+                    return false;
+                } else if (city.length < 3 || city.length > 25) {
+                    cityInput.classList.add('is-invalid');
+                    cityError.textContent = 'Name must be between 3 and 25 characters long';
+                    return false;
+                } else {
+                    cityInput.classList.remove('is-invalid');
+                    cityError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for district input \\\\\\
+            function validateDistrict() {
+                const districtInput = document.getElementById('district');
+                const district = districtInput.value.trim();
+                const districtError = document.getElementById('districtError');
+
+                const districtPattern = /^[a-zA-Z\s]+$/;
+
+                if (!districtPattern.test(district)) {
+                    districtInput.classList.add('is-invalid');
+                    districtError.textContent = 'District must contain only alphabets and spaces';
+                    return false;
+                } else if (district.length < 4 || district.length > 15) {
+                    nameInput.classList.add('is-invalid');
+                    nameError.textContent = 'Name must be between 4 and 15 characters long';
+                    return false;
+                } else {
+                    districtInput.classList.remove('is-invalid');
+                    districtError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for state input \\\\\\
+            function validateState() {
+                const stateInput = document.getElementById('state');
+                const state = stateInput.value.trim();
+                const stateError = document.getElementById('stateError');
+
+                const statePattern = /^[a-zA-Z\s]+$/;
+
+                if (state.length < 3 || state.length > 15) {
+                    stateInput.classList.add('is-invalid');
+                    stateError.textContent = 'State must be between 3 and 15 characters long';
+                    return false;
+                } else if (!statePattern.test(state)) {
+                    stateInput.classList.add('is-invalid');
+                    stateError.textContent = 'State must contain only alphabets and spaces';
+                    return false;
+                } else {
+                    stateInput.classList.remove('is-invalid');
+                    stateError.textContent = '';
+                    return true;
+                }
+            }
+
+
+
+            ////// To submit the form \\\\\\
+            function validateForm() {
+                const isValidName = validateName();
+                const isValidAddressLine = validateAddressLine();
+                const isValidPhone = validatePhone();
+                const isValidCity = validateCity();
+                const isValidDistrict = validateDistrict();
+                const isValidState = validateState();
+                const isValidPincode = validatePincode();
+
+                return isValidName && isValidAddressLine && isValidPhone && isValidCity && isValidDistrict && isValidState && isValidPincode;
+            }
+
+            document.getElementById('submitButton').addEventListener('click', async function (event) {
+                event.preventDefault();
+
+                if (validateForm()) {
+                    const form = document.querySelector('form');
+                    const formData = {
+                        name: document.getElementById('name').value,
+                        addressLine: document.getElementById('addressLine').value,
+                        phone: document.getElementById('phone').value,
+                        city: document.getElementById('city').value,
+                        district: document.getElementById('district').value,
+                        state: document.getElementById('state').value,
+                        pincode: document.getElementById('pincode').value,
+                        country: document.getElementById('country').value
+                    };
+
+                    try {
+                        const response = await fetch(form.action, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(formData)
+                        });
+
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            Swal.fire("Success!",
+                                data.message,
+                                "success"
+                            ).then(() => {
+                                window.location.href = '/userProfile';
+                            });
+                        } else {
+                            Swal.fire("Error!",
+                                data.message, "error"
+                            );
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                        Swal.fire("Error!",
+                            "An error occurred while processing your request.", "error"
+                        );
+                    }
+                } else {
+                    Swal.fire("Error!",
+                        "Please fix the errors in the form.", "error"
+                    );
+                }
             });
 
-            const data = await response.json();
-            
-            if (response.ok) {
-                Swal.fire("Success!", 
-                data.message, 
-                "success"
-                ).then(() => {
-                    window.location.href = '/userProfile';
-                });
-            } else {
-                Swal.fire("Error!", 
-                data.message, "error"
-                );
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            Swal.fire("Error!", 
-            "An error occurred while processing your request.", "error"
-            );
-        }
-    }
-            
-            
-            //Cancel button goBack function
+            ////// Cancel button goBack function \\\\\\
             function goBack() {
                 window.location.href = '/profile'
             }
-            </script>
+        </script>
 
-<!-- Admin footer -->
+        <!-- Admin footer -->
         <%-include("../userpartials/footer.ejs")%>
