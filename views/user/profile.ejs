@@ -1,5 +1,5 @@
 <!-- User navbar -->
-<%-include(".. /userpartials/Navbar.ejs")%>
+<%-include("../userpartials/Navbar.ejs")%>
 
     <head>
         <!-- User home css file -->
@@ -25,25 +25,17 @@
                     <div class="card mb-3" style="border-radius: .5rem;">
                         <div class="row g-0">
                             <% if(userData !="" ){ %>
-                                <div
-                                    class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center">
+                                <div class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center">
                                     <% if(userData.profileimage ) { %>
-                                        <img src="../../static/images/UserProfile/<%= userData.profileimage %>"
-                                            alt="Avatar" class="img-fluid mt-5 my-3 "
-                                            style="width: 150px; height: 150px;" />
-                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                            data-bs-target="#profileImageModal">Update image</button>
-                                        <% }else{ %>
-                                            <img src="../../static/images/icons/No profile image.jpg" alt="Avatar"
-                                                class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
-                                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                                data-bs-target="#profileImageModal">Upload image</button>
-                                            <% } %>
-                                                <div class="name-date mt-2">
-                                                    <h5>Hi, <span>
-                                                            <%= userData.fullname %>
-                                                        </span></h5>
-                                                </div>
+                                        <img src="../../static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#profileImageModal">Update image</button>
+                                    <% }else{ %>
+                                        <img src="../../static/images/icons/No profile image.jpg" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
+                                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#profileImageModal">Upload image</button>
+                                    <% } %>
+                                    <div class="name-date mt-2">
+                                        <h5>Hi, <span> <%= userData.fullname %> </span></h5>
+                                    </div>
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body p-4">
@@ -54,99 +46,94 @@
                                                     <h5 class="m-0">Information</h5>
                                                 </div>
                                                 <div class="edit-btn col-8 d-flex justify-content-end">
-                                                    <button class="btn btn-primary btn-sm"
-                                                        style="background-color: #f6d46500; color: blue; border: 0;"
-                                                        data-bs-toggle="modal" data-bs-target="#informationModal"><i
-                                                            class="fas fa-edit"></i> Edit</button>
+                                                    <button class="btn btn-primary btn-sm" style="background-color: #f6d46500; color: blue; border: 0;" data-bs-toggle="modal" data-bs-target="#informationModal">
+                                                        <i class="fas fa-edit"></i> Edit
+                                                    </button>
                                                 </div>
                                             </div>
                                             <hr>
                                             <div class="col-12 d-flex">
                                                 <p class="col-4 fw-semibold">Name</p>
-                                                <p class="text-muted col-8">
-                                                    <%= userData.fullname %>
-                                                </p>
+                                                <p class="text-muted col-8"> <%= userData.fullname %></p>
                                             </div>
                                             <hr>
                                             <div class="col-12 d-flex">
                                                 <p class="col-4 fw-semibold">Email</p>
-                                                <p class="text-muted col-8">
-                                                    <%= userData.email %>
-                                                </p>
+                                                <p class="text-muted col-8"> <%= userData.email %> </p>
                                             </div>
                                             <hr>
                                             <div class="col-12 d-flex">
                                                 <p class="col-4 fw-semibold">Phone</p>
-                                                <p class="text-muted col-8">
-                                                    <%= userData.phone %>
-                                                </p>
+                                                <p class="text-muted col-8"> <%= userData.phone %> </p>
                                             </div>
                                             <hr>
                                             <div class="col-12 d-flex">
                                                 <p class="col-4 fw-semibold">Joined on</p>
-                                                <p class="text-muted col-8">
-                                                    <%= formattedDate %>
-                                                </p>
+                                                <p class="text-muted col-8"> <%= formattedDate %> </p>
                                             </div>
                                             <hr>
                                         </div>
                                         <!-- User information row end -->
                                         <!-- User address row start -->
-                                        <div class="row pt-1">
+                                        <div class="row pt-1 address.container">
                                             <div class="col-12 d-flex align-items-center">
                                                 <div class="edit-btn col-4">
                                                     <h5 class="m-0">Address</h5>
                                                 </div>
                                                 <div class="edit-btn col-8 d-flex justify-content-end">
-                                                    <button class="btn btn-primary btn-sm"
-                                                        style="background-color: #f6d46500; color: blue; border: 0;"
-                                                        data-bs-toggle="modal" data-bs-target="#addressModal"><i
-                                                            class="fas fa-add"></i> Add address
+                                                    <button class="btn btn-primary btn-sm" style="background-color: #f6d46500; color: blue; border: 0;" data-bs-toggle="modal" data-bs-target="#addressModal">
+                                                        <i class="fas fa-add"></i> Add address
                                                     </button>
                                                 </div>
                                             </div>
                                             <hr>
-                                            <% } %>
-                                                <% if(address && address.length> 0){ %>
-                                                    <% address.forEach((address,index)=> {%>
-                                                        <div class="col-12 d-flex">
-                                                            <p class="col-4 fw-semibold">Address <%= index+1 %>
+                                            <% if(address && address.length> 0){ %>
+                                                <% address.forEach((address,index)=> {%>
+                                                    <div class="col-12 d-flex">
+                                                        <p class="col-4 fw-semibold">Address <%= index+1 %> </p>
+                                                        <div class="address text-muted col-8">
+                                                            <p>
+                                                                <%= address.name %>, 
+                                                                <%= address.addressLine%>,
+                                                                <span>Phone : </span>
+                                                                <%= address.phone%>,
+                                                                <%= address.city%>, 
+                                                                <span>Pincode : </span>
+                                                                <%= address.pincode%>, 
+                                                                <%= address.district%>,
+                                                                <%= address.state%>, 
+                                                                <%= address.country%>
                                                             </p>
-                                                            <div class="address text-muted col-8">
-                                                                <p>
-                                                                    <%= address.name %>, <%= address.addressLine%>,
-                                                                            <span>Phone : <%= address.phone%>,</span>
-                                                                            <%= address.city%>, <span>Pincode : </span>
-                                                                                <%= address.pincode%>, <%=
-                                                                                        address.district%>,
-                                                                                        <%= address.state%>, <%=
-                                                                                                address.country%>
-                                                                </p>
-                                                                <div class="buttons">
-                                                                    <button class="btn btn-primary btn-sm"
-                                                                        style="background-color: #f6d46500; color: blue; border: 0;"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#addressModal"><i
-                                                                            class="fas fa-edit"></i> Edit
-                                                                    </button>
-                                                                    <button
-                                                                        class="btn btn-primary btn-sm delete-address-btn"
-                                                                        style="background-color: #f6d46500; color: blue; border: 0;"
-                                                                        data-adid="<%= address._id %>"><i
-                                                                            class="fas fa-trash"></i> Delete
-                                                                    </button>
-                                                                </div>
+                                                            <div class="buttons">
+                                                                <button 
+                                                                    id="edit-address-btn"
+                                                                    class="btn btn-primary btn-sm"
+                                                                    style="background-color: #f6d46500; color: blue; border: 0;"
+                                                                    data-adId="<%= address._id%>" ><i
+                                                                    class="fas fa-edit"></i> Edit
+                                                                </button>
+                                                                <button
+                                                                    id="delete-address-btn"
+                                                                    class="btn btn-primary btn-sm"
+                                                                    style="background-color: #f6d46500; color: blue; border: 0;"
+                                                                    data-adid="<%= address._id %>"><i
+                                                                    class="fas fa-trash"></i> Delete
+                                                                </button>
                                                             </div>
                                                         </div>
-                                                        <hr>
-                                                        <% }) %>
-                                                            <% }else{ %>
-                                                                <p class="text-muted">No addresses found.</p>
-                                                                <% } %>
+                                                    </div>
+                                                    <hr>
+                                                <% }) %>
+                                            <% }else{ %>
+                                                <p class="text-muted">No addresses found.</p>
+                                            <% } %>
                                         </div>
                                         <!-- User address row end -->
                                     </div>
                                 </div>
+                             <% }else{ %>
+                                <div class="alert alert-info text-center" role="alert">No Userdata found in the database.</div>
+                            <% } %>
                         </div>
                     </div>
                 </div>
@@ -168,20 +155,17 @@
                         <% if(userData !="" ){ %>
                             <div class="mb-3">
                                 <label for="userName" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="userName" name="userName"
-                                    value="<%= userData.fullname %>">
+                                <input type="text" class="form-control" id="userName" name="userName" value="<%= userData.fullname %>">
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone no</label>
-                                <input type="number" class="form-control" id="phone" name="phone"
-                                    value="<%= userData.phone %>">
+                                <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>">
                             </div>
                             <div class="mb-3" style="display: none;">
                                 <label for="userId" class="form-label">User id</label>
-                                <input type="text" class="form-control" id="userId" name="userId"
-                                    value="<%= userData._id %>">
+                                <input type="text" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
                             </div>
-                            <% } %>
+                        <% } %>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -206,19 +190,16 @@
                     <form id="userImageForm">
                         <div class="mb-3">
                             <label for="image" class="form-label mx-2">Select image</label>
-                            <input type="file" name="image" id="image" class="form-control form-control-md"
-                                onchange="previewImage()">
+                            <input type="file" name="image" id="image" class="form-control form-control-md" onchange="previewImage()">
                         </div>
                         <div class="mb-3 text-center">
                             <div class="image">
-                                <img id="preview" class="thumbnail img-fluid" src="" alt=""
-                                    style="width: 150px; height: auto;">
+                                <img id="preview" class="thumbnail img-fluid" src="" alt="" style="width: 150px; height: auto;">
                             </div>
                         </div>
                         <div class="mb-3" style="display: none;">
                             <label for="userId" class="form-label">User id</label>
-                            <input type="text" class="form-control" id="userIdFromImage" name="userId"
-                                value="<%= userData._id %>">
+                            <input type="text" class="form-control" id="userIdFromImage" name="userId" value="<%= userData._id %>">
                         </div>
                     </form>
                 </div>
@@ -249,42 +230,37 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="addressLine" class="form-label">Address Line</label>
-                                    <input type="text" class="form-control" id="addressLine" name="addressLine" value=""
-                                        required>
+                                    <input type="text" class="form-control" id="addressLine" name="addressLine" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" id="phone" name="phone" value="" required>
+                                    <input type="text" class="form-control" id="phone" name="phone" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="city" class="form-label">City</label>
-                                    <input type="text" class="form-control" id="city" name="city" value="" required>
+                                    <input type="text" class="form-control" id="city" name="city" required>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="mb-3">
                                     <label for="district" class="form-label">District</label>
-                                    <input type="text" class="form-control" id="district" name="district" value=""
-                                        required>
+                                    <input type="text" class="form-control" id="district" name="district" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="state" class="form-label">State</label>
-                                    <input type="text" class="form-control" id="state" name="state" value="" required>
+                                    <input type="text" class="form-control" id="state" name="state" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="pincode" class="form-label">Pincode</label>
-                                    <input type="text" class="form-control" id="pincode" name="pincode" value=""
-                                        required>
+                                    <input type="text" class="form-control" id="pincode" name="pincode" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="country" class="form-label">Country</label>
-                                    <input type="text" class="form-control" id="country" name="country" value=""
-                                        required>
+                                    <input type="text" class="form-control" id="country" name="country" required>
                                 </div>
                                 <div class="mb-3" style="display: none;">
                                     <label for="userId" class="form-label">User id</label>
-                                    <input type="text" class="form-control" id="userIdAddress" name="userIdAddress"
-                                        value="<%= userData._id %>">
+                                    <input type="text" class="form-control" id="userIdAddress" name="userIdAddress" value="<%= userData._id %>">
                                 </div>
                             </div>
                         </div>
@@ -303,9 +279,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        //To update the user information
+        ////// To update the user information \\\\\\
         document.getElementById('saveUserInfo').addEventListener('click', function () {
-            // Get form data
             const formData = {
                 userName: document.getElementById('userName').value,
                 phone: document.getElementById('phone').value,
@@ -314,7 +289,6 @@
 
             console.log(formData);
 
-            // Send POST request to server
             fetch('/updateUserInfo', {
                 method: 'POST',
                 headers: {
@@ -328,8 +302,7 @@
                     } else {
                         throw new Error('Failed to update user information');
                     }
-                })
-                .then(data => {
+                }).then(data => {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
@@ -340,9 +313,7 @@
                             location.reload();
                         }
                     });
-                })
-                .catch(error => {
-                    // Show error message using SweetAlert
+                }).catch(error => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
@@ -351,7 +322,7 @@
                 });
         });
 
-        // Function to handle image preview
+        ////// Function to handle image preview \\\\\\
         function previewImage() {
             const preview = document.getElementById('preview');
             const file = document.getElementById('image').files[0];
@@ -364,11 +335,11 @@
             if (file) {
                 reader.readAsDataURL(file);
             } else {
-                preview.src = "../../static/images/icons/No profile image.jpg"; // If no file selected, display default image
+                preview.src = "../../static/images/icons/No profile image.jpg";
             }
         }
 
-        // Function to handle image upload
+        ////// Function to handle image upload \\\\\\
         document.getElementById('saveUserImage').addEventListener('click', function () {
             const userProfileImageInput = document.getElementById("image").files[0];
             const userId = document.getElementById('userIdFromImage').value;
@@ -391,36 +362,33 @@
             fetch('/uploadProfileImage', {
                 method: 'POST',
                 body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Failed to upload profile image');
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to upload profile image');
+                }
+            }).then(data => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Profile image uploaded successfully'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#profileImageModal').modal('hide');
+                        location.reload();
                     }
-                })
-                .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Profile image uploaded successfully'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#profileImageModal').modal('hide');
-                            location.reload();
-                        }
-                    });
-                })
-                .catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: error.message || 'Failed to upload profile image'
-                    });
                 });
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: error.message || 'Failed to upload profile image'
+                });
+            });
         });
 
-        // To add new address
+        ////// To add user's new address \\\\\\
         document.getElementById('saveUserAddress').addEventListener('click', function () {
             const userId = document.getElementById('userIdAddress').value;
             const name = document.getElementById('name').value;
@@ -453,38 +421,34 @@
                     'Content-Type': 'application/json'
                 },
                 body: jsonData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Failed to add address');
+            }).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Failed to add address');
+                }
+            }).then(data => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Address added successfully.'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#addressModal').modal('hide');
+                        location.reload();
                     }
-                })
-                .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Address added successfully.'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#addressModal').modal('hide');
-                            location.reload();
-                        }
-                    });
-                })
-                .catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: error.message || 'Failed to add address'
-                    });
                 });
+            }).catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: error.message || 'Failed to add address'
+                });
+            });
         });
 
-        // Add event listener to delete buttons
-        document.querySelectorAll('.delete-address-btn').forEach(button => {
-            button.addEventListener('click', function () {
+        ////// To delete a specific address \\\\\\
+        document.getElementById('delete-address-btn').addEventListener('click', function () {
                 const addressId = this.dataset.adid;
 
                 Swal.fire({
@@ -499,33 +463,37 @@
                     if (result.isConfirmed) {
                         fetch(`/deleteAddress/${addressId}`, {
                             method: 'DELETE'
-                        })
-                            .then(response => {
-                                if (response.ok) {
-                                    return response.json(); // Parse JSON response
-                                } else {
-                                    throw new Error('Failed to delete address');
-                                }
-                            })
-                            .then(data => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success!',
-                                    text: data.message || 'Address deleted successfully.'
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error!',
-                                    text: error.message || 'Failed to delete address'
-                                });
+                        }).then(response => {
+                            if (response.ok) {
+                                return response.json(); // Parse JSON response
+                            } else {
+                                throw new Error('Failed to delete address');
+                            }
+                        }).then(data => {
+                            Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.message || 'Address deleted successfully.'
+                            }).then(() => {
+                                location.reload();
                             });
+                        }).catch(error => {
+                            Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: error.message || 'Failed to delete address'
+                            });
+                        });
                     }
                 });
             });
+        
+
+        // To edit a specific address
+        document.getElementById('edit-address-btn').addEventListener('click', function () {
+            const addressId = this.dataset.adid;
+            console.log(addressId)
+            window.location.href = `/editAddress/${addressId}`; 
         });
 
     </script>

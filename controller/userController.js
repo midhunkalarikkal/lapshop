@@ -379,6 +379,56 @@ const postAddressDelete = async (req, res) => {
     }
 }
 
+//To get the edit address page
+const getUserEditAddress = async(req,res)=>{
+    try{
+        const addressId = req.params.addressId
+        console.log(addressId)
+        const userAddress = await Address.findById(addressId)
+        console.log(userAddress)
+        return res.render('user/updateAddress',{userAddress, userDetails})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+//To post the updated address
+const postUpdateUserAddress = async (req, res) => {
+    try {
+        const addressId = req.params.addressId;
+        console.log(addressId , req.body)
+        
+        // Extract form data from req.body
+        const newaddress = {
+            name: req.body.name,
+            addressLine: req.body.addressLine,
+            phone: req.body.phone,
+            city: req.body.city,
+            district: req.body.district,
+            state: req.body.state,
+            pincode: req.body.pincode,
+            country: req.body.country
+        };
+
+        // Update the address using the extracted form data
+        const updatedAddress = await Address.findOneAndUpdate(
+            { _id: addressId },
+            newaddress,
+            { new: true }
+        );
+
+        if (updatedAddress) {
+            return res.status(200).json({ message: "Address updated successfully" });
+        } else {
+            return res.status(500).json({ message: "Failed to update address" });
+        }
+
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
 
 
 
@@ -397,6 +447,8 @@ module.exports = {
     postUserProfileImage,
     getUserShop,
     postUserAddress,
-    postAddressDelete
+    postAddressDelete,
+    getUserEditAddress,
+    postUpdateUserAddress
 }
 

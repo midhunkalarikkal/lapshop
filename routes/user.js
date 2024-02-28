@@ -40,4 +40,8 @@ userRouter.post('/addAddress',userAuth.isUserLoggedIn,userController.postUserAdd
 
 userRouter.delete('/deleteAddress/:addressId',userAuth.isUserLoggedIn,userController.postAddressDelete)
 
+userRouter.get('/editAddress/:addressId',userAuth.isUserLoggedIn,userController.getUserEditAddress)
+
+userRouter.post('/updateAddress/:addressId',userAuth.isUserLoggedIn,userController.postUpdateUserAddress)
+
 module.exports = userRouter
