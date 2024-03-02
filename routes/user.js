@@ -36,7 +36,9 @@ userRouter.post('/uploadProfileImage',userAuth.isUserLoggedIn,uploadProfileImage
 
 userRouter.get('/shop',userController.getUserShop)
 
-userRouter.post('/addAddress',userAuth.isUserLoggedIn,userController.postUserAddress)
+userRouter.get('/addAddress/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddress)
+
+userRouter.post('/saveNewAddress/:userId',userAuth.isUserLoggedIn,userController.postUserAddress)
 
 userRouter.delete('/deleteAddress/:addressId',userAuth.isUserLoggedIn,userController.postAddressDelete)
 

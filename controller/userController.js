@@ -331,11 +331,25 @@ const getUserShop = async(re,res)=>{
     }
 }
 
+//To get the add address page
+const getUserNewAddress = async(req,res)=>{
+    try{
+        const userId = req.params.userId
+        console.log(userId)
+        return res.render('user/addAddress',{userDetails , userId})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error"})
+    }
+}
+
 //To add user address
 const postUserAddress = async(req,res)=>{
     try{
-        const { userId, name, addressLine, phone, city, district, state, pincode, country} = req.body
-        console.log("req.body : ",userId, name, addressLine, phone, city, district, state, pincode, country)
+        const { name, addressLine, phone, city, district, state, pincode, country} = req.body
+        console.log("req.body : ",name, addressLine, phone, city, district, state, pincode, country)
+        const userId = req.params.userId
+        console.log(userId)
 
         const user = await User.findById(userId)
         if(!user){
@@ -449,6 +463,7 @@ module.exports = {
     postUserAddress,
     postAddressDelete,
     getUserEditAddress,
-    postUpdateUserAddress
+    postUpdateUserAddress,
+    getUserNewAddress
 }
 
