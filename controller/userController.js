@@ -505,6 +505,100 @@ const postUserNewPass = async (req, res) => {
     }
 };
 
+//To get the forgot password page from login page
+const getForgotPassword = async(req,res)=>{
+    try{
+        return res.render('user/forgotPassword',{userDetails})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+//To post the email for forgot password
+const postForgotPasswordEmail = async(req,res)=>{
+    try{
+        const email = req.body.email
+        console.log("Email :",email)
+        enteredEmail = email
+        const user = await User.findOne({ email : email})
+        if(!user){
+            return res.status(400).json({ message : "Email is not registered" })
+        }else{
+            const otp = generateOtp();
+            saveOtp = otp;
+            console.log("SaveOtp before =", saveOtp);
+
+            function clearSaveOtp() {
+                saveOtp = "";
+                console.log("SaveOtp after =", saveOtp);
+            }
+            setTimeout(clearSaveOtp, 30000);
+
+            sendOtpMail(email, saveOtp);
+
+            res.status(200).json({ message: "OTP has been sent to your email." });
+        }
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Intrnal server error" })
+    }
+}
+
+//To post the otp for forgot password and checking th the otp
+const postForgotPasswordOtp = async(req,res)=>{
+    try{
+        const enteredOtp = req.body.otp
+        if(!enteredOtp){
+            return res.status(400).json({ message : "Otp sending error"})
+        }else{
+            if(enteredOtp === saveOtp){
+                return res.status(200).json({ message : "Otp is verified" })
+            }else{
+                return res.status(400).json({ message : "Invalid Otp" })
+            }
+        }
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+//To post the new password
+const postForgotPasswordNewPass = async (req, res) => {
+    try {
+        const { newPassword } = req.body; // Assuming enteredEmail is sent in the request body
+        console.log("Email :", enteredEmail);
+        console.log("newPassword :", newPassword);
+        
+        const user = await User.findOne({ email: enteredEmail });
+        if (!user) {
+            return res.status(400).json({ message: "User not found" });
+        } else {
+            const hashpassword = await bcrypt.hash(newPassword, 10);
+            if (!hashpassword) {
+                return res.status(500).json({ message: "Error hashing password" });
+            }
+            
+            const updatePassword = await User.findOneAndUpdate(
+                { email: enteredEmail },
+                { password: hashpassword },
+                { new: true }
+            );
+            if (updatePassword) {
+                enteredEmail = ""
+                return res.status(200).json({ message: "Password reset successfully" });
+            } else {
+                return res.status(400).json({ message: "Error in password reset" });
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+
 
 
 module.exports = {
@@ -528,6 +622,10 @@ module.exports = {
     getUserNewAddress,
     postOtpForChangePass,
     checkOtpForChangePass,
-    postUserNewPass
+    postUserNewPass,
+    getForgotPassword,
+    postForgotPasswordEmail,
+    postForgotPasswordOtp,
+    postForgotPasswordNewPass
 }
 

@@ -52,4 +52,12 @@ userRouter.post('/submitOtp',userAuth.isUserLoggedIn,userController.checkOtpForC
 
 userRouter.post('/updatePassword',userAuth.isUserLoggedIn,userController.postUserNewPass)
 
+userRouter.get('/forgotPassword',userAuth.isUserLoggedOut,userController.getForgotPassword)
+
+userRouter.post('/fpassPostEmail',userAuth.isUserLoggedOut,userController.postForgotPasswordEmail)
+
+userRouter.post('/fpassPostOtp',userAuth.isUserLoggedOut,userController.postForgotPasswordOtp)
+
+userRouter.post('/fpassPostPassword',userAuth.isUserLoggedOut,userController.postForgotPasswordNewPass)
+
 module.exports = userRouter
