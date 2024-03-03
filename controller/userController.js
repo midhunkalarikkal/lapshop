@@ -324,7 +324,7 @@ const postUserProfileImage = async(req,res)=>{
 //To get the shop page
 const getUserShop = async(re,res)=>{
     try{
-        const productData = await Product.find()
+        const productData = await Product.find({ isBlocked: false });
         res.render('user/shop',{productData , userDetails})
     }catch(error){
         console.log(error.message)
