@@ -609,6 +609,9 @@
                 const seconds = timeLeft % 60;
                 timerElement.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                 timeLeft--;
+                if(timeLeft < 10){
+                    timerElement.style.color = "red"
+                }
 
                 if (timeLeft < 0) {
                     clearInterval(timerInterval);
@@ -616,6 +619,7 @@
                     document.getElementById("submitOtp").disabled = true;
                     document.getElementById("sendOtp").innerText = "Resend OTP";
                     timerElement.innerText = "00:00";
+                    timerElement.style.color = "black"
                 }
             }, 1000);
         } else {
