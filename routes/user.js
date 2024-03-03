@@ -46,4 +46,10 @@ userRouter.get('/editAddress/:addressId',userAuth.isUserLoggedIn,userController.
 
 userRouter.post('/updateAddress/:addressId',userAuth.isUserLoggedIn,userController.postUpdateUserAddress)
 
+userRouter.post('/sendOtpForPass',userAuth.isUserLoggedIn,userController.postOtpForChangePass)
+
+userRouter.post('/submitOtp',userAuth.isUserLoggedIn,userController.checkOtpForChangePass)
+
+userRouter.post('/updatePassword',userAuth.isUserLoggedIn,userController.postUserNewPass)
+
 module.exports = userRouter

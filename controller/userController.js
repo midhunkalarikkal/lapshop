@@ -10,6 +10,7 @@ const path = require('path')
 const fs = require('fs')
 const session = require('express-session')
 const express = require('express')
+const { error } = require('console')
 const app = express()
 
 app.use(session({
@@ -444,6 +445,66 @@ const postUpdateUserAddress = async (req, res) => {
     }
 };
 
+//To send the otp for changing password from user profile
+const postOtpForChangePass = async (req, res) => {
+    try {
+        const { email } = req.body;
+        const otp = generateOtp();
+        saveOtp = otp;
+        console.log("SaveOtp before =", saveOtp);
+
+        function clearSaveOtp() {
+            saveOtp = "";
+            console.log("SaveOtp after =", saveOtp);
+        }
+        setTimeout(clearSaveOtp, 30000);
+
+        sendOtpMail(email, saveOtp);
+
+        res.status(200).json({ message: "OTP sent successfully" });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+const checkOtpForChangePass = async(req,res)=>{
+    try{
+        const enteredOtp = req.body.otp
+        if (enteredOtp === saveOtp) {
+            return res.status(200).json({ message: "OTP matched" });
+        } else {
+            return res.status(400).json({ message: "Incorrect OTP" });
+        }
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error"})
+    }
+}
+
+//To change the password from user profile
+const postUserNewPass = async (req, res) => {
+    try {
+        const { newPass, userId } = req.body;
+        console.log(newPass , userId)
+        const user = await User.findById(userId);
+
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const hashpassword = await bcrypt.hash(newPass, 10);
+
+        user.password = hashpassword;
+        await user.save();
+
+        return res.status(200).json({ message: "Password updated successfully" });
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 
 
 module.exports = {
@@ -464,6 +525,9 @@ module.exports = {
     postAddressDelete,
     getUserEditAddress,
     postUpdateUserAddress,
-    getUserNewAddress
+    getUserNewAddress,
+    postOtpForChangePass,
+    checkOtpForChangePass,
+    postUserNewPass
 }
 
