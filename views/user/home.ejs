@@ -1,45 +1,185 @@
 <!-- User navbar -->
 <%-include("../userpartials/Navbar.ejs")%>
 
-<head>
+  <head>
     <!-- User home css file -->
     <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
-</head>
+    <style>
+      @media (max-width: 576px) {
 
-<!-- User home banner -->
-  <section class="view">
+        /* extra small */
+
+        .tagline h4 {
+          margin-top: 40px;
+          font-size: 20px;
+        }
+
+        .desc h6 {
+          font-size: 10px;
+        }
+        
+        .shop-btn {
+          font-size: 10px;
+        }
+      }
+
+      @media (min-width: 576px) and (max-width: 767px) {
+
+        /* small */
+        .tagline h4 {
+          margin-top: 50px;
+          font-size: 30px;
+        }
+
+        .desc h6 {
+          font-size: 12px;
+        }
+        
+        .shop-btn {
+          font-size: 12px;
+        }
+      }
+
+      @media (min-width: 768px) and (max-width: 991px) {
+
+        /* Medium */
+        .tagline h4 {
+          font-size: 3rem;
+        }
+
+        .desc h6 {
+          font-size: 17px;
+        }
+        
+        .shop-btn {
+          font-size: 17px;
+        }
+      }
+
+      @media (min-width: 992px) and (max-width: 1199px) {
+
+        /* large */
+        .tagline h4 {
+          font-size: 4rem;
+        }
+
+        .desc h6 {
+          font-size: 20px;
+        }
+
+        .shop-btn {
+          font-size: 20px;
+        }
+      }
+
+      @media (min-width: 1200px) {
+
+        /* extra large */
+        .tagline h4 {
+          font-size: 4rem;
+        }
+
+        .desc h6 {
+          font-size: 20px;
+        }
+
+        .shop-btn {
+          font-size: 20px;
+        }
+      }
+
+      .shop-btn {
+        background-color: rgba(0, 0, 0, 0);
+        border: 0;
+        color: aliceblue;
+        border-bottom: 2px solid rgb(99, 230, 99);
+      }
+
+      .carousel-caption {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+
+      .tagline {
+        text-align: center;
+       color: rgba(255, 255, 255, 0.733);
+      }
+
+      .desc-btn {
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        margin-top: auto;
+      }
+
+    </style>
+  </head>
+
+  <!-- User home banner -->
+  <section class="view mt-4">
+    <!-- Home carousel start -->
     <div id="carouselExampleAutoplaying" class="carousel slide mt-4" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img src="/static/images/HomeCarousels/Ad wall 3.jpg" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
+      <div class="carousel-inner">
+        <% if(homeCarousel !="" ){ %>
+          <% homeCarousel.forEach((hc, index)=> { %>
+            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+              <img src="/static/images/HomeCarousels/<%= hc.image %>" class="d-block w-100" alt="...">
+              <div class="carousel-caption">
                 <div class="tagline">
-                  <h4>Tagline</h4>
+                  <h4>
+                    <%= hc.tagline %>
+                  </h4>
                 </div>
-                <div class="desc">
-                  <h6>Description</h6>
+                <div class="desc-btn">
+                  <div class="desc">
+                    <h6>
+                      <%= hc.desc %>
+                    </h6>
+                  </div>
+                  <button class="shop-btn" id="shop-btn">Shop Now</button>
                 </div>
-                <button class="btn btn-primary">Shop Now</button>
               </div>
-          </div>
-          <div class="carousel-item active">
-            <img src="/static/images/HomeCarousels/Ad wall 2.jpg" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-                <h5>First slide label</h5>
-                <p>Some representative placeholder content for the first slide.</p>
+            </div>
+          <% }); %>
+          <% } else { %>
+            <div class="carousel-item active">
+              <img src="/static/images/HomeCarousels/Ad wall 3.jpg" class="d-block w-100" alt="...">
+              <div class="carousel-caption d-none d-md-block">
+                <div class="tagline">
+                  <h4>Empowering Your Digital Journey Daily.</h4>
+                </div>
+                <div class="desc--btn">
+                  <div class="desc">
+                    <h6>Experience peak performance with our cutting-edge laptop technology solutions.</h6>
+                  </div>
+                  <button class="shop-btn" id="shop-btn">Shop Now</button>
+                </div>
               </div>
+            </div>
+            <% } %>
           </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+          data-bs-slide="prev">
           <span class="carousel-control-prev-icon" aria-hidden="true"></span>
           <span class="visually-hidden">Previous</span>
         </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
-    </section>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+        data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+    <!-- Home carousel start -->
+  </section>
+  
+  <script>
+    document.getElementById('shop-btn').addEventListener("click",function(){
+      window.location.href = "/shop"
+    })
+  </script>
 
-<!-- User footer -->
-<%-include("../userpartials/footer.ejs")%>
+  <!-- User footer -->
+  <%-include("../userpartials/footer.ejs")%>

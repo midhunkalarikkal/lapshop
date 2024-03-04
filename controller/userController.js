@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt')
 const User = require('../models/userModel')
 const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
+const HomeCarousel = require('../models/homeCarousel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -214,7 +215,8 @@ const getLogout = async(req,res)=>{
 //To get the user home
 const getHome = async (req, res) => {
     try {
-        return res.render('user/home',{userDetails})
+        const homeCarousel = await HomeCarousel.find({ isBlocked: false });
+        return res.render('user/home',{userDetails , homeCarousel})
     } catch (error) {
         console.log(error)
     }
