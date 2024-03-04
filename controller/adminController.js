@@ -2,6 +2,7 @@ const User = require('../models/userModel')
 const Category = require('../models/categoryModel')
 const Product = require('../models/productModel')
 const HomeCarousel = require('../models/homeCarousel')
+const AdCarousel = require('../models/adCarousel')
 const Brand = require('../models/brandModel')
 const fs = require('fs')
 const path = require('path')
@@ -398,7 +399,7 @@ const postAdminHomeCarousel = async(req,res)=>{
 
             const existingHomeCarousel = await HomeCarousel.findOne({ tagline: homeCarouselTagline });
             if (existingHomeCarousel) {
-                const imagePath = path.join(__dirname, "../public/images/HomeCarouselImages", req.file.filename);
+                const imagePath = path.join(__dirname, "../public/images/HomeCarousels", req.file.filename);
                 fs.unlinkSync(imagePath);
                 return res.status(400).json({ error: "Home carousel already exists" });
             }
@@ -616,6 +617,97 @@ const adminUpdateBrand = async(req,res)=>{
     }
 }
 
+// To get the Ad-carouselpage
+const getAdCarousel = async(req,res)=>{
+    try{
+        const adCarousel = await AdCarousel.find()
+        return res.render('admin/adminAdCarousel',{title : "LapShop Admin" , adCarousel})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+//To add a new Advertisement carousel
+const postAdminAdCarousel = async(req,res)=>{
+    try{
+
+            const { adCarouselName } = req.body;
+
+            // Check if a file was uploaded
+            if (!req.file) {
+                return res.status(400).json({ error: "No image uploaded" });
+            }
+
+            const existingAdCarousel = await AdCarousel.findOne({ name: adCarouselName });
+            if (existingAdCarousel) {
+                const imagePath = path.join(__dirname, "../public/images/AdCarousels", req.file.filename);
+                fs.unlinkSync(imagePath);
+                return res.status(400).json({ error: "Ad Carousel already exists" });
+            }
+
+            const newAdCarousel = new AdCarousel({
+                name: adCarouselName,
+                image: req.file.filename
+            });
+            const saveAdCarousel = await newAdCarousel.save();
+            return res.status(201).json({ message: "Ad Carousel added successfully" , data : saveAdCarousel});
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message: "Internal server error" })
+    }
+}
+
+//To block Advertisement carousel by admin
+const adminBlockAdCarousel = async (req, res) => {
+    try {
+         if (!req.params.adCarouselId) {
+            return res.status(400).json({ success: false, message: "Ad carousel ID is required" });
+        }
+
+        const adCarousel = await AdCarousel.findById({_id : req.params.adCarouselId});
+        console.log(adCarousel);
+
+        if (!adCarousel) {
+            return res.status(404).json({ success: false, message: "Advertisement carousel not found" });
+        } else {
+            adCarousel.isBlocked = req.body.blockStatus === 'block';
+            const savedAdCarousel = await adCarousel.save();
+            if(savedAdCarousel) {
+                return res.status(200).json({ success: true, message: "Advertisement Carousel block status has been updated successfully."});
+            } else {
+                return res.status(500).json({ success: false, message: "Failed to update advertisement carousel block status."});
+            }
+        }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+}
+
+//To delete a Advertisement carousel
+const adminDeleteAdCarousel = async (req, res) => {
+    try {
+            const adCarousel = await AdCarousel.findById(req.params.adCarouselId);
+            console.log(adCarousel.image)
+            if (!adCarousel) {
+                return res.status(404).json({ success: false, message: "Advertisement carousel not found" });
+            } else {
+               const deleteAdCarousel =  await AdCarousel.findByIdAndDelete(req.params.adCarouselId);
+               if(deleteAdCarousel){
+                   const imagePath = path.join(__dirname, "../public/images/AdCarousels", adCarousel.image);
+                   fs.unlinkSync(imagePath);
+                   return res.status(200).json({ success: true, message: "Advertisement carousel deleted successfully" });
+                }else{
+                   return res.status(500).json({ success: false, message: "Advertisement carousel deleted successfully" });
+               }
+            }
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ success: false, message: "Internal server error" });
+    }
+};
+
 
 
 module.exports = {
@@ -647,6 +739,10 @@ module.exports = {
     adminAddNewBrand,
     adminBlockBrand,
     adminEditBrand,
-    adminUpdateBrand
+    adminUpdateBrand,
+    getAdCarousel,
+    postAdminAdCarousel,
+    adminBlockAdCarousel,
+    adminDeleteAdCarousel
     
 }

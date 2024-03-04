@@ -138,6 +138,15 @@ body::before {
 .logout a:hover{
     color: var(--secondary-color);
 }
+
+.dropdown-menu a{
+    color: var(--third-color);
+}
+
+.dropdown-item:hover{
+    color: var(--primary-color);
+    background-color: var(--third-color);
+}
 /*Navbar end*/
 
 /* foter start */
