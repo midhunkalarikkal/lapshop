@@ -4,6 +4,7 @@ const User = require('../models/userModel')
 const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
 const HomeCarousel = require('../models/homeCarousel')
+const AdCarousel = require('../models/adCarousel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -327,7 +328,9 @@ const postUserProfileImage = async(req,res)=>{
 const getUserShop = async(re,res)=>{
     try{
         const productData = await Product.find({ isBlocked: false });
-        res.render('user/shop',{productData , userDetails})
+        const adCarousel = await AdCarousel.find({ isBlocked: false });
+        console.log(adCarousel)
+        res.render('user/shop',{productData , userDetails , adCarousel})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error"})

@@ -23,7 +23,6 @@
                                     <th class="text-center text-light">Image</th>
                                     <th class="text-center text-light">Name</th>
                                     <th class="text-center text-light">Controls</th>
-                                    <th class="text-center text-light">Edit</th>
                                     <th class="text-center text-light">Delete</th>
                                 </tr>
                             </thead>
@@ -34,27 +33,20 @@
                                             <%= index+1 %>
                                         </td>
                                         <td>
-                                            <img src=" /static/images/AdCarousels/<%= row.image %> " width="50"
-                                                class="img-thumbnal" />
+                                            <img src=" /static/images/AdCarousels/<%= row.image %> " width="50" class="img-thumbnal" />
                                         </td>
                                         <td>
                                             <%= row.name %>
                                         </td>
                                         <td>
                                             <input type="radio" class="adCarousel-switch" data-adc-id="<%= row._id %>"
-                                                id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <%
-                                                if(row.isBlocked) { %>checked<% } %>>
-                                                <label for="block_<%= row._id %>" class="text-danger">Block</label>
-                                                <input type="radio" class="adCarousel-switch"
-                                                    data-adc-id="<%= row._id %>" id="unblock_<%= row._id %>"
-                                                    name="block<%= row._id %>" value="unblock" <% if(!row.isBlocked) {
-                                                    %>checked<% } %>>
-                                                    <label for="unblock_<%= row._id %>"
-                                                        class="text-success">Unblock</label>
-                                        </td>
-                                        <td>
-                                            <a href="/admin/homeCarouselEdit/" class="text-success edit-homeCarousel"><i
-                                                    class="fas fa-edit fa-lg mx-1"></i></a>
+                                                id="block_<%= row._id %>" name="block<%= row._id %>" value="block" 
+                                                <% if(row.isBlocked) { %>checked<% } %>>
+                                            <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                            <input type="radio" class="adCarousel-switch"data-adc-id="<%= row._id %>" 
+                                                id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" 
+                                                <% if(!row.isBlocked) { %>checked<% } %>>
+                                            <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
                                         </td>
                                         <td>
                                             <a href="#" onclick="deleteHc('<%= row._id %>')"
