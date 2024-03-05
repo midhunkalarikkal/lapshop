@@ -60,4 +60,6 @@ userRouter.post('/fpassPostOtp',userAuth.isUserLoggedOut,userController.postForg
 
 userRouter.post('/fpassPostPassword',userAuth.isUserLoggedOut,userController.postForgotPasswordNewPass)
 
+userRouter.get('/productDetail/:productId',userController.getProductDetail)
+
 module.exports = userRouter

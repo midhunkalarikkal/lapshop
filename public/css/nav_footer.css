@@ -8,6 +8,7 @@ h5,
 h6,
 span,
 a,
+.btn,
 p,
 .input-group input::placeholder {
     font-family: 'Anton', sans-serif;

@@ -3,6 +3,8 @@ const bcrypt = require('bcrypt')
 const User = require('../models/userModel')
 const Product = require('../models/productModel')
 const Address = require('../models/addressModel')
+const Brand = require('../models/brandModel')
+const Category = require('../models/categoryModel')
 const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
 const nodemailer = require('nodemailer')
@@ -473,6 +475,7 @@ const postOtpForChangePass = async (req, res) => {
     }
 };
 
+//To pot the otp from forgot password for verifying
 const checkOtpForChangePass = async(req,res)=>{
     try{
         const enteredOtp = req.body.otp
@@ -603,6 +606,23 @@ const postForgotPasswordNewPass = async (req, res) => {
     }
 };
 
+//To get the product detail page
+const getProductDetail = async(req,res)=>{
+    try{
+        const productId = req.params.productId
+        const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}])
+        console.log("ProdutData : ",productData)
+        const productCategory = productData.category
+        console.log("ProdutCategory : ",productCategory)
+        const sameCategoryProduct = await Product.find({category : productCategory._id})
+        console.log("Same category products : ",sameCategoryProduct)
+        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ success : false, message : "Internal server error" })
+    }
+}
+
 
 
 
@@ -631,6 +651,7 @@ module.exports = {
     getForgotPassword,
     postForgotPasswordEmail,
     postForgotPasswordOtp,
-    postForgotPasswordNewPass
+    postForgotPasswordNewPass,
+    getProductDetail
 }
 

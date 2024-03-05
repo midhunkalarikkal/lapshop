@@ -108,7 +108,7 @@
             </ul>
         </div>
         <!-- Filter navbar for small screen end -->
-        <!-- Bran carousel start -->
+        <!-- Brand carousel start -->
         <div id="carouselExampleAutoplaying" class="carousel slide mt-md-4 mt-0" data-bs-ride="carousel">
             <div class="carousel-inner">
               <% if(adCarousel !="" ){ %>
@@ -118,7 +118,7 @@
                   </div>
                 <% }); %>
               <% } else { %>
-                <div class="carousel-item active">
+                <div class="carousel-item">
                   <img src="/static/images/AdCarousels/Ad banner 7.jpg" class="d-block w-100" alt="...">
                 </div>
               <% } %>
@@ -134,7 +134,7 @@
               <span class="visually-hidden">Next</span>
             </button>
           </div>
-        <!-- Bran carousel end -->
+        <!-- Brand carousel end -->
 
         <!-- Shop Start -->
         <div class="container-fluid pt-5">
@@ -190,7 +190,7 @@
                             <% if(productData != ""){ %>
                                 <% productData.forEach((product,index)=>{ %>
                             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                <a href="/product<%= product._id %>" class="product-outline">
+                                <a href="/productDetail/<%= product._id %>" class="product-outline">
                                 <div class="card product-item mb-4 product-card shadow">
                                     <div class="card-header product-img position-relative overflow-hidden  p-0">
                                         <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
