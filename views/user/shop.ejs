@@ -100,14 +100,54 @@
             <div class="filter-header">
                 <span>Apply filters</span>
                 <button class="filter-toggle-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down" style="color: #ffffff;"></i></button>
-            </div>
-            <ul class="filter-list dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
+            </div> 
+            <ul class="filter-list dropdown-menu" style="width: 200px;">
+                <div class="p-3">
+                    <h6 class="font-weight-semi-bold mb-4">Filter by Price</h6>
+                    <form>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-all">
+                            <label class="custom-control-label small" for="price-all"> All Price</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-1">
+                            <label class="custom-control-label small" for="price-1"> ₹0 - ₹20000</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-2">
+                            <label class="custom-control-label small" for="price-2"> ₹20000 - ₹30000</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-3">
+                            <label class="custom-control-label small" for="price-3"> ₹30000 - ₹40000</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-4">
+                            <label class="custom-control-label small" for="price-4"> ₹40000 - ₹50000</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                            <input type="checkbox" class="custom-control-input" id="price-4">
+                            <label class="custom-control-label small" for="price-4"> ₹50000 - ₹60000</label>
+                        </div>
+                        <div
+                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                            <input type="checkbox" class="custom-control-input" id="price-5">
+                            <label class="custom-control-label small" for="price-5"> ₹60000 - Above</label>
+                        </div>
+                    </form>
+                </div>
             </ul>
         </div>
-        <!-- Filter navbar for small screen end -->
+        <!--  Filter navbar for small screen end -->
+
+       
+
         <!-- Brand carousel start -->
         <div id="carouselExampleAutoplaying" class="carousel slide mt-md-4 mt-0" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -148,75 +188,64 @@
                         <form>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="price-all">
-                                <label class="custom-control-label" for="price-all">All Price</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" id="price-1">
                                 <label class="custom-control-label" for="price-1">₹0 - ₹20000</label>
                             </div>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" id="price-2">
-                                <label class="custom-control-label" for="price-2">₹20000 - ₹30000</label>
+                                <label class="custom-control-label" for="price-2">₹20000 - ₹40000</label>
                             </div>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" id="price-3">
-                                <label class="custom-control-label" for="price-3">₹30000 - ₹40000</label>
+                                <label class="custom-control-label" for="price-3">₹40000 - ₹60000</label>
                             </div>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" id="price-4">
-                                <label class="custom-control-label" for="price-4">₹40000 - ₹50000</label>
+                                <label class="custom-control-label" for="price-4">₹60000 - ₹80000</label>
                             </div>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="checkbox" class="custom-control-input" id="price-4">
-                                <label class="custom-control-label" for="price-4">₹50000 - ₹60000</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                                <input type="checkbox" class="custom-control-input" id="price-5">
-                                <label class="custom-control-label" for="price-5">₹60000 - Above</label>
+                                <label class="custom-control-label" for="price-4">₹80000 - Above</label>
                             </div>
                         </form>
                     </div>
                     <!-- Price End -->
 
                     <!-- Category Start -->
+                    <% if(category && category.length >0 ){ %>
                     <div class="border-bottom mb-4 pb-4">
                         <h6 class="font-weight-semi-bold mb-4">Filter by Category</h6>
-                        <form>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="allCategory">
-                                <label class="custom-control-label" for="allCategory">All Category</label>
+                        
+                            <% for(let i = 0; i < category.length; i++){ %>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>" data-category-id="<%= category[i]._id %>" onchange="handleCategoryCheckboxChange(this)" <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
+                                <label class="custom-control-label" for="allCategory"><%= category[i].name %></label>
                             </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="ultrabook">
-                                <label class="custom-control-label" for="ultrabook">Ultrabook</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="gaming">
-                                <label class="custom-control-label" for="gaming">Gaming</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="convertable">
-                                <label class="custom-control-label" for="convertable">Convertable</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="bussiness">
-                                <label class="custom-control-label" for="bussiness">Bussiness</label>
-                            </div>
-                        </form>
+                            <% } %>
+                        
                     </div>
+                    <% } %>
                     <!-- Category End -->
+
+                    <!-- Brand Start -->
+                    <% if(brand && brand.length >0 ){ %>
+                        <div class="border-bottom mb-4 pb-4">
+                            <h6 class="font-weight-semi-bold mb-4">Filter by Brand</h6>
+                            <form>
+                                <% for(let i = 0; i < brand.length; i++){ %>
+                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                    <input type="checkbox" class="custom-control-input" id="allCategory">
+                                    <label class="custom-control-label" for="allCategory"><%= brand[i].name %></label>
+                                </div>
+                                <% } %>
+                            </form>
+                        </div>
+                    <% } %>
+                    <!-- Brand End -->
 
                     <!-- Sorting Start -->
                     <div class="border-bottom mb-4 pb-4">
@@ -242,29 +271,28 @@
                 <!-- Shop Product Start -->
                 <div class="col-md-10">
                     <div class="container">
-                        <div class="row pb-3">
-                            <% if(productData != ""){ %>
-                                <% productData.forEach((product,index)=>{ %>
+                        <div class="row pb-3" id="productCardRow">
+                            <% productData.forEach((product,index)=>{ %>
                             <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                <a href="/productDetail/<%= product._id %>" class="product-outline">
                                 <div class="card product-item mb-4 product-card shadow">
-                                    <div class="card-header product-img position-relative overflow-hidden  p-0">
-                                        <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
-                                        <div class="position-absolute" style="top: 8px; right: 50px; z-index: 1;">
-                                            <i class="fa-regular fa-heart wish-btn"></i>
+                                    <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                        <div class="card-header product-img position-relative overflow-hidden  p-0">
+                                            <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
+                                            <div class="position-absolute" style="top: 8px; right: 50px; z-index: 1;">
+                                                <i class="fa-regular fa-heart wish-btn"></i>
+                                            </div>
+                                            <div class="position-absolute" style="top: 5px; right: 5px; z-index: 1;">
+                                                <span class="badge">New</span>
+                                            </div>
                                         </div>
-                                        <div class="position-absolute" style="top: 5px; right: 5px; z-index: 1;">
-                                            <span class="badge">New</span>
+                                        <div class="card-body">
+                                            <h6 class="text-truncate product-name tet-center mb-3"><%= product.name %></h6>
+                                            <div class="d-flex align-items-end">
+                                                <h6 class="offer-price">₹<%= product.offerPrice %></h6>
+                                                <h6 class="real-price small mx-3">₹<del class="real-price"><%= product.realPrice %></del></h6>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="card-body">
-                                        <h6 class="text-truncate product-name tet-center mb-3"><%= product.name %></h6>
-                                        <div class="d-flex align-items-end">
-                                            <h6 class="offer-price">₹<%= product.offerPrice %></h6>
-                                            <h6 class="real-price small mx-3">₹<del class="real-price"><%= product.realPrice %></del></h6>
-                                        </div>
-                                    </div>
-                                </a>
+                                    </a>
                                     <button class="card-footer d-flex justify-content-center bg-light border">
                                         <a href="" class="btn btn-sm text-dark p-0">
                                             <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
@@ -273,9 +301,9 @@
                                 </div>
                             </div>
                             <% } ) %>
+                        </div>
 
-                            
-
+                        <% if(productData != ""){ %>
                             <div class="col-12 pb-1">
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-center mb-3">
@@ -297,10 +325,9 @@
                                     </ul>
                                 </nav>
                             </div>
-                            <% } else { %>
-                                <h3 class="text-center bg-warning">No Product found</h3>
+                            <% }else{ %>
+                                <div class="alert alert-info text-center" role="alert">No products found in the database.</div>
                             <% } %>
-                        </div>
                     </div>
                 </div>
                 <!-- Shop Product End -->
@@ -311,11 +338,86 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         <script>
+            ////// Function to open and close the small device filter dropdown \\\\\\
             $(document).ready(function () {
                 $('.filter-toggle-btn').click(function () {
                     $('.filter-list').toggleClass('open');
                 });
             });
+
+            ////// Function to add id's of the category checkbox \\\\\\
+            let selectedCategories = new Set();
+            function handleCategoryCheckboxChange(checkbox) {
+                const categoryId = checkbox.getAttribute("data-category-id");
+
+                if (checkbox.checked) {
+                    selectedCategories.add(categoryId);
+                } else {
+                    selectedCategories.delete(categoryId);
+                }
+
+                updateProductList();
+            }
+
+            ////// Function to fetch the categorized products and show it dynamically \\\\\\
+            function updateProductList() {
+                fetch('/shopCategoryId', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ categories: [...selectedCategories] })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    let productData = data.productData
+                    ////// Emptying the child elements of the productCardRow div \\\\\\
+                    $("#productCardRow").empty()
+                    
+                    productData.forEach((product) => {
+                        const productDiv = $(
+                            `<div class='col-lg-4 col-md-6 col-sm-6 pb-1'>
+                                <div class='card product-item mb-4 product-card shadow'>
+                                    <a href='/productDetail/${product._id}' class='product-outline'>
+                                        <div class='card-header product-img position-relative overflow-hidden  p-0'>
+                                            <img class='img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
+                                            <div class='position-absolute' style='top: 8px; right: 50px; z-index: 1;'>
+                                                <i class='fa-regular fa-heart wish-btn'></i>
+                                            </div>
+                                            <div class='position-absolute' style='top: 5px; right: 5px; z-index: 1;'>
+                                                <span class='badge'>New</span>
+                                            </div>
+                                        </div>
+                                        <div class='card-body'>
+                                            <h6 class='text-truncate product-name text-center mb-3'>${product.name}</h6>
+                                            <div class='d-flex align-items-end'>
+                                                <h6 class='offer-price'>₹${product.offerPrice}</h6>
+                                                <h6 class='real-price small mx-3'>₹<del class='real-price'>${product.realPrice}</del></h6>
+                                            </div>
+                                        </div>
+                                    </a>
+                                        <button class='card-footer d-flex justify-content-center bg-light border'>
+                                            <a href='' class='btn btn-sm text-dark p-0'>
+                                                <i class='fas fa-shopping-cart text-primary mr-1'></i>
+                                                Add To Cart
+                                            </a>
+                                        </button>
+                                    </div>
+                                </div>`
+                        );
+                        ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
+                        $("#productCardRow").append(productDiv)
+                    });
+                    ////// if the productData's length is 0 in response , then redirecting to shop page \\\\\\
+                    if(productData.length == 0){
+                        window.location.href ='/shop'
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching products:', error);
+                });
+            }
         </script>
 
     </section>

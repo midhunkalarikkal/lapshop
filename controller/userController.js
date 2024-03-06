@@ -14,7 +14,7 @@ const path = require('path')
 const fs = require('fs')
 const session = require('express-session')
 const express = require('express')
-const { error } = require('console')
+const { error, count } = require('console')
 const app = express()
 
 app.use(session({
@@ -327,12 +327,37 @@ const postUserProfileImage = async(req,res)=>{
 }
 
 //To get the shop page
-const getUserShop = async(re,res)=>{
+const getUserShop = async(req,res)=>{
     try{
+        
         const productData = await Product.find({ isBlocked: false });
         const adCarousel = await AdCarousel.find({ isBlocked: false });
-        console.log(adCarousel)
-        res.render('user/shop',{productData , userDetails , adCarousel})
+        const category = await Category.find({ isBlocked : false})
+        const brand = await Brand.find({ isBlocked : false})
+        const categoryId = []
+        console.log("Get user shop")
+
+        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId })
+        
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error"})
+    }
+}
+
+
+// To get the categorized products
+const getCatProduct = async(req,res)=>{
+    try{
+        let productData
+        if(req.body.categories){
+            const categories = req.body.categories
+                productData = await Product.find({ category: {$in : categories}, isBlocked: false });
+                console.log(productData)
+                res.status(200).json({ message : "Categorized products", productData })
+        }else{
+            res.status(400).json({ message : "No categories found" })
+        }
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error"})
@@ -652,6 +677,7 @@ module.exports = {
     postForgotPasswordEmail,
     postForgotPasswordOtp,
     postForgotPasswordNewPass,
-    getProductDetail
+    getProductDetail,
+    getCatProduct
 }
 

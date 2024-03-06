@@ -34,7 +34,6 @@ userRouter.post('/updateUserInfo',userAuth.isUserLoggedIn,userController.postUse
 //To add profile image
 userRouter.post('/uploadProfileImage',userAuth.isUserLoggedIn,uploadProfileImage.single('profileImg'),userController.postUserProfileImage)
 
-userRouter.get('/shop',userController.getUserShop)
 
 userRouter.get('/addAddress/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddress)
 
@@ -61,5 +60,11 @@ userRouter.post('/fpassPostOtp',userAuth.isUserLoggedOut,userController.postForg
 userRouter.post('/fpassPostPassword',userAuth.isUserLoggedOut,userController.postForgotPasswordNewPass)
 
 userRouter.get('/productDetail/:productId',userController.getProductDetail)
+
+userRouter.get('/shop',userController.getUserShop)
+
+// userRouter.get('/shop/:categoryId?',userController.getCatProduct)
+
+userRouter.post('/shopCategoryId',userController.getCatProduct)
 
 module.exports = userRouter
