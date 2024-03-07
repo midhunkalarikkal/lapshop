@@ -1,0 +1,86 @@
+:root {
+    --primary-color: #50c878;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
+    --offerprice-color: #22a751;
+    --realprice-color: #be2626;
+}
+
+.filter-container {
+    position: relative;
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--third-color);
+    color: #fff;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.filter-list {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 40%;
+    z-index: 1000;
+    padding: 10px;
+    display: none;
+}
+
+.filter-list.open {
+    display: block;
+}
+
+.filter-toggle-btn{
+    background-color: #28a74600;
+    border: 0;
+    margin-left: 10px;
+}
+
+.product-outline{
+    text-decoration: none;
+}
+
+.product-card:hover {
+    transform: scale(1.02);
+    transition: 0.5s;
+    .product-image{
+        transition: 0.5s;
+        transform: scale(1.05);
+    }
+}
+
+.product-card:not(:hover) {
+    transform: scale(1);
+    transition: 0.5s;
+    .product-image{
+        transition: 0.5s;
+        transform: scale(1);
+    }
+}
+
+.product-name{
+    color: var(--third-color);
+}
+
+.wish-btn{
+    color: var(--primary-color);
+    font-size: 20px;
+}
+
+.badge{
+    background-color: var(--primary-color);
+}
+
+.offer-price{
+    color: var(--offerprice-color);
+}
+
+.real-price{
+    color: var(--realprice-color);
+}

@@ -3,95 +3,7 @@
 
     <head>
         <!-- Custom css -->
-        <style>
-            :root {
-                --primary-color: #50c878;
-                --secondary-color: #f0ffff;
-                --third-color: #1b1b1b;
-                --fourth-color: #f82b50;
-                --fifth-color: #38ed77;
-                --sixth-color: #e4e4e4;
-                --offerprice-color: #22a751;
-                --realprice-color: #be2626;
-            }
-
-            .filter-container {
-                position: relative;
-            }
-
-            .filter-header {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: var(--third-color);
-                color: #fff;
-                padding: 10px 20px;
-                cursor: pointer;
-            }
-
-            .filter-list {
-                position: absolute;
-                top: calc(100% + 5px);
-                left: 40%;
-                z-index: 1000;
-                padding: 10px;
-                display: none;
-            }
-
-            .filter-list.open {
-                display: block;
-            }
-
-            .filter-toggle-btn{
-                background-color: #28a74600;
-                border: 0;
-                margin-left: 10px;
-            }
-
-            .product-outline{
-                text-decoration: none;
-            }
-    
-            .product-card:hover {
-                transform: scale(1.02);
-                transition: 0.5s;
-                .product-image{
-                    transition: 0.5s;
-                    transform: scale(1.05);
-                }
-            }
-
-            .product-card:not(:hover) {
-                transform: scale(1);
-                transition: 0.5s;
-                .product-image{
-                    transition: 0.5s;
-                    transform: scale(1);
-                }
-            }
-
-            .product-name{
-                color: var(--third-color);
-            }
-
-            .wish-btn{
-                color: var(--primary-color);
-                font-size: 20px;
-            }
-
-            .badge{
-                background-color: var(--primary-color);
-            }
-
-            .offer-price{
-                color: var(--offerprice-color);
-            }
-
-            .real-price{
-                color: var(--realprice-color);
-            }
-
-        </style>
+        <link rel="stylesheet" href="/static/css/shop.css">
     </head>
 
     <section class="view">
@@ -253,12 +165,12 @@
                         <form>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="radio" class="custom-control-input" id="price-HighToLow">
+                                <input type="radio" class="custom-control-input" id="price-HighToLow" onchange="handleCheckboxChange(this)">
                                 <label class="custom-control-label" for="price-HighToLow">High - Low</label>
                             </div>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="radio" class="custom-control-input" id="price-LowToHigh">
+                                <input type="radio" class="custom-control-input" id="price-LowToHigh" onchange="handleCheckboxChange(this)">
                                 <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
                             </div>
                         </form>
@@ -349,10 +261,34 @@
             ////// Function to add id's of the category checkbox \\\\\\
             let selectedCategories = new Set();
             let selectedBrands = new Set();
+            let sortCriteria = null;
+
+            ////// Function select and deselect the radio button and triggering the fetch \\\\\\
+            $(document).ready(function () {
+            $('input[type="radio"]').click(function () {
+                const selectedSortCriteria = $(this).attr('id');
+                
+                if (selectedSortCriteria === "price-HighToLow") {
+                    sortCriteria = "highToLow";
+                } else if (selectedSortCriteria === "price-LowToHigh") {
+                    sortCriteria = "lowToHigh";
+                } else {
+                    sortCriteria = null;
+                }
+
+                // Update radio button selection
+                $('input[type="radio"]').prop('checked', false); // Deselect all
+                $(this).prop('checked', true);
+
+                updateProductList();
+            });
+        });
+
+            ////// Function update the product according to the users filter criteria \\\\\\
             function handleCheckboxChange(checkbox) {
                 const categoryId = checkbox.getAttribute("data-category-id");
                 const brandId = checkbox.getAttribute("data-brand-id");
-
+           
                 if (checkbox.checked) {
                     selectedCategories.add(categoryId);
                     selectedBrands.add(brandId);
@@ -363,22 +299,22 @@
 
                 updateProductList();
             }
-            console.log("Selected categories :",selectedCategories)
-            console.log("Selected brands :",selectedBrands)
 
-            ////// Function to fetch the categorized products and show it dynamically \\\\\\
+            ////// Function to fetch the categorized and brandwise products and show it dynamically \\\\\\
             function updateProductList() {
+                console.log("sortCriteria : ",sortCriteria)
                 fetch('/shopCategoryId', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands] })
+                    body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands] , sortCriteria })
                 })
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
                     let productData = data.productData
+
                     ////// Emptying the child elements of the productCardRow div \\\\\\
                     $("#productCardRow").empty()
                     
