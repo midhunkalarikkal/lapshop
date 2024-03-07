@@ -222,7 +222,7 @@
                         
                             <% for(let i = 0; i < category.length; i++){ %>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>" data-category-id="<%= category[i]._id %>" onchange="handleCategoryCheckboxChange(this)" <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
+                                <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>" data-category-id="<%= category[i]._id %>" onchange="handleCheckboxChange(this)" <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
                                 <label class="custom-control-label" for="allCategory"><%= category[i].name %></label>
                             </div>
                             <% } %>
@@ -238,7 +238,7 @@
                             <form>
                                 <% for(let i = 0; i < brand.length; i++){ %>
                                 <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="allCategory">
+                                    <input type="checkbox" class="custom-control-input" id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>" onchange="handleCheckboxChange(this)" <% if (brandId.includes(brand[i]._id)) { %> checked <% } %>>
                                     <label class="custom-control-label" for="allCategory"><%= brand[i].name %></label>
                                 </div>
                                 <% } %>
@@ -336,6 +336,7 @@
         <!-- Shop End -->
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
         <script>
             ////// Function to open and close the small device filter dropdown \\\\\\
@@ -347,17 +348,23 @@
 
             ////// Function to add id's of the category checkbox \\\\\\
             let selectedCategories = new Set();
-            function handleCategoryCheckboxChange(checkbox) {
+            let selectedBrands = new Set();
+            function handleCheckboxChange(checkbox) {
                 const categoryId = checkbox.getAttribute("data-category-id");
+                const brandId = checkbox.getAttribute("data-brand-id");
 
                 if (checkbox.checked) {
                     selectedCategories.add(categoryId);
+                    selectedBrands.add(brandId);
                 } else {
                     selectedCategories.delete(categoryId);
+                    selectedBrands.delete(brandId);
                 }
 
                 updateProductList();
             }
+            console.log("Selected categories :",selectedCategories)
+            console.log("Selected brands :",selectedBrands)
 
             ////// Function to fetch the categorized products and show it dynamically \\\\\\
             function updateProductList() {
@@ -366,7 +373,7 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ categories: [...selectedCategories] })
+                    body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands] })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -411,7 +418,16 @@
                     });
                     ////// if the productData's length is 0 in response , then redirecting to shop page \\\\\\
                     if(productData.length == 0){
-                        window.location.href ='/shop'
+                        Swal.fire({
+                            title: "No Products Found",
+                            text: "No products were found for the selected filters.",
+                            icon: "info",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(()=>{
+                            window.location.href ='/shop'
+                        })
                     }
                 })
                 .catch(error => {

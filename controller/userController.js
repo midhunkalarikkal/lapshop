@@ -335,9 +335,10 @@ const getUserShop = async(req,res)=>{
         const category = await Category.find({ isBlocked : false})
         const brand = await Brand.find({ isBlocked : false})
         const categoryId = []
+        const brandId = []
         console.log("Get user shop")
 
-        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId })
+        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId })
         
     }catch(error){
         console.log(error.message)
@@ -349,14 +350,42 @@ const getUserShop = async(req,res)=>{
 // To get the categorized products
 const getCatProduct = async(req,res)=>{
     try{
+        console.log("Here")
+        console.log("res body :",req.body)
+        console.log("res body categories :",req.body.categories)
+        console.log("res body brands :",req.body.brands)
         let productData
-        if(req.body.categories){
-            const categories = req.body.categories
-                productData = await Product.find({ category: {$in : categories}, isBlocked: false });
+        if(req.body){
+            // To get the category and brand id's array and filtering to delete null
+            const categories = req.body.categories.filter(category => category !== null);
+            const brands = req.body.brands.filter(brand => brand !== null);
+                // The querry to retrieve the product
+                let query = { isBlocked: false };
+                if (categories.length > 0 && brands.length > 0) {
+                    query = {
+                        $and: [
+                            { category: { $in: categories } },
+                            { brand: { $in: brands } }
+                        ],
+                        isBlocked: false
+                    };
+                } else if (categories.length > 0 && brands.length == 0) {
+                    query = {
+                        category: { $in: categories },
+                        isBlocked: false
+                    };
+                } else if (brands.length > 0 && categories.length == 0) {
+                    query = {
+                        brand: { $in: brands },
+                        isBlocked: false
+                    };
+                }
+                
+                productData = await Product.find(query);
                 console.log(productData)
                 res.status(200).json({ message : "Categorized products", productData })
         }else{
-            res.status(400).json({ message : "No categories found" })
+            res.status(400).json({ message : "No categorized found" })
         }
     }catch(error){
         console.log(error.message)
