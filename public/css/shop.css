@@ -23,23 +23,8 @@
     cursor: pointer;
 }
 
-.filter-list {
-    position: absolute;
-    top: calc(100% + 5px);
-    left: 40%;
-    z-index: 1000;
-    padding: 10px;
-    display: none;
-}
-
-.filter-list.open {
-    display: block;
-}
-
-.filter-toggle-btn{
-    background-color: #28a74600;
-    border: 0;
-    margin-left: 10px;
+.dropdown-menu{
+    --bs-dropdown-link-active-bg: var(--primary-color);
 }
 
 .product-outline{

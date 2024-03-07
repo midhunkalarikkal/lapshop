@@ -10,51 +10,39 @@
         <!-- Filter navbar for small screen start -->
         <div class="filter-container mt-4 d-md-none d-block dropdown">
             <div class="filter-header">
-                <span>Apply filters</span>
-                <button class="filter-toggle-btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-angle-down" style="color: #ffffff;"></i></button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary border-0 dropdown-toggle" style="background-color: rgba(240, 248, 255, 0);" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Filter the products 
+                    </button>
+                    <ul class="dropdown-menu">
+                        <% if(category && category.length >0 ){ %>
+                            <h6 class="font-weight-semi-bold text-center">Filter by Category</h6>
+                            <hr>
+                            <% for(let i = 0; i < category.length; i++){ %>
+                                <li>
+                                    <a class="dropdown-item">
+                                        <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>" data-category-id="<%= category[i]._id %>" onchange="handleCheckboxChange(this)" <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
+                                        <label class="custom-control-label" for="allCategory"><%= category[i].name %></label>
+                                    </a>
+                                </li> 
+                            <% } %>
+                        <% } %>
+
+                        <% if(brand && brand.length >0 ){ %>
+                            <h6 class="font-weight-semi-bold text-center mt-3">Filter by Brand</h6>
+                            <hr>
+                            <% for(let i = 0; i < brand.length; i++){ %>
+                                <li>
+                                    <a class="dropdown-item">
+                                        <input type="checkbox" class="custom-control-input" id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>" onchange="handleCheckboxChange(this)" <% if (brandId.includes(brand[i]._id)) { %> checked <% } %>>
+                                        <label class="custom-control-label" for="allCategory"><%= brand[i].name %></label>
+                                    </a>
+                                </li> 
+                            <% } %>
+                        <% } %>
+                    </ul>
+                  </div>
             </div> 
-            <ul class="filter-list dropdown-menu" style="width: 200px;">
-                <div class="p-3">
-                    <h6 class="font-weight-semi-bold mb-4">Filter by Price</h6>
-                    <form>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-all">
-                            <label class="custom-control-label small" for="price-all"> All Price</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-1">
-                            <label class="custom-control-label small" for="price-1"> ₹0 - ₹20000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-2">
-                            <label class="custom-control-label small" for="price-2"> ₹20000 - ₹30000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-3">
-                            <label class="custom-control-label small" for="price-3"> ₹30000 - ₹40000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label small" for="price-4"> ₹40000 - ₹50000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input" id="price-4">
-                            <label class="custom-control-label small" for="price-4"> ₹50000 - ₹60000</label>
-                        </div>
-                        <div
-                            class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input" id="price-5">
-                            <label class="custom-control-label small" for="price-5"> ₹60000 - Above</label>
-                        </div>
-                    </form>
-                </div>
-            </ul>
         </div>
         <!--  Filter navbar for small screen end -->
 
@@ -276,7 +264,6 @@
 
             ////// Function to fetch the categorized and brandwise products and show it dynamically \\\\\\
             function updateProductList() {
-                console.log("selectedPrices : ",selectedPrices)
                 fetch('/shopCategoryId', {
                     method: 'POST',
                     headers: {
