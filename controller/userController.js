@@ -360,14 +360,15 @@ const getCatProduct = async(req,res)=>{
             // To get the category and brand id's array and filtering to delete null
             const categories = req.body.categories.filter(category => category !== null);
             const brands = req.body.brands.filter(brand => brand !== null);
-            const sortCriteria = req.body.sortCriteria
+            
+                const sortCriteria = req.body.sortCriteria
                 // The querry to retrieve the product
                 let query = { isBlocked: false };
-                if (categories.length > 0 && brands.length > 0) {
+                if (categories.length > 0 && brands.length > 0 ) {
                     query = {
                         $and: [
                             { category: { $in: categories } },
-                            { brand: { $in: brands } }
+                            { brand: { $in: brands } },
                         ],
                         isBlocked: false
                     };
@@ -384,6 +385,7 @@ const getCatProduct = async(req,res)=>{
                 }
                 
                 productData = await Product.find(query);
+                console.log("productData :",productData)
                 if(sortCriteria === "highToLow"){
                     productData.sort((a,b) => b.offerPrice - a.offerPrice)
                 }else if(sortCriteria === "lowToHigh"){

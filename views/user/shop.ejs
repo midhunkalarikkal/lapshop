@@ -94,38 +94,6 @@
                 <!-- Shop Sidebar Start -->
                 <div class="col-md-2 d-none d-md-block">
                     <h5 class="font-weight-semi-bold mb-4">Apply filters</h5>
-                    <!-- Price Start -->
-                    <div class="border-bottom mb-4 pb-4">
-                        <h6 class="font-weight-semi-bold mb-4">Filter by Price</h6>
-                        <form>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="price-1">
-                                <label class="custom-control-label" for="price-1">₹0 - ₹20000</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="price-2">
-                                <label class="custom-control-label" for="price-2">₹20000 - ₹40000</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="price-3">
-                                <label class="custom-control-label" for="price-3">₹40000 - ₹60000</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="price-4">
-                                <label class="custom-control-label" for="price-4">₹60000 - ₹80000</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="price-4">
-                                <label class="custom-control-label" for="price-4">₹80000 - Above</label>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Price End -->
 
                     <!-- Category Start -->
                     <% if(category && category.length >0 ){ %>
@@ -165,12 +133,12 @@
                         <form>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="radio" class="custom-control-input" id="price-HighToLow" onchange="handleCheckboxChange(this)">
+                                <input type="radio" class="custom-control-input" id="price-HighToLow">
                                 <label class="custom-control-label" for="price-HighToLow">High - Low</label>
                             </div>
                             <div
                                 class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="radio" class="custom-control-input" id="price-LowToHigh" onchange="handleCheckboxChange(this)">
+                                <input type="radio" class="custom-control-input" id="price-LowToHigh">
                                 <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
                             </div>
                         </form>
@@ -289,12 +257,18 @@
                 const categoryId = checkbox.getAttribute("data-category-id");
                 const brandId = checkbox.getAttribute("data-brand-id");
            
-                if (checkbox.checked) {
-                    selectedCategories.add(categoryId);
-                    selectedBrands.add(brandId);
-                } else {
-                    selectedCategories.delete(categoryId);
-                    selectedBrands.delete(brandId);
+                if (categoryId) {
+                    if (checkbox.checked) {
+                        selectedCategories.add(categoryId);
+                    } else {
+                        selectedCategories.delete(categoryId);
+                    }
+                } else if (brandId) {
+                    if (checkbox.checked) {
+                        selectedBrands.add(brandId);
+                    } else {
+                        selectedBrands.delete(brandId);
+                    }
                 }
 
                 updateProductList();
@@ -302,7 +276,7 @@
 
             ////// Function to fetch the categorized and brandwise products and show it dynamically \\\\\\
             function updateProductList() {
-                console.log("sortCriteria : ",sortCriteria)
+                console.log("selectedPrices : ",selectedPrices)
                 fetch('/shopCategoryId', {
                     method: 'POST',
                     headers: {
