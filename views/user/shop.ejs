@@ -4,76 +4,133 @@
     <head>
         <!-- Custom css -->
         <link rel="stylesheet" href="/static/css/shop.css">
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.querySelectorAll('.dropdown-menu').forEach(function (element) {
+                    element.addEventListener('click', function (e) {
+                        e.stopPropagation();
+                    });
+                })
+
+                if (window.innerWidth < 992) {
+                    document.querySelectorAll('filter-container .dropdown').forEach(function (everydropdown) {
+                        everydropdown.addEventListener('hidden.bs.dropdown', function () {
+                            this.querySelectorAll('.submenu').forEach(function (everysubmenu) {
+                                everysubmenu.style.display = 'none';
+                            });
+                        })
+                    });
+
+                    document.querySelectorAll('.dropdown-menu a').forEach(function (element) {
+                        element.addEventListener('click', function (e) {
+
+                            let nextEl = this.nextElementSibling;
+                            if (nextEl && nextEl.classList.contains('submenu')) {
+                                e.preventDefault();
+                                console.log(nextEl);
+                                if (nextEl.style.display == 'block') {
+                                    nextEl.style.display = 'none';
+                                } else {
+                                    nextEl.style.display = 'block';
+                                }
+
+                            }
+                        });
+                    })
+                }
+            }); 
+            
+        </script>
     </head>
 
     <section class="view">
         <!-- Filter navbar for small screen start -->
-        <div class="filter-container mt-4 d-md-none d-block dropdown">
+        <div class="filter-container d-md-none d-block">
             <div class="filter-header">
-                <div class="dropdown">
-                    <button class="btn btn-secondary border-0 dropdown-toggle" style="background-color: rgba(240, 248, 255, 0);" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                      Filter the products 
-                    </button>
-                    <ul class="dropdown-menu">
-                        <% if(category && category.length >0 ){ %>
-                            <h6 class="font-weight-semi-bold text-center">Filter by Category</h6>
-                            <hr>
-                            <% for(let i = 0; i < category.length; i++){ %>
-                                <li>
-                                    <a class="dropdown-item">
-                                        <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>" data-category-id="<%= category[i]._id %>" onchange="handleCheckboxChange(this)" <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
-                                        <label class="custom-control-label" for="allCategory"><%= category[i].name %></label>
-                                    </a>
-                                </li> 
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Filters and sorters</a>
+                        <ul class="dropdown-menu">
+                            <% if(category && category.length >0 ){ %>
+                            <li><a class="dropdown-item" href="#">Filter by category <i class="fa-solid fa-angles-down"></i> </a>
+                                <ul class="submenu dropdown-menu">
+                                    <% for(let i = 0; i < category.length; i++){ %>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>" data-category-id="<%= category[i]._id %>" onchange="handleCheckboxChange(this)" <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
+                                            <label class="custom-control-label" for="allCategory"><%= category[i].name %></label>
+                                        </a>
+                                    </li>
+                                    <% } %>
+                                </ul>
+                            </li>
                             <% } %>
-                        <% } %>
-
-                        <% if(brand && brand.length >0 ){ %>
-                            <h6 class="font-weight-semi-bold text-center mt-3">Filter by Brand</h6>
-                            <hr>
-                            <% for(let i = 0; i < brand.length; i++){ %>
-                                <li>
-                                    <a class="dropdown-item">
-                                        <input type="checkbox" class="custom-control-input" id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>" onchange="handleCheckboxChange(this)" <% if (brandId.includes(brand[i]._id)) { %> checked <% } %>>
-                                        <label class="custom-control-label" for="allCategory"><%= brand[i].name %></label>
-                                    </a>
-                                </li> 
+                            <% if(brand && brand.length >0 ){ %>
+                            <li><a class="dropdown-item" href="#"> Filter by brand <i class="fa-solid fa-angles-down"></i> </a>
+                                <ul class="submenu dropdown-menu">
+                                    <% for(let i = 0; i < brand.length; i++){ %>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <input type="checkbox" class="custom-control-input" id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>" onchange="handleCheckboxChange(this)" <% if (brandId.includes(brand[i]._id)) { %> checked <% } %>>
+                                            <label class="custom-control-label" for="allCategory"><%= brand[i].name %></label>
+                                        </a>
+                                    </li>
+                                    <% } %>
+                                </ul>
+                            </li>
                             <% } %>
-                        <% } %>
-                    </ul>
-                  </div>
-            </div> 
+                            <li><a class="dropdown-item" href="#"> Sort by price <i class="fa-solid fa-angles-down"></i></a>
+                                <ul class="submenu dropdown-menu">
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <input type="radio" class="custom-control-input" id="price-HighToLow">
+                                            <label class="custom-control-label" for="price-HighToLow">High - Low</label>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <input type="radio" class="custom-control-input" id="price-LowToHigh">
+                                                <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
         <!--  Filter navbar for small screen end -->
 
-       
+
 
         <!-- Brand carousel start -->
         <div id="carouselExampleAutoplaying" class="carousel slide mt-md-4 mt-0" data-bs-ride="carousel">
             <div class="carousel-inner">
-              <% if(adCarousel !="" ){ %>
-                <% adCarousel.forEach((adc, index)=> { %>
-                  <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                    <img src="/static/images/AdCarousels/<%= adc.image %>" class="d-block w-100" alt="...">
-                  </div>
-                <% }); %>
-              <% } else { %>
-                <div class="carousel-item">
-                  <img src="/static/images/AdCarousels/Ad banner 7.jpg" class="d-block w-100" alt="...">
-                </div>
-              <% } %>
+                <% if(adCarousel !="" ){ %>
+                    <% adCarousel.forEach((adc, index)=> { %>
+                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                            <img src="/static/images/AdCarousels/<%= adc.image %>" class="d-block w-100" alt="...">
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <div class="carousel-item">
+                        <img src="/static/images/AdCarousels/Ad banner 7.jpg" class="d-block w-100"
+                            alt="...">
+                    </div>
+                <% } %>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-              data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
+                data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-              data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
+                data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
             </button>
-          </div>
+        </div>
         <!-- Brand carousel end -->
 
         <!-- Shop Start -->
@@ -84,54 +141,67 @@
                     <h5 class="font-weight-semi-bold mb-4">Apply filters</h5>
 
                     <!-- Category Start -->
-                    <% if(category && category.length >0 ){ %>
-                    <div class="border-bottom mb-4 pb-4">
-                        <h6 class="font-weight-semi-bold mb-4">Filter by Category</h6>
-                        
-                            <% for(let i = 0; i < category.length; i++){ %>
-                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>" data-category-id="<%= category[i]._id %>" onchange="handleCheckboxChange(this)" <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
-                                <label class="custom-control-label" for="allCategory"><%= category[i].name %></label>
-                            </div>
-                            <% } %>
-                        
-                    </div>
-                    <% } %>
-                    <!-- Category End -->
-
-                    <!-- Brand Start -->
-                    <% if(brand && brand.length >0 ){ %>
+                    <% if(category && category.length>0 ){ %>
                         <div class="border-bottom mb-4 pb-4">
-                            <h6 class="font-weight-semi-bold mb-4">Filter by Brand</h6>
-                            <form>
-                                <% for(let i = 0; i < brand.length; i++){ %>
-                                <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                    <input type="checkbox" class="custom-control-input" id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>" onchange="handleCheckboxChange(this)" <% if (brandId.includes(brand[i]._id)) { %> checked <% } %>>
-                                    <label class="custom-control-label" for="allCategory"><%= brand[i].name %></label>
+                            <h6 class="font-weight-semi-bold mb-4">Filter by Category</h6>
+
+                            <% for(let i=0; i < category.length; i++){ %>
+                                <div
+                                    class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                    <input type="checkbox" class="custom-control-input" id="<%= category[i]._id %>"
+                                        data-category-id="<%= category[i]._id %>" onchange="handleCheckboxChange(this)"
+                                        <% if (categoryId.includes(category[i]._id)) { %> checked <% } %>>
+                                        <label class="custom-control-label" for="allCategory">
+                                            <%= category[i].name %>
+                                        </label>
                                 </div>
                                 <% } %>
-                            </form>
-                        </div>
-                    <% } %>
-                    <!-- Brand End -->
 
-                    <!-- Sorting Start -->
-                    <div class="border-bottom mb-4 pb-4">
-                        <h6 class="font-weight-semi-bold mb-4">Sort by price</h6>
-                        <form>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="radio" class="custom-control-input" id="price-HighToLow">
-                                <label class="custom-control-label" for="price-HighToLow">High - Low</label>
-                            </div>
-                            <div
-                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                                <input type="radio" class="custom-control-input" id="price-LowToHigh">
-                                <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Sorting End -->
+                        </div>
+                        <% } %>
+                            <!-- Category End -->
+
+                            <!-- Brand Start -->
+                            <% if(brand && brand.length>0 ){ %>
+                                <div class="border-bottom mb-4 pb-4">
+                                    <h6 class="font-weight-semi-bold mb-4">Filter by Brand</h6>
+                                    <form>
+                                        <% for(let i=0; i < brand.length; i++){ %>
+                                            <div
+                                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                                <input type="checkbox" class="custom-control-input"
+                                                    id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>"
+                                                    onchange="handleCheckboxChange(this)" <% if
+                                                    (brandId.includes(brand[i]._id)) { %> checked <% } %>>
+                                                    <label class="custom-control-label" for="allCategory">
+                                                        <%= brand[i].name %>
+                                                    </label>
+                                            </div>
+                                            <% } %>
+                                    </form>
+                                </div>
+                                <% } %>
+                                    <!-- Brand End -->
+
+                                    <!-- Sorting Start -->
+                                    <div class="border-bottom mb-4 pb-4">
+                                        <h6 class="font-weight-semi-bold mb-4">Sort by price</h6>
+                                        <form>
+                                            <div
+                                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                                <input type="radio" class="custom-control-input" id="price-HighToLow">
+                                                <label class="custom-control-label" for="price-HighToLow">High -
+                                                    Low</label>
+                                            </div>
+                                            <div
+                                                class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                                <input type="radio" class="custom-control-input" id="price-LowToHigh">
+                                                <label class="custom-control-label" for="price-LowToHigh">Low -
+                                                    High</label>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- Sorting End -->
                 </div>
                 <!-- Shop Sidebar End -->
 
@@ -141,37 +211,45 @@
                     <div class="container">
                         <div class="row pb-3" id="productCardRow">
                             <% productData.forEach((product,index)=>{ %>
-                            <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                <div class="card product-item mb-4 product-card shadow">
-                                    <a href="/productDetail/<%= product._id %>" class="product-outline">
-                                        <div class="card-header product-img position-relative overflow-hidden  p-0">
-                                            <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
-                                            <div class="position-absolute" style="top: 8px; right: 50px; z-index: 1;">
-                                                <i class="fa-regular fa-heart wish-btn"></i>
+                                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                    <div class="card product-item mb-4 product-card shadow">
+                                        <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                            <div class="card-header product-img position-relative overflow-hidden  p-0">
+                                                <img class="img-fluid product-image w-100"
+                                                    src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
+                                                <div class="position-absolute"
+                                                    style="top: 8px; right: 50px; z-index: 1;">
+                                                    <i class="fa-regular fa-heart wish-btn"></i>
+                                                </div>
+                                                <div class="position-absolute"
+                                                    style="top: 5px; right: 5px; z-index: 1;">
+                                                    <span class="badge">New</span>
+                                                </div>
                                             </div>
-                                            <div class="position-absolute" style="top: 5px; right: 5px; z-index: 1;">
-                                                <span class="badge">New</span>
+                                            <div class="card-body">
+                                                <h6 class="text-truncate product-name tet-center mb-3">
+                                                    <%= product.name %>
+                                                </h6>
+                                                <div class="d-flex align-items-end">
+                                                    <h6 class="offer-price">₹<%= product.offerPrice %>
+                                                    </h6>
+                                                    <h6 class="real-price small mx-3">₹<del class="real-price">
+                                                            <%= product.realPrice %>
+                                                        </del></h6>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="card-body">
-                                            <h6 class="text-truncate product-name tet-center mb-3"><%= product.name %></h6>
-                                            <div class="d-flex align-items-end">
-                                                <h6 class="offer-price">₹<%= product.offerPrice %></h6>
-                                                <h6 class="real-price small mx-3">₹<del class="real-price"><%= product.realPrice %></del></h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                    <button class="card-footer d-flex justify-content-center bg-light border">
-                                        <a href="" class="btn btn-sm text-dark p-0">
-                                            <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
                                         </a>
-                                    </button>
+                                        <button class="card-footer d-flex justify-content-center bg-light border">
+                                            <a href="" class="btn btn-sm text-dark p-0">
+                                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart
+                                            </a>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                            <% } ) %>
+                                <% } ) %>
                         </div>
 
-                        <% if(productData != ""){ %>
+                        <% if(productData !="" ){ %>
                             <div class="col-12 pb-1">
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-center mb-3">
@@ -194,8 +272,9 @@
                                 </nav>
                             </div>
                             <% }else{ %>
-                                <div class="alert alert-info text-center" role="alert">No products found in the database.</div>
-                            <% } %>
+                                <div class="alert alert-info text-center" role="alert">No products found in the
+                                    database.</div>
+                                <% } %>
                     </div>
                 </div>
                 <!-- Shop Product End -->
@@ -221,30 +300,30 @@
 
             ////// Function select and deselect the radio button and triggering the fetch \\\\\\
             $(document).ready(function () {
-            $('input[type="radio"]').click(function () {
-                const selectedSortCriteria = $(this).attr('id');
-                
-                if (selectedSortCriteria === "price-HighToLow") {
-                    sortCriteria = "highToLow";
-                } else if (selectedSortCriteria === "price-LowToHigh") {
-                    sortCriteria = "lowToHigh";
-                } else {
-                    sortCriteria = null;
-                }
+                $('input[type="radio"]').click(function () {
+                    const selectedSortCriteria = $(this).attr('id');
 
-                // Update radio button selection
-                $('input[type="radio"]').prop('checked', false); // Deselect all
-                $(this).prop('checked', true);
+                    if (selectedSortCriteria === "price-HighToLow") {
+                        sortCriteria = "highToLow";
+                    } else if (selectedSortCriteria === "price-LowToHigh") {
+                        sortCriteria = "lowToHigh";
+                    } else {
+                        sortCriteria = null;
+                    }
 
-                updateProductList();
+                    // Update radio button selection
+                    $('input[type="radio"]').prop('checked', false); // Deselect all
+                    $(this).prop('checked', true);
+
+                    updateProductList();
+                });
             });
-        });
 
             ////// Function update the product according to the users filter criteria \\\\\\
             function handleCheckboxChange(checkbox) {
                 const categoryId = checkbox.getAttribute("data-category-id");
                 const brandId = checkbox.getAttribute("data-brand-id");
-           
+
                 if (categoryId) {
                     if (checkbox.checked) {
                         selectedCategories.add(categoryId);
@@ -269,19 +348,19 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands] , sortCriteria })
+                    body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands], sortCriteria })
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    let productData = data.productData
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log(data);
+                        let productData = data.productData
 
-                    ////// Emptying the child elements of the productCardRow div \\\\\\
-                    $("#productCardRow").empty()
-                    
-                    productData.forEach((product) => {
-                        const productDiv = $(
-                            `<div class='col-lg-4 col-md-6 col-sm-6 pb-1'>
+                        ////// Emptying the child elements of the productCardRow div \\\\\\
+                        $("#productCardRow").empty()
+
+                        productData.forEach((product) => {
+                            const productDiv = $(
+                                `<div class='col-lg-4 col-md-6 col-sm-6 pb-1'>
                                 <div class='card product-item mb-4 product-card shadow'>
                                     <a href='/productDetail/${product._id}' class='product-outline'>
                                         <div class='card-header product-img position-relative overflow-hidden  p-0'>
@@ -309,27 +388,27 @@
                                         </button>
                                     </div>
                                 </div>`
-                        );
-                        ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
-                        $("#productCardRow").append(productDiv)
+                            );
+                            ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
+                            $("#productCardRow").append(productDiv)
+                        });
+                        ////// if the productData's length is 0 in response , then redirecting to shop page \\\\\\
+                        if (productData.length == 0) {
+                            Swal.fire({
+                                title: "No Products Found",
+                                text: "No products were found for the selected filters.",
+                                icon: "info",
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            }).then(() => {
+                                window.location.href = '/shop'
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching products:', error);
                     });
-                    ////// if the productData's length is 0 in response , then redirecting to shop page \\\\\\
-                    if(productData.length == 0){
-                        Swal.fire({
-                            title: "No Products Found",
-                            text: "No products were found for the selected filters.",
-                            icon: "info",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        }).then(()=>{
-                            window.location.href ='/shop'
-                        })
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching products:', error);
-                });
             }
         </script>
 
