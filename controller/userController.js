@@ -329,16 +329,20 @@ const postUserProfileImage = async(req,res)=>{
 //To get the shop page
 const getUserShop = async(req,res)=>{
     try{
-        
         const productData = await Product.find({ isBlocked: false });
+        const totalProducts = await Product.countDocuments({ isBlocked: false }); 
         const adCarousel = await AdCarousel.find({ isBlocked: false });
         const category = await Category.find({ isBlocked : false})
         const brand = await Brand.find({ isBlocked : false})
         const categoryId = []
         const brandId = []
+        const page = parseInt(req.query.page) || 1;  // This is coming from the first pagination a tag from shop.ejs
+        const limit = 6; 
+        
         console.log("Get user shop")
 
-        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId })
+        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page,
+            totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
         console.log(error.message)
@@ -355,46 +359,59 @@ const getCatProduct = async(req,res)=>{
         console.log("res body categories :",req.body.categories)
         console.log("res body brands :",req.body.brands)
         console.log("res body sortCriteria :",req.body.sortCriteria)
+        console.log("req body currentPage :", req.body.currentPage)
         let productData
+
         if(req.body){
             // To get the category and brand id's array and filtering to delete null
             const categories = req.body.categories.filter(category => category !== null);
             const brands = req.body.brands.filter(brand => brand !== null);
             
-                const sortCriteria = req.body.sortCriteria
-                // The querry to retrieve the product
-                let query = { isBlocked: false };
-                if (categories.length > 0 && brands.length > 0 ) {
-                    query = {
-                        $and: [
-                            { category: { $in: categories } },
-                            { brand: { $in: brands } },
-                        ],
-                        isBlocked: false
-                    };
-                } else if (categories.length > 0 && brands.length == 0) {
-                    query = {
-                        category: { $in: categories },
-                        isBlocked: false
-                    };
-                } else if (brands.length > 0 && categories.length == 0) {
-                    query = {
-                        brand: { $in: brands },
-                        isBlocked: false
-                    };
-                }
+            const sortCriteria = req.body.sortCriteria
+            const currentPage = req.body.currentPage
+
+            const perPage = 6;
+            const skip = (currentPage - 1) * perPage;
+
+            // The querry to retrieve the product
+            let query = { isBlocked: false };
+            if (categories.length > 0 && brands.length > 0 ) {
+                query = {
+                    $and: [
+                        { category: { $in: categories } },
+                        { brand: { $in: brands } },
+                    ],
+                    isBlocked: false
+                };
+            } else if (categories.length > 0 && brands.length == 0) {
+                query = {
+                    category: { $in: categories },
+                    isBlocked: false
+                };
+            } else if (brands.length > 0 && categories.length == 0) {
+                query = {
+                    brand: { $in: brands },
+                    isBlocked: false
+                };
+            }
+
+            productData = await Product.find(query).skip(skip).limit(perPage);
+            const totalProducts = await Product.countDocuments(query);
+            const totalPages = Math.ceil(totalProducts / perPage);
                 
-                productData = await Product.find(query);
-                console.log("productData :",productData)
-                if(sortCriteria === "highToLow"){
-                    productData.sort((a,b) => b.offerPrice - a.offerPrice)
-                }else if(sortCriteria === "lowToHigh"){
-                    productData.sort((a,b) => a.offerPrice - b.offerPrice)
-                }
+            console.log("productData :",productData)
+            console.log("totalPages :",totalPages)
+            
+            // Sorting the products with the user selected sort type
+            if(sortCriteria === "highToLow"){
+                productData.sort((a,b) => b.offerPrice - a.offerPrice)
+            }else if(sortCriteria === "lowToHigh"){
+                productData.sort((a,b) => a.offerPrice - b.offerPrice)
+            }
 
-                console.log(productData)
+            console.log(productData)
 
-                res.status(200).json({ message : "Categorized products", productData })
+            res.status(200).json({ message : "Categorized products", productData , totalPages})
         }else{
             res.status(400).json({ message : "No categorized found" })
         }

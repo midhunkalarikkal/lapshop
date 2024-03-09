@@ -60,7 +60,7 @@ userRouter.post('/fpassPostPassword',userAuth.isUserLoggedOut,userController.pos
 
 userRouter.get('/productDetail/:productId',userController.getProductDetail)
 
-//To get the shop page
+//To get the shop page , this have a page query from the shop pagination
 userRouter.get('/shop',userController.getUserShop)
 
 //To get the categorizes products in shop page
