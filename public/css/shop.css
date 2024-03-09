@@ -1,3 +1,4 @@
+/*======> Root colours <======*/
 :root {
     --primary-color: #50c878;
     --secondary-color: #f0ffff;
@@ -9,6 +10,8 @@
     --realprice-color: #be2626;
 }
 
+
+/*======> Filter menu <======*/
 .filter-container {
     position: relative;
 }
@@ -23,10 +26,12 @@
     cursor: pointer;
 }
 
+/*======> Filter navbar dropdown menu for small device <======*/
 .dropdown-menu{
     --bs-dropdown-link-active-bg: var(--primary-color);
 }
 
+/*======> Product <======*/
 .product-outline{
     text-decoration: none;
 }
@@ -68,4 +73,24 @@
 
 .real-price{
     color: var(--realprice-color);
+}
+
+/*======> Both default and filter pagination <======*/
+.pagination .page-link{
+    border-radius: 10px;
+    border: 0;
+}
+
+.active>.page-link{
+    color: var(--third-color);
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.page-link{
+    color: black;
+}
+
+.page-link:hover{
+    color: black;
 }

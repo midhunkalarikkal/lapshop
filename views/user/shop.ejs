@@ -4,6 +4,10 @@
     <head>
         <!-- Custom css -->
         <link rel="stylesheet" href="/static/css/shop.css">
+        <style>
+
+            
+        </style>
     </head>
 
     <section class="view">
@@ -86,7 +90,7 @@
 
 
 
-        <!-- Brand carousel start -->
+        <!-- Advertisement carousel start -->
         <div id="carouselExampleAutoplaying" class="carousel slide mt-md-4 mt-0" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <% if(adCarousel !="" ){ %>
@@ -113,7 +117,7 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <!-- Brand carousel end -->
+        <!-- Advertisement carousel end -->
 
         <!-- Shop Start -->
         <div class="container-fluid pt-5">
@@ -121,7 +125,6 @@
                 <!-- Shop Sidebar Start -->
                 <div class="col-md-2 d-none d-md-block">
                     <h5 class="font-weight-semi-bold mb-4">Apply filters</h5>
-
                     <!-- Category Start -->
                     <% if(category && category.length>0 ){ %>
                         <div class="border-bottom mb-4 pb-4">
@@ -187,14 +190,14 @@
                 </div>
                 <!-- Shop Sidebar End -->
 
-                <!-- Shop Product Start -->
                 <% const productsPerPage=6; %>
-                    <div class="col-md-10">
-                        <div class="container">
+                <div class="col-md-10">
+                    <div class="container">
+                            <!-- Shop Product Start -->
                             <div class="row pb-3" id="productCardRow">
                                 <% const currentPageProducts=productData.slice((currentPage - 1) * productsPerPage,
-                                    currentPage * productsPerPage); %>
-                                    <% currentPageProducts.forEach((product,index)=>{ %>
+                                currentPage * productsPerPage); %>
+                                <% currentPageProducts.forEach((product,index)=>{ %>
                                         <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
                                             <div class="card product-item mb-4 product-card shadow">
                                                 <a href="/productDetail/<%= product._id %>" class="product-outline">
@@ -220,8 +223,8 @@
                                                             <h6 class="offer-price">₹<%= product.offerPrice %>
                                                             </h6>
                                                             <h6 class="real-price small mx-3">₹<del class="real-price">
-                                                                    <%= product.realPrice %>
-                                                                </del></h6>
+                                                                <%= product.realPrice %>
+                                                            </del></h6>
                                                         </div>
                                                     </div>
                                                 </a>
@@ -235,28 +238,29 @@
                                             </div>
                                         </div>
                                         <% } ) %>
-                            </div>
-
-                            <!--  Pagination for the shop page start , This will hidden in the filtering and sorting page -->
-                            <div class="col-12 pb-1" id="shopPagination">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-center mb-3">
-                                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                                            <a class="page-link" href="/shop?page=<%= currentPage - 1 %>"
-                                                aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                        </li>
-                                        <% for(let i=1; i<=totalPages; i++) { %>
-                                            <li class="page-item <%= currentPage === i ? 'active' : '' %>">
-                                                <a class="page-link" href="/shop?page=<%= i %>">
-                                                    <%= i %>
+                                    </div>
+                                    <!-- Shop Product end -->
+                                    
+                                    <!--  Pagination for the shop page start , This will hidden in the filtering and sorting page -->
+                                <div class="col-12 pb-1" id="shopPagination">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination justify-content-center mb-3">
+                                            <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                                <a class="page-link" href="/shop?page=<%= currentPage - 1 %>"
+                                                    aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span class="sr-only">Previous</span>
                                                 </a>
+                                            </li>
+                                             <% for(let i=1; i<=totalPages; i++) { %>
+                                                <li class="page-item mx-1 <%= currentPage === i ? 'active' : '' %>">
+                                                    <a class="page-link" href="/shop?page=<%= i %>">
+                                                        <%= i %>
+                                                    </a>
                                             </li>
                                             <% } %>
                                                 <li
-                                                    class="page-item <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                                    class="page-item mx-1 <%= currentPage === totalPages ? 'disabled' : '' %>">
                                                     <a class="page-link" href="/shop?page=<%= currentPage + 1 %>"
                                                         aria-label="Next">
                                                         <span aria-hidden="true">&raquo;</span>
@@ -474,7 +478,7 @@
             // Create page numbers for the second pagination
             for (let i = 1; i <= totalPages; i++) {
                 paginationHTML += `
-            <li class="page-item ${currentPage === i ? 'active' : ''}">
+            <li class="page-item mx-1 ${currentPage === i ? 'active' : ''}">
                 <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
             </li>
         `;
@@ -482,7 +486,7 @@
 
             // Creating hte next button for the second pagination
             paginationHTML += `
-        <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+        <li class="page-item mx-1 ${currentPage === totalPages ? 'disabled' : ''}">
             <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
                 <span aria-hidden="true">&raquo;</span>
                 <span class="sr-only">Next</span>
