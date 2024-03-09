@@ -1,3 +1,4 @@
+/*======> Root colour <======*/
 :root {
     --primary-color: #50c878;
     --btnhover-color: #55c96e;
@@ -10,9 +11,9 @@
     --realprice-color: #be2626;
 }
 
+/*======> Very small devices <======*/
 @media (max-width: 576px) {
 
-    /*  Very small devices */
     .box-two {
         height: 8rem;
         width: 8rem;
@@ -61,11 +62,9 @@
 
 }
 
+/*======> Extra small devices <======*/
 @media (max-width: 576px) {
 
-    /* extra small */
-
-    /* Custom */
     .box-two {
         height: 8rem;
         width: 8rem;
@@ -113,10 +112,9 @@
     }
 }
 
+/*======> Samll devices <======*/
 @media (min-width: 576px) and (max-width: 767px) {
 
-    /* small */
-    /* Custom */
     .box-two {
         height: 8rem;
         width: 8rem;
@@ -165,15 +163,14 @@
 
 }
 
+/*======> Medium devices <======*/
 @media (min-width: 768px) and (max-width: 991px) {
 
-    /* Medium */
     .product-image img {
         height: 360px;
         object-fit: contain;
     }
 
-    /* Custom */
     .box-two {
         height: 12rem;
         width: 10rem;
@@ -217,11 +214,9 @@
 
 }
 
+/*======> LG devices <======*/
 @media (min-width: 992px) and (max-width: 1199px) {
 
-    /* large */
-
-    /* Custom */
     .box-two {
         height: 14rem;
         width: 12rem;
@@ -266,15 +261,14 @@
 
 }
 
+/*======> XL devices <======*/
 @media (min-width: 1200px) {
 
-    /* Extra large */
     .product-image img {
         height: 400px;
         object-fit: contain;
     }
 
-    /* Custom */
     .box-two {
         height: 14rem;
         width: 12rem;
@@ -315,52 +309,59 @@
     .scroll-arrow {
         font-size: 24px;
     }
-
-
-
 }
 
+/*======> Product detail view image next and prev buttons <======*/
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     background-color: #171717;
 }
 
+/*======> Product detail view buttons <======*/
 .addtocart-btn,
 .buynow-btn {
     background-color: var(--primary-color);
     color: var(--secondary-color);
 }
 
+/*======> Product detail view buttons <======*/
 .addtocart-btn:hover,
 .buynow-btn:hover {
     background-color: var(--btnhover-color);
 }
 
+/*======> Class real price <======*/
 .real-price {
     color: var(--realprice-color);
 }
 
+/*======> Class offer price <======*/
 .offer-price {
     color: var(--offerprice-color);
 }
 
+/*======> Class discount percentage <======*/
 .discount-perc {
     color: var(--realprice-color);
     font-weight: normal;
 }
 
+/*======> Product outline div <======*/
 .product-outline {
     text-decoration: none;
 }
 
-.box-two .name {
-    color: var(--third-color);
-}
-
+/*======> Stock hurry up span <======*/
 .hurry-up{
     font-weight: 500;
 }
 
+/*======> Extra details div <======*/
 .extra-detail-span{
     font-weight: 500;
+}
+
+/*======> Same category products name <======*/
+.box-two .name {
+    color: var(--third-color);
 }
