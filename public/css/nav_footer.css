@@ -1,5 +1,44 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/*======> Default <======*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/*======> Default <======*/
+html,
+body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/*======> Hide scrollbar for WebKit browsers <======*/
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/*======> Optional: Apply scrollbar styles for other browsers <======*/
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/*======> Default <======*/
+body {
+    margin: 0;
+    padding: 0;
+}
+
+/*======> Default <======*/
+body::before {
+    display: block;
+    content: "";
+    height: 30px;
+}
+
+/*======> Font family <======*/
 h1,
 h2,
 h3,
@@ -15,6 +54,7 @@ p,
     font-family: 'Saira Semi Condensed', sans-serif;
 }
 
+/*======> Root colour <======*/
 :root {
     --primary-color: #50c878;
     --secondary-color: #f0ffff;
@@ -22,40 +62,6 @@ p,
     --fourth-color: #f82b50;
     --fifth-color: #38ed77;
     --sixth-color: #e4e4e4;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-}
-
-html,
-body {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-/* Hide scrollbar for WebKit browsers */
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-/* Optional: Apply scrollbar styles for other browsers */
-body::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-}
-
-body::before {
-    display: block;
-    content: "";
-    height: 30px;
 }
 
 #screen-size {
@@ -68,12 +74,13 @@ body::before {
     z-index: 9999;
 }
 
+
+/*======> Section view <======*/
 .view{
     min-height: 100vh;
 }
 
-/*Navbar start*/
-
+/*======> Navbar start <======*/
 .navbar-brand {
     color: var(--secondary-color);
 }
@@ -88,9 +95,9 @@ body::before {
 
  .navbar-nav .nav-link{
     color: var(--secondary-color);
-}
 
-.navbar-nav .nav-link:hover{
+}
+-nav .nav-link:hover{
     color: var(--primary-color);
 }
 
@@ -142,9 +149,9 @@ body::before {
     caret-color: var(--secondary-color);
     color: var(--sixth-color);
 }
-/*Navbar end*/
+/*======> Navbar end <======*/
 
-/* foter start */
+/*======> Footer start <======*/
 .footer-section h6 {
     font-size: 13px;
     margin-bottom: 10px;
@@ -173,10 +180,9 @@ body::before {
     right: 0;
     z-index: 1000;
 }
+/*======> Footer end <======*/
 
-/* foter end */
-
-/*Very small devices*/
+/*======> Very small devices <======*/
 @media (max-width: 576px) {
 
     #screen-size::before {
@@ -188,7 +194,7 @@ body::before {
     }
 }
 
-/* XS / SM devices*/
+/*======> XS/SM devices <======*/
 @media (min-width: 576px) and (max-width: 767px) {
 
     #screen-size::before {
@@ -200,34 +206,30 @@ body::before {
     }
 }
 
-/* MD devices*/
+/*======> MD devices <======*/
 @media (min-width: 768px) and (max-width: 991px) {
-
+    
     #screen-size::before {
         content: "Medium (md)";
     }
 }
 
-/* LG devices*/
+/*======> LG devices <======*/
 @media (min-width: 992px) and (max-width: 1199px) {
-
+    
     #screen-size::before {
         content: "Large (lg)";
     }
-
-    /*Navbar start*/
-
+    
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
     }
-
-    /*Navbar end*/
-
+    
 }
 
 
-/* XL devices*/
+/*======> XL devices <======*/
 @media (min-width: 1200px) {
 
     #screen-size::before {

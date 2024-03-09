@@ -1,5 +1,43 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/*======> Default <======*/
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/*======> Default <======*/
+html,
+body {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+}
+
+/*======> Hide scrollbar for WebKit browsers <======*/
+::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/*======> Optional: Apply scrollbar styles for other browsers <======*/
+body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/*======> Optional: Apply scrollbar styles for other browsers <======*/
+body {
+    margin: 0;
+    padding: 0;
+}
+
+body::before {
+    display: block;
+    content: "";
+    height: 30px;
+}
+
+/*======> Font family <======*/
 h1,
 h2,
 h3,
@@ -14,6 +52,7 @@ p,
     font-family: 'Saira Semi Condensed', sans-serif;
 }
 
+/*======> Root colours <======*/
 :root {
     --primary-color: #50c878;
     --secondary-color: #f0ffff;
@@ -23,39 +62,6 @@ p,
     --sixth-color: #e4e4e4;
 }
 
-* {
-    margin: 0;
-    padding: 0;
-}
-
-html,
-body {
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE and Edge */
-}
-
-/* Hide scrollbar for WebKit browsers */
-::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-/* Optional: Apply scrollbar styles for other browsers */
-body::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-body {
-    margin: 0;
-    padding: 0;
-}
-
-body::before {
-    display: block;
-    content: "";
-    height: 30px;
-}
 
 #screen-size {
     position: fixed;
@@ -67,18 +73,20 @@ body::before {
     z-index: 9999;
 }
 
+/*======> Page container div <======*/
 #page-container {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-  }
+}
 
-  .view{
+/*======> Section view <======*/
+.view{
     min-height: 100vh;
-  }
+}
 
-/*Navbar start*/
 
+/*======> Navbar start <======*/
 .navbar-brand {
     color: var(--secondary-color);
 }
@@ -91,7 +99,7 @@ body::before {
     color: var(--secondary-color);
 }
 
- .navbar-nav .nav-link{
+.navbar-nav .nav-link{
     color: var(--secondary-color);
 }
 
@@ -131,7 +139,7 @@ body::before {
     width: 100%;
 }
 
- .logo a:hover{
+.logo a:hover{
     color: var(--secondary-color);
 }
 
@@ -147,9 +155,9 @@ body::before {
     color: var(--primary-color);
     background-color: var(--third-color);
 }
-/*Navbar end*/
+/*======> Navbar end <======*/
 
-/* foter start */
+/*======> Footer start <======*/
 .footer-section h6 {
     font-size: 13px;
     margin-bottom: 10px;
@@ -178,73 +186,65 @@ body::before {
     right: 0;
     z-index: 1000;
 }
-/* foter end */
+/*======> Footer end <======*/
 
-
-/*Very small devices*/
+/*======> Very small devices <======*/
 @media (max-width: 576px) {
-
+    
     #screen-size::before {
         content: "Extra Small (xs)";
     }
-
+    
     .navbar-nav {
         margin-top: 1rem;
     }
 }
 
-/* XS / SM devices*/
+/*======> XS / SM devices <======*/
 @media (min-width: 576px) and (max-width: 767px) {
-
+    
     #screen-size::before {
         content: "Small (sm)";
     }
-
+    
     .navbar-nav {
         margin-top: 1rem;
     }
 }
 
-/* MD devices*/
+/*======> MD devices <======*/
 @media (min-width: 768px) and (max-width: 991px) {
-
+    
     #screen-size::before {
         content: "Medium (md)";
     }
 }
 
-/* LG devices*/
+/*======> LG devices <======*/
 @media (min-width: 992px) and (max-width: 1199px) {
-
+    
     #screen-size::before {
         content: "Large (lg)";
     }
-
-    /*Navbar start*/
-
+    
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
     }
-
-    /*Navbar end*/
-
+    
 }
 
 
-/* XL devices*/
+/*======> XL devices <======*/
 @media (min-width: 1200px) {
 
     #screen-size::before {
         content: "Extra Large (xl)";
     }
 
-    /*Navbar start*/
-
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
     }
 
-    /*Navbar end*/
 }

@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
+/*======> Font family <======*/
 h1,
 h2,
 h3,
@@ -17,21 +18,24 @@ label,
 }
 
 
+/*======> Root colours <======*/
 :root {
-  --primary-color: #50c878;
-  --secondary-color: #f0ffff;
-  --third-color: #1b1b1b;
-  --fourth-color: #f82b50;
-  --fifth-color: #38ed77;
-  --sixth-color: #e4e4e4;
+    --primary-color: #50c878;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
 }
 
+/*======> Section view <======*/
 .view{
     padding: 0 20px 0 20px;
     min-height: 100vh;
     display: flex;
 }
 
+/*======> Div main <======*/
 .main{  
     height: auto;  
     border-radius: 10px;
