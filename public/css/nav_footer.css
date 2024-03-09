@@ -134,6 +134,14 @@ body::before {
 .logout a:hover{
     color: var(--secondary-color);
 }
+
+.search-input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px var(--primary-color);
+    background-color: var(--third-color);
+    caret-color: var(--secondary-color);
+    color: var(--sixth-color);
+}
 /*Navbar end*/
 
 /* foter start */
