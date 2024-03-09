@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+/*======> Default <======*/
 * {
     font-family: 'Anton', sans-serif;
     font-family: 'Saira Semi Condensed', sans-serif;
 }
 
+/*======> Font family <======*/
 h1,h2,h3,h4,h5,h6,span,a{
   font-family: 'Anton', sans-serif;
 font-family: 'Saira Semi Condensed', sans-serif;
 }
 
+/*======> Root colour <======*/
 :root {
   --primary-color: #50c878;
   --secondary-color: #f0ffff;
@@ -19,7 +23,7 @@ font-family: 'Saira Semi Condensed', sans-serif;
   --seventh-color: #b7b7b7;
 }
 
-/* Background image */
+/*======> Background image <======*/
 .view{
   background-image:-webkit-linear-gradient(top, 
   rgba(0,0,0,0.9) 0%, 
@@ -42,8 +46,8 @@ font-family: 'Saira Semi Condensed', sans-serif;
   align-items: center;
   margin: 0;
 }
-/* Background image */
 
+/*======> Class container <======*/
 .container {
   display: flex;
   justify-content: flex-end;
@@ -51,6 +55,7 @@ font-family: 'Saira Semi Condensed', sans-serif;
   width: 100%;
 }
 
+/*======> Class form-box <======*/
 .form-box {
   background-color: var(--third-color);
   padding: 20px;
@@ -59,10 +64,12 @@ font-family: 'Saira Semi Condensed', sans-serif;
   width: auto;
 }
 
+/*======> Class title <======*/
 .title{
   color: var(--secondary-color);
 }
 
+/*======> Input start <======*/
 .input-field {
     display: flex;
     flex-direction: column;
@@ -126,7 +133,9 @@ font-family: 'Saira Semi Condensed', sans-serif;
   font-weight: 600;
 }
 
-/* Add !important to override other styles */
+/*======> Input end <======*/
+
+/*======> Invalid class for email validation <======*/
 .invalid-email {
   border-bottom-color: var(--fourth-color) !important; 
 }
@@ -134,25 +143,27 @@ font-family: 'Saira Semi Condensed', sans-serif;
 .invalid-input {
   border-bottom: 2px solid var(--fourth-color);
 }
-/* Form box */
 
-/* text with button under the main button of the box */
+/*======> Class sign in <======*/
 .signin {
     text-align: center;
     font-size: small;
     margin-top: 25px;
 }
 
+/*======> Class sign in span and a tags <======*/
 .signin span, .signin a {
     text-decoration: none;
     color: var(--secondary-color);
     transition: .5s;
 }
 
+/*======> Class sign in a tag <======*/
 .signin a{
     font-weight: 700;
 }
 
+/*======> Span tag a hover <======*/
 span a:hover {
     text-decoration: none;
     color: var(--primary-color);
@@ -198,7 +209,7 @@ span a:hover {
     }
   }
 
-
+/*======> Input field colour <======*/
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
