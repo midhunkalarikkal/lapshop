@@ -4,14 +4,6 @@
     <head>
         <!-- User register page css -->
         <link rel='stylesheet' href='/static/css/user_register.css' type="text/css" />
-        <style>
-            .input-field .input-error {
-                position: absolute;
-                bottom: -5px;
-                font-size: 14px;
-                color: #f82b50;
-            }
-        </style>
     </head>
 
     <div id="screen-size"></div>
@@ -19,7 +11,7 @@
         <div class="container input-box col-8 col-md-6 col-lg-12">
             <div class="form-box">
                 <header class="my-4 fs-4 title text-center">Sign In</header>
-                <form action="/register" method="POST" id="registrationForm">
+                <form action="/register" method="POST" id="registrationForm" onsubmit="return registerbtn()">
                     <div class="input-field" id="fullname-input">
                         <input type="text" class="input" id="fullname" name="fullname" required oninput="validateFullName()">
                         <label for="fullname">First and last name</label>
@@ -48,13 +40,18 @@
                         <label for="confirmpassword">Confirm password</label>
                         <span id="confirmPasswordError" class="input-error" style="color: #f82b50;"></span>
                     </div>
+                    <div class="d-flex flex-row my-2 justify-content-between" style="width: 90%;">
+                        <div class="left d-flex align-items-center mx-3">
+                            <input type="checkbox" id="showPasswordCheckbox" onchange="showpassword()">
+                            <label for="showPasswordCheckbox" class="text-light mx-1">Show password</label>
+                        </div>
+                    </div>
                     <div class="input-field">
                         <p class="paragraph text-light small">To verify your email we will send you a OTP to your email.
                         </p>
                     </div>
                     <div class="input-field">
-                        <button type="submit" class="btn regiterbtn" id="submit"
-                            onclick="registerbtn()">Register</button>
+                        <button type="submit" class="btn regiterbtn" id="submit">Register</button>
                     </div>
                 </form>
                 <div class="signin mb-2">
@@ -72,6 +69,7 @@
         </div>
     </section>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!-- Validation script for the form -->
     <script>
         ////// To validate the email \\\\\\
@@ -135,7 +133,7 @@
             } 
             if (!fullnameRegex.test(fullname)) {
                 fullnameInput.classList.add("invalid-input");
-                document.getElementById('fullnameError').innerText = "Invalid nameOnly alphabets allowed, up to 40 characters.";
+                document.getElementById('fullnameError').innerText = "Invalid name.";
                 document.getElementById('fullname-input').classList.add('mb-3');
                 return false;
             } else {
@@ -194,12 +192,23 @@
 
         ////// For the submit button \\\\\\
         function registerbtn(){
-            if(validateEmail() , validatePhone() , validateFullName() , validatePassword() , validateConfirmPassword){
-                return true;
-            }else{
-                return false;
-            }
-        }
+    console.log("registerbtn function called");
+    if(validateEmail() && validatePhone() && validateFullName() && validatePassword() && validateConfirmPassword()){
+        console.log("All validations passed");
+        return true;
+    }else{
+        console.log("Validation failed");
+        Swal.fire({
+            title: "Registration error",
+            text: "Check all the fields are entered correctly.",
+            icon: "info",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        })
+        return false;
+    }
+}
 
          ////// Alert script \\\\\\
          var alertElement = document.getElementById('myAlert');
@@ -211,6 +220,22 @@
                 }, 1000);
             }
             setTimeout(hideAlert, 3000);
+
+        ////// For showing the password
+        function showpassword() {
+            var checkbox = document.getElementById("showPasswordCheckbox");
+            var passwordInput = document.getElementById("password");
+            var confirmPasswordInput = document.getElementById("confirmpassword");
+            
+            if (checkbox.checked) {
+                passwordInput.type = "text";
+                confirmPasswordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+                confirmPasswordInput.type = "password";
+            }
+        }
+
 
     </script>
 

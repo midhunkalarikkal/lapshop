@@ -40,7 +40,7 @@ font-family: 'Saira Semi Condensed', sans-serif;
   background-size: cover;
   background-repeat: no-repeat;
   padding: 0 20px 0 20px;
-  height: 100vh;
+  height: auto;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -138,6 +138,13 @@ font-family: 'Saira Semi Condensed', sans-serif;
 /*======> Invalid class for email validation <======*/
 .invalid-input {
   border-bottom-color: var(--fourth-color) !important; 
+}
+
+.input-field .input-error {
+  position: absolute;
+  bottom: -5px;
+  font-size: 14px;
+  color: #f82b50;
 }
 
 /*======> Class sign in <======*/

@@ -163,6 +163,7 @@ const postRegisterOtp = async (req, res) => {
 const postLogin = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
+        const homeCarousel = await HomeCarousel.find()
         const { email, password } = req.body;
 
         if (user) {
@@ -179,7 +180,7 @@ const postLogin = async (req, res) => {
                         req.session.user = user;
                         userDetails = req.session.user
                         console.log(userDetails)
-                        return res.render('user/home',{userDetails})
+                        return res.render('user/home',{userDetails , homeCarousel})
                 } else {
                     // Passwords don't match    
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
