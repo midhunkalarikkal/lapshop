@@ -121,7 +121,17 @@ font-family: 'Saira Semi Condensed', sans-serif;
 }
 /*======> Class input end <======*/
 
+/*======> Class input end <======*/
+.showpassword{
+  color: var(--secondary-color);
+}
+
 /*======> Forgot password <======*/
+.fp{
+  text-decoration: none;
+  color: var(--secondary-color);
+}
+
 .fp:hover{
   color: var(--primary-color);
 }
