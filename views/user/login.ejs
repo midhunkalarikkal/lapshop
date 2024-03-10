@@ -30,6 +30,12 @@
                             <label for="password">Password</label>
                             <p class="text-center"><a class="text-center fp" href="/forgotPassword">Forgot password</a></p>
                         </div>
+                        <div class="d-flex flex-row my-2 justify-content-between" style="width: 90%;">
+                            <div class="left d-flex align-items-center mx-3">
+                                <input type="checkbox" id="showPasswordCheckbox" onchange="showpassword()">
+                                <label for="showPasswordCheckbox" class="text-light mx-1">Show password</label>
+                            </div>
+                        </div>
                         <div class="input-field">
                             <button type="submit" class="btn" id="submit">Sign in</button>
                         </div>
@@ -84,6 +90,18 @@
                 }, 1000);
             }
             setTimeout(hideAlert, 3000);
+
+            ////// For showing the password
+            function showpassword() {
+                var checkbox = document.getElementById("showPasswordCheckbox");
+                var passwordInput = document.getElementById("password");
+                
+                if (checkbox.checked) {
+                    passwordInput.type = "text";
+                } else {
+                    passwordInput.type = "password";
+                }
+            }
 
         </script>
 
