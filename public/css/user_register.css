@@ -136,12 +136,8 @@ font-family: 'Saira Semi Condensed', sans-serif;
 /*======> Input end <======*/
 
 /*======> Invalid class for email validation <======*/
-.invalid-email {
-  border-bottom-color: var(--fourth-color) !important; 
-}
-
 .invalid-input {
-  border-bottom: 2px solid var(--fourth-color);
+  border-bottom-color: var(--fourth-color) !important; 
 }
 
 /*======> Class sign in <======*/

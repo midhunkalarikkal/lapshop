@@ -1,61 +1,219 @@
 <!-- User navbar -->
 <%-include("../userpartials/Navbar.ejs")%>
 
-<head>
-    <!-- User register page css -->
-    <link rel='stylesheet' href='/static/css/user_register.css' type="text/css" />
-</head>
+    <head>
+        <!-- User register page css -->
+        <link rel='stylesheet' href='/static/css/user_register.css' type="text/css" />
+        <style>
+            .input-field .input-error {
+                position: absolute;
+                bottom: -5px;
+                font-size: 14px;
+                color: #f82b50;
+            }
+        </style>
+    </head>
 
-<div id="screen-size"></div>
- <section class="view">
-    <div class="container input-box col-8 col-md-6 col-lg-12">
-        <div class="form-box">
-            <header class="my-4 fs-4 title text-center">Sign In</header>
-            <form action="/register" method="POST" id="registrationForm">
-                <div class="input-field">
-                    <input type="text" class="input" id="fullname" name="fullname" required>
-                    <label for="fullname">First and last name</label>
-                </div>
-                <div class="input-field d-flex flex-row align-items-end">
-                    <input type="text" class="input email-input" id="email" name="email" required onblur="validateEmail()">
-                    <label for="email">Email</label>
-                </div>
-                <div class="input-field">
-                    <input type="text" class="input" id="phone" name="phone" required>
-                    <label for="phone">Mobile number</label>
-                </div>
-                <small id="phoneError" class="text-danger d-none">Please enter a valid 10-digit phone number.</small>
-                <div class="input-field">
-                    <input type="password" class="input" id="pass" name="password" required>
-                    <label for="pass">Password</label>
-                </div>
-                <div class="input-field">
-                    <input type="password" class="input" id="confirmpass" name="confirmpassword" required required onmouseleave="checkPasswordMatch()">
-                    <label for="confirmpassword">Confirm password</label>
-                </div>                
-                <div class="input-field">
-                    <p class="paragraph text-light small">To verify your email we will send you a OTP to your email.</p>
-                </div>
-                <div class="input-field">
-                    <button type="submit" class="btn regiterbtn" id="submit" onclick="registerbtn()">Register</button>
-                </div>
-            </form>
-            <div class="signin mb-2">
-                <span>Already have an account,<a href="/login">Sign In</a></span>
-                <% if(message){ %>
-                    <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
-                        <strong> <%= message %> </strong>
+    <div id="screen-size"></div>
+    <section class="view">
+        <div class="container input-box col-8 col-md-6 col-lg-12">
+            <div class="form-box">
+                <header class="my-4 fs-4 title text-center">Sign In</header>
+                <form action="/register" method="POST" id="registrationForm">
+                    <div class="input-field" id="fullname-input">
+                        <input type="text" class="input" id="fullname" name="fullname" required oninput="validateFullName()">
+                        <label for="fullname">First and last name</label>
+                        <span id="fullnameError" class="input-error" style="color: #f82b50;"></span>
                     </div>
-                <% } %>
+                    <div class="input-field" id="email-input">
+                        <input type="email" class="input" id="email" name="email" required oninput="validateEmail()">
+                        <label for="email">Email</label>
+                        <span id="emailError" class="input-error" style="color: #f82b50;"></span>
+                    </div>
+                    <div class="input-field" id="phone-input">
+                        <input type="text" class="input" id="phone" name="phone" required oninput="validatePhone()">
+                        <label for="phone">Mobile number</label>
+                        <span id="phoneError" class="input-error" style="color: #f82b50;"></span>
+                    </div>
+                    <div class="input-field" id="password-input">
+                        <input type="password" class="input" id="password" name="password" required oninput="validatePassword()">
+                        <label for="pass">Password</label>
+                        <span id="passwordError" class="input-error" style="color: #f82b50;"></span>
+                    </div>
+                    <div class="input-field">
+                    <p class="passwordConditions text-danger" id="passwordConditions" style="display: none;">Must have 8 length, Atleast one capital letter, <br> small letter , digit and special charctaer (!@#$%^&*)</p>
+                    </div>
+                    <div class="input-field" id="confirmPassword-input">
+                        <input type="password" class="input" id="confirmpassword" name="confirmpassword" required oninput="validateConfirmPassword()">
+                        <label for="confirmpassword">Confirm password</label>
+                        <span id="confirmPasswordError" class="input-error" style="color: #f82b50;"></span>
+                    </div>
+                    <div class="input-field">
+                        <p class="paragraph text-light small">To verify your email we will send you a OTP to your email.
+                        </p>
+                    </div>
+                    <div class="input-field">
+                        <button type="submit" class="btn regiterbtn" id="submit"
+                            onclick="registerbtn()">Register</button>
+                    </div>
+                </form>
+                <div class="signin mb-2">
+                    <span>Already have an account,<a href="/login">Sign In</a></span>
+                    <% if(message){ %>
+                        <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
+                            style="padding: 5px; font-size: 14px;">
+                            <strong>
+                                <%= message %>
+                            </strong>
+                        </div>
+                        <% } %>
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<!-- Validation script for the form -->
-<script src="../script/user_script.js"></script>
+    <!-- Validation script for the form -->
+    <script>
+        ////// To validate the email \\\\\\
+        function validateEmail() {
+            var emailInput = document.getElementById("email");
+            var email = emailInput.value;
+            var emailRegex = /^[^\s@]+@gmail\.com$/;
+            if (!email) {
+                emailInput.classList.remove("invalid-input");
+                document.getElementById('emailError').innerText = "";
+                document.getElementById('email-input').classList.remove('mb-3');
+                return false;
+            }
+            if (!emailRegex.test(email)) {
+                emailInput.classList.add("invalid-input");
+                document.getElementById('emailError').innerText = "Invalid email"
+                document.getElementById('email-input').classList.add('mb-3');
+                return false;
+            } else {
+                emailInput.classList.remove("invalid-input");
+                document.getElementById('emailError').innerText = ""
+                document.getElementById('email-input').classList.remove('mb-3');
+                return true;
+            }
+        }
 
-<!-- User footer -->
-<%-include("../userpartials/footer.ejs")%>
+        ////// To validate the phone \\\\\\
+        function validatePhone() {
+            var phoneInput = document.getElementById("phone");
+            var phone = phoneInput.value;
+            var phoneRegex = /^[1-9][0-9]{9}$/;
+            if (!phone) {
+                phoneInput.classList.remove("invalid-input");
+                document.getElementById('phoneError').innerText = "";
+                document.getElementById('phone-input').classList.remove('mb-3');
+                return false;
+            } 
+            if (!phoneRegex.test(phone)) {
+                phoneInput.classList.add("invalid-input"); 
+                document.getElementById('phoneError').innerText = "Invalid Phone number";
+                document.getElementById('phone-input').classList.add('mb-3');
+                return false;
+            } else {
+                phoneInput.classList.remove("invalid-input"); 
+                document.getElementById('phoneError').innerText = "";
+                document.getElementById('phone-input').classList.remove('mb-3');
+                return true;
+            }
+        }
 
-    
+        ////// To validate fullname \\\\\\
+        function validateFullName() {
+            var fullnameInput = document.getElementById("fullname");
+            var fullname = fullnameInput.value;
+            var fullnameRegex = /^[A-Za-z ]{1,40}$/;
+            if (!fullname) {
+                fullnameInput.classList.remove("invalid-input");
+                document.getElementById('fullnameError').innerText = "";
+                document.getElementById('fullname-input').classList.remove('mb-3');
+                return false;
+            } 
+            if (!fullnameRegex.test(fullname)) {
+                fullnameInput.classList.add("invalid-input");
+                document.getElementById('fullnameError').innerText = "Invalid nameOnly alphabets allowed, up to 40 characters.";
+                document.getElementById('fullname-input').classList.add('mb-3');
+                return false;
+            } else {
+                fullnameInput.classList.remove("invalid-input");
+                document.getElementById('fullnameError').innerText = "";
+                document.getElementById('fullname-input').classList.remove('mb-3');
+                return true;
+            }
+        }
+
+        ////// To validate the password \\\\\\
+        function validatePassword() {
+            const passwordInput = document.getElementById('password');
+            const password = passwordInput.value;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+            
+            if (!password) {
+                passwordError.innerText = "";
+                passwordInput.classList.remove("invalid-input");
+                document.getElementById('password-input').classList.remove('mb-3');
+                document.getElementById("passwordConditions").style.display = "none"
+                return false;
+            }
+            if (!passwordRegex.test(password)) {
+                passwordError.innerText = "Password is not meeting the conditions";
+                passwordInput.classList.add("invalid-input");
+                document.getElementById('password-input').classList.add('mb-3');
+                document.getElementById("passwordConditions").style.display = "block"
+                return false;
+            } else {
+                passwordError.innerText = "";
+                passwordInput.classList.remove("invalid-input");
+                document.getElementById('password-input').classList.remove('mb-3');
+                document.getElementById("passwordConditions").style.display = "none"
+                return true;
+            }
+        }
+
+        ////// To validate the confirm password \\\\\\
+        function validateConfirmPassword() {
+            const confirmPasswordInput = document.getElementById('confirmpassword');
+            const confirmPassword = confirmPasswordInput.value;
+            const Password = document.getElementById('password').value;
+            if (confirmPassword !== Password) {
+                confirmPasswordInput.classList.add("invalid-input");
+                document.getElementById('confirmPasswordError').innerText = "Password is not matching";
+                document.getElementById("confirmPassword-input").classList.add("mb-3")
+                return false;
+            } else {
+                confirmPasswordInput.classList.remove("invalid-input");
+                document.getElementById('confirmPasswordError').innerText = "";
+                document.getElementById("confirmPassword-input").classList.remove("mb-3")
+                return true;
+            }
+        }
+
+        ////// For the submit button \\\\\\
+        function registerbtn(){
+            if(validateEmail() , validatePhone() , validateFullName() , validatePassword() , validateConfirmPassword){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+         ////// Alert script \\\\\\
+         var alertElement = document.getElementById('myAlert');
+            function hideAlert() {
+                alertElement.style.transition = "opacity 1s";
+                alertElement.style.opacity = "0";
+                setTimeout(function () {
+                    alertElement.style.display = "none";
+                }, 1000);
+            }
+            setTimeout(hideAlert, 3000);
+
+    </script>
+
+
+    <!-- User footer -->
+    <%-include("../userpartials/footer.ejs")%>
