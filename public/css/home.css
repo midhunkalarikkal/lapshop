@@ -18,11 +18,14 @@ p,
 /*======> Root colour <======*/
 :root {
   --primary-color: #50c878;
+  --btnhover-color: #55c96e;
   --secondary-color: #f0ffff;
   --third-color: #1b1b1b;
   --fourth-color: #f82b50;
   --fifth-color: #38ed77;
   --sixth-color: #e4e4e4;
+  --offerprice-color: #22a751;
+  --realprice-color: #be2626;
 }
 
 /*======> Home carousel shop button <======*/
@@ -75,6 +78,55 @@ p,
   .content h2 {
     font-size: 4rem;
   }
+
+  /* Best offer css start */
+  .box-two {
+    height: 8rem;
+    width: 8rem;
+}
+
+.box-two .img {
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.box-two .img img {
+    width: 100%;
+    height: 100%;
+}
+
+.box-two .name {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+}
+
+.name h5 {
+    font-size: 12px;
+}
+
+.offer h6 {
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.box-two .offer {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    color: var(--offerprice-color);
+}
+
+.box-two .offer h6 {
+    font-size: 8px;
+}
+
+.scroll-arrow {
+    font-size: 14px;
+}
+
+  /* Best offer css end */
 }
 
 /*======> Samll devices <======*/
@@ -96,6 +148,55 @@ p,
   .content h2 {
     font-size: 4rem;
   }
+
+  /* Best offer css start */
+  .box-two {
+    height: 8rem;
+    width: 8rem;
+}
+
+.box-two .img {
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.box-two .img img {
+    width: 100%;
+    height: 100%;
+}
+
+.box-two .name {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+}
+
+.name h5 {
+    font-size: 12px;
+}
+
+.offer h6 {
+    font-size: 10px;
+    margin-top: 3px;
+}
+
+.box-two .offer {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    color: var(--offerprice-color);
+}
+
+.box-two .offer h6 {
+    font-size: 10px;
+}
+
+.scroll-arrow {
+    font-size: 16px;
+}
+
+  /* Best offer css end */
 }
 
 /*======> Medium devices <======*/
@@ -116,6 +217,49 @@ p,
   .content h2 {
     font-size: 6rem;
   }
+
+  /* Best offer css start */
+  .box-two {
+    height: 12rem;
+    width: 10rem;
+}
+
+.box-two .img {
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.box-two .img img {
+    width: 100%;
+    height: 100%;
+}
+
+.box-two .name {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+}
+
+.name h5 {
+    font-size: 16px;
+}
+
+.box-two .offer {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    color: var(--offerprice-color);
+}
+
+.box-two .offer h6 {
+    font-size: 12px;
+}
+
+.scroll-arrow {
+    font-size: 18px;
+}
+  /* Best offer css end */
   
 }
 
@@ -136,6 +280,50 @@ p,
   .content h2 {
     font-size: 8rem;
   }
+
+  /* Best offer css start */
+  .box-two {
+    height: 14rem;
+    width: 12rem;
+}
+
+.box-two .img {
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
+}
+
+.box-two .img img {
+    width: 100%;
+    height: 100%;
+}
+
+.box-two .name {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+}
+
+.name h5 {
+    font-size: 16px;
+}
+
+.box-two .offer {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    color: var(--offerprice-color);
+}
+
+.box-two .offer h6 {
+    font-size: 14px;
+}
+
+.scroll-arrow {
+    font-size: 22px;
+}
+
+  /* Best offer css end */
 }
 
 /*======> Extra Large devices <======*/
@@ -156,65 +344,114 @@ p,
   .content h2 {
     font-size: 10rem;
   }
+
+  /* Best offer css start */
+  .box-two {
+    height: 14rem;
+    width: 12rem;
 }
 
-.main{
-  height: 90vh;
-  background: rgb(2,0,36);
-  background: linear-gradient(90deg, rgb(0, 0, 1) 0%, rgb(40, 94, 60) 62%, rgba(80,200,120,1) 100%);
-  object-fit: contain;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.box-two .img {
+    height: 80%;
+    width: 100%;
+    overflow: hidden;
 }
 
-.content {
-  position: relative;
+.box-two .img img {
+    width: 100%;
+    height: 100%;
 }
 
-.content h2 {
-  color: #fff;
-  position: absolute;
-  transform: translate(-50%, -50%);
+.box-two .name {
+    height: 10%;
+    width: 100%;
+    text-align: center;
 }
 
-.content h2:nth-child(1) {
-  color: transparent;
-  -webkit-text-stroke: 2px var(--primary-color);
+.name h5 {
+    font-size: 16px;
 }
 
-.content h2:nth-child(2) {
-  color: var(--secondary-color);
-  animation: animate 4s ease-in-out infinite;
+.box-two .offer {
+    height: 10%;
+    width: 100%;
+    text-align: center;
+    color: var(--offerprice-color);
 }
 
-@keyframes animate {
-  0%,
-  100% {
-    clip-path: polygon(
-      0% 45%,
-      16% 44%,
-      33% 50%,
-      54% 60%,
-      70% 61%,
-      84% 59%,
-      100% 52%,
-      100% 100%,
-      0% 100%
-    );
-  }
+.box-two .offer h6 {
+    font-size: 14px;
+}
 
-  50% {
-    clip-path: polygon(
-      0% 60%,
-      15% 65%,
-      34% 66%,
-      51% 62%,
-      67% 50%,
-      84% 45%,
-      100% 46%,
-      100% 100%,
-      0% 100%
-    );
-  }
+.scroll-arrow {
+    font-size: 24px;
+}
+  /* Best offer css end */
+}
+
+/*======> Parallax one start <======*/
+.parallaxone-inner {
+  padding: 10% 0;
+}
+
+.parallaxone-h1 {
+  font-size: 120px;
+  text-align: center;
+  color: rgba(255, 255, 255, .4);
+}
+
+.parallax-one {
+  background: url('../images/HomeCarousels/1709548195587-Add\ wall\ 5.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.parallaxone-para {
+  font-size: 16px;
+  color: #555;
+  text-align: justify;
+  line-height: 30px;
+  margin: 0 50px 40px;
+}
+/*======> Parallax one end <======*/
+
+/*======> Parallax two start <======*/
+.parallaxtwo-inner {
+  padding: 10% 0;
+}
+
+.parallaxtwo-h1 {
+  font-size: 120px;
+  text-align: center;
+  color: rgba(255, 255, 255, .4);
+}
+
+.parallax-two {
+  background: url('../images/HomeCarousels/1709548071821-Add\ wall\ 1.jpg') no-repeat;
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+.parallaxtwo-para {
+  font-size: 16px;
+  color: #555;
+  text-align: justify;
+  line-height: 30px;
+  margin: 0 50px 40px;
+}
+/*======> Parallax two end <======*/
+
+/*======> best offer products <======*/
+.box-two .name {
+  color: var(--third-color);
+}
+
+.product-outline{
+  text-decoration: none;
+}
+
+.section-title{
+  font-weight: 600;
 }

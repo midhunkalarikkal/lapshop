@@ -220,7 +220,9 @@ const getLogout = async(req,res)=>{
 const getHome = async (req, res) => {
     try {
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
-        return res.render('user/home',{userDetails , homeCarousel})
+        const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
+        console.log("best offer products : ", bestOfferProducts)
+        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts})
     } catch (error) {
         console.log(error)
     }
