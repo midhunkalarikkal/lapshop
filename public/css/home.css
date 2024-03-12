@@ -390,15 +390,6 @@ p,
 }
 
 /*======> Parallax one start <======*/
-.parallaxone-inner {
-  padding: 10% 0;
-}
-
-.parallaxone-h1 {
-  font-size: 120px;
-  text-align: center;
-  color: rgba(255, 255, 255, .4);
-}
 
 .parallax-one {
   background: url('../images/HomeCarousels/1709548195587-Add\ wall\ 5.jpg') no-repeat;
@@ -407,13 +398,6 @@ p,
   background-attachment: fixed;
 }
 
-.parallaxone-para {
-  font-size: 16px;
-  color: #555;
-  text-align: justify;
-  line-height: 30px;
-  margin: 0 50px 40px;
-}
 /*======> Parallax one end <======*/
 
 /*======> Parallax two start <======*/
@@ -443,7 +427,7 @@ p,
 }
 /*======> Parallax two end <======*/
 
-/*======> best offer products <======*/
+/*======> best offer products start <======*/
 .box-two .name {
   color: var(--third-color);
 }
@@ -455,3 +439,97 @@ p,
 .section-title{
   font-weight: 600;
 }
+/*======> best offer products end <======*/
+
+/*======> Category cards start <======*/
+.card{
+  width: auto;
+  height: 10rem;
+}
+.card-body {
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+  z-index: 1;
+}
+
+.card-body:hover::before {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card-title, .card-text, .btn {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease; 
+}
+
+.card-body:hover .card-title {
+  opacity: 1;
+}
+
+.card-body:hover .card-text,
+.card-body:hover .btn {
+  opacity: 1;
+}
+
+.card-body {
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color 0.3s ease;
+  z-index: 1;
+}
+
+.card-body:hover::before {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.card-title-first, .card-text, .btn {
+  position: relative;
+  z-index: 2;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.card-title-first {
+  opacity: 1;
+  transform: translateY(-50%);
+}
+
+.card-body:hover .card-title-first {
+  opacity: 0;
+  transform: translateY(-50%);
+}
+
+.card-body:hover .card-text,
+.card-body:hover .btn {
+  opacity: 1;
+  transform: translateY(50%);
+}
+
+.card-title-first{
+  background-color: #050505a5;
+  border: 2px solid var(--secondary-color);
+}
+/*======> Category cards end <======*/

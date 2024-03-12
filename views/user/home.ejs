@@ -4,6 +4,11 @@
   <head>
     <!-- User home css file -->
     <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:wght@300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   </head>
 
   <section class="view mt-4 wrapper">
@@ -60,54 +65,71 @@
       </button>
     </div>
     <!-- Home carousel start -->
-
-    <!--  Edit start -->
-    <section class="parallax-one">
-      <div class="parallaxone-inner">
-          <h1 class="parallaxone-h1">Scroll Down</h1>
+    <section class="parallax-one p-3">
+      <div class="container">
+        <div class="row p-3">
+        <% if(category){ %>
+          <% category.forEach((cat,index)=>{ %>
+          <div class="col-md-6">
+            <div class="card m-3 border-0">
+              <div class="card-body d-flex flex-column justify-content-center" style="background-image: url('/static/images/CategoryImages/<%= cat.image %>'); background-size: cover; background-position: center;">
+                <h2 class="card-title-first text-light text-center position-absolute top-50 start-50 translate-middle"><%= cat.name %></h2>
+                <h4 class="card-title text-light text-center"><%= cat.name %></h4>
+                <h6 class="card-text text-light text-center"><%= cat.desc %></h6>
+                <a href="/shop" class="btn text-light">Shop Now <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i></a>
+              </div>
+            </div>
+          </div>
+          <% }) %>
+          <% }else{ %>
+            <h1>Happy shopping</h1>
+            <% } %>
+        </div>
+      </div>  
+    </section>
+    
+    <!-- Best offer products start -->
+    <div class="parallaxone-para p-3">
+      <div class="text-left mt-3">
+        <h4 class="section-title"><span class="px-2">Best deals await! Grab yours now</span></h4>
       </div>
-  </section>
-
-  <div class="parallaxone-para">
-    <div class="text-left mt-3">
-      <h4 class="section-title px-5"><span class="px-2">Best deals await! Grab yours now</span></h4>
-    </div>
-  <section class="mt-2" id="sectiontwo">
-      <div class="col-12">
+      <section class="" id="sectiontwo">
+        <div class="col-12">
           <div class="scroll-container">
-              <div class="d-flex overflow-auto p-2">
-                  <% if(bestOfferProducts !="" ){ %>
-                      <% bestOfferProducts.forEach((product , index)=>{ %>
-                          <a href="/productDetail/<%= product._id %>" class="product-outline">
-                              <div class="box-two mx-2 text-center border-0" style="flex: 0 0 auto;">
-                                  <div class="img">
-                                      <img src="/static/images/ProductImages/<%= product.images[0] %>"
-                                          alt="No image">
-                                  </div>
-                                  <div class="name">
-                                      <h5>
-                                          <%= product.name %>
-                                      </h5>
-                                  </div>
-                                  <div class="offer">
-                                      <h6>Min <%= product.discountPercentage %> off</h6>
-                                  </div>
-                              </div>
+            <div class="d-flex overflow-auto">
+              <% if(bestOfferProducts !="" ){ %>
+                <% bestOfferProducts.forEach((product , index)=>{ %>
+                  <a href="/productDetail/<%= product._id %>" class="product-outline">
+                    <div class="box-two mx-2 text-center border-0" style="flex: 0 0 auto;">
+                      <div class="img">
+                        <img src="/static/images/ProductImages/<%= product.images[0] %>"
+                        alt="No image">
+                      </div>
+                      <div class="name">
+                        <h5>
+                          <%= product.name %>
+                        </h5>
+                      </div>
+                      <div class="offer">
+                        <h6>Min <%= product.discountPercentage %> off</h6>
+                      </div>
+                    </div>
                           </a>
                           <% }) %>
                               <% }else{ %>
                                   <h3 class="text-center bg-warning">No same category Product found</h3>
                                   <% } %>
               </div>
-
+              
+            </div>
           </div>
+        </section>
       </div>
-  </section>
-  </div>
+      <!-- Best offer products end -->
   <section class="parallax-two">
-      <div class="parallaxtwo-inner">
-          <h1 class="parallaxtwo-h1">Parallax Effect</h1>
-      </div>
+    <div class="parallaxtwo-inner">
+      <h1 class="parallaxtwo-h1">Parallax Effect</h1>
+    </div>
   </section>
   <p class="parallaxtwo-para">Lorem ipsum dolor sit amet consectetur adipisicing elit. Veritatis minima fuga debitis quasi eius aliquid
       sapiente? Cumque blanditiis quibusdam, ex totam aliquam provident alias culpa, sit illo, eum doloribus

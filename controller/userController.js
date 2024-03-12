@@ -164,6 +164,8 @@ const postLogin = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
         const homeCarousel = await HomeCarousel.find()
+        const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
+
         const { email, password } = req.body;
 
         if (user) {
@@ -180,7 +182,7 @@ const postLogin = async (req, res) => {
                         req.session.user = user;
                         userDetails = req.session.user
                         console.log(userDetails)
-                        return res.render('user/home',{userDetails , homeCarousel})
+                        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts})
                 } else {
                     // Passwords don't match    
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
@@ -221,8 +223,10 @@ const getHome = async (req, res) => {
     try {
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
+        const category = await Category.find({isBlocked : false})
         console.log("best offer products : ", bestOfferProducts)
-        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts})
+        console.log("Category : ", category)
+        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category})
     } catch (error) {
         console.log(error)
     }
