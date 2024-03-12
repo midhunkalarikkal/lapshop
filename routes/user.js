@@ -66,4 +66,10 @@ userRouter.get('/shop',userController.getUserShop)
 //To get the categorizes products in shop page
 userRouter.post('/shopCategoryId',userController.getCatProduct)
 
+//To get the wishlist page
+userRouter.get('/wishlist',userAuth.isUserLoggedIn,userController.getWishlistPage)
+
+//To add a produt to wishlist
+userRouter.post('/addToWishlist',userAuth.isUserLoggedIn,userController.AddToWishlist)
+
 module.exports = userRouter

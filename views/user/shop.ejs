@@ -206,10 +206,19 @@
                                                         <img class="img-fluid product-image w-100"
                                                             src=" /static/images/ProductImages/<%= product.images[0] %>"
                                                             alt="">
-                                                        <a href="" class="position-absolute"
-                                                            style="top: 8px; right: 50px; z-index: 1;">
-                                                            <i class="fa-regular fa-heart wish-btn"></i>
-                                                        </a>
+                                                        
+                                                            <% if (prodId != "") { %>
+                                                                <% for(let i = 0; i < prodId.length; i++){ %>
+                                                                    <% if(prodId[i] == product._id.toString()){ %>
+                                                                        <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="<%= product._id %>" onclick="addToWishlist(this)">
+                                                                            <i class="fa-solid fa-heart wish-btn"></i> 
+                                                                        </a>
+                                                                    <% } %>
+                                                                <% } %>
+                                                            <% } %>
+                                                                <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="<%= product._id %>" onclick="addToWishlist(this)">
+                                                                    <i class="fa-regular fa-heart wish-btn"></i> 
+                                                                </a>
                                                         <div class="position-absolute"
                                                             style="top: 5px; right: 5px; z-index: 1;">
                                                             <span class="badge">New</span>
@@ -501,6 +510,46 @@
         function changePage(pageNumber) {
             currentPage = pageNumber;
             updateProductList();
+        }
+
+        //Function to add product to wishlist
+        function addToWishlist(element) {
+            var productId = element.getAttribute('data-product-id');
+
+            var data = {
+                productId: productId
+            };
+
+            console.log("Data :",data)
+
+            fetch('/addToWishlist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                Swal.fire({
+                    title: "Wishlist",
+                    html: `<i class="fa-solid fa-heart" style="color: #f01919;"></i> ${data.message}`,
+                    icon: "success",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(()=>{
+                    window.location.reload();
+                })  
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
         }
 
     </script>

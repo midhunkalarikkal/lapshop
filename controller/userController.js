@@ -7,6 +7,7 @@ const Brand = require('../models/brandModel')
 const Category = require('../models/categoryModel')
 const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
+const Wishlist = require('../models/wishlistModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -165,7 +166,8 @@ const postLogin = async (req, res) => {
         const user = await User.findOne({ email: req.body.email });
         const homeCarousel = await HomeCarousel.find()
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
-
+        const category = await Category.find({ isBlocked : false})
+    
         const { email, password } = req.body;
 
         if (user) {
@@ -181,8 +183,7 @@ const postLogin = async (req, res) => {
                 } if (result) {
                         req.session.user = user;
                         userDetails = req.session.user
-                        console.log(userDetails)
-                        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts})
+                        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category })
                 } else {
                     // Passwords don't match    
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
@@ -341,14 +342,33 @@ const getUserShop = async(req,res)=>{
         const adCarousel = await AdCarousel.find({ isBlocked: false });
         const category = await Category.find({ isBlocked : false})
         const brand = await Brand.find({ isBlocked : false})
-        const categoryId = []
-        const brandId = []
+        let categoryId = []
+        let brandId = []
+        let prodId =[]
+
+        if(!req.session.user){
+            console.log("Session user : no user in session",)
+        }else{
+            console.log("Session user :",req.session.user)
+            console.log("User id :",req.session.user._id)
+            const user = req.session.user
+            const wishlist = await Wishlist.find({ userId : user._id})
+            if(wishlist != ""){
+                console.log("Wishlist :",wishlist)
+                const wishlistProducts = wishlist[0].products
+                console.log("WishlistProducts :", wishlistProducts)
+                const productsId = wishlistProducts.map(item => item.product);
+                prodId = productsId
+            }
+        }
+        console.log("Products id's:", prodId);
+
         const page = parseInt(req.query.page) || 1;  // This is coming from the first pagination a tag from shop.ejs
         const limit = 6; 
         
         console.log("Get user shop")
 
-        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page,
+        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, prodId ,
             totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
@@ -712,6 +732,54 @@ const getProductDetail = async(req,res)=>{
     }
 }
 
+// To get the wishlist page
+const getWishlistPage = async(req,res)=>{
+    try{
+        res.render('user/wishlist', {userDetails})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+//To add a product to wishlist
+const AddToWishlist = async(req,res)=>{
+    try{
+        const productId = req.body.productId
+        const userId = req.session.user._id 
+        const existingWishlist = await Wishlist.findOne({ userId: userId });
+
+        if (existingWishlist) {
+            const isProductInWishlist = existingWishlist.products.some(item => item.product.equals(productId));
+            
+            if (isProductInWishlist) {
+                console.log("Product exists in the wishlist  so it is removed");
+                existingWishlist.products = existingWishlist.products.filter(item => !item.product.equals(productId));
+                await existingWishlist.save();
+                return res.status(200).json({ message: "Product deleted from your wishlist." });
+            } else {
+                existingWishlist.products.push({ product: productId });
+                await existingWishlist.save();
+                console.log("Product added to the wishlist");
+                return res.status(200).json({ message: "Product added to your wishlist." });
+            }
+        } else {
+            
+            const newWishlist = new Wishlist({
+                userId: userId,
+                products: [{ product: productId }]
+            });
+            await newWishlist.save();
+            console.log("New wishlist created with the product added");
+            return res.status(200).json({ message: "Product added to your wishlist." });
+        }
+
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 
 
 
@@ -742,6 +810,8 @@ module.exports = {
     postForgotPasswordOtp,
     postForgotPasswordNewPass,
     getProductDetail,
-    getCatProduct
+    getCatProduct,
+    getWishlistPage,
+    AddToWishlist
 }
 
