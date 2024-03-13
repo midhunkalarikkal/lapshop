@@ -843,6 +843,16 @@ const deleteProductFromWishlist = async(req,res)=>{
     }
 }
 
+//To get the cart page
+const getCartPage = async(req,res)=>{
+    try{
+        res.render('user/cart' , {userDetails})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 
 
 
@@ -876,6 +886,7 @@ module.exports = {
     getCatProduct,
     getWishlistPage,
     AddToWishlist,
-    deleteProductFromWishlist
+    deleteProductFromWishlist,
+    getCartPage
 }
 
