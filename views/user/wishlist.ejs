@@ -73,12 +73,13 @@
                             <tbody>
                                 <% products.forEach((product)=>{ %>
                                 <tr>
-                                    <a href="" style="cursor: pointer;">
-                                    <td class="col-3"><img
-                                                src="/static/images/ProductImages/<%= product.images[0] %>"
-                                                alt="" class="img-thumbnail product-img">
+                                    <td class="col-3">
+                                        <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
+                                            <img
+                                            src="/static/images/ProductImages/<%= product.images[0] %>"
+                                            alt="" class=" product-img">
+                                        </a>
                                     </td>
-                                    </a>
                                     <td class="col-3">
                                         <p class="mt-2"><span class="product-brand"><%= product.brand.name %></span>
                                             <br>
@@ -123,8 +124,10 @@
                     <% products.forEach((product)=>{ %>
                 <div class="mt-4 d-flex align-items-center justify-content-around p-3 bg-light shadow">  
                     <div class="image col-4">
+                        <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
                         <img src="/static/images/ProductImages/<%= product.images[0] %>"
-                        alt="" class="img-thumbnail img-fluid">
+                        alt="" class="img-fluid">
+                    </a>
                     </div>
                     <div class="product-detials col-7 d-flex flex-column align-items-center">
                         <div class="product-text">
