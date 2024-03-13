@@ -1,213 +1,163 @@
 <!-- User navbar -->
 <%-include("../userpartials/Navbar.ejs")%>
-<head>
-    <style>
-        .cart-wrap {
-	padding: 40px 0;
-	font-family: 'Open Sans', sans-serif;
-}
-.main-heading {
-	font-size: 19px;
-	margin-bottom: 20px;
-}
-.table-wishlist table {
-    width: 100%;
-}
-.table-wishlist thead {
-    border-bottom: 1px solid #e5e5e5;
-    margin-bottom: 5px;
-}
-.table-wishlist thead tr th {
-    padding: 8px 0 18px;
-    color: #484848;
-    font-size: 15px;
-    font-weight: 400;
-}
-.table-wishlist tr td {
-    padding: 25px 0;
-    vertical-align: middle;
-}
-.table-wishlist tr td .img-product {
-    width: 72px;
-    float: left;
-    margin-left: 8px;
-    margin-right: 31px;
-    line-height: 63px;
-}
-.table-wishlist tr td .img-product img {
-	width: 100%;
-}
-.table-wishlist tr td .name-product {
-    font-size: 15px;
-    color: #484848;
-    padding-top: 8px;
-    line-height: 24px;
-    width: 50%;
-}
-.table-wishlist tr td.price {
-    font-weight: 600;
-}
-.table-wishlist tr td .quanlity {
-    position: relative;
-}
 
-.total {
-	font-size: 24px;
-	font-weight: 600;
-	color: #8660e9;
-}
-.display-flex {
-	display: flex;
-}
-.align-center {
-	align-items: center;
-}
-.round-black-btn {
-	border-radius: 25px;
-    background: #4988c8;
-    color: #fff;
-    padding: 5px 20px;
-    display: inline-block;
-    border: solid 2px #212529; 
-    transition: all 0.5s ease-in-out 0s;
-    cursor: pointer;
-    font-size: 14px;
-}
-.round-black-btn:hover,
-.round-black-btn:focus {
-	background: transparent;
-	color: #212529;
-	text-decoration: none;
-}
-.mb-10 {
-    margin-bottom: 10px !important;
-}
-.mt-30 {
-    margin-top: 30px !important;
-}
-.d-block {
-    display: block;
-}
-.custom-form label {
-    font-size: 14px;
-    line-height: 14px;
-}
-.pretty.p-default {
-    margin-bottom: 15px;
-}
-.pretty input:checked~.state.p-primary-o label:before, 
-.pretty.p-toggle .state.p-primary-o label:before {
-    border-color: #8660e9;
-}
-.pretty.p-default:not(.p-fill) input:checked~.state.p-primary-o label:after {
-    background-color: #8660e9 !important;
-}
-.main-heading.border-b {
-    border-bottom: solid 1px #ededed;
-    padding-bottom: 15px;
-    margin-bottom: 20px !important;
-}
-.custom-form .pretty .state label {
-    padding-left: 6px;
-}
-.custom-form .pretty .state label:before {
-    top: 1px;
-}
-.custom-form .pretty .state label:after {
-    top: 1px;
-}
-.custom-form .form-control {
-    font-size: 14px;
-    height: 38px;
-}
-.custom-form .form-control:focus {
-    box-shadow: none;
-}
-.custom-form textarea.form-control {
-    height: auto;
-}
-.mt-40 {
-    margin-top: 40px !important; 
-}
-.in-stock-box {
-	background: rgb(82, 187, 82);
-	font-size: 12px;
-	text-align: center;
-	border-radius: 25px;
-	padding: 4px 15px;
-	display: inline-block;  
-    color: #fff;
-}
-.trash-icon {
-    font-size: 20px;
-    color: #212529;
-}
-    </style>
-</head>
-<section class="view">
-<div class="cart-wrap">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="main-heading mb-10">My wishlist</div>
-                <div class="table-wishlist">
-                    <!-- Table for the medium and above screens start -->
-                    <table cellpadding="0" cellspacing="0" border="0" width="100%" class="d-none d-md-block">
-                        <thead>
-                            <tr>
-                                <th width="45%">Product Detail</th>
-                                <th width="15%">Unit Price</th>
-                                <th width="15%">Stock Status</th>
-                                <th width="15%"></th>
-                                <th width="10%"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td width="45%">
-                                    <div class="display-flex align-center">
-                                        <div class="img-product">
-                                            <img src="https://www.91-img.com/pictures/laptops/asus/asus-x552cl-sx019d-core-i3-3rd-gen-4-gb-500-gb-dos-1-gb-61721-large-1.jpg" alt="" class="mCS_img_loaded">
-                                        </div>
-                                        <div class="name-product">
-                                            Apple iPad Mini
-                                        </div>
-                                    </div>
-                                </td>
-                                <td width="15%" class="price">$110.00</td>
-                                <td width="15%"><span class="in-stock-box">In Stock</span></td>
-                                <td width="15%"><button class="round-black-btn small-btn">Add to Cart</button></td>
-                                <td width="10%" class="text-center"><a href="#" class="trash-icon"><i class="far fa-trash-alt"></i></a></td>
-                            </tr>               
-                        </tbody>
-                    </table>
-                    <hr>
-                    <!-- Table for the medium and above screens end -->
-                    <!-- Table for the small screens start -->
-                    <div class="product d-block d-md-none d-flex">
-                        <div class="image col-4">
-                            <img src="https://www.91-img.com/pictures/laptops/asus/asus-x552cl-sx019d-core-i3-3rd-gen-4-gb-500-gb-dos-1-gb-61721-large-1.jpg" alt="" class="img-thumbnail">
-                        </div>
-                        <div class="product-detials col-8 d-flex flex-column align-items-center">
-                            <div class="product-text">
-                                <h6>Product Brand</h6>
-                                <h6>Product Name</h6>
-                                <h6>Product Price</h6>
-                                <p>Stock</p>
-                            </div>
-                            <div class="buttons">
-                                <button class="btn btn-primary btn-sm">Add to cart</button>
-                                <button class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button>
-                            </div>
-                        </div>
+    <head>
+        <style>
+            /*======> Very small devices <======*/
+            @media (max-width: 576px) {
+                .product-text span{
+                    font-size: 12px;
+                }
+
+                .add-to-cart-btn{
+                    width: 5rem;
+                    font-size: 12px;
+                }
+                
+                .delete-btn{
+                    font-size: 12px;
+
+                }
+            }
+
+            /*======> XS/SM devices <======*/
+            @media (min-width: 576px) and (max-width: 767px) {
+                .product-text span{
+                    font-size: 14px;
+                }
+            }
+
+            /*======> MD devices <======*/
+            @media (min-width: 768px) and (max-width: 991px) {
+                .product-img{
+                    width: 70%;
+                }
+            }
+
+            /*======> LG devices <======*/
+            @media (min-width: 992px) and (max-width: 1199px) {
+                .product-img{
+                    width: 55%;
+                }
+            }
+
+
+            /*======> XL devices <======*/
+            @media (min-width: 1200px) {
+                .product-img{
+                    width: 40%;
+                }
+            }
+        </style>
+    </head>
+    <section class="view">
+        <!-- Edit -->
+        <div class="cart-wrap d-none d-md-block mt-5">
+            <div class="container">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <h3>Your wishlist</h3>
+                        <button class="btn btn-warning btn-sm">Go to cart</button>
                     </div>
-                    <hr>
-                    <!-- Table for the small screens end -->
+                    <% if(products !="" ){ %>
+                        <table class="table mt-4 shadow">
+                            <thead>
+                                <tr>
+                                    <th class="col-3">Image</th>
+                                    <th class="col-3">Product Details</th>
+                                    <th class="col-2">Stock</th>
+                                    <th class="col-2">Add to cart</th>
+                                    <th class="col-2">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% products.forEach((product)=>{ %>
+                                <tr>
+                                    <a href="" style="cursor: pointer;">
+                                    <td class="col-3"><img
+                                                src="/static/images/ProductImages/<%= product.images[0] %>"
+                                                alt="" class="img-thumbnail product-img">
+                                    </td>
+                                    </a>
+                                    <td class="col-3">
+                                        <p class="mt-2"><span class="product-brand"><%= product.brand.name %></span>
+                                            <br>
+                                            <span class="product-name"><%= product.name %></span>
+                                            <br>
+                                            <% for(let i = 0; i < wishlistProducts.length; i++){ %>
+                                                <% if(product._id.toString() === wishlistProducts[i].product.toString()){ %>
+                                            <span>Item added on <span class="item-added-date"><%= wishlistProducts[i].addedAt.toDateString() %></span></span>
+                                            <% } %>
+                                            <% } %>
+                                        </p>
+                                    </td>
+                                    <% if(product.noOfStock < 5){ %>
+                                        <td class="col-2 inStock"><p class="mt-4 text-danger">Hurry Up! ONly <%= product.noOfStock %> left in stock.</p></td>
+                                    <% }else{ %>
+                                        <td class="col-2 inStock"><p class="mt-4">In stock</p></td>
+                                    <% } %>
+                                    <td class="col-2"><button class="btn btn-primary btn-sm mt-4">Add to cart</button></td>
+                                    <td class="col-2"><button class="btn btn-danger btn-sm mt-4"><i
+                                                class="fa fa-trash"></i></button></td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                <% }else{ %>
+                    <div class="alert alert-info text-center" role="alert">Your wishlist is empty.</div>
+                <% } %>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-</section>
-<!-- User footer -->
-<%-include("../userpartials/Footer.ejs")%>
+        <!-- Edit -->
+        <!-- Table for the small screens start -->
+        <div class="product mt-5 d-block d-md-none">
+            <div class="container">
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <h3>Your wishlist</h3>
+                        <button class="btn btn-warning">Go to cart</button>
+                    </div>
+                </div>
+                <% if(products !="" ){ %>
+                    <% products.forEach((product)=>{ %>
+                <div class="mt-4 d-flex align-items-center justify-content-around p-3 bg-light shadow">  
+                    <div class="image col-4">
+                        <img src="/static/images/ProductImages/<%= product.images[0] %>"
+                        alt="" class="img-thumbnail img-fluid">
+                    </div>
+                    <div class="product-detials col-7 d-flex flex-column align-items-center">
+                        <div class="product-text">
+                            <p class="sm-p">
+                                <span><%= product.brand.name %></span>
+                                <span><%= product.name %></span><br>
+                                <% if(product.noOfStock < 5){ %>
+                                    <span class="mt-2 mb-2 text-danger">Hurry Up! ONly <%= product.noOfStock %> left in stock.</span><br>
+                                <% }else{ %>
+                                    <span>In stock</span><br>
+                                <% } %>
+                                <% for(let i = 0; i < wishlistProducts.length; i++){ %>
+                                    <% if(product._id.toString() === wishlistProducts[i].product.toString()){ %>
+                                    <span>Item added on <span class="item-added-date"><%= wishlistProducts[i].addedAt.toDateString() %></span></span>
+                                <% } %>
+                                <% } %>
+                            </p>
+                        </div>
+                        <div class="buttons">
+                            <button class="btn btn-primary btn-sm add-to-cart-btn">Add to cart</button>
+                            <button class="btn btn-danger btn-sm delete-btn"><i class="fa fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+                <% }else{ %>
+                    <div class="alert alert-info text-center" role="alert">Your wishlist is empty.</div>
+                <% } %>
+                <hr>
+            </div>
+        </div>
+   
+        <!-- Table for the small screens end -->
+    </section>
+    <!-- User footer -->
+    <%-include("../userpartials/Footer.ejs")%>

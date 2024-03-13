@@ -756,14 +756,27 @@ const getProductDetail = async(req,res)=>{
 // To get the wishlist page
 const getWishlistPage = async(req,res)=>{
     try{
-        res.render('user/wishlist', {userDetails})
+        let prodId = []
+        let wishlistProducts = []
+        const user = req.session.user
+        const wishlist = await Wishlist.find({ userId : user._id})
+        if(wishlist != ""){
+            wishlistProducts = wishlist[0].products
+            console.log("WishlistProducts :",wishlistProducts)
+            const productsId = wishlistProducts.map(item => item.product);
+            prodId = productsId
+        }
+        console.log("prodId :",prodId)
+        const products = await Product.find({_id : {$in : prodId}}).populate("brand")
+        console.log("Products : ",products)
+        res.render('user/wishlist', {userDetails , products ,wishlistProducts})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
     }
 }
 
-//To add a product to wishlist
+//To add and delete a product to and from a wishlist
 const AddToWishlist = async(req,res)=>{
     try{
         const productId = req.body.productId
