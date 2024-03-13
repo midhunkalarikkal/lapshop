@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Saira+Semi+Condensed:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span,
+a,
+p,
+.input-group input::placeholder {
+    font-family: 'Anton', sans-serif;
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+
+:root {
+  --primary-color: #50c878;
+  --secondary-color: #f0ffff;
+  --third-color: #1b1b1b;
+  --fourth-color: #f82b50;
+  --fifth-color: #38ed77;
+  --sixth-color: #e4e4e4;
+}
+
+/*======> Profile left side <======*/
+.gradient-custom {
+    background: var(--primary-color);
+}
+
+.extra-btn{
+    background-color: var(--secondary-color);
+    border-radius: 5px;
+}
+
+.extra-btn:hover{
+    background-color: var(--third-color);
+    a,i{
+        color: var(--secondary-color);
+    }
+}
+ 
+.extra-btn a{
+    text-decoration: none;
+    color: #1b1b1b;
+}
+
+.extra-btn i{
+    color: var(--third-color);
+}
+
+.card{
+    border: 1px solid var(--primary-color);
+}

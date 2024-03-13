@@ -3,14 +3,7 @@
 
     <head>
         <!-- User home css file -->
-        <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
-        <style>
-            .gradient-custom {
-                background: #f6d365;
-                background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
-                background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
-            }
-        </style>
+        <link rel='stylesheet' href='/static/css/profile.css' type="text/css" />
     </head>
 
 
@@ -73,7 +66,7 @@
                                                 <i class="fas fa-heart"></i>
                                             </div>
                                             <div class="col-8 d-flex justify-content-start">
-                                                <a href="#" class="mx-2">Your wishlist</a>
+                                                <a href="/wishlist" class="mx-2">Your wishlist</a>
                                             </div>
                                         </div>
                                         <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
@@ -95,7 +88,7 @@
                                                     <h5 class="m-0">Information</h5>
                                                 </div>
                                                 <div class="edit-btn col-8 d-flex justify-content-end">
-                                                    <button class="btn btn-primary btn-sm" style="background-color: #f6d46500; color: blue; border: 0;" data-bs-toggle="modal" data-bs-target="#informationModal">
+                                                    <button class="btn btn-primary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#informationModal">
                                                         <i class="fas fa-edit"></i> Edit
                                                     </button>
                                                 </div>
@@ -131,9 +124,8 @@
                                                 </div>
                                                 <div class="edit-btn col-8 d-flex justify-content-end">
                                                     <button 
-                                                        class="btn btn-primary btn-sm"
+                                                        class="btn btn-primary btn-sm mb-2"
                                                         id="add-address"
-                                                        style="background-color: #f6d46500; color: blue; border: 0;" 
                                                         data-userId="<%= userData._id %>">
                                                         <i class="fas fa-add"></i> Add address
                                                     </button>
@@ -157,18 +149,16 @@
                                                                 <%= address.state%>, 
                                                                 <%= address.country%>
                                                             </p>
-                                                            <div class="buttons">
+                                                            <div class="buttons d-flex justify-content-start">
                                                                 <button 
-                                                                    class="btn btn-primary btn-sm edit-address-btn"
-                                                                    style="background-color: #f6d46500; color: blue; border: 0;"
+                                                                    class="btn btn-primary btn-sm edit-address-btn mb-1"
                                                                     data-adId="<%= address._id %>" ><i
-                                                                    class="fas fa-edit"></i> Edit
+                                                                    class="fas fa-edit"></i>
                                                                 </button>
                                                                 <button
-                                                                    class="btn btn-primary btn-sm delete-address-btn"
-                                                                    style="background-color: #f6d46500; color: blue; border: 0;"
+                                                                    class="btn btn-danger btn-sm delete-address-btn mb-1 mx-2"
                                                                     data-adid="<%= address._id %>"><i
-                                                                    class="fas fa-trash"></i> Delete
+                                                                    class="fas fa-trash"></i>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -216,7 +206,7 @@
                                                                 <i class="fas fa-heart"></i>
                                                             </div>
                                                             <div class="col-8 d-flex justify-content-start">
-                                                                <a href="#" class="mx-2">Your wishlist</a>
+                                                                <a href="/wishlist" class="mx-2">Your wishlist</a>
                                                             </div>
                                                         </div>
                                                         <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
