@@ -206,19 +206,18 @@
                                                         <img class="img-fluid product-image w-100"
                                                             src=" /static/images/ProductImages/<%= product.images[0] %>"
                                                             alt="">
-                                                        
-                                                            <% if (prodId != "") { %>
-                                                                <% for(let i = 0; i < prodId.length; i++){ %>
-                                                                    <% if(prodId[i] == product._id.toString()){ %>
-                                                                        <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="<%= product._id %>" onclick="addToWishlist(this)">
-                                                                            <i class="fa-solid fa-heart wish-btn"></i> 
-                                                                        </a>
-                                                                    <% } %>
+                                                        <% if (prodId != "") { %>
+                                                            <% for(let i = 0; i < prodId.length; i++){ %>
+                                                                <% if(prodId[i] == product._id.toString()){ %>
+                                                                    <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="<%= product._id %>" onclick="addToWishlist(this)">
+                                                                        <i class="fa-solid fa-heart wish-btn"></i> 
+                                                                    </a>
                                                                 <% } %>
                                                             <% } %>
-                                                                <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="<%= product._id %>" onclick="addToWishlist(this)">
-                                                                    <i class="fa-regular fa-heart wish-btn"></i> 
-                                                                </a>
+                                                        <% } %>
+                                                        <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="<%= product._id %>" onclick="addToWishlist(this)">
+                                                            <i class="fa-regular fa-heart wish-btn"></i> 
+                                                        </a>
                                                         <div class="position-absolute"
                                                             style="top: 5px; right: 5px; z-index: 1;">
                                                             <span class="badge">New</span>
@@ -559,6 +558,15 @@
                 return response.json();
             })
             .then(data => {
+                var wishlistButton = document.querySelector(`[data-product-id="${productId}"] .fa-heart`);
+                if (data.added) {
+                    wishlistButton.classList.add('fa-solid');
+                    wishlistButton.classList.remove('fa-regular');
+                } else {
+                    wishlistButton.classList.remove('fa-solid');
+                    wishlistButton.classList.add('fa-regular');
+                }
+
                 Swal.fire({
                     title: "Wishlist",
                     html: `<i class="fa-solid fa-heart" style="color: #f01919;"></i> ${data.message}`,
@@ -566,9 +574,7 @@
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false
-                }).then(()=>{
-                    window.location.reload();
-                })  
+                }) 
             })
             .catch(error => {
                 console.error('There was a problem with the fetch operation:', error);

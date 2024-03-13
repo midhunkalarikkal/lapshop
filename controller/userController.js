@@ -777,12 +777,12 @@ const AddToWishlist = async(req,res)=>{
                 console.log("Product exists in the wishlist  so it is removed");
                 existingWishlist.products = existingWishlist.products.filter(item => !item.product.equals(productId));
                 await existingWishlist.save();
-                return res.status(200).json({ message: "Product deleted from your wishlist." });
+                return res.status(200).json({ added: false, message: "Product deleted from your wishlist." });
             } else {
                 existingWishlist.products.push({ product: productId });
                 await existingWishlist.save();
                 console.log("Product added to the wishlist");
-                return res.status(200).json({ message: "Product added to your wishlist." });
+                return res.status(200).json({ added: true, message: "Product added to your wishlist." });
             }
         } else {
             
