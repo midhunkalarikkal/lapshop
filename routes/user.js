@@ -72,4 +72,7 @@ userRouter.get('/wishlist',userAuth.isUserLoggedIn,userController.getWishlistPag
 //To add a produt to wishlist
 userRouter.post('/addToWishlist',userAuth.isUserLoggedIn,userController.AddToWishlist)
 
+//To delete a product from wishlist
+userRouter.post('/deleteProductFromWishlist',userAuth.isUserLoggedIn,userController.deleteProductFromWishlist)
+
 module.exports = userRouter

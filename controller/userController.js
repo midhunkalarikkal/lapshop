@@ -814,6 +814,35 @@ const AddToWishlist = async(req,res)=>{
     }
 }
 
+//To delete a product from wishlist
+const deleteProductFromWishlist = async(req,res)=>{
+    try{
+        console.log("req body:",req.body)
+        const productId = req.body.productId
+        const userId = req.session.user._id
+        console.log("productId :",productId)
+        console.log("userId :",userId)
+
+        if(!productId){
+            return res.status(404).json({ messagr : "Product deletion error , please try again."})
+        }
+        
+        const wishlist = await Wishlist.findOneAndUpdate({ userId: userId },
+            { $pull: { products: { product: productId } } },
+            { new: true }
+            );
+            console.log("Wishlist :",wishlist)
+            if (!wishlist) {
+                return res.status(404).json({ message: "Wishlist not found." });
+            }
+    
+            return res.status(200).json({ message: "Product deleted successfully from the wishlist." });
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error." })
+    }
+}
+
 
 
 
@@ -846,6 +875,7 @@ module.exports = {
     getProductDetail,
     getCatProduct,
     getWishlistPage,
-    AddToWishlist
+    AddToWishlist,
+    deleteProductFromWishlist
 }
 
