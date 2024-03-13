@@ -369,8 +369,10 @@
                     console.log(data);
                     let productData = data.productData
                     let totalPages = data.totalPages
+                    let prodId = data.prodId
                     console.log("productData : ", productData)
                     console.log("totalPages : ", totalPages)
+                    console.log("prodId : ",prodId)
                     updatePaginationUI(totalPages);
 
                     ////// Emptying the child elements of the productCardRow div \\\\\\
@@ -382,10 +384,8 @@
                                 <div class='card product-item mb-4 product-card shadow'>
                                     <a href='/productDetail/${product._id}' class='product-outline'>
                                         <div class='card-header product-img position-relative overflow-hidden  p-0'>
-                                            <img class='img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
-                                            <div class='position-absolute' style='top: 8px; right: 50px; z-index: 1;'>
-                                                <i class='fa-regular fa-heart wish-btn'></i>
-                                            </div>
+                                            <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
+
                                             <div class='position-absolute' style='top: 5px; right: 5px; z-index: 1;'>
                                                 <span class='badge'>New</span>
                                             </div>
@@ -407,6 +407,29 @@
                                     </div>
                                 </div>`
                         );
+                        
+                        ////// Dynamically adding the wishlist button to the product \\\\\\
+                        const productCardHeader = productDiv.find('.card-header.product-img');
+                            if (prodId != "") {
+                                for (let i = 0; i < prodId.length; i++) {
+                                    if (prodId[i] == product._id.toString()) {
+                                        const wishlistButton = $(`
+                                            <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
+                                                <i class="fa-solid fa-heart wish-btn"></i> 
+                                            </a>
+                                        `);
+                                        productCardHeader.append(wishlistButton);
+                                    }
+                                }
+                            }
+                            const defaultWishlistButton = $(`
+                                <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
+                                    <i class="fa-regular fa-heart wish-btn"></i> 
+                                </a>
+                            `);
+                            productCardHeader.append(defaultWishlistButton);
+
+                        
                         ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
                         $("#productCardRow").append(productDiv)
                     });

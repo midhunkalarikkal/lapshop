@@ -348,6 +348,7 @@ const getUserShop = async(req,res)=>{
 
         if(!req.session.user){
             console.log("Session user : no user in session",)
+            prodId =[]
         }else{
             console.log("Session user :",req.session.user)
             console.log("User id :",req.session.user._id)
@@ -388,6 +389,26 @@ const getCatProduct = async(req,res)=>{
         console.log("res body sortCriteria :",req.body.sortCriteria)
         console.log("req body currentPage :", req.body.currentPage)
         let productData
+        let prodId =[]
+
+        if(!req.session.user){
+            console.log("categorized products api Session user : no user in session",)
+            prodId =[]
+        }else{
+            console.log("categorized products api Session user :",req.session.user)
+            console.log("categorized products api User id :",req.session.user._id)
+            const user = req.session.user
+            const wishlist = await Wishlist.find({ userId : user._id})
+            if(wishlist != ""){
+                console.log("categorized products api Wishlist :",wishlist)
+                const wishlistProducts = wishlist[0].products
+                console.log("categorized products apiWishlistProducts :", wishlistProducts)
+                const productsId = wishlistProducts.map(item => item.product);
+                prodId = productsId
+            }
+        }
+        console.log("categorized products api Products id's:", prodId);
+        
 
         if(req.body){
             // To get the category and brand id's array and filtering to delete null
@@ -438,7 +459,7 @@ const getCatProduct = async(req,res)=>{
 
             console.log(productData)
 
-            res.status(200).json({ message : "Categorized products", productData , totalPages})
+            res.status(200).json({ message : "Categorized products", productData , totalPages , prodId})
         }else{
             res.status(400).json({ message : "No categorized found" })
         }
