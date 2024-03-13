@@ -228,18 +228,19 @@
                                                             <%= product.name %>
                                                         </h6>
                                                         <div class="d-flex align-items-end">
-                                                            <h6 class="offer-price">₹<%= product.offerPrice %>
-                                                            </h6>
-                                                            <h6 class="real-price small mx-3">₹<del class="real-price">
-                                                                <%= product.realPrice %>
-                                                            </del></h6>
+                                                            <p>
+                                                                <span class="discount-percentage">-<%= product.discountPercentage %>%</span>
+                                                                <span class="offer-price mx-2">₹<%= product.offerPrice %></span>
+                                                                <span class="real-price small mx-2">₹<del class="real-price">
+                                                                    <%= product.realPrice %>
+                                                                </del></span>
+                                                            </p>  
                                                         </div>
                                                     </div>
                                                 </a>
-                                                <button
-                                                    class="card-footer d-flex justify-content-center bg-light border">
-                                                    <a href="" class="btn btn-sm text-dark p-0">
-                                                        <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To
+                                                <button class="card-footer d-flex justify-content-center ">
+                                                    <a href="" class="btn btn-sm p-0">
+                                                        <i class="fas fa-shopping-cart"></i> Add To
                                                         Cart
                                                     </a>
                                                 </button>
