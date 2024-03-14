@@ -846,6 +846,7 @@ const deleteProductFromWishlist = async(req,res)=>{
 //To get the cart page
 const getCartPage = async(req,res)=>{
     try{
+        const userId = req.session.user._id
         res.render('user/cart' , {userDetails})
     }catch(error){
         console.log(error.message)
