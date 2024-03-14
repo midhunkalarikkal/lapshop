@@ -847,8 +847,10 @@ const deleteProductFromWishlist = async(req,res)=>{
 //To get the cart page
 const getCartPage = async(req,res)=>{
     try{
-        
-        res.render('user/cart' , {userDetails})
+        const userId = req.session.user._id
+        const cart = await Cart.find({userId : userId})
+        console.log("User cart :", cart)
+        res.render('user/cart' , {userDetails , cart})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
@@ -861,7 +863,7 @@ const postProductToCart = async (req, res) => {
         console.log("Cart API start");
         const userId = req.session.user._id;
         const productId = req.body.productId;
-        const product = await Product.findById(productId);
+        let product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ message: "Product not found." });
         }
@@ -870,31 +872,31 @@ const postProductToCart = async (req, res) => {
         // Get the existing cart of the user
         let existingCart = await Cart.findOne({ userId: userId });
 
-        if (existingCart) {
+        if (existingCart !== null) {
             console.log("Existing cart:", existingCart);
 
             // Check if the product already exists in the cart
             const existingItem = existingCart.items.find(item => item.product.equals(productId));
 
             if (existingItem) {
-                // If the product exists, increment its quantity by 1
+                // If the product exists, update its quantity and prices
                 existingItem.quantity++;
-                existingItem.totalPrice += product.realPrice;
-                existingItem.discountPrice += product.offerPrice;
+                existingItem.totalPrice +=  existingItem.totalPrice 
+                existingItem.discountPrice += existingItem.discountPrice 
             } else {
                 // If the product does not exist, add it to the cart
                 existingCart.items.push({
                     product: productId,
                     quantity: 1,
-                    price: product.realPrice,
-                    totalPrice: product.realPrice,
-                    discountPrice: product.offerPrice
+                    price: product.offerPrice,
+                    totalPrice: product.offerPrice,
+                    discountPrice: product.realPrice * (product.discountPercentage / 100)
                 });
             }
-
             // Update total cart price and total discount price
             existingCart.totalCartPrice = existingCart.items.reduce((total, item) => total + item.totalPrice, 0);
-            existingCart.totalDiscountPrice = existingCart.items.reduce((total, item) => total + item.discountPrice, 0);
+            existingCart.totalCartDiscountPrice = existingCart.items.reduce((total, item) => total + item.discountPrice, 0);
+
         } else {
             // If the cart does not exist, create a new cart
             existingCart = new Cart({
@@ -902,12 +904,12 @@ const postProductToCart = async (req, res) => {
                 items: [{
                     product: productId,
                     quantity: 1,
-                    price: product.realPrice,
-                    totalPrice: product.realPrice,
-                    discountPrice: product.offerPrice
+                    price: product.offerPrice,
+                    totalPrice: product.offerPrice,
+                    discountPrice: product.realPrice * (product.discountPercentage / 100)
                 }],
-                totalCartPrice: product.realPrice,
-                totalDiscountPrice: product.offerPrice
+                totalCartPrice: product.offerPrice,
+                totalCartDiscountPrice: product.realPrice * (product.discountPercentage / 100)
             });
         }
 
@@ -921,6 +923,7 @@ const postProductToCart = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+
 
 
 
