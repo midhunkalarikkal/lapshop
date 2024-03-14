@@ -848,9 +848,14 @@ const deleteProductFromWishlist = async(req,res)=>{
 const getCartPage = async(req,res)=>{
     try{
         const userId = req.session.user._id
-        const cart = await Cart.find({userId : userId})
+        let cart = await Cart.find({userId : userId}).populate("items.product")
+        if(!cart){
+            cart = []
+        }
+        const cartItems = cart[0].items
         console.log("User cart :", cart)
-        res.render('user/cart' , {userDetails , cart})
+        console.log("Cart items :",cartItems)
+        res.render('user/cart' , {userDetails , cartItems , cart})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
