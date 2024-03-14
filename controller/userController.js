@@ -8,6 +8,7 @@ const Category = require('../models/categoryModel')
 const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
 const Wishlist = require('../models/wishlistModel')
+const Cart = require('../models/cartModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -846,13 +847,81 @@ const deleteProductFromWishlist = async(req,res)=>{
 //To get the cart page
 const getCartPage = async(req,res)=>{
     try{
-        const userId = req.session.user._id
+        
         res.render('user/cart' , {userDetails})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
     }
 }
+
+//To add a product to cart
+const postProductToCart = async (req, res) => {
+    try {
+        console.log("Cart API start");
+        const userId = req.session.user._id;
+        const productId = req.body.productId;
+        const product = await Product.findById(productId);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found." });
+        }
+        console.log("Product:", product);
+
+        // Get the existing cart of the user
+        let existingCart = await Cart.findOne({ userId: userId });
+
+        if (existingCart) {
+            console.log("Existing cart:", existingCart);
+
+            // Check if the product already exists in the cart
+            const existingItem = existingCart.items.find(item => item.product.equals(productId));
+
+            if (existingItem) {
+                // If the product exists, increment its quantity by 1
+                existingItem.quantity++;
+                existingItem.totalPrice += product.realPrice;
+                existingItem.discountPrice += product.offerPrice;
+            } else {
+                // If the product does not exist, add it to the cart
+                existingCart.items.push({
+                    product: productId,
+                    quantity: 1,
+                    price: product.realPrice,
+                    totalPrice: product.realPrice,
+                    discountPrice: product.offerPrice
+                });
+            }
+
+            // Update total cart price and total discount price
+            existingCart.totalCartPrice = existingCart.items.reduce((total, item) => total + item.totalPrice, 0);
+            existingCart.totalDiscountPrice = existingCart.items.reduce((total, item) => total + item.discountPrice, 0);
+        } else {
+            // If the cart does not exist, create a new cart
+            existingCart = new Cart({
+                userId: userId,
+                items: [{
+                    product: productId,
+                    quantity: 1,
+                    price: product.realPrice,
+                    totalPrice: product.realPrice,
+                    discountPrice: product.offerPrice
+                }],
+                totalCartPrice: product.realPrice,
+                totalDiscountPrice: product.offerPrice
+            });
+        }
+
+        // Save the updated or new cart
+        await existingCart.save();
+        console.log("Cart saved:", existingCart);
+
+        return res.status(200).json({ message: "Product added to your cart." });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
 
 
 
@@ -888,6 +957,7 @@ module.exports = {
     getWishlistPage,
     AddToWishlist,
     deleteProductFromWishlist,
-    getCartPage
+    getCartPage,
+    postProductToCart
 }
 

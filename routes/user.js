@@ -78,4 +78,7 @@ userRouter.post('/deleteProductFromWishlist',userAuth.isUserLoggedIn,userControl
 //To get the cart page
 userRouter.get('/cart',userAuth.isUserLoggedIn,userController.getCartPage)
 
+//To add a product to cart
+userRouter.post('/addProductToCart',userAuth.isUserLoggedIn,userController.postProductToCart)
+
 module.exports = userRouter
