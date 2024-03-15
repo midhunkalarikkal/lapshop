@@ -848,9 +848,15 @@ const deleteProductFromWishlist = async(req,res)=>{
 const getCartPage = async(req,res)=>{
     try{
         const userId = req.session.user._id
-        let cart = await Cart.find({userId : userId}).populate("items.product")
-        if(!cart){
-            cart = []
+        let cart = await Cart.find({userId : userId}).populate({
+            path: "items.product",
+            populate: { path: "brand" }
+          });
+          
+        if (!cart || cart.length === 0) {
+            cart = [];
+            res.render('user/cart', { userDetails, cartItems: [], cart: [] });
+            return;
         }
         const cartItems = cart[0].items
         console.log("User cart :", cart)
