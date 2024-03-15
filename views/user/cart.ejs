@@ -157,9 +157,9 @@
                                         <p class="text-success">Part of your order qualifies for FREE Delivery.Choose FREE Delivery option at checkout.</p>      
                                     </div>
                                     <div class="details">
-                                        <h6>No of items - <span><%= cart[0].items.length %></span></h6>
-                                        <h6>You will save in this purchace <span class="purchace-discount"> ₹ <%= cart[0].totalCartDiscountPrice %></span></h6>      
-                                        <h5>Subtotal <span class="subtotal"> ₹ <%= cart[0].totalCartPrice %></span></h5>             
+                                        <h6>No of items : <span><%= cart[0].items.length %></span></h6>
+                                        <h6>You will save in this purchace : <span class="purchace-discount"> ₹ <%= cart[0].totalCartDiscountPrice.toFixed(2) %></span></h6>      
+                                        <h5>Subtotal : <span class="subtotal"> ₹ <%= cart[0].totalCartPrice %></span></h5>             
                                     </div>
                                     <div class="button mt-3">
                                         <button class="btn btn-warning w-100">Proceed to checkout</button>

@@ -34,6 +34,7 @@ let enteredEmail;
 let enteredPhone;
 let enteredPassword;
 let userDetails;
+let cartItemCount;
 
 //Generating otp function
 const generateOtp = () => {
@@ -168,12 +169,19 @@ const postLogin = async (req, res) => {
         const homeCarousel = await HomeCarousel.find()
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({ isBlocked : false})
-    
+        const userId = user._id
+        const cart = await Cart.find({ userId : userId})
+        console.log("cart :",cart)
+        if(cart != ""){
+            cartItemCount = cart[0].items.length
+        }
+        console.log("cartItemCount :",cartItemCount)
+        
         const { email, password } = req.body;
 
         if (user) {
             if (user.isblocked) {
-                return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails})
+                return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails , cartItemCount})
             }
             
             //password matching
@@ -184,14 +192,14 @@ const postLogin = async (req, res) => {
                 } if (result) {
                         req.session.user = user;
                         userDetails = req.session.user
-                        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category })
+                        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , cartItemCount})
                 } else {
                     // Passwords don't match    
-                    return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
+                    return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails , cartItemCount})
                 }
             });
         } else {
-            return res.render("user/login", { type: "danger", message: "No user found", userDetails})
+            return res.render("user/login", { type: "danger", message: "No user found", userDetails , cartItemCount})
         }
     } catch (error) {
         console.log(error.message)
@@ -201,7 +209,7 @@ const postLogin = async (req, res) => {
 // To get the user login page
 const getLogin = async (req, res) => {
     try {
-        return res.render('user/login', {type: "", message: "", userDetails})
+        return res.render('user/login', {type: "", message: "", userDetails , cartItemCount})
     } catch (error) {
         console.log(error)
     }
@@ -213,6 +221,7 @@ const getLogout = async(req,res)=>{
     try{
         req.session.user = null 
         userDetails = ""
+        cartItemCount = ""
         res.redirect('/')
     }catch(error){
         console.log(error.message)
@@ -228,7 +237,7 @@ const getHome = async (req, res) => {
         const category = await Category.find({isBlocked : false})
         console.log("best offer products : ", bestOfferProducts)
         console.log("Category : ", category)
-        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category})
+        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , cartItemCount})
     } catch (error) {
         console.log(error)
     }
@@ -237,7 +246,7 @@ const getHome = async (req, res) => {
 //To get the user register page
 const getRegister = async (req, res) => {
     try {
-        res.render('user/registration', { type: "", message: "" , userDetails})
+        res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
     } catch (error) {
         console.log(error)
     }
@@ -246,7 +255,7 @@ const getRegister = async (req, res) => {
 //To get the user otp page
 const getotppage = async(req,res)=>{
     try{
-        res.render('user/otpvalidation',{type : "", message : "" , userDetails})
+        res.render('user/otpvalidation',{type : "", message : "" , userDetails , cartItemCount})
     }catch(error){
         console.log(error.message)
     }
@@ -278,7 +287,7 @@ const getUserProfile = async(req,res)=>{
         const address = await Address.find({userId : userId})
         console.log(address)
         const formattedDate = createdDate.toISOString().split('T')[0];
-        res.render('user/profile',{userData, formattedDate , userDetails, address})
+        res.render('user/profile',{userData, formattedDate , userDetails, address , cartItemCount})
     }catch(error){
         console.log(error.message)
         res.status(500).json({ message : "Internal server error"})
@@ -370,7 +379,7 @@ const getUserShop = async(req,res)=>{
         
         console.log("Get user shop")
 
-        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, prodId ,
+        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, prodId , cartItemCount ,
             totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
@@ -475,7 +484,7 @@ const getUserNewAddress = async(req,res)=>{
     try{
         const userId = req.params.userId
         console.log(userId)
-        return res.render('user/addAddress',{userDetails , userId})
+        return res.render('user/addAddress',{userDetails , userId , cartItemCount})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error"})
@@ -539,7 +548,7 @@ const getUserEditAddress = async(req,res)=>{
         console.log(addressId)
         const userAddress = await Address.findById(addressId)
         console.log(userAddress)
-        return res.render('user/updateAddress',{userAddress, userDetails})
+        return res.render('user/updateAddress',{userAddress, userDetails , cartItemCount})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
@@ -647,7 +656,7 @@ const postUserNewPass = async (req, res) => {
 //To get the forgot password page from login page
 const getForgotPassword = async(req,res)=>{
     try{
-        return res.render('user/forgotPassword',{userDetails})
+        return res.render('user/forgotPassword',{userDetails , cartItemCount})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
@@ -747,7 +756,7 @@ const getProductDetail = async(req,res)=>{
         console.log("ProdutCategory : ",productCategory)
         const sameCategoryProduct = await Product.find({category : productCategory._id})
         console.log("Same category products : ",sameCategoryProduct)
-        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct})
+        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartItemCount})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ success : false, message : "Internal server error" })
@@ -770,7 +779,7 @@ const getWishlistPage = async(req,res)=>{
         console.log("prodId :",prodId)
         const products = await Product.find({_id : {$in : prodId}}).populate("brand")
         console.log("Products : ",products)
-        res.render('user/wishlist', {userDetails , products ,wishlistProducts})
+        res.render('user/wishlist', {userDetails , products ,wishlistProducts , cartItemCount})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
@@ -852,16 +861,16 @@ const getCartPage = async(req,res)=>{
             path: "items.product",
             populate: { path: "brand" }
           });
-          
+
         if (!cart || cart.length === 0) {
             cart = [];
-            res.render('user/cart', { userDetails, cartItems: [], cart: [] });
+            res.render('user/cart', { userDetails, cartItems: [], cart: [] , cartItemCount});
             return;
         }
         const cartItems = cart[0].items
         console.log("User cart :", cart)
         console.log("Cart items :",cartItems)
-        res.render('user/cart' , {userDetails , cartItems , cart})
+        res.render('user/cart' , {userDetails , cartItems , cart , cartItemCount})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
@@ -924,9 +933,13 @@ const postProductToCart = async (req, res) => {
             });
         }
 
+
+        
         // Save the updated or new cart
         await existingCart.save();
         console.log("Cart saved:", existingCart);
+        console.log("Cart length", existingCart.items.length);
+        cartItemCount = existingCart.items.length
 
         return res.status(200).json({ message: "Product added to your cart." });
     } catch (error) {
