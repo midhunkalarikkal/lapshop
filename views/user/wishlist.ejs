@@ -5,16 +5,16 @@
         <style>
             /*======> Very small devices <======*/
             @media (max-width: 576px) {
-                .product-text span{
+                .product-text span {
                     font-size: 12px;
                 }
 
-                .add-to-cart-btn{
+                .add-to-cart-btn {
                     width: 5rem;
                     font-size: 12px;
                 }
-                
-                .delete-btn{
+
+                .delete-btn {
                     font-size: 12px;
 
                 }
@@ -22,21 +22,21 @@
 
             /*======> XS/SM devices <======*/
             @media (min-width: 576px) and (max-width: 767px) {
-                .product-text span{
+                .product-text span {
                     font-size: 14px;
                 }
             }
 
             /*======> MD devices <======*/
             @media (min-width: 768px) and (max-width: 991px) {
-                .product-img{
+                .product-img {
                     width: 70%;
                 }
             }
 
             /*======> LG devices <======*/
             @media (min-width: 992px) and (max-width: 1199px) {
-                .product-img{
+                .product-img {
                     width: 55%;
                 }
             }
@@ -44,14 +44,14 @@
 
             /*======> XL devices <======*/
             @media (min-width: 1200px) {
-                .product-img{
+                .product-img {
                     width: 40%;
                 }
             }
         </style>
     </head>
     <section class="view">
-        <!-- Edit -->
+        <!-- Table wishlist for mediuam and above screen start -->
         <div class="cart-wrap d-none d-md-block mt-5">
             <div class="container">
                 <div class="row">
@@ -72,45 +72,61 @@
                             </thead>
                             <tbody>
                                 <% products.forEach((product)=>{ %>
-                                <tr>
-                                    <td class="col-3">
-                                        <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
-                                            <img
-                                            src="/static/images/ProductImages/<%= product.images[0] %>"
-                                            alt="" class=" product-img">
-                                        </a>
-                                    </td>
-                                    <td class="col-3">
-                                        <p class="mt-2"><span class="product-brand"><%= product.brand.name %></span>
-                                            <br>
-                                            <span class="product-name"><%= product.name %></span>
-                                            <br>
-                                            <% for(let i = 0; i < wishlistProducts.length; i++){ %>
-                                                <% if(product._id.toString() === wishlistProducts[i].product.toString()){ %>
-                                            <span>Item added on <span class="item-added-date"><%= wishlistProducts[i].addedAt.toDateString() %></span></span>
-                                            <% } %>
-                                            <% } %>
-                                        </p>
-                                    </td>
-                                    <% if(product.noOfStock < 5){ %>
-                                        <td class="col-2 inStock"><p class="mt-4 text-danger">Hurry Up! ONly <%= product.noOfStock %> left in stock.</p></td>
-                                    <% }else{ %>
-                                        <td class="col-2 inStock"><p class="mt-4">In stock</p></td>
-                                    <% } %>
-                                    <td class="col-2"><button class="btn btn-primary btn-sm mt-4">Add to cart</button></td>
-                                    <td class="col-2"><button class="btn btn-danger btn-sm mt-4" data-prod-id="<%= product._id %>" onclick="deleteProduct(this)"><i
-                                                class="fa fa-trash"></i></button></td>
-                                </tr>
-                                <% }) %>
+                                    <tr>
+                                        <td class="col-3">
+                                            <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
+                                                <img src="/static/images/ProductImages/<%= product.images[0] %>" alt=""
+                                                    class=" product-img">
+                                            </a>
+                                        </td>
+                                        <td class="col-3">
+                                            <p class="mt-2"><span class="product-brand">
+                                                    <%= product.brand.name %>
+                                                </span>
+                                                <br>
+                                                <span class="product-name">
+                                                    <%= product.name %>
+                                                </span>
+                                                <br>
+                                                <% for(let i=0; i < wishlistProducts.length; i++){ %>
+                                                    <% if(product._id.toString()===wishlistProducts[i].product.toString()){
+                                                        %>
+                                                        <span>Item added on <span class="item-added-date">
+                                                                <%= wishlistProducts[i].addedAt.toDateString() %>
+                                                            </span></span>
+                                                        <% } %>
+                                                            <% } %>
+                                            </p>
+                                        </td>
+                                        <% if(product.noOfStock < 5){ %>
+                                            <td class="col-2 inStock">
+                                                <p class="mt-4 text-danger">Hurry Up! ONly <%= product.noOfStock %> left
+                                                        in stock.</p>
+                                            </td>
+                                            <% }else{ %>
+                                                <td class="col-2 inStock">
+                                                    <p class="mt-4">In stock</p>
+                                                </td>
+                                                <% } %>
+                                                    <td class="col-2"><button class="btn btn-primary btn-sm mt-4"
+                                                            data-prod-id="<%= product._id %>"
+                                                            onclick="addToCart(this)">Add to cart</button></td>
+                                                    <td class="col-2"><button class="btn btn-danger btn-sm mt-4"
+                                                            data-prod-id="<%= product._id %>"
+                                                            onclick="deleteProduct(this)"><i
+                                                                class="fa fa-trash"></i></button></td>
+                                    </tr>
+                                    <% }) %>
                             </tbody>
                         </table>
-                <% }else{ %>
-                    <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.</div>
-                <% } %>
+                        <% }else{ %>
+                            <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.</div>
+                            <% } %>
                 </div>
             </div>
         </div>
-        <!-- Edit -->
+        <!-- Table wishlist for mediuam and above screen start -->
+
         <!-- Table for the small screens start -->
         <div class="product mt-5 d-block d-md-none">
             <div class="container">
@@ -122,117 +138,186 @@
                 </div>
                 <% if(products !="" ){ %>
                     <% products.forEach((product)=>{ %>
-                <div class="mt-4 d-flex align-items-center justify-content-around p-3 bg-light shadow">  
-                    <div class="image col-4">
-                        <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
-                        <img src="/static/images/ProductImages/<%= product.images[0] %>"
-                        alt="" class="img-fluid">
-                    </a>
-                    </div>
-                    <div class="product-detials col-7 d-flex flex-column align-items-center">
-                        <div class="product-text">
-                            <p class="sm-p">
-                                <span><%= product.brand.name %></span>
-                                <span><%= product.name %></span><br>
-                                <% if(product.noOfStock < 5){ %>
-                                    <span class="mt-2 mb-2 text-danger">Hurry Up! ONly <%= product.noOfStock %> left in stock.</span><br>
-                                <% }else{ %>
-                                    <span>In stock</span><br>
-                                <% } %>
-                                <% for(let i = 0; i < wishlistProducts.length; i++){ %>
-                                    <% if(product._id.toString() === wishlistProducts[i].product.toString()){ %>
-                                    <span>Item added on <span class="item-added-date"><%= wishlistProducts[i].addedAt.toDateString() %></span></span>
-                                <% } %>
-                                <% } %>
-                            </p>
+                        <div class="mt-4 d-flex align-items-center justify-content-around p-3 bg-light shadow">
+                            <div class="image col-4">
+                                <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
+                                    <img src="/static/images/ProductImages/<%= product.images[0] %>" alt=""
+                                        class="img-fluid">
+                                </a>
+                            </div>
+                            <div class="product-detials col-7 d-flex flex-column align-items-center">
+                                <div class="product-text">
+                                    <p class="sm-p">
+                                        <span>
+                                            <%= product.brand.name %>
+                                        </span>
+                                        <span>
+                                            <%= product.name %>
+                                        </span><br>
+                                        <% if(product.noOfStock < 5){ %>
+                                            <span class="mt-2 mb-2 text-danger">Hurry Up! ONly <%= product.noOfStock %>
+                                                    left in stock.</span><br>
+                                            <% }else{ %>
+                                                <span>In stock</span><br>
+                                                <% } %>
+                                                    <% for(let i=0; i < wishlistProducts.length; i++){ %>
+                                                        <% if(product._id.toString()===wishlistProducts[i].product.toString()){
+                                                            %>
+                                                            <span>Item added on <span class="item-added-date">
+                                                                    <%= wishlistProducts[i].addedAt.toDateString() %>
+                                                                </span></span>
+                                                            <% } %>
+                                                                <% } %>
+                                    </p>
+                                </div>
+                                <div class="buttons">
+                                    <button class="btn btn-primary btn-sm add-to-cart-btn"
+                                        data-prod-id="<%= product._id %>" onclick="addToCart(this)">Add to cart</button>
+                                    <button class="btn btn-danger btn-sm delete-btn" data-prod-id="<%= product._id %>"
+                                        onclick="deleteProduct(this)"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="buttons">
-                            <button class="btn btn-primary btn-sm add-to-cart-btn">Add to cart</button>
-                            <button class="btn btn-danger btn-sm delete-btn" data-prod-id="<%= product._id %>" onclick="deleteProduct(this)"><i class="fa fa-trash"></i></button>
-                        </div>
-                    </div>
-                </div>
-                <% }) %>
-                <% }else{ %>
-                    <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.</div>
-                <% } %>
+                        <% }) %>
+                            <% }else{ %>
+                                <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.
+                                </div>
+                                <% } %>
             </div>
         </div>
-   
+
         <!-- Table for the small screens end -->
     </section>
 
+    <!--  Script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        function deleteProduct(delbtn){
+
+        ////// Function to delete a product from wishlist \\\\\\
+        function deleteProduct(delbtn) {
             const productId = delbtn.getAttribute("data-prod-id");
-            console.log("productId :",productId)
-        
-            console.log("data :",productId)
+            console.log("productId :", productId)
+
+            console.log("data :", productId)
             fetch('/deleteProductFromWishlist', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ productId : productId })
+                body: JSON.stringify({ productId: productId })
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(data => {
-            console.log("Product deletion response:", data);
-            Swal.fire({
-                title: "Success",
-                text: data.message,
-                icon: "success",
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            }).then(() => {
-                location.reload();
-            });
-        })
-        .catch(error => {
-            console.error('Error deleting product:', error);
-            if (error.message.includes('404')) {
-                Swal.fire({
-                    title: "Error",
-                    text: error.message,
-                    icon: "error",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Product deletion response:", data);
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error deleting product:', error);
+                    if (error.message.includes('404')) {
+                        Swal.fire({
+                            title: "Error",
+                            text: error.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    } else if (error.message.includes('400')) {
+                        Swal.fire({
+                            title: "Error",
+                            text: error.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Internal server error.",
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
                 });
-            } else if (error.message.includes('400')) {
-                Swal.fire({
-                    title: "Error",
-                    text: error.message,
-                    icon: "error",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
-            } else {
-                Swal.fire({
-                    title: "Error",
-                    text: "Internal server error.",
-                    icon: "error",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
-            }
-        });
-}
+        }
 
-//Function to go to cart page
-function gotoCart(event){
-    event.preventDefault();
-    window.location.href = "/cart"
-}
+        ////// Function to redirect to cart page \\\\\\
+        function gotoCart(event) {
+            event.preventDefault();
+            window.location.href = "/cart"
+        }
+
+        ////// Funciton to add wishlist product to cart \\\\\\
+        function addToCart(element) {
+            const productId = element.getAttribute('data-prod-id');
+            console.log('Product ID:', productId);
+
+            fetch('/addProductToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Product add to cart response:", data);
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    console.error('Error in adding product to cart:', error);
+                    if (error.message.includes('404')) {
+                        Swal.fire({
+                            title: "Error",
+                            text: error.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: "Internal server error.",
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
+                });
+        }
     </script>
 
     <!-- User footer -->

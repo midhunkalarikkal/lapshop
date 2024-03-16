@@ -846,7 +846,7 @@ const deleteProductFromWishlist = async(req,res)=>{
                 return res.status(404).json({ message: "Wishlist not found." });
             }
     
-            return res.status(200).json({ message: "Product deleted successfully from the wishlist." });
+            return res.status(200).json({ message: "Product deleted from wishlist ." });
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error." })
@@ -932,8 +932,6 @@ const postProductToCart = async (req, res) => {
                 totalCartDiscountPrice: product.realPrice * (product.discountPercentage / 100)
             });
         }
-
-
         
         // Save the updated or new cart
         await existingCart.save();
