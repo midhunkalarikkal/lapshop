@@ -276,14 +276,9 @@
                 },
                 body: JSON.stringify({ productId: productId })
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Product add to cart response:", data);
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -293,30 +288,28 @@
                         showConfirmButton: false
                     }).then(() => {
                         location.reload();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: data.message,
+                        icon: "error",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
-                })
-                .catch(error => {
-                    console.error('Error in adding product to cart:', error);
-                    if (error.message.includes('404')) {
-                        Swal.fire({
-                            title: "Error",
-                            text: error.message,
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Error",
-                            text: "Internal server error.",
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    }
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "Error",
+                    text: "Internal server error.",
+                    icon: "error",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
+            });
         }
     </script>
 

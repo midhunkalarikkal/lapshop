@@ -180,6 +180,7 @@
     <script>
         ////// Function to delete a product from cart \\\\\\
         function deleteProduct(delbtn) {
+            console.log("del")
             const productId = delbtn.getAttribute("data-product-id");
             console.log("productId :", productId)
 
@@ -228,6 +229,7 @@
 
         ////// Function for the product quantity increment \\\\\\
         function increaseQuantity(element) {
+            console.log("Increment")
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
             input.value = value + 1;
@@ -263,6 +265,8 @@
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
                     })
                 } else {
                     Swal.fire({
@@ -289,6 +293,7 @@
 
         ////// Function for the product quantity decrement \\\\\\
         function decreaseQuantity(element) {
+            console.log("decrement")
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
 
@@ -328,15 +333,6 @@
                         showConfirmButton: false
                     }).then(() => {
                         location.reload();
-                    })
-                } else if(data.status === 409) {
-                    Swal.fire({
-                        title: "Info",
-                        text: data.message,
-                        icon: "info",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
                     })
                 } else {
                     Swal.fire({

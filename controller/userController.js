@@ -884,8 +884,9 @@ const postProductToCart = async (req, res) => {
         const userId = req.session.user._id;
         const productId = req.body.productId;
         let product = await Product.findById(productId);
+
         if (!product) {
-            return res.status(404).json({ message: "Product not found." });
+            return res.status(404).json({ success: false, message: "Product not found." });
         }
         // console.log("Product:", product);
 
@@ -901,8 +902,8 @@ const postProductToCart = async (req, res) => {
             if (existingItem) {
                 // If the product exists, update its quantity and prices
                 existingItem.quantity++;
-                existingItem.totalPrice +=  existingItem.totalPrice 
-                existingItem.discountPrice += existingItem.discountPrice 
+                existingItem.totalPrice +=  product.offerPrice,
+                existingItem.discountPrice += product.realPrice * (product.discountPercentage / 100)
             } else {
                 // If the product does not exist, add it to the cart
                 existingCart.items.push({
@@ -933,16 +934,13 @@ const postProductToCart = async (req, res) => {
             });
         }
         
-        // Save the updated or new cart
         await existingCart.save();
-        // console.log("Cart saved:", existingCart);
-        // console.log("Cart length", existingCart.items.length);
         cartItemCount = existingCart.items.length
 
-        return res.status(200).json({ message: "Product added to your cart." });
+        return res.status(200).json({ success: true, message: "Product added to your cart." });
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ success: false,  message: "Internal server error" });
     }
 };
 
@@ -999,10 +997,6 @@ const postCartProductQtyDec = async(req,res)=>{
 
         if(!product){
             return res.status(404).json({ success : false , message : "Product not found"})
-        }
-
-        if(product.quantity >= product.product.noOfStock){
-            return res.status(409).json({ success : false , status : 409, message : "Selected quantity exceeds available stock"})
         }
 
         product.quantity--;
