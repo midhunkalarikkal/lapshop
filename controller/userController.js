@@ -1033,13 +1033,19 @@ const deleteProductFromCart = async(req,res)=>{
             return res.status(404).json({ success : false, messagr : "Product deletion error , please try again."})
         }
 
-        const cart = await Cart.findOneAndUpdate({ userId: userId },
+        const cartDelProd = await Cart.findOneAndUpdate({ userId: userId },
             { $pull: { items: { product: productId } } },
             { new: true }
             );
 
-        if (!cart) {
+        if (!cartDelProd) {
             return res.status(404).json({ success : false, message: "Cart not found." });
+        }
+
+        let cart = await Cart.findOne({ userId : userId})
+
+        if(cart.items.length === 0){
+            cartItemCount = 0
         }
 
         cart.totalCartPrice = cart.items.reduce((total, item) => total + item.totalPrice, 0);
