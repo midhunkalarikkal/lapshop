@@ -149,62 +149,56 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- Script for sweet alert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
         <script>
 
-            ////// Funciton to add product to cart \\\\\\
-            function addToCart(element) {
-                const productId = element.getAttribute('data-prod-id');
-                console.log('Product ID:', productId);
+         ////// Funciton to add product to cart \\\\\\
+        function addToCart(element) {
+            const productId = element.getAttribute('data-prod-id');
+            console.log('Product ID:', productId);
 
-                fetch('/addProductToCart', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ productId: productId })
+            fetch('/addProductToCart', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
                     })
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        console.log("Product add to cart response:", data);
-                        Swal.fire({
-                            title: "Success",
-                            text: data.message,
-                            icon: "success",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        }).then(() => {
-                            location.reload();
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error in adding product to cart:', error);
-                        if (error.message.includes('404')) {
-                            Swal.fire({
-                                title: "Error",
-                                text: error.message,
-                                icon: "error",
-                                timer: 2000,
-                                timerProgressBar: true,
-                                showConfirmButton: false
-                            });
-                        } else {
-                            Swal.fire({
-                                title: "Error",
-                                text: "Internal server error.",
-                                icon: "error",
-                                timer: 2000,
-                                timerProgressBar: true,
-                                showConfirmButton: false
-                            });
-                        }
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: data.message,
+                        icon: "error",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
-            }
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "Error",
+                    text: "Internal server error.",
+                    icon: "error",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            });
+        }
         </script>
 
     </section>
