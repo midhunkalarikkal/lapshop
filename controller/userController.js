@@ -868,8 +868,8 @@ const getCartPage = async(req,res)=>{
             return;
         }
         const cartItems = cart[0].items
-        console.log("User cart :", cart)
-        console.log("Cart items :",cartItems)
+        // console.log("User cart :", cart)
+        // console.log("Cart items :",cartItems)
         res.render('user/cart' , {userDetails , cartItems , cart , cartItemCount})
     }catch(error){
         console.log(error.message)
@@ -880,20 +880,20 @@ const getCartPage = async(req,res)=>{
 //To add a product to cart
 const postProductToCart = async (req, res) => {
     try {
-        console.log("Cart API start");
+        // console.log("Cart API start");
         const userId = req.session.user._id;
         const productId = req.body.productId;
         let product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ message: "Product not found." });
         }
-        console.log("Product:", product);
+        // console.log("Product:", product);
 
         // Get the existing cart of the user
         let existingCart = await Cart.findOne({ userId: userId });
 
         if (existingCart !== null) {
-            console.log("Existing cart:", existingCart);
+            // console.log("Existing cart:", existingCart);
 
             // Check if the product already exists in the cart
             const existingItem = existingCart.items.find(item => item.product.equals(productId));
@@ -935,8 +935,8 @@ const postProductToCart = async (req, res) => {
         
         // Save the updated or new cart
         await existingCart.save();
-        console.log("Cart saved:", existingCart);
-        console.log("Cart length", existingCart.items.length);
+        // console.log("Cart saved:", existingCart);
+        // console.log("Cart length", existingCart.items.length);
         cartItemCount = existingCart.items.length
 
         return res.status(200).json({ message: "Product added to your cart." });
@@ -945,6 +945,49 @@ const postProductToCart = async (req, res) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 };
+
+//To increment the quantity of the product from cart
+const postCartProductQtyInc = async(req,res)=>{
+    try{
+        let productId = req.body.productId
+        const userId = req.session.user._id
+
+        let cart = await Cart.findOne({ userId : userId}).populate('items.product')
+        if(!cart){
+            return res.status(404).json({ message : "Cart not found"})
+        }
+        console.log("Cart :",cart)
+        console.log("cart item: :",cart.items)
+
+        //Fin dthe prosuct to  increment quantity
+        let product = cart.items.find(item => item.product._id.toString() === productId)
+
+        console.log("product :",product)
+        console.log("Product noOfStock :",product.product.noOfStock)
+        console.log("product quantity :", product.quantity)
+
+        if(!product){
+            return res.status(404).json({ success : false , message : "Product not found"})
+        }
+
+        if(product.quantity >= product.product.noOfStock){
+            return res.status(409).json({ success : false , status : 409, message : "Selected quantity exceeds available stock"})
+        }
+
+        product.quantity++;
+        product.totalPrice += product.product.offerPrice
+        product.discountPrice += product.product.realPrice * (product.product.discountPercentage / 100)
+        cart.totalCartPrice = cart.items.reduce((total, item) => total + item.totalPrice, 0);
+        cart.totalCartDiscountPrice = cart.items.reduce((total, item) => total + item.discountPrice, 0);
+
+        await cart.save()
+        return res.status(200).json({ success : true , message : "Quantity incremented"})
+  
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ success : false , message : "Internal server error" })
+    }
+}
 
 
 
@@ -983,6 +1026,7 @@ module.exports = {
     AddToWishlist,
     deleteProductFromWishlist,
     getCartPage,
-    postProductToCart
+    postProductToCart,
+    postCartProductQtyInc
 }
 

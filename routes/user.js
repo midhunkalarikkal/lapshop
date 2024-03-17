@@ -81,4 +81,7 @@ userRouter.get('/cart',userAuth.isUserLoggedIn,userController.getCartPage)
 //To add a product to cart
 userRouter.post('/addProductToCart',userController.postProductToCart)
 
+//To increment cart item quantity
+userRouter.post('/incrementCartProduct',userController.postCartProductQtyInc)
+
 module.exports = userRouter
