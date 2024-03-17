@@ -178,6 +178,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+        ////// Function to delete a product from cart \\\\\\
         function deleteProduct(delbtn) {
             const productId = delbtn.getAttribute("data-product-id");
             console.log("productId :", productId)
@@ -225,7 +226,7 @@
             });
         }
 
-        //Function for the quantity button
+        ////// Function for the product quantity increment \\\\\\
         function increaseQuantity(element) {
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
@@ -286,6 +287,7 @@
             });
         }
 
+        ////// Function for the product quantity decrement \\\\\\
         function decreaseQuantity(element) {
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
