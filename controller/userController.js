@@ -1020,6 +1020,39 @@ const postCartProductQtyDec = async(req,res)=>{
     }
 }
 
+//To delete a product from cart
+const deleteProductFromCart = async(req,res)=>{
+    try{
+        console.log("req body:",req.body)
+        const productId = req.body.productId
+        const userId = req.session.user._id
+        console.log("productId :",productId)
+        console.log("userId :",userId)
+
+        if(!productId){
+            return res.status(404).json({ success : false, messagr : "Product deletion error , please try again."})
+        }
+
+        const cart = await Cart.findOneAndUpdate({ userId: userId },
+            { $pull: { items: { product: productId } } },
+            { new: true }
+            );
+
+        if (!cart) {
+            return res.status(404).json({ success : false, message: "Cart not found." });
+        }
+
+        cart.totalCartPrice = cart.items.reduce((total, item) => total + item.totalPrice, 0);
+        cart.totalCartDiscountPrice = cart.items.reduce((total, item) => total + item.discountPrice, 0);
+        await cart.save();
+
+        return res.status(200).json({ success : true, message: "Product deleted from your cart ." });
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ success : false, message : "Internal server error." })
+    }
+}
+
 
 
 
@@ -1059,6 +1092,7 @@ module.exports = {
     getCartPage,
     postProductToCart,
     postCartProductQtyInc,
-    postCartProductQtyDec
+    postCartProductQtyDec,
+    deleteProductFromCart
 }
 

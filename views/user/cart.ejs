@@ -144,7 +144,7 @@
                                                 <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
                                                 <button class="quantity-btn" data-product-id="<%= product.product._id %>" onclick="increaseQuantity(this)">+</button>
                                             </div>
-                                            <button class="btn btn-danger btn-sm mx-2"><i class="fa fa-trash"></i></button>
+                                            <button class="btn btn-danger btn-sm mx-2" data-product-id="<%= product.product._id %>" onclick="deleteProduct(this)"><i class="fa fa-trash"></i></button>
                                         </div>
                                     </div>
                                 </div>
@@ -179,25 +179,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         function deleteProduct(delbtn) {
-            const productId = delbtn.getAttribute("data-prod-id");
+            const productId = delbtn.getAttribute("data-product-id");
             console.log("productId :", productId)
 
-            console.log("data :", productId)
-            fetch('/deleteProductFromWishlist', {
+            fetch('/deleteProductFromcart', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ productId: productId })
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Product deletion response:", data);
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -207,39 +201,28 @@
                         showConfirmButton: false
                     }).then(() => {
                         location.reload();
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: data.message,
+                        icon: "error",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
-                })
-                .catch(error => {
-                    console.error('Error deleting product:', error);
-                    if (error.message.includes('404')) {
-                        Swal.fire({
-                            title: "Error",
-                            text: error.message,
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    } else if (error.message.includes('400')) {
-                        Swal.fire({
-                            title: "Error",
-                            text: error.message,
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Error",
-                            text: "Internal server error.",
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    }
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "Error",
+                    text: "Internal server error.",
+                    icon: "error",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
+            });
         }
 
         //Function for the quantity button
@@ -306,6 +289,19 @@
         function decreaseQuantity(element) {
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
+
+            if(value === 1){
+                Swal.fire({
+                        title: "Info",
+                        text: "Please keep minimun quantity.",
+                        icon: "info",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                return false
+            }
+
             input.value = value - 1;
 
             const productId = element.getAttribute("data-product-id");

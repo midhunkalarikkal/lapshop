@@ -87,4 +87,7 @@ userRouter.post('/incrementCartProduct',userController.postCartProductQtyInc)
 //To decrement cart item quantity
 userRouter.post('/decrementCartProduct',userController.postCartProductQtyDec)
 
+//To delete a product from cart
+userRouter.post('/deleteProductFromCart',userController.deleteProductFromCart)
+
 module.exports = userRouter
