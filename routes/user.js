@@ -84,4 +84,7 @@ userRouter.post('/addProductToCart',userController.postProductToCart)
 //To increment cart item quantity
 userRouter.post('/incrementCartProduct',userController.postCartProductQtyInc)
 
+//To decrement cart item quantity
+userRouter.post('/decrementCartProduct',userController.postCartProductQtyDec)
+
 module.exports = userRouter

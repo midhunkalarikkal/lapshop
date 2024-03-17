@@ -141,7 +141,7 @@
                                         <div class="buttons mb-3 d-flex">
                                             <div class="quantity-input">
                                                 <button class="quantity-btn" data-product-id="<%= product.product._id %>" onclick="decreaseQuantity(this)">-</button>
-                                                <input type="text" class="quantity-value" value="<%= product.quantity %>">
+                                                <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
                                                 <button class="quantity-btn" data-product-id="<%= product.product._id %>" onclick="increaseQuantity(this)">+</button>
                                             </div>
                                             <button class="btn btn-danger btn-sm mx-2"><i class="fa fa-trash"></i></button>
@@ -303,12 +303,64 @@
             });
         }
 
-        function decreaseQuantity() {
-            var input = document.querySelector('.quantity-value');
+        function decreaseQuantity(element) {
+            var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
-            if (value > 1) {
-                input.value = value - 1;
-            }
+            input.value = value - 1;
+
+            const productId = element.getAttribute("data-product-id");
+            console.log("productId :", productId)
+            
+            fetch('/decrementCartProduct', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then(() => {
+                        location.reload();
+                    })
+                } else if(data.status === 409) {
+                    Swal.fire({
+                        title: "Info",
+                        text: data.message,
+                        icon: "info",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: data.message,
+                        icon: "error",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "Error",
+                    text: "Internal server error.",
+                    icon: "error",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            });
         }
     </script>
 

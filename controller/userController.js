@@ -956,15 +956,9 @@ const postCartProductQtyInc = async(req,res)=>{
         if(!cart){
             return res.status(404).json({ message : "Cart not found"})
         }
-        console.log("Cart :",cart)
-        console.log("cart item: :",cart.items)
 
-        //Fin dthe prosuct to  increment quantity
+        //Find dthe prosuct to  increment quantity
         let product = cart.items.find(item => item.product._id.toString() === productId)
-
-        console.log("product :",product)
-        console.log("Product noOfStock :",product.product.noOfStock)
-        console.log("product quantity :", product.quantity)
 
         if(!product){
             return res.status(404).json({ success : false , message : "Product not found"})
@@ -982,6 +976,43 @@ const postCartProductQtyInc = async(req,res)=>{
 
         await cart.save()
         return res.status(200).json({ success : true , message : "Quantity incremented"})
+  
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ success : false , message : "Internal server error" })
+    }
+}
+
+//To increment the quantity of the product from cart
+const postCartProductQtyDec = async(req,res)=>{
+    try{
+        let productId = req.body.productId
+        const userId = req.session.user._id
+
+        let cart = await Cart.findOne({ userId : userId}).populate('items.product')
+        if(!cart){
+            return res.status(404).json({ message : "Cart not found"})
+        }
+
+        //Find dthe prosuct to  increment quantity
+        let product = cart.items.find(item => item.product._id.toString() === productId)
+
+        if(!product){
+            return res.status(404).json({ success : false , message : "Product not found"})
+        }
+
+        if(product.quantity >= product.product.noOfStock){
+            return res.status(409).json({ success : false , status : 409, message : "Selected quantity exceeds available stock"})
+        }
+
+        product.quantity--;
+        product.totalPrice -= product.product.offerPrice
+        product.discountPrice -= product.product.realPrice * (product.product.discountPercentage / 100)
+        cart.totalCartPrice = cart.items.reduce((total, item) => total + item.totalPrice, 0);
+        cart.totalCartDiscountPrice = cart.items.reduce((total, item) => total + item.discountPrice, 0);
+
+        await cart.save()
+        return res.status(200).json({ success : true , message : "Quantity decremented"})
   
     }catch(error){
         console.log(error.message)
@@ -1027,6 +1058,7 @@ module.exports = {
     deleteProductFromWishlist,
     getCartPage,
     postProductToCart,
-    postCartProductQtyInc
+    postCartProductQtyInc,
+    postCartProductQtyDec
 }
 
