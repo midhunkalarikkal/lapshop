@@ -182,6 +182,8 @@
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
+                    }).then(data =>{
+                        location.reload()
                     })
                 } else if (data.status === 409) {
                     Swal.fire({

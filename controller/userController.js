@@ -924,9 +924,15 @@ const postProductToCart = async (req, res) => {
                 totalCartDiscountPrice: product.realPrice * (product.discountPercentage / 100)
             });
         }
-        
+
         await existingCart.save();
-        cartItemCount = existingCart.items.length
+
+        let cart = await Cart.findOne({ userId : userId})
+        if(cart){
+            console.log("cart :",cart)
+            console.log("array length :",cart.items.length)
+            cartItemCount = cart.items.length
+        }
 
         return res.status(200).json({ success: true, message: "Product added to your cart." });
     } catch (error) {
