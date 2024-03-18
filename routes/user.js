@@ -78,16 +78,20 @@ userRouter.post('/deleteProductFromWishlist',userAuth.isUserLoggedIn,userControl
 //To get the cart page
 userRouter.get('/cart',userAuth.isUserLoggedIn,userController.getCartPage)
 
-//To add a product to cart
-userRouter.post('/addProductToCart',userController.postProductToCart)
+//To add a product to cart from shop or product detail page
+userRouter.post('/addProductToCartFromShop',userController.postProductToCartFromShop)
+
+//To add a product to cart from wishlist
+userRouter.post('/addProductToCart',userAuth.isUserLoggedIn,userController.postProductToCart)
 
 //To increment cart item quantity
-userRouter.post('/incrementCartProduct',userController.postCartProductQtyInc)
+userRouter.post('/incrementCartProduct',userAuth.isUserLoggedIn,userController.postCartProductQtyInc)
 
 //To decrement cart item quantity
-userRouter.post('/decrementCartProduct',userController.postCartProductQtyDec)
+userRouter.post('/decrementCartProduct',userAuth.isUserLoggedIn,userController.postCartProductQtyDec)
 
 //To delete a product from cart
-userRouter.post('/deleteProductFromCart',userController.deleteProductFromCart)
+userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,userController.deleteProductFromCart)
+
 
 module.exports = userRouter

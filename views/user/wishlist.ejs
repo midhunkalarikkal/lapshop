@@ -286,8 +286,15 @@
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
+                    })
+                } else if(data.status === 409) {
+                    Swal.fire({
+                        title: "Info",
+                        text: data.message,
+                        icon: "info",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     })
                 } else {
                     Swal.fire({

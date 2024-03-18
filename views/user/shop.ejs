@@ -237,7 +237,7 @@
                                                         </div>
                                                     </div>
                                                 </a>
-                                                <button class="card-footer d-flex justify-content-center ">
+                                                <button class="card-footer d-flex justify-content-center" data-prod-id="<%= product._id %>" onclick="addToCart(this)">
                                                     <a href="" class="btn btn-sm p-0">
                                                         <i class="fas fa-shopping-cart"></i> Add To
                                                         Cart
@@ -397,14 +397,14 @@
                                             </div>
                                         </div>
                                     </a>
-                                        <button class='card-footer d-flex justify-content-center bg-light border'>
-                                            <a href='' class='btn btn-sm text-dark p-0'>
-                                                <i class='fas fa-shopping-cart text-primary mr-1'></i>
-                                                Add To Cart
-                                            </a>
-                                        </button>
-                                    </div>
-                                </div>`
+                                    <button class="card-footer d-flex justify-content-center" data-prod-id="${product._id}" onclick="addToCart(this)">
+                                                    <a href="" class="btn btn-sm p-0">
+                                                        <i class="fas fa-shopping-cart"></i> Add To
+                                                        Cart
+                                                    </a>
+                                    </button>
+                                </div>
+                            </div>`
                         );
                         
                         ////// Dynamically adding the wishlist button to the product \\\\\\
@@ -580,6 +580,71 @@
                 console.error('There was a problem with the fetch operation:', error);
             });
         }
+
+         ////// Funciton to add a product to cart \\\\\\
+         function addToCart(element) {
+            const productId = element.getAttribute('data-prod-id');
+            console.log('Product ID:', productId);
+
+            fetch('/addProductToCartFromShop', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId: productId })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log("data :", data);
+                if (data.redirectUrl) {
+                    window.location.href = data.redirectUrl;
+                } else if (data.success) {
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                } else if (data.status === 409) {
+                    Swal.fire({
+                        title: "Info",
+                        text: data.message,
+                        icon: "info",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                } else {
+                    Swal.fire({
+                        title: "Error",
+                        text: data.message,
+                        icon: "error",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch(error => {
+                console.log("error :", error)
+                Swal.fire({
+                    title: "Error",
+                    text: "Internal server error.",
+                    icon: "error",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            });
+        }
+        
 
     </script>
 

@@ -751,11 +751,9 @@ const getProductDetail = async(req,res)=>{
     try{
         const productId = req.params.productId
         const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}])
-        console.log("ProdutData : ",productData)
         const productCategory = productData.category
-        console.log("ProdutCategory : ",productCategory)
         const sameCategoryProduct = await Product.find({category : productCategory._id})
-        console.log("Same category products : ",sameCategoryProduct)
+        
         return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartItemCount})
     }catch(error){
         console.log(error.message)
@@ -772,13 +770,10 @@ const getWishlistPage = async(req,res)=>{
         const wishlist = await Wishlist.find({ userId : user._id})
         if(wishlist != ""){
             wishlistProducts = wishlist[0].products
-            console.log("WishlistProducts :",wishlistProducts)
             const productsId = wishlistProducts.map(item => item.product);
             prodId = productsId
         }
-        console.log("prodId :",prodId)
         const products = await Product.find({_id : {$in : prodId}}).populate("brand")
-        console.log("Products : ",products)
         res.render('user/wishlist', {userDetails , products ,wishlistProducts , cartItemCount})
     }catch(error){
         console.log(error.message)
@@ -797,14 +792,12 @@ const AddToWishlist = async(req,res)=>{
             const isProductInWishlist = existingWishlist.products.some(item => item.product.equals(productId));
             
             if (isProductInWishlist) {
-                console.log("Product exists in the wishlist  so it is removed");
                 existingWishlist.products = existingWishlist.products.filter(item => !item.product.equals(productId));
                 await existingWishlist.save();
                 return res.status(200).json({ added: false, message: "Product deleted from your wishlist." });
             } else {
                 existingWishlist.products.push({ product: productId });
                 await existingWishlist.save();
-                console.log("Product added to the wishlist");
                 return res.status(200).json({ added: true, message: "Product added to your wishlist." });
             }
         } else {
@@ -814,7 +807,6 @@ const AddToWishlist = async(req,res)=>{
                 products: [{ product: productId }]
             });
             await newWishlist.save();
-            console.log("New wishlist created with the product added");
             return res.status(200).json({ message: "Product added to your wishlist." });
         }
 
@@ -827,11 +819,10 @@ const AddToWishlist = async(req,res)=>{
 //To delete a product from wishlist
 const deleteProductFromWishlist = async(req,res)=>{
     try{
-        console.log("req body:",req.body)
+  
         const productId = req.body.productId
         const userId = req.session.user._id
-        console.log("productId :",productId)
-        console.log("userId :",userId)
+        
 
         if(!productId){
             return res.status(404).json({ messagr : "Product deletion error , please try again."})
@@ -841,7 +832,7 @@ const deleteProductFromWishlist = async(req,res)=>{
             { $pull: { products: { product: productId } } },
             { new: true }
             );
-            console.log("Wishlist :",wishlist)
+            
             if (!wishlist) {
                 return res.status(404).json({ message: "Wishlist not found." });
             }
@@ -880,7 +871,6 @@ const getCartPage = async(req,res)=>{
 //To add a product to cart
 const postProductToCart = async (req, res) => {
     try {
-        // console.log("Cart API start");
         const userId = req.session.user._id;
         const productId = req.body.productId;
         let product = await Product.findById(productId);
@@ -888,19 +878,20 @@ const postProductToCart = async (req, res) => {
         if (!product) {
             return res.status(404).json({ success: false, message: "Product not found." });
         }
-        // console.log("Product:", product);
 
         // Get the existing cart of the user
         let existingCart = await Cart.findOne({ userId: userId });
 
         if (existingCart !== null) {
-            // console.log("Existing cart:", existingCart);
 
             // Check if the product already exists in the cart
             const existingItem = existingCart.items.find(item => item.product.equals(productId));
 
             if (existingItem) {
                 // If the product exists, update its quantity and prices
+                if(existingItem.quantity >= product.noOfStock){
+                    return res.status(409).json({ success : false, status : 409, message : "Selected quantity exceeds available stock"})
+                }
                 existingItem.quantity++;
                 existingItem.totalPrice +=  product.offerPrice,
                 existingItem.discountPrice += product.realPrice * (product.discountPercentage / 100)
@@ -940,15 +931,89 @@ const postProductToCart = async (req, res) => {
         return res.status(200).json({ success: true, message: "Product added to your cart." });
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ success: false,  message: "Internal server error" });
+        return res.status(500).json({ success: false,  message: "Internal server  error" });
+    }
+};
+
+//To add a product to cart from shop or product detail page
+const postProductToCartFromShop = async (req, res) => {
+    try {
+
+        if(!req.session.user){
+            let redirectUrl = `/login`;
+            return res.json({ redirectUrl: redirectUrl });
+        }
+        
+        const userId = req.session.user._id;
+        const productId = req.body.productId;
+        let product = await Product.findById(productId);
+
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found." });
+        }
+
+        // Get the existing cart of the user
+        let existingCart = await Cart.findOne({ userId: userId });
+
+        if (existingCart !== null) {
+
+            // Check if the product already exists in the cart
+            const existingItem = existingCart.items.find(item => item.product.equals(productId));
+
+            if (existingItem) {
+                // If the product exists, update its quantity and prices
+                if(existingItem.quantity >= product.noOfStock){
+                    return res.status(409).json({ success : false, status : 409, message : "Selected quantity exceeds available stock"})
+                }
+                existingItem.quantity++;
+                existingItem.totalPrice +=  product.offerPrice,
+                existingItem.discountPrice += product.realPrice * (product.discountPercentage / 100)
+            } else {
+                // If the product does not exist, add it to the cart
+                existingCart.items.push({
+                    product: productId,
+                    quantity: 1,
+                    price: product.offerPrice,
+                    totalPrice: product.offerPrice,
+                    discountPrice: product.realPrice * (product.discountPercentage / 100)
+                });
+            }
+            // Update total cart price and total discount price
+            existingCart.totalCartPrice = existingCart.items.reduce((total, item) => total + item.totalPrice, 0);
+            existingCart.totalCartDiscountPrice = existingCart.items.reduce((total, item) => total + item.discountPrice, 0);
+
+        } else {
+            // If the cart does not exist, create a new cart
+            existingCart = new Cart({
+                userId: userId,
+                items: [{
+                    product: productId,
+                    quantity: 1,
+                    price: product.offerPrice,
+                    totalPrice: product.offerPrice,
+                    discountPrice: product.realPrice * (product.discountPercentage / 100)
+                }],
+                totalCartPrice: product.offerPrice,
+                totalCartDiscountPrice: product.realPrice * (product.discountPercentage / 100)
+            });
+        }
+        
+        await existingCart.save();
+        cartItemCount = existingCart.items.length
+
+        return res.status(200).json({ success: true, message: "Product added to your cart." });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ success: false,  message: "Internal server  error" });
     }
 };
 
 //To increment the quantity of the product from cart
 const postCartProductQtyInc = async(req,res)=>{
     try{
-        let productId = req.body.productId
-        const userId = req.session.user._id
+                
+        let userId = req.session.user._id;
+        let productId = req.body.productId;
 
         let cart = await Cart.findOne({ userId : userId}).populate('items.product')
         if(!cart){
@@ -976,12 +1041,12 @@ const postCartProductQtyInc = async(req,res)=>{
         return res.status(200).json({ success : true , message : "Quantity incremented"})
   
     }catch(error){
-        console.log(error.message)
-        return res.status(500).json({ success : false , message : "Internal server error" })
+        console.log(error)
+        return res.status(500).json({ message : "Internal server error" })
     }
 }
 
-//To increment the quantity of the product from cart
+//To decrement the quantity of the product from cart
 const postCartProductQtyDec = async(req,res)=>{
     try{
         let productId = req.body.productId
@@ -1091,8 +1156,9 @@ module.exports = {
     deleteProductFromWishlist,
     getCartPage,
     postProductToCart,
+    postProductToCartFromShop,
     postCartProductQtyInc,
     postCartProductQtyDec,
-    deleteProductFromCart
+    deleteProductFromCart,
 }
 
