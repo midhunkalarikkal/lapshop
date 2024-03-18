@@ -1096,12 +1096,14 @@ const deleteProductFromCart = async(req,res)=>{
             { $pull: { items: { product: productId } } },
             { new: true }
             );
+            
+        let cart = await Cart.findOne({ userId : userId})
 
         if (!cartDelProd) {
             return res.status(404).json({ success : false, message: "Cart not found." });
+        }else{
+            cartItemCount = cart.items.length
         }
-
-        let cart = await Cart.findOne({ userId : userId})
 
         if(cart.items.length === 0){
             cartItemCount = 0
