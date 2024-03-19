@@ -4,6 +4,31 @@
     <head>
         <!-- Custom css -->
         <link rel="stylesheet" href="/static/css/product_Detail.css">
+
+        <style>
+            #second{
+                background-size: 600%;   
+                background-repeat: no-repeat;
+                background-position: center;
+                display: none;
+            }
+
+            #lens{
+                width: 100px;
+                height: 100px;
+                background: rgba(0,0,0,.4);
+                position: absolute;
+                border: 3px solid black;
+                transform:  translateY(-50% , -50%);
+                pointer-events: none;
+                display: none;
+            }
+
+            .product-image .first { /* Add this class to the first carousel item */
+                position: relative; /* Enable relative positioning for lens */
+            }
+        </style>
+        
     </head>
 
     <section class="view">
@@ -22,17 +47,18 @@
                         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner shadow">
                                 <% productData.images.forEach((image, index) => { %>
-                                    <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                                      <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>">
+                                    <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
+                                        <span id="lens"></span>
+                                        <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
                                     </div>
-                                  <% }); %>
+                                <% }); %>
                             </div>
-                            <button class="carousel-control-prev" type="button"
+                            <button class="carousel-control-prev" type="button" id="carousel-btnOne"
                                 data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Previous</span>
                             </button>
-                            <button class="carousel-control-next" type="button"
+                            <button class="carousel-control-next" type="button" id="carousel-btnTwo"
                                 data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
                                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                                 <span class="visually-hidden">Next</span>
@@ -40,9 +66,12 @@
                         </div>
                     </div>
 
+                    <div class="col-5 shadow" id="second">
+                    </div>
+
                     
 
-                    <div class="col-md-5 d-flex flex-column mt-4 mt-md-0">
+                    <div class="col-md-5 d-flex flex-column mt-4 mt-md-0" id="product-detail">
                         <h3 class="font-weight-semi-bold product-name">
                             <%= productData.brand.name %>
                                 <%= productData.name %>
@@ -232,11 +261,60 @@
                 carouselItem.classList.add('active');
             }
 
-            var targetImage = document.getElementById("target-image");
-            targetImage.src = `/static/images/ProductImages/${imgSrc}`; 
+            // var targetImage = document.getElementById("target-image");
+            // targetImage.src = `/static/images/ProductImages/${imgSrc}`; 
         }
-        
 
+        // for showing image in zoom div
+        document.addEventListener('DOMContentLoaded', function() {
+            var targetImage = document.getElementById("target-image");
+            var second = document.getElementById("second")
+            if (targetImage) {
+                console.log("src of target:", targetImage.src);
+                var targetSrc = targetImage.src
+                second.style.backgroundImage = `url(${targetSrc})` 
+            } else {
+                console.error("Element with id 'target-image' not found in the document.");
+            }
+        });
+
+        var lens = document.getElementById("lens")
+        var first = document.querySelector(".first")
+        var second = document.getElementById("second")
+        var productDetail = document.getElementById("product-detail")
+        var carouselButtonOne = document.getElementById("carousel-btnOne")
+        var carouselButtonTwo = document.getElementById("carousel-btnTwo")
+        console.log("producrDetail :",productDetail)
+
+        first.addEventListener("mousemove",function(e){
+            var x = e.clientX - e.target.offsetLeft;
+            var y = e.clientY - e.target.offsetTop;
+
+            lens.style.left = x - 400 + "px"
+            lens.style.top = y - 170 + "px"
+
+            var lensX = x - 400;
+            var lensY = y - 170; 
+
+            second.style.backgroundPosition = -lensX * 6 + 'px ' + -lensY * 8 + 'px';
+
+        })
+
+        first.addEventListener("mouseenter", function() {
+            carouselButtonOne.style.display = "none"
+            carouselButtonTwo.style.display = "none"
+            second.style.display = "block"
+            lens.style.display = "block";
+            productDetail.classList.add("d-none")
+        });
+
+        first.addEventListener("mouseleave", function() {
+            carouselButtonOne.style.display = "block"
+            carouselButtonTwo.style.display = "block"
+            second.style.display = "none"
+            lens.style.display = "none";
+            productDetail.classList.remove("d-none")
+        });
         </script>
 
     </section>
