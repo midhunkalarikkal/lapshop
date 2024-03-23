@@ -24,8 +24,8 @@
                 display: none;
             }
 
-            .product-image .first { /* Add this class to the first carousel item */
-                position: relative; /* Enable relative positioning for lens */
+            .product-image .first { 
+                position: relative; 
             }
         </style>
         
@@ -184,7 +184,7 @@
          ////// Funciton to add product to cart \\\\\\
          function addToCart(element) {
             const productId = element.getAttribute('data-prod-id');
-            console.log('Product ID:', productId);
+            // console.log('Product ID:', productId);
 
             fetch('/addProductToCartFromShop', {
                 method: 'POST',
@@ -200,7 +200,7 @@
                 return response.json();
             })
             .then(data => {
-                console.log("data :", data);
+                // console.log("data :", data);
                 if (data.redirectUrl) {
                     window.location.href = data.redirectUrl;
                 } else if (data.success) {
@@ -249,7 +249,6 @@
 
         ////// function to show the selected imag \\\\\\
         function changeimage(element) {
-            var imgSrc = element.getAttribute("data-img-id");
             var index = parseInt(element.getAttribute("data-index"));
 
             document.querySelectorAll('.carousel-item').forEach(item => {
@@ -260,12 +259,9 @@
             if (carouselItem) {
                 carouselItem.classList.add('active');
             }
-
-            // var targetImage = document.getElementById("target-image");
-            // targetImage.src = `/static/images/ProductImages/${imgSrc}`; 
         }
 
-        // for showing image in zoom div
+        ////// for showing image in zoom div \\\\\\
         document.addEventListener('DOMContentLoaded', function() {
             var targetImage = document.getElementById("target-image");
             var second = document.getElementById("second")
@@ -278,43 +274,56 @@
             }
         });
 
+        ////// function to handle the zoom functionality of th image \\\\\\
         var lens = document.getElementById("lens")
         var first = document.querySelector(".first")
         var second = document.getElementById("second")
         var productDetail = document.getElementById("product-detail")
         var carouselButtonOne = document.getElementById("carousel-btnOne")
         var carouselButtonTwo = document.getElementById("carousel-btnTwo")
-        console.log("producrDetail :",productDetail)
-
+        
         first.addEventListener("mousemove",function(e){
-            var x = e.clientX - e.target.offsetLeft;
-            var y = e.clientY - e.target.offsetTop;
-
-            lens.style.left = x - 400 + "px"
-            lens.style.top = y - 170 + "px"
-
-            var lensX = x - 400;
-            var lensY = y - 170; 
-
-            second.style.backgroundPosition = -lensX * 6 + 'px ' + -lensY * 8 + 'px';
-
+            
+            var x = e.clientX - e.target.getBoundingClientRect().left;
+            var y = e.clientY - e.target.getBoundingClientRect().top;
+            
+            var lensWidth = lens.offsetWidth;
+            var lensHeight = lens.offsetHeight;
+            var lensX = x - lensWidth / 2;
+            var lensY = y - lensHeight / 2.3;
+            
+            lens.style.left = lensX + "px";
+            lens.style.top = lensY + "px";
+            
+            var imageX = (x / e.target.offsetWidth) * 100;
+            var imageY = (y / e.target.offsetHeight) * 100;
+            
+            second.style.backgroundPosition = `${imageX}% ${imageY}%`;
+            
+            lens.style.cursor = "none";
+            document.body.style.cursor = "block";
+            
         })
+        
+        
+            first.addEventListener("mouseenter", function() {
+                if(window.innerWidth > 991) {
+                    carouselButtonOne.style.display = "none"
+                    carouselButtonTwo.style.display = "none"
+                    second.style.display = "block"
+                    lens.style.display = "block";
+                    productDetail.classList.add("d-none")
+                }
+            });
+        
+            first.addEventListener("mouseleave", function() {
+                carouselButtonOne.style.display = "block"
+                carouselButtonTwo.style.display = "block"
+                second.style.display = "none"
+                lens.style.display = "none";
+                productDetail.classList.remove("d-none")
+            });
 
-        first.addEventListener("mouseenter", function() {
-            carouselButtonOne.style.display = "none"
-            carouselButtonTwo.style.display = "none"
-            second.style.display = "block"
-            lens.style.display = "block";
-            productDetail.classList.add("d-none")
-        });
-
-        first.addEventListener("mouseleave", function() {
-            carouselButtonOne.style.display = "block"
-            carouselButtonTwo.style.display = "block"
-            second.style.display = "none"
-            lens.style.display = "none";
-            productDetail.classList.remove("d-none")
-        });
         </script>
 
     </section>
