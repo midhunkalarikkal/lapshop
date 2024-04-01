@@ -308,6 +308,18 @@
         let selectedBrands = new Set();
         let sortCriteria = null;
         let currentPage = 1
+        let inputValue = null
+
+        // Search
+        $(document).ready(function() {
+            var searchInput = $('.search-input');
+
+            searchInput.on('input', function() {
+                inputValue = $(this).val();
+                console.log('Input value changed:', inputValue);
+                updateProductList();
+            });
+        });
 
         ////// Function select and deselect the radio button and triggering the fetch \\\\\\
         $(document).ready(function () {
@@ -361,7 +373,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands], sortCriteria, currentPage })
+                body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands], sortCriteria, currentPage, inputValue })
             })
                 .then(response => response.json())
                 .then(data => {

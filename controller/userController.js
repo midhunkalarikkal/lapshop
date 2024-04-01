@@ -398,6 +398,7 @@ const getCatProduct = async(req,res)=>{
         console.log("res body brands :",req.body.brands)
         console.log("res body sortCriteria :",req.body.sortCriteria)
         console.log("req body currentPage :", req.body.currentPage)
+        console.log("Search input value :",req.body.inputValue)
         let productData
         let prodId =[]
 
@@ -428,27 +429,51 @@ const getCatProduct = async(req,res)=>{
             const sortCriteria = req.body.sortCriteria
             const currentPage = req.body.currentPage
 
+            const searchInput = req.body.inputValue
+
             const perPage = 6;
             const skip = (currentPage - 1) * perPage;
 
             // The querry to retrieve the product
             let query = { isBlocked: false };
-            if (categories.length > 0 && brands.length > 0 ) {
+            if (categories.length > 0 && brands.length > 0 && searchInput) {
                 query = {
                     $and: [
                         { category: { $in: categories } },
                         { brand: { $in: brands } },
+                        { name: {$regex : ".*"+searchInput+".*", $options : "i"} }
                     ],
                     isBlocked: false
                 };
-            } else if (categories.length > 0 && brands.length == 0) {
+            } else if (categories.length > 0 && brands.length === 0 && !searchInput) {
                 query = {
                     category: { $in: categories },
                     isBlocked: false
                 };
-            } else if (brands.length > 0 && categories.length == 0) {
+            } else if (brands.length > 0 && categories.length === 0 && !searchInput) {
                 query = {
                     brand: { $in: brands },
+                    isBlocked: false
+                };
+            } else if ( searchInput && categories.length === 0 && brands.length === 0){
+                query = {
+                    name : { $regex : ".*"+searchInput+".*", $options : "i"},
+                    isBlocked: false
+                }
+            } else if (searchInput && categories.length > 0 && brands.length === 0) {
+                query = {
+                    $and: [
+                        { category: { $in: categories } },
+                        { name: { $regex : ".*"+searchInput+".*", $options : "i"} }
+                    ],
+                    isBlocked: false
+                };
+            } else if (searchInput && brands.length > 0 && categories.length === 0) {
+                query = {
+                    $and: [
+                        { brand: { $in: brands } },
+                        { name: { $regex : ".*"+searchInput+".*", $options : "i"} }
+                    ],
                     isBlocked: false
                 };
             }
@@ -478,6 +503,7 @@ const getCatProduct = async(req,res)=>{
         return res.status(500).json({ message : "Internal server error"})
     }
 }
+
 
 //To get the add address page
 const getUserNewAddress = async(req,res)=>{
