@@ -93,4 +93,6 @@ userRouter.post('/decrementCartProduct',userAuth.isUserLoggedIn,userController.p
 //To delete a product from cart
 userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,userController.deleteProductFromCart)
 
+userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
+
 module.exports = userRouter

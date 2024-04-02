@@ -1152,6 +1152,20 @@ const deleteProductFromCart = async(req,res)=>{
     }
 }
 
+//To go to checkout
+const getCheckout = async(req,res)=>{
+    try{
+        let userId = req.session.user._id
+        console.log(userId)
+        let UserCart = await Cart.find({ userId : userId})
+        console.log(UserCart)
+        res.render('user/checkout' , { UserCart })
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error"})
+    }
+}
+
 
 
 
@@ -1194,5 +1208,6 @@ module.exports = {
     postCartProductQtyInc,
     postCartProductQtyDec,
     deleteProductFromCart,
+    getCheckout
 }
 

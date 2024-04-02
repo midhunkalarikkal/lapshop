@@ -97,7 +97,7 @@ p,
     color: var(--secondary-color);
 
 }
--nav .nav-link:hover{
+.nav .nav-link:hover{
     color: var(--primary-color);
 }
 

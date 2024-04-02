@@ -162,7 +162,7 @@
                                         <h5>Subtotal : <span class="subtotal"> ₹ <%= cart[0].totalCartPrice %></span></h5>             
                                     </div>
                                     <div class="button mt-3">
-                                        <button class="btn btn-warning w-100">Proceed to checkout</button>
+                                        <button onclick="goToCheckout(event)" class="btn btn-warning w-100">Proceed to Buy</button>
                                     </div>
                                 </div>
                             </div>
@@ -355,6 +355,12 @@
                     showConfirmButton: false
                 });
             });
+        }
+
+        ////// Function to go to checkout \\\\\\
+        function goToCheckout(event){
+            event.preventDefault()
+            window.location.href = "/checkout"
         }
     </script>
 
