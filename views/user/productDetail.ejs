@@ -247,7 +247,8 @@
             });
         }
 
-        ////// function to show the selected imag \\\\\\
+        ////// function to show the selected image \\\\\\
+        var selectedImage;
         function changeimage(element) {
             var index = parseInt(element.getAttribute("data-index"));
 
@@ -256,73 +257,93 @@
             });
 
             var carouselItem = document.getElementById(`carousel-item-${index}`);
-            if (carouselItem) {
+            if (carouselItem) { 
+                var imgElement = carouselItem.querySelector('img');
+                selectedImage = imgElement.getAttribute('src');
                 carouselItem.classList.add('active');
             }
+            console.log("Selected image 1 :",selectedImage)
+            customChange()
         }
-
+        
         ////// for showing image in zoom div \\\\\\
         document.addEventListener('DOMContentLoaded', function() {
-            var targetImage = document.getElementById("target-image");
+            var targetImage = document.querySelector("#target-image");
+            
             var second = document.getElementById("second")
             if (targetImage) {
-                console.log("src of target:", targetImage.src);
-                var targetSrc = targetImage.src
-                second.style.backgroundImage = `url(${targetSrc})` 
+                second.style.backgroundImage = `url(${targetImage.src})` 
             } else {
-                console.error("Element with id 'target-image' not found in the document.");
+                console.error("Element with id target-image not found in the document.");
             }
         });
 
+        // Edit
+        function customChange() {
+            var targetImage = document.querySelector("#target-image");
+            var second = document.getElementById("second")
+            second.style.backgroundImage = ""
+            console.log("Selected image 2 :",selectedImage)
+            
+            if (selectedImage) {
+                second.style.backgroundImage = `url(${selectedImage})` 
+            } else {
+                console.error("Element with id target-image not found in the document.");
+            }
+        }
+
         ////// function to handle the zoom functionality of th image \\\\\\
-        var lens = document.getElementById("lens")
-        var first = document.querySelector(".first")
+        var lens = document.querySelectorAll("#lens")
+        var first = document.querySelectorAll(".first")
         var second = document.getElementById("second")
         var productDetail = document.getElementById("product-detail")
         var carouselButtonOne = document.getElementById("carousel-btnOne")
         var carouselButtonTwo = document.getElementById("carousel-btnTwo")
         
-        first.addEventListener("mousemove",function(e){
+        for(let i = 0; i < first.length ; i++){
+        
+        first[i].addEventListener("mousemove",function(e){
             
             var x = e.clientX - e.target.getBoundingClientRect().left;
             var y = e.clientY - e.target.getBoundingClientRect().top;
             
-            var lensWidth = lens.offsetWidth;
-            var lensHeight = lens.offsetHeight;
+            var lensWidth = lens[i].offsetWidth;
+            var lensHeight = lens[i].offsetHeight;
             var lensX = x - lensWidth / 2;
             var lensY = y - lensHeight / 2.3;
             
-            lens.style.left = lensX + "px";
-            lens.style.top = lensY + "px";
+            lens[i].style.left = lensX + "px";
+            lens[i].style.top = lensY + "px";
             
             var imageX = (x / e.target.offsetWidth) * 100;
             var imageY = (y / e.target.offsetHeight) * 100;
             
             second.style.backgroundPosition = `${imageX}% ${imageY}%`;
             
-            lens.style.cursor = "none";
+            lens[i].style.cursor = "none";
             document.body.style.cursor = "block";
             
         })
         
         
-            first.addEventListener("mouseenter", function() {
+            first[i].addEventListener("mouseenter", function() {
                 if(window.innerWidth > 991) {
                     carouselButtonOne.style.display = "none"
                     carouselButtonTwo.style.display = "none"
                     second.style.display = "block"
-                    lens.style.display = "block";
+                    lens[i].style.display = "block";
                     productDetail.classList.add("d-none")
                 }
             });
         
-            first.addEventListener("mouseleave", function() {
+            first[i].addEventListener("mouseleave", function() {
                 carouselButtonOne.style.display = "block"
                 carouselButtonTwo.style.display = "block"
                 second.style.display = "none"
-                lens.style.display = "none";
+                lens[i].style.display = "none";
                 productDetail.classList.remove("d-none")
             });
+        }
 
         </script>
 
