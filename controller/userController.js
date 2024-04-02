@@ -166,6 +166,9 @@ const postRegisterOtp = async (req, res) => {
 const postLogin = async (req, res) => {
     try {
         const user = await User.findOne({ email: req.body.email });
+        if(!user || user === null){
+            return res.render("user/login", {type: "danger", message: "No user found with this email.", userDetails , cartItemCount})
+        }
         const homeCarousel = await HomeCarousel.find()
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({ isBlocked : false})
@@ -177,9 +180,9 @@ const postLogin = async (req, res) => {
         }
         console.log("cartItemCount :",cartItemCount)
         
-        const { email, password } = req.body;
+        const password  = req.body.password
 
-        if (user) {
+        
             if (user.isblocked) {
                 return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails , cartItemCount})
             }
@@ -190,17 +193,14 @@ const postLogin = async (req, res) => {
                     console.log(err);
                     return res.status(500).send('An error occurred while comparing the passwords.');
                 } if (result) {
-                        req.session.user = user;
-                        userDetails = req.session.user
-                        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , cartItemCount})
+                    req.session.user = user;
+                    userDetails = req.session.user
+                    return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , cartItemCount})
                 } else {
                     // Passwords don't match    
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails , cartItemCount})
                 }
             });
-        } else {
-            return res.render("user/login", { type: "danger", message: "No user found", userDetails , cartItemCount})
-        }
     } catch (error) {
         console.log(error.message)
     }
@@ -219,7 +219,7 @@ const getLogin = async (req, res) => {
 //To get the user logout function
 const getLogout = async(req,res)=>{
     try{
-        req.session.user = null 
+        req.session.user = "" 
         userDetails = ""
         cartItemCount = ""
         res.redirect('/')
