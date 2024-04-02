@@ -96,11 +96,11 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productStock" class="form-label">Product Stock</label>
-                                    <input type="number" class="form-control" name="productStock" id="productStock" value="" required>
+                                    <input type="number" class="form-control" min="1" name="productStock" id="productStock" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productRealPrice" class="form-label">Product real price</label>
-                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="" required>
+                                    <input type="number" class="form-control" min="1000" name="productRealPrice" id="productRealPrice" value="" required>
                                 </div>
                                 <div class="mt-5 d-md-block d-none">
                                     <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
@@ -110,11 +110,11 @@
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productfferPrice" class="form-label">Product offer price</label>
-                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="" required>
+                                    <input type="number" class="form-control" min="1000" name="productOfferPrice" id="productOfferPrice" value="" required>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
-                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
+                                    <input type="number" class="form-control" min="1" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
                                 </div>
                                 <div class="my-5 col-md-10">
                                     <input type="file" id="file-input" name="productImages" accept="image/png, image/jpeg" onchange="preview()" multiple>
