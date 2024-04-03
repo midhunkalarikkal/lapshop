@@ -1157,9 +1157,22 @@ const getCheckout = async(req,res)=>{
     try{
         let userId = req.session.user._id
         console.log(userId)
-        let UserCart = await Cart.find({ userId : userId})
-        console.log(UserCart)
-        res.render('user/checkout' , { UserCart })
+        let userCart = await Cart.find({ userId : userId})
+        console.log(userCart)
+        let userAddress = await Address.find({ userId : userId})
+        console.log(userAddress)
+        res.render('user/checkout' , { userCart , userAddress })
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error"})
+    }
+}
+
+const getUserNewAddressFromCheckout = async(req,res)=>{
+    try{
+        const userId = req.params.userId
+        console.log(userId)
+        return res.render('user/addAddressFromCheckout',{userDetails , userId , cartItemCount})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error"})
@@ -1208,6 +1221,7 @@ module.exports = {
     postCartProductQtyInc,
     postCartProductQtyDec,
     deleteProductFromCart,
-    getCheckout
+    getCheckout,
+    getUserNewAddressFromCheckout
 }
 

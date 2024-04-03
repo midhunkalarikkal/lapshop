@@ -98,7 +98,8 @@
             outline: none;
         }
 
-        .product-card-each , .subtotal {
+        .product-card-each,
+        .subtotal {
             border-radius: 10px;
         }
     </style>
@@ -125,6 +126,7 @@
         </div>
     </nav>
     <!-- Navbar end -->
+
     <section class="view">
         <!-- Edit -->
         <div class="cart-wrap mt-5">
@@ -134,68 +136,122 @@
                 </div>
                 <hr>
                 <div class="row mb-3">
-                        <div class="product-card col-md-8">
-                                <div class="product-card-each mt-4 shadow d-flex">
-                                    <div class="mx-2 p-3">
-                                        <input type="radio">
+                    <div class="product-card col-md-8">
+                        <div class="product-card-each mt-4 shadow d-flex">
+                            <div class="col-12 p-3">
+                                <p>Selected address will be used to bill and ship product</p>
+                                <% if (userAddress !== "") { %>
+                                <% userAddress.forEach((address, index) => { %>
+                                        <div class="row mb-1">
+                                            <div class="col-1">
+                                                <input type="radio" name="selectedAddress" value="<%= index %>" id="address<%= index %>" />
+                                            </div>
+                                            <div class="col-11 address text-muted">
+                                                <p>
+                                                    <%= address.name %>,
+                                                    <%= address.addressLine %>,
+                                                    <span>Phone:</span> <%= address.phone %>,
+                                                    <%= address.city %>,
+                                                    <span>Pincode:</span> <%= address.pincode %>,
+                                                    <%= address.district %>,
+                                                    <%= address.state %>,
+                                                    <%= address.country %>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    <% }); %>
+                                    <div class="address-btn">
+                                        <button class="mx-3"  
+                                            style="color: blue; border: none; background-color: #f1f1f100;" 
+                                            id="add-address"
+                                            data-userId="<%= userAddress[0].userId %>">
+                                            <i class="fa-solid fa-plus" style="color: blue;"></i>
+                                            Add new address
+                                        </button>
+                                    </div>
+                                    <div class="extra-btns my-3">
+                                        <button class="btn btn-primary" onclick="goToShop(event)">Continue shopping</button>
+                                        <button class="btn btn-primary" onclick="goToCart(event)">Review cart</button>
                                     </div>
                                 </div>
-                        </div>
-                        
-                            <div class="product-subtotal col-12 col-md-4">
-                                <div class="subtotal mt-4 shadow d-flex flex-column p-3">
-                                    <div class="head text-center">
-                                        <h4 class="">Order summary</h4>
-                                        <p class="text-success">Part of your order qualifies for FREE Delivery.Choose FREE Delivery option at checkout.</p>      
-                                    </div>
-                                    <hr>
-                                    <div class="details">    
-                                        <h5>Subtotal : <span class="subtotal"></span></h5>             
-                                    </div>
-                                    <div class="button mt-3">
-                                        <button class="btn btn-warning w-100">Proceed to Checkout</button>
-                                    </div>
-                                </div>
+                                <% } else{ %>
+                                    <p class="text-danger">You haven't added any address yet</p>
+                                <% } %>
                             </div>
-                        
+                        </div>
                     
-                        <div class="alert alert-info text-center mt-4" role="alert">Your Cart is empty.</div>
-                    
+                    <% if(userCart !== ""){ %>
+                    <div class="product-subtotal col-12 col-md-4">
+                        <div class="subtotal mt-4 shadow d-flex flex-column p-3">
+                            <div class="head text-center">
+                                <h4 class="">Order summary</h4>
+                                <p class="text-success">Part of your order qualifies for FREE Delivery.Choose FREE
+                                    Delivery option at checkout.</p>
+                            </div>
+                            <hr>
+                            <div class="details">
+                                <h6>No of items : <span><%= userCart[0].items.length %></span></h6>
+                                <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
+                            </div>
+                            <div class="button mt-3">
+                                <button class="btn btn-warning w-100">Proceed to Payment</button>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
                 </div>
             </div>
         </div>
         <!-- Edit -->
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script>
-    
-    </script>
-
-<!-- footer start -->
-<footer class="text-light" id="footer">
-    <div class="container-fluid">
-        <div class="row p-5 d-flex justify-content-center">
-            <div class="col-12">
-                <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
-                    <div class="d-flex flex-column align-items-center justify-content-center">
-                        <h1>LapShop</h1>
-                        <p>Discover Your Digital World with Us.</p>
+    <!-- footer start -->
+    <footer class="text-light" id="footer">
+        <div class="container-fluid">
+            <div class="row p-5 d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            <h1>LapShop</h1>
+                            <p>Discover Your Digital World with Us.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
     <!-- footer end -->
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+
+        // To add a new address
+        document.getElementById('add-address').addEventListener('click', function () {
+            const userId = this.dataset.userid;
+            console.log(userId)
+            window.location.href = `/addAddressFromCheckout/${userId}`; 
+        });
+        
+        // Go to shop
+        function goToShop(event){
+            event.preventDefault()
+            window.location.href = '/shop'
+        }
+
+        // Go To Cart
+        function goToCart(event){
+            event.preventDefault()
+            window.location.href = '/cart'
+        }
+    </script>
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>   
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+        </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
-    integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer">
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
 </body>
+
 </html>

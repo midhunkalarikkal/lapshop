@@ -95,4 +95,6 @@ userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,userController.
 
 userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
 
+userRouter.get('/addAddressFromCheckout/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
+
 module.exports = userRouter
