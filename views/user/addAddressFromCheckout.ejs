@@ -1,317 +1,365 @@
 <!-- Admin navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<!DOCTYPE html>
+<html lang="en">
 
-    <head>
-        <!-- Css for the admin data edit form -->
-        <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LapShop</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--Bootstrap-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <!--Font Awesome-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
+</head>
 
-    <body>
-        <section class="view">
-            <div class="container d-flex align-items-center justify-content-center">
-                <div class="main col-12 col-lg-10 m-3 mt-5">
-                    <form action="/saveNewAddress/<%= userId %>" method="POST">
-                        <div class="p-5">
-                            <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new address</h4>
-                                <div class="input-box d-md-flex">
-                                    <div class="col-12 col-md-6">
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Name" class="form-label">Name</label>
-                                            <input type="text" class="form-control" name="name" id="name"
-                                                required onmouseleave="validateName()">
-                                            <span id="nameError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="AddressLine" class="form-label">Address line</label>
-                                            <textarea class="form-control" name="addressLine" id="addressLine" rows="1"
-                                                required
-                                                onmouseleave="validateAddressLine()"></textarea>
-                                            <span id="addressLineError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Phone" class="form-label">Phone</label>
-                                            <input type="text" class="form-control" name="phone" id="phone"
-                                                 required
-                                                onmouseleave="validatePhone()">
-                                            <span id="phoneError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="City" class="form-label">City</label>
-                                            <input type="text" class="form-control" name="city" id="city"
-                                                 required onmouseleave="validateCity()">
-                                            <span id="cityError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mt-5 d-md-block d-none">
-                                            <button type="button" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                            <button type="submit" id="submitButton" class="btn btn-primary">Save
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="mb-3 col-md-10">
-                                            <label for="District" class="form-label">District</label>
-                                            <input type="text" class="form-control" name="district" id="district"
-                                                required
-                                                onmouseleave="validateDistrict()">
-                                            <span id="districtError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="State" class="form-label">State</label>
-                                            <input type="text" class="form-control" name="state" id="state"
-                                                 required
-                                                onmouseleave="validateState()">
-                                            <span id="stateError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Pincode" class="form-label">Pincode</label>
-                                            <input type="text" class="form-control" name="pincode" id="pincode"
-                                                 required
-                                                onmouseleave="validatePincode()">
-                                            <span id="pincodeError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Country" class="form-label">Country</label>
-                                            <input type="text" class="form-control" name="country" id="country"
-                                             required>
-                                        </div>
-                                    </div>
-                                    <div class="mt-4 d-block d-md-none">
-                                        <button type="button" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                        <button type="submit" id="submitButton" class="btn btn-primary">Save
-                                            </button>
-                                    </div>
+<body>
+    <!-- Navbar One-->
+    <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
+        <div class="container">
+
+            <!-- Navbar Logo -->
+            <div class="logo col-2">
+                <a href="" class="navbar-brand">
+                    <span class="fw-bold fs-3">LapShop</span>
+                </a>
+            </div>
+
+            <div class="col-10 d-flex align-items-center justify-content-center">
+                <h3 class="text-light fs-3 mt-2">Checkout</h3>
+            </div>
+        </div>
+    </nav>
+    <!-- Navbar end -->
+    <section class="view">
+        <div class="container d-flex align-items-center justify-content-center">
+            <div class="main col-12 col-lg-10 m-3 mt-5">
+                <form action="/saveNewAddress/<%= userId %>" method="POST">
+                    <div class="p-5">
+                        <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new address</h4>
+                        <div class="input-box d-md-flex">
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3 col-md-10">
+                                    <label for="Name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name" id="name" required
+                                        onmouseleave="validateName()">
+                                    <span id="nameError" class="text-danger"></span>
                                 </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="AddressLine" class="form-label">Address line</label>
+                                    <textarea class="form-control" name="addressLine" id="addressLine" rows="1" required
+                                        onmouseleave="validateAddressLine()"></textarea>
+                                    <span id="addressLineError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="Phone" class="form-label">Phone</label>
+                                    <input type="text" class="form-control" name="phone" id="phone" required
+                                        onmouseleave="validatePhone()">
+                                    <span id="phoneError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="City" class="form-label">City</label>
+                                    <input type="text" class="form-control" name="city" id="city" required
+                                        onmouseleave="validateCity()">
+                                    <span id="cityError" class="text-danger"></span>
+                                </div>
+                                <div class="mt-5 d-md-block d-none">
+                                    <button type="button" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                    <button type="submit" id="submitButton" class="btn btn-primary">Save
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3 col-md-10">
+                                    <label for="District" class="form-label">District</label>
+                                    <input type="text" class="form-control" name="district" id="district" required
+                                        onmouseleave="validateDistrict()">
+                                    <span id="districtError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="State" class="form-label">State</label>
+                                    <input type="text" class="form-control" name="state" id="state" required
+                                        onmouseleave="validateState()">
+                                    <span id="stateError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="Pincode" class="form-label">Pincode</label>
+                                    <input type="text" class="form-control" name="pincode" id="pincode" required
+                                        onmouseleave="validatePincode()">
+                                    <span id="pincodeError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="Country" class="form-label">Country</label>
+                                    <input type="text" class="form-control" name="country" id="country" required>
+                                </div>
+                            </div>
+                            <div class="mt-4 d-block d-md-none">
+                                <button type="button" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                <button type="submit" id="submitButton" class="btn btn-primary">Save
+                                </button>
+                            </div>
                         </div>
-                    </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- footer start -->
+    <footer class="text-light" id="footer">
+        <div class="container-fluid">
+            <div class="row p-5 d-flex justify-content-center">
+                <div class="col-12">
+                    <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
+                        <div class="d-flex flex-column align-items-center justify-content-center">
+                            <h1>LapShop</h1>
+                            <p>Discover Your Digital World with Us.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </footer>
+    <!-- footer end -->
 
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            ////// Validation function for name input \\\\\\
-            function validateName() {
-                const nameInput = document.getElementById('name');
-                const name = nameInput.value.trim();
-                const nameError = document.getElementById('nameError');
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        ////// Validation function for name input \\\\\\
+        function validateName() {
+            const nameInput = document.getElementById('name');
+            const name = nameInput.value.trim();
+            const nameError = document.getElementById('nameError');
 
-                const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
+            const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
 
-                if (!namePattern.test(name)) {
-                    nameInput.classList.add('is-invalid');
-                    nameError.textContent = 'Name must contain only alphabets and spaces.';
-                    return false;
-                } else if (name.length < 5 || name.length > 25) {
-                    nameInput.classList.add('is-invalid');
-                    nameError.textContent = 'Name must be between 5 and 25 characters long';
-                    return false;
-                } else {
-                    nameInput.classList.remove('is-invalid');
-                    nameError.textContent = '';
-                    return true;
-                }
+            if (!namePattern.test(name)) {
+                nameInput.classList.add('is-invalid');
+                nameError.textContent = 'Name must contain only alphabets and spaces.';
+                return false;
+            } else if (name.length < 5 || name.length > 25) {
+                nameInput.classList.add('is-invalid');
+                nameError.textContent = 'Name must be between 5 and 25 characters long';
+                return false;
+            } else {
+                nameInput.classList.remove('is-invalid');
+                nameError.textContent = '';
+                return true;
             }
+        }
 
-            ////// Validation function for phone input \\\\\\
-            function validatePhone() {
-                const phoneInput = document.getElementById('phone');
-                const phone = phoneInput.value.trim();
-                const phoneError = document.getElementById('phoneError');
+        ////// Validation function for phone input \\\\\\
+        function validatePhone() {
+            const phoneInput = document.getElementById('phone');
+            const phone = phoneInput.value.trim();
+            const phoneError = document.getElementById('phoneError');
 
-                const phonePattern = /^\d{10}$/;
+            const phonePattern = /^\d{10}$/;
 
-                if (!phonePattern.test(phone)) {
-                    phoneInput.classList.add('is-invalid');
-                    phoneError.textContent = 'Phone number must contain only 10 digits';
-                    return false;
-                } else {
-                    phoneInput.classList.remove('is-invalid');
-                    phoneError.textContent = '';
-                    return true;
-                }
+            if (!phonePattern.test(phone)) {
+                phoneInput.classList.add('is-invalid');
+                phoneError.textContent = 'Phone number must contain only 10 digits';
+                return false;
+            } else {
+                phoneInput.classList.remove('is-invalid');
+                phoneError.textContent = '';
+                return true;
             }
+        }
 
-            ////// Validation function for addressLine input \\\\\\
-            function validateAddressLine() {
-                const addressLineInput = document.getElementById('addressLine');
-                const addressLine = addressLineInput.value
-                const addressLineError = document.getElementById('addressLineError');
+        ////// Validation function for addressLine input \\\\\\
+        function validateAddressLine() {
+            const addressLineInput = document.getElementById('addressLine');
+            const addressLine = addressLineInput.value
+            const addressLineError = document.getElementById('addressLineError');
 
-                if (addressLine.length < 5) {
-                    addressLineInput.classList.add('is-invalid');
-                    addressLineError.textContent = 'Address line must be at least 5 characters';
-                    return false;
-                } else if (addressLine.length > 40) {
-                    addressLineInput.classList.add('is-invalid');
-                    addressLineError.textContent = 'Address line must be less than 40 characters';
-                    return false;
-                } else {
-                    addressLineInput.classList.remove('is-invalid');
-                    addressLineError.textContent = '';
-                    return true;
-                }
+            if (addressLine.length < 5) {
+                addressLineInput.classList.add('is-invalid');
+                addressLineError.textContent = 'Address line must be at least 5 characters';
+                return false;
+            } else if (addressLine.length > 40) {
+                addressLineInput.classList.add('is-invalid');
+                addressLineError.textContent = 'Address line must be less than 40 characters';
+                return false;
+            } else {
+                addressLineInput.classList.remove('is-invalid');
+                addressLineError.textContent = '';
+                return true;
             }
+        }
 
-            ////// Validation function for pincode input \\\\\\
-            function validatePincode() {
-                const pincodeInput = document.getElementById('pincode');
-                const pincode = pincodeInput.value;
-                const pincodeError = document.getElementById('pincodeError');
-                const pincodePattern = /^[1-9]\d{5}$/;
+        ////// Validation function for pincode input \\\\\\
+        function validatePincode() {
+            const pincodeInput = document.getElementById('pincode');
+            const pincode = pincodeInput.value;
+            const pincodeError = document.getElementById('pincodeError');
+            const pincodePattern = /^[1-9]\d{5}$/;
 
-                if (!pincodePattern.test(pincode)) {
-                    pincodeInput.classList.add('is-invalid');
-                    pincodeError.textContent = 'Pin code must be six digits long, starting with a digit between 1 and 9.';
-                    return false;
-                } else {
-                    pincodeInput.classList.remove('is-invalid');
-                    pincodeError.textContent = '';
-                    return true;
-                }
+            if (!pincodePattern.test(pincode)) {
+                pincodeInput.classList.add('is-invalid');
+                pincodeError.textContent = 'Pin code must be six digits long, starting with a digit between 1 and 9.';
+                return false;
+            } else {
+                pincodeInput.classList.remove('is-invalid');
+                pincodeError.textContent = '';
+                return true;
             }
+        }
 
-            ////// Validation function for city input \\\\\\
-            function validateCity() {
-                const cityInput = document.getElementById('city');
-                const city = cityInput.value.trim();
-                const cityError = document.getElementById('cityError');
+        ////// Validation function for city input \\\\\\
+        function validateCity() {
+            const cityInput = document.getElementById('city');
+            const city = cityInput.value.trim();
+            const cityError = document.getElementById('cityError');
 
-                const cityPattern = /^[a-zA-Z\s]+$/;
+            const cityPattern = /^[a-zA-Z\s]+$/;
 
-                if (!cityPattern.test(city)) {
-                    cityInput.classList.add('is-invalid');
-                    cityError.textContent = 'City must contain only alphabets and spaces';
-                    return false;
-                } else if (city.length < 3 || city.length > 25) {
-                    cityInput.classList.add('is-invalid');
-                    cityError.textContent = 'Name must be between 3 and 25 characters long';
-                    return false;
-                } else {
-                    cityInput.classList.remove('is-invalid');
-                    cityError.textContent = '';
-                    return true;
-                }
+            if (!cityPattern.test(city)) {
+                cityInput.classList.add('is-invalid');
+                cityError.textContent = 'City must contain only alphabets and spaces';
+                return false;
+            } else if (city.length < 3 || city.length > 25) {
+                cityInput.classList.add('is-invalid');
+                cityError.textContent = 'Name must be between 3 and 25 characters long';
+                return false;
+            } else {
+                cityInput.classList.remove('is-invalid');
+                cityError.textContent = '';
+                return true;
             }
+        }
 
-            ////// Validation function for district input \\\\\\
-            function validateDistrict() {
-                const districtInput = document.getElementById('district');
-                const district = districtInput.value.trim();
-                const districtError = document.getElementById('districtError');
+        ////// Validation function for district input \\\\\\
+        function validateDistrict() {
+            const districtInput = document.getElementById('district');
+            const district = districtInput.value.trim();
+            const districtError = document.getElementById('districtError');
 
-                const districtPattern = /^[a-zA-Z\s]+$/;
+            const districtPattern = /^[a-zA-Z\s]+$/;
 
-                if (!districtPattern.test(district)) {
-                    districtInput.classList.add('is-invalid');
-                    districtError.textContent = 'District must contain only alphabets and spaces';
-                    return false;
-                } else if (district.length < 4 || district.length > 15) {
-                    nameInput.classList.add('is-invalid');
-                    nameError.textContent = 'Name must be between 4 and 15 characters long';
-                    return false;
-                } else {
-                    districtInput.classList.remove('is-invalid');
-                    districtError.textContent = '';
-                    return true;
-                }
+            if (!districtPattern.test(district)) {
+                districtInput.classList.add('is-invalid');
+                districtError.textContent = 'District must contain only alphabets and spaces';
+                return false;
+            } else if (district.length < 4 || district.length > 15) {
+                nameInput.classList.add('is-invalid');
+                nameError.textContent = 'Name must be between 4 and 15 characters long';
+                return false;
+            } else {
+                districtInput.classList.remove('is-invalid');
+                districtError.textContent = '';
+                return true;
             }
+        }
 
-            ////// Validation function for state input \\\\\\
-            function validateState() {
-                const stateInput = document.getElementById('state');
-                const state = stateInput.value.trim();
-                const stateError = document.getElementById('stateError');
+        ////// Validation function for state input \\\\\\
+        function validateState() {
+            const stateInput = document.getElementById('state');
+            const state = stateInput.value.trim();
+            const stateError = document.getElementById('stateError');
 
-                const statePattern = /^[a-zA-Z\s]+$/;
+            const statePattern = /^[a-zA-Z\s]+$/;
 
-                if (state.length < 3 || state.length > 15) {
-                    stateInput.classList.add('is-invalid');
-                    stateError.textContent = 'State must be between 3 and 15 characters long';
-                    return false;
-                } else if (!statePattern.test(state)) {
-                    stateInput.classList.add('is-invalid');
-                    stateError.textContent = 'State must contain only alphabets and spaces';
-                    return false;
-                } else {
-                    stateInput.classList.remove('is-invalid');
-                    stateError.textContent = '';
-                    return true;
-                }
+            if (state.length < 3 || state.length > 15) {
+                stateInput.classList.add('is-invalid');
+                stateError.textContent = 'State must be between 3 and 15 characters long';
+                return false;
+            } else if (!statePattern.test(state)) {
+                stateInput.classList.add('is-invalid');
+                stateError.textContent = 'State must contain only alphabets and spaces';
+                return false;
+            } else {
+                stateInput.classList.remove('is-invalid');
+                stateError.textContent = '';
+                return true;
             }
+        }
 
 
 
-            ////// To submit the form \\\\\\
-            function validateForm() {
-                const isValidName = validateName();
-                const isValidAddressLine = validateAddressLine();
-                const isValidPhone = validatePhone();
-                const isValidCity = validateCity();
-                const isValidDistrict = validateDistrict();
-                const isValidState = validateState();
-                const isValidPincode = validatePincode();
+        ////// To submit the form \\\\\\
+        function validateForm() {
+            const isValidName = validateName();
+            const isValidAddressLine = validateAddressLine();
+            const isValidPhone = validatePhone();
+            const isValidCity = validateCity();
+            const isValidDistrict = validateDistrict();
+            const isValidState = validateState();
+            const isValidPincode = validatePincode();
 
-                return isValidName && isValidAddressLine && isValidPhone && isValidCity && isValidDistrict && isValidState && isValidPincode;
-            }
+            return isValidName && isValidAddressLine && isValidPhone && isValidCity && isValidDistrict && isValidState && isValidPincode;
+        }
 
-            document.getElementById('submitButton').addEventListener('click', async function (event) {
-                event.preventDefault();
+        document.getElementById('submitButton').addEventListener('click', async function (event) {
+            event.preventDefault();
 
-                if (validateForm()) {
-                    const form = document.querySelector('form');
-                    const formData = {
-                        name: document.getElementById('name').value,
-                        addressLine: document.getElementById('addressLine').value,
-                        phone: document.getElementById('phone').value,
-                        city: document.getElementById('city').value,
-                        district: document.getElementById('district').value,
-                        state: document.getElementById('state').value,
-                        pincode: document.getElementById('pincode').value,
-                        country: document.getElementById('country').value
-                    };
+            if (validateForm()) {
+                const form = document.querySelector('form');
+                const formData = {
+                    name: document.getElementById('name').value,
+                    addressLine: document.getElementById('addressLine').value,
+                    phone: document.getElementById('phone').value,
+                    city: document.getElementById('city').value,
+                    district: document.getElementById('district').value,
+                    state: document.getElementById('state').value,
+                    pincode: document.getElementById('pincode').value,
+                    country: document.getElementById('country').value
+                };
 
-                    try {
-                        const response = await fetch(form.action, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(formData)
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        Swal.fire("Success!",
+                            data.message,
+                            "success"
+                        ).then(() => {
+                            window.location.href = '/checkout';
                         });
-
-                        const data = await response.json();
-
-                        if (response.ok) {
-                            Swal.fire("Success!",
-                                data.message,
-                                "success"
-                            ).then(() => {
-                                window.location.href = '/checkout';
-                            });
-                        } else {
-                            Swal.fire("Error!",
-                                data.message, "error"
-                            );
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
+                    } else {
                         Swal.fire("Error!",
-                            "An error occurred while processing your request.", "error"
+                            data.message, "error"
                         );
                     }
-                } else {
+                } catch (error) {
+                    console.error('Error:', error);
                     Swal.fire("Error!",
-                        "Please fix the errors in the form.", "error"
+                        "An error occurred while processing your request.", "error"
                     );
                 }
-            });
-
-            ////// Cancel button goBack function \\\\\\
-            function goBack() {
-                window.location.href = "/checkout"
+            } else {
+                Swal.fire("Error!",
+                    "Please fix the errors in the form.", "error"
+                );
             }
-        </script>
+        });
 
-        <!-- Admin footer -->
-        <%-include("../userpartials/footer.ejs")%>
+        ////// Cancel button goBack function \\\\\\
+        function goBack() {
+            window.location.href = "/checkout"
+        }
+    </script>
+
+    <!--Bootstrap-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
+        </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+        </script>
+</body>
+
+</html>
