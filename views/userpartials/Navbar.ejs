@@ -64,7 +64,7 @@
                                 <% if(userDetails) { %>
                                     <li class="text-center">
                                     <h6>Hello,</h6>  
-                                    <h6><%= userDetails._doc.fullname %></h6>  
+                                    <h6><%= userDetails.userName %></h6>  
                                     </li>
                                     <hr>
                                     <li><a class="dropdown-item" href="/userProfile"><i class="fa-solid fa-user"></i> My Profile</a></li>
@@ -82,9 +82,9 @@
                             <!-- <a href="/cart" class="nav-link"><i class="fa-solid fa-cart-shopping fs-5"></i></a> -->
                             <a href="/cart" class="nav-link position-relative">
                                 <i class="fa-solid fa-cart-shopping fs-5"></i>
-                                <% if(cartItemCount && cartItemCount != 0){ %>
+                                <% if(userDetails){ %>
                                         <span class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger">
-                                            <%= cartItemCount %>
+                                            <%= userDetails.cartItemCount %>
                                         </span>
                                 <% } %>
                               </a>

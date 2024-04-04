@@ -8,6 +8,7 @@ userRouter.use(bodyParser.json());
 userRouter.use(bodyParser.urlencoded({extended:true}));
 
 const userController = require('../controller/userController')
+const cartController = require('../controller/cartController')
 
 //To get home page
 userRouter.get('/',userController.getHome)
@@ -76,25 +77,27 @@ userRouter.post('/addToWishlist',userAuth.isUserLoggedIn,userController.AddToWis
 userRouter.post('/deleteProductFromWishlist',userAuth.isUserLoggedIn,userController.deleteProductFromWishlist)
 
 //To get the cart page
-userRouter.get('/cart',userAuth.isUserLoggedIn,userController.getCartPage)
+userRouter.get('/cart',userAuth.isUserLoggedIn,cartController.getCartPage)
 
 //To add a product to cart from shop or product detail page
-userRouter.post('/addProductToCartFromShop',userController.postProductToCartFromShop)
+userRouter.post('/addProductToCartFromShop',cartController.postProductToCartFromShop)
 
 //To add a product to cart from wishlist
-userRouter.post('/addProductToCart',userAuth.isUserLoggedIn,userController.postProductToCart)
+userRouter.post('/addProductToCart',userAuth.isUserLoggedIn,cartController.postProductToCart)
 
 //To increment cart item quantity
-userRouter.post('/incrementCartProduct',userAuth.isUserLoggedIn,userController.postCartProductQtyInc)
+userRouter.post('/incrementCartProduct',userAuth.isUserLoggedIn,cartController.postCartProductQtyInc)
 
 //To decrement cart item quantity
-userRouter.post('/decrementCartProduct',userAuth.isUserLoggedIn,userController.postCartProductQtyDec)
+userRouter.post('/decrementCartProduct',userAuth.isUserLoggedIn,cartController.postCartProductQtyDec)
 
 //To delete a product from cart
-userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,userController.deleteProductFromCart)
+userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,cartController.deleteProductFromCart)
 
+//To get the checkout page
 userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
 
+//To add new address from checkout page
 userRouter.get('/addAddressFromCheckout/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
 
 module.exports = userRouter
