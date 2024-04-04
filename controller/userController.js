@@ -16,7 +16,6 @@ const path = require('path')
 const fs = require('fs')
 const session = require('express-session')
 const express = require('express')
-const { error, count } = require('console')
 const app = express()
 
 app.use(session({

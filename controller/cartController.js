@@ -12,8 +12,6 @@ app.use(session({
 
 
 let userDetails;
-let cartItemCount;
-
 
 //To get the cart page
 const getCartPage = async(req,res)=>{
@@ -28,13 +26,13 @@ const getCartPage = async(req,res)=>{
 
         if (!cart || cart.length === 0) {
             cart = [];
-            res.render('user/cart', { userDetails, cartItems: [], cart: [] , cartItemCount});
+            res.render('user/cart', { userDetails, cartItems: [], cart: []});
             return;
         }
         const cartItems = cart[0].items
         // console.log("User cart :", cart)
         // console.log("Cart items :",cartItems)
-        res.render('user/cart' , {userDetails , cartItems , cart , cartItemCount})
+        res.render('user/cart' , {userDetails , cartItems , cart})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
