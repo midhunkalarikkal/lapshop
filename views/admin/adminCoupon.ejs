@@ -1,0 +1,183 @@
+<!-- Admin header -->
+<%-include("../adminpartials/admin_navbar.ejs")%>
+
+    <section class="view">
+        <div class="container mt-5">
+            <!-- Heading and coupon adding button start -->
+        <div class="row">
+            <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
+                <h1>Coupons</h1>
+                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new coupon</button>
+            </div>
+        </div>
+        <!-- Heading and coupon adding button end -->
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <div class="table-responsive ">
+                        <hr>
+                    <% if(couponData.length !== 0){ %>
+                        <table class="table text-center table-striped my-5 p-1">
+                            <thead>
+                                <tr class="table-dark">
+                                    <th class="text-center text-light">ID</th>
+                                    <th class="text-center text-light">Name</th>
+                                    <th class="text-center text-light">code</th>
+                                    <th class="text-center text-light">Start Date</th>
+                                    <th class="text-center text-light">End Date</th>
+                                    <th class="text-center text-light">Amount</th>
+                                    <th class="text-center text- light">Controls</th>
+                                    <th class="text-center text-light">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% couponData.forEach((coupon , index)=>{ %>
+                                <tr class="align-middle">
+                                    <td>
+                                        <%= index+1 %>
+                                    </td>
+                                    <td>
+                                        <%= coupon.couponName %>
+                                    </td>
+                                    <td>
+                                        <%= coupon.couponCode %>
+                                    </td>
+                                    <td>
+                                        <%= coupon.startDate.toLocaleString() %>
+                                    </td>
+                                    <td>
+                                        <%= coupon.endDate.toLocaleString() %>
+                                    </td>
+                                    <td>
+                                        <%= coupon.couponAmount %>
+                                    </td>
+                                    <td>
+                                        <input type="radio" class="user-switch" data-user-id="" id="" name="" value="block">
+                                        <label for="radioBlockButton" class="text-danger">Block</label>
+                                        <input type="radio" class="user-switch" data-user-id="" id="" name="" value="unblock">
+                                        <label for="radioUnblockButton" class="text-success">Unblock</label>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/couponEdit/<% coupon._id %>" class="text-success edit-homeCarousel"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    </td>
+                                </tr>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                        <% } else { %>
+                        <div class="alert alert-info text-center" role="alert">No Coupons found in the database.</div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal start -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Coupon</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="couponForm" action="/admin/AddNewCoupon" method="POST">
+                        <div class="mb-3">
+                            <label for="couponName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="couponName" name="couponName">
+                        </div>
+                        <div class="mb-3">
+                            <label for="couponCode" class="form-label">Code</label>
+                            <input type="text" class="form-control" id="couponCode" name="couponCode">
+                        </div>
+                        <div class="mb-3">
+                            <label for="couponStartDate" class="form-label mx-2">Start date</label>
+                             <input type="date" name="couponStartDate" id="couponStartDate" class="form-control form-control-md">
+                        </div>
+                        <div class="mb-3">
+                            <label for="couponEndDate" class="form-label mx-2">End date</label>
+                             <input type="date" name="couponEndDate" id="couponEndDate" class="form-control form-control-md">
+                        </div>
+                        <div class="mb-3">
+                            <label for="couponAmount" class="form-label mx-2">Amount</label>
+                             <input type="text" name="couponAmount" id="couponAmount" class="form-control form-control-md">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" id="save" class="btn btn-primary">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal end -->
+
+    <!-- Script for block and unblock the user -->
+    <script>
+        ////// To add new home coupon through fetch \\\\\
+        document.getElementById("save").addEventListener("click", async function () {
+            const couponName = document.getElementById("couponName").value;
+            const couponCode = document.getElementById("couponCode").value;
+            const couponStartDate = document.getElementById("couponStartDate").value;
+            const couponEndDate = document.getElementById('couponEndDate').value;
+            const couponAmount = document.getElementById('couponAmount').value;
+            
+            const couponBody = {
+                couponName , couponCode , couponStartDate , couponEndDate , couponAmount
+            }
+
+            console.log(couponBody)
+            
+            try {
+                const response = await fetch("/admin/AddNewCoupon", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(couponBody)
+                });
+                
+                $('#exampleModal').modal('hide');
+                if (response.ok) {
+                    const data = await response.json();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message
+                    }).then(() => {
+                        location.reload();
+                    });
+                } else if (response.status === 400) {
+                    const errorData = await response.json();
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: errorData.error
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An unexpected error occurred. Please try again.'
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Network error. Please try again.'
+                });
+            }
+        });
+
+        //Script for the data table
+        $(document).ready(function(){
+            $("table").DataTable({
+                order : [0, 'desc']
+            })
+        })
+    </script>
+
+    <!-- Admin footer -->
+    <%-include("../adminpartials/admin_footer.ejs")%>

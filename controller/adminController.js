@@ -4,6 +4,7 @@ const Product = require('../models/productModel')
 const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
 const Brand = require('../models/brandModel')
+const Coupon = require('../models/couponModel')
 const fs = require('fs')
 const path = require('path')
 
@@ -708,6 +709,61 @@ const adminDeleteAdCarousel = async (req, res) => {
     }
 };
 
+// To get the admin coupon page
+const getAdminCoupon = async(req,res)=>{
+    try{
+        const couponData = await Coupon.find({ isBlocked : false})
+        console.log("couponData :",couponData)
+        return res.render('admin/adminCoupon' , {title : "LapShop Admin"  , couponData})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+// To add new coupon
+const postAdminCoupon = async(req,res)=>{
+    try{
+
+        console.log(req.body)
+            const { couponName , couponCode , couponStartDate , couponEndDate , couponAmount } = req.body;
+
+            const existingCoupon = await Coupon.findOne({  couponName: { $regex: new RegExp(couponName, 'i') } });
+            if (existingCoupon) {
+                return res.status(400).json({ error: "Coupon with same name already exists" });
+            }
+
+            // Date validation
+            if (new Date(couponStartDate) >= new Date(couponEndDate)) {
+                return res.status(400).json({ error: "End date must be after start date" });
+            }
+
+            const newCoupon = new Coupon({
+                couponName: couponName,
+                couponCode: couponCode,
+                startDate: couponStartDate,
+                endDate: couponEndDate,
+                couponAmount: couponAmount
+            });
+            await newCoupon.save();
+            return res.status(201).json({ message: "Coupon added successfully"});
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
+const adminEditCoupon = async(req,res)=>{
+    try{
+        const coupon = await coupon.findOne({_id : req.params.couponId})
+        console.log(coupon)
+        return res.render('admin/adminEditCoupon',{title : "LapShop Admin",coupon})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message: "Internal server error" });
+
+    }
+}
+
 
 
 module.exports = {
@@ -743,6 +799,9 @@ module.exports = {
     getAdCarousel,
     postAdminAdCarousel,
     adminBlockAdCarousel,
-    adminDeleteAdCarousel
+    adminDeleteAdCarousel,
+    getAdminCoupon,
+    postAdminCoupon,
+    adminEditCoupon
     
 }

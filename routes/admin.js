@@ -81,4 +81,10 @@ adminRouter.post('/blockAdCarousel/:adCarouselId',adminAuth.isAdminLoggedIn,admi
 
 adminRouter.delete('/adCarouselDelete/:adCarouselId',adminAuth.isAdminLoggedIn,adminController.adminDeleteAdCarousel)
 
+adminRouter.get('/coupons',adminAuth.isAdminLoggedIn,adminController.getAdminCoupon)
+
+adminRouter.post('/AddNewCoupon',adminAuth.isAdminLoggedIn,adminController.postAdminCoupon)
+
+adminRouter.get('/couponEdit/couponId',adminAuth.isAdminLoggedIn,adminController.adminEditCoupon)
+
 module.exports = adminRouter
