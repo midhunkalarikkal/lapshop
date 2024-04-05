@@ -85,6 +85,12 @@ adminRouter.get('/coupons',adminAuth.isAdminLoggedIn,adminController.getAdminCou
 
 adminRouter.post('/AddNewCoupon',adminAuth.isAdminLoggedIn,adminController.postAdminCoupon)
 
-adminRouter.get('/couponEdit/couponId',adminAuth.isAdminLoggedIn,adminController.adminEditCoupon)
+//To get the edit coupon page
+adminRouter.get('/couponEdit/:couponId',adminAuth.isAdminLoggedIn,adminController.adminEditCoupon)
+
+//To update the edited coupon
+adminRouter.post('/updateCoupon/:couponId',adminAuth.isAdminLoggedIn,adminController.adminUpdateCoupon)
+
+adminRouter.post('/blockCoupon/:couponId',adminAuth.isAdminLoggedIn,adminController.adminBlockCoupon)
 
 module.exports = adminRouter

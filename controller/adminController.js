@@ -5,8 +5,10 @@ const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
 const Brand = require('../models/brandModel')
 const Coupon = require('../models/couponModel')
+const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
+
 
 // To get the admin login page
 const getAdminlogin = async (req, res) => {
@@ -712,7 +714,7 @@ const adminDeleteAdCarousel = async (req, res) => {
 // To get the admin coupon page
 const getAdminCoupon = async(req,res)=>{
     try{
-        const couponData = await Coupon.find({ isBlocked : false})
+        const couponData = await Coupon.find()
         console.log("couponData :",couponData)
         return res.render('admin/adminCoupon' , {title : "LapShop Admin"  , couponData})
     }catch(error){
@@ -752,15 +754,62 @@ const postAdminCoupon = async(req,res)=>{
     }
 }
 
+//To get the coupon edit page
 const adminEditCoupon = async(req,res)=>{
     try{
-        const coupon = await coupon.findOne({_id : req.params.couponId})
-        console.log(coupon)
+        const coupon = await Coupon.findOne({_id : req.params.couponId})
+        console.log("coupon :",coupon)
         return res.render('admin/adminEditCoupon',{title : "LapShop Admin",coupon})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message: "Internal server error" });
+    }
+}
 
+//To update the coupon
+const adminUpdateCoupon = async(req, res) => {
+    try {
+        console.log("Request body :",req.body)
+        console.log("Request params :",req.params.couponId)
+        const coupon = await Coupon.findById(req.params.couponId);
+
+        // // Check if start date or end date is empty
+        if (req.body.couponStartDate === "" || req.body.couponEndDate === "") {
+            coupon.couponName = req.body.couponName;
+            coupon.couponCode = req.body.couponCode;
+            coupon.couponAmount = req.body.couponAmount;
+        } else {
+            coupon.couponName = req.body.couponName;
+            coupon.couponCode = req.body.couponCode;
+            coupon.startDate = req.body.couponStartDate;
+            coupon.endDate = req.body.couponEndDate;
+            coupon.couponAmount = req.body.couponAmount;
+        }
+
+        // // Save the updated coupon
+        await coupon.save();
+        console.log("UPdated succesfully")
+        return res.status(200).json({ message: "Coupon updated successfully" });
+    } catch (error) {
+        console.log(error.message);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+};
+
+//To block and unblock a coupon
+const adminBlockCoupon = async (req, res) => {
+    try {
+        let coupon = await Coupon.findById(req.params.couponId);
+        console.log("Coupon :",coupon)
+        if (!coupon) {
+            return res.status(404).json({ success: false, message: 'Coupon not found' });
+        }
+        coupon.isBlocked = req.body.blockStatus === 'block';
+        await coupon.save();
+        return res.json({ success: true });
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -802,6 +851,8 @@ module.exports = {
     adminDeleteAdCarousel,
     getAdminCoupon,
     postAdminCoupon,
-    adminEditCoupon
+    adminEditCoupon,
+    adminUpdateCoupon,
+    adminBlockCoupon
     
 }

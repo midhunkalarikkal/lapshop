@@ -1,0 +1,135 @@
+<!-- Admin navbar -->
+<%-include("../adminpartials/admin_navbar.ejs")%>
+
+    <head>
+        <!-- Css for the admin data edit form -->
+        <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
+    </head>
+
+    <body>
+        <section class="view">
+            <div class="container d-flex align-items-center justify-content-center">
+                <div class="main col-12 col-lg-10">
+                    <form action="/admin/updateCoupon/<%= coupon._id %>" method="POST">
+                        <div class="p-5">
+                            <div class="input-box d-md-flex">
+                                <div class="col-12 col-md-8">
+                                    <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit Coupon</h4>
+                                    <div class="mb-3 col-lg-10">
+                                        <label for="couponName" class="form-label">Coupon Name</label>
+                                        <input type="text" class="form-control" name="couponName" id="couponName"
+                                            value="<%= coupon.couponName %>" required>
+                                    </div>
+                                    <div class="mb-3 col-lg-10">
+                                        <label for="couponCode" class="form-label">Coupon Code</label>
+                                        <input type="text" class="form-control" name="couponCode" id="couponCode"
+                                            value="<%= coupon.couponCode %>" required>
+                                    </div>
+                                    <div class="mb-3 col-lg-10">
+                                        <label for="couponStartDate" class="form-label">Coupon start date (current date
+                                            <%= coupon.startDate.toLocaleDateString() %>)
+                                        </label>
+                                        <input type="date" class="form-control" name="couponStartDate"
+                                            id="couponStartDate" value="">
+                                    </div>
+                                    <div class="mb-3 col-lg-10">
+                                        <label for="couponEndDate" class="form-label">Coupon end date (current date <%=
+                                                coupon.endDate.toLocaleDateString() %>)</label>
+                                        <input type="date" class="form-control" name="couponEndDate" id="couponEndDate"
+                                            value="">
+                                    </div>
+                                    <div class="mb-3 col-lg-10">
+                                        <label for="couponAmount" class="form-label">Coupon amount in percentage</label>
+                                        <input type="text" class="form-control" name="couponAmount" id="couponAmount"
+                                            value="<%= coupon.couponAmount %>" required>
+                                    </div>
+                                    <input type="text" value="<%= coupon._id %>" name="couponId" id="couponId" hidden>
+                                    <div class="mt-4 d-md-block d-none">
+                                        <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
+                                        <button id="updateCoupon" class="btn btn-primary">Save changes</button>
+                                    </div>
+                                </div>
+                                <div class="mt-4 d-block d-md-none">
+                                    <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
+                                    <button id="updateCoupon" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Script for sweet alert -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        
+        <script>
+            ////// To update the coupon \\\\\\
+            document.getElementById('updateCoupon').addEventListener("click", async function (event) {
+                event.preventDefault(); 
+
+                const form = document.querySelector('form');
+                const couponId = document.getElementById("couponId").value;
+                const couponName = document.getElementById("couponName").value;
+                const couponCode = document.getElementById("couponCode").value;
+                const couponStartDate = document.getElementById("couponStartDate").value;
+                const couponEndDate = document.getElementById('couponEndDate').value;
+                const couponAmount = document.getElementById('couponAmount').value;
+
+                const couponBody = {
+                    couponId,
+                    couponName,
+                    couponCode,
+                    couponStartDate,
+                    couponEndDate,
+                    couponAmount
+                };
+
+                console.log(couponBody);
+
+                try {
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(couponBody)
+                    });
+
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        Swal.fire("Success!",
+                            data.message,
+                            "success"
+                        ).then(() => {
+                            window.location.href = '/admin/coupons';
+                        });
+                    } else {
+                        Swal.fire("Error!",
+                            data.message, 
+                            "error"
+                        ).then(() => {
+                            window.location.href = '/admin/coupons';
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire("Error!",
+                        "An error occurred while processing your request.", "error"
+                    );
+                }
+            });
+
+
+
+            ////// Cancel button goBack function \\\\\\
+            function goBack(event) {
+                event.preventDefault()
+                window.location.href = '/admin/coupons'
+            }
+            
+        </script>
+
+        <!-- Admin footer -->
+        <%-include("../adminpartials/admin_footer.ejs")%>
