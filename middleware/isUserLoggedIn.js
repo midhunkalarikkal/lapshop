@@ -9,7 +9,7 @@ const isUserLoggedIn = async (req, res, next) => {
             console.log("req.session.NC :",req.session.userNC)
             if (data && !data.isblocked) {
                 next();
-            } else {
+       Handledaaaaaaaa     } else {
                 req.session.user = ""
                 req.session.userNC = ""
                 res.render('user/login',{ message : "Your account is blocked." , type : "danger" , userDetails : ""});

@@ -59,8 +59,8 @@ const sendOtpMail = async(email,otp)=>{
             port: 465,
             secure: true,
             auth: {
-                user: "lapshopotp@gmail.com",
-                pass: "nyxnnbafpfqznvvh",
+                user: process.env.AUTH_EMAIL,
+                pass: process.env.AUTH_PASS,
             },
       });
       const mailOptions= {
