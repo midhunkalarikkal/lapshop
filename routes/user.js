@@ -100,4 +100,6 @@ userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
 //To add new address from checkout page
 userRouter.get('/addAddressFromCheckout/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
 
+userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)
+
 module.exports = userRouter

@@ -121,7 +121,7 @@
             </div>
 
             <div class="col-10 d-flex align-items-center justify-content-center">
-                <h3 class="text-light fs-3 mt-2">Checkout</h3>
+                <h3 class="text-light fs-3 mt-2">Payment</h3>
             </div>
         </div>
     </nav>
@@ -132,73 +132,106 @@
         <div class="cart-wrap mt-5">
             <div class="container">
                 <div class="d-flex justify-content-between">
-                    <h3>Select your address</h3>
+                    <h3>Select payment method</h3>
                 </div>
                 <hr>
                 <div class="row mb-3">
-                    <div class="product-card col-md-8">
+                    <div class="product-card col-12 col-md-8">
                         <div class="product-card-each mt-4 shadow d-flex">
                             <div class="col-12 p-3">
-                                <p class="fw-semibold">Selected address will be used to bill and ship product</p>
-                                <% if (userAddress !== "") { %>
-                                <% userAddress.forEach((address, index) => { %>
-                                        <div class="row mb-1">
-                                            <div class="d-flex">
-                                                <input type="radio" name="selectedAddress" value="<%= address._id %>" id="address<%= address._id  %>" />
-                                                <h6 class="mx-2 mt-2"><%= address.name %></h6>
-                                            </div>
-                                            <div class="col-12 address text-muted">
-                                                <p>
-                                                    <%= address.addressLine %>,
-                                                    <span>Phone:</span> <%= address.phone %>,
-                                                    <%= address.city %>,
-                                                    <span>Pincode:</span> <%= address.pincode %>,
-                                                    <%= address.district %>,
-                                                    <%= address.state %>,
-                                                    <%= address.country %>
-                                                </p>
-                                            </div>
-                                        </div>
-                                    <% }); %>
-                                    <div class="address-btn">
-                                        <button class="mx-3"  
-                                            style="color: blue; border: none; background-color: #f1f1f100;" 
-                                            id="add-address"
-                                            data-userId="<%= userAddress[0].userId %>">
-                                            <i class="fa-solid fa-plus" style="color: blue;"></i>
-                                            Add new address
-                                        </button>
+                                <h5>Your cart items</h5>
+                                <hr>
+                                <% userCart.items.forEach((item , index) => { %>
+                                    <div class="row mb-1">
+                                       <h6>Item <%= index+1 %></h6>
+                                        <p class="small">
+                                            <%= item.product.brand.name %> ,
+                                            <%= item.product.name %> ,
+                                            Quantity : <%= item.quantity %>
+                                            <br>
+                                            Price (according to quantity) : <%= item.totalPrice %>
+                                        </p>
                                     </div>
-                                    <div class="extra-btns my-3">
-                                        <button class="btn btn-primary" onclick="goToShop(event)">Continue shopping</button>
-                                        <button class="btn btn-primary" onclick="goToCart(event)">Review cart</button>
-                                    </div>
-                                </div>
-                                <% } else{ %>
-                                    <p class="text-danger">You haven't added any address yet</p>
+                                <% }) %>
+                                <hr>
+                                <h5>Selected address</h5>
+                                <hr>
+                                <% if(userAddress){ %>
+                                <h6><%= userAddress[0].name %></h6>
+                                <p>
+                                    <%= userAddress[0].addressLine %> ,
+                                    <%= userAddress[0].city %> , <br>
+                                    <%= userAddress[0].district %> , 
+                                    <%= userAddress[0].state %> , 
+                                    Pincode : <%= userAddress[0].pincode %> , 
+                                    <%= userAddress[0].country %> <br>
+                                    Phone : <%= userAddress[0].phone %> 
+                                </p>
                                 <% } %>
+                            </div>               
                             </div>
                         </div>
                     
-                    <% if(userCart !== ""){ %>
+                    
                     <div class="product-subtotal col-12 col-md-4">
                         <div class="subtotal mt-4 shadow d-flex flex-column p-3">
                             <div class="head text-center">
-                                <h4 class="">Order summary</h4>
-                                <p class="text-success">Part of your order qualifies for FREE Delivery.Choose FREE
-                                    Delivery option at checkout.</p>
+                                <h4 class="">Payment</h4>
+                                <p class="text-success">Select payment and confirm order</p>
+                            </div>
+                            <hr>
+                            <% if(coupon){ %>
+                            <div class="coupon shadow p-2" style="border: 2px solid rgb(19, 192, 79);">
+                                <h6 class="text-center">Coupon <%= coupon[0].couponName %></h6>
+                                <div class="coupon-body d-flex align-item-center justify-content-center mb-2" id="coupon-body">
+                                    <input type="text" placeholder="Coupon code" id="userCouponCode">
+                                    <button class="btn btn-success btn-sm mx-1">Apply</button>
+                                    <input type="text" id="couponCode" value="<%= coupon[0].couponCode %>" hidden>
+                                </div>
+                                <h6 class="text-center text-success d-none" id="coupon-applied">🎉Congradulations, You have applied coupon.🎉</h6>
+                            </div>
+                            <hr>
+                            <% } %>
+                            <div class="checkbox-payment">
+                                <div class="razorpay d-flex flex-row">
+                                    <input type="checkbox" name="razorpay" id="razorpay">
+                                    <label for="razorpay" class="mx-2">Razorpay</label>
+                                </div>
+                                <div class="cod d-flex flex-row">
+                                    <input type="checkbox" name="cod" id="cod">
+                                    <label for="cod" class="mx-2">Cash on delivery</label>
+                                </div>
+                                <div class="wallet d-flex flex-row">
+                                    <input type="checkbox" name="wallet" id="wallet">
+                                    <label for="wallet" class="mx-2">Wallet</label>
+                                </div>
                             </div>
                             <hr>
                             <div class="details">
-                                <h6>No of items : <span><%= userCart[0].items.length %></span></h6>
-                                <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
+                                <% if(userCart){ %>
+                                    <div class="total d-flex justify-content-between">
+                                        <h6>Total : </h6> <h6>₹ <%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice).toFixed(2) %></h6>
+                                    </div>
+                                    <div class="total d-flex justify-content-between">
+                                        <h6>Delivery : </h6> <h6>₹ 0</h6>
+                                    </div>
+                                    <div class="total d-flex justify-content-between">
+                                        <h6>Discount : </h6> <h6>₹ <%= userCart.totalCartDiscountPrice %></h6>
+                                    </div> 
+                                <hr>
+                                <div class="total d-flex justify-content-between">
+                                    <h5>Subtotal : </h5> <h5>₹ <%= userCart.totalCartPrice %></h5>
+                                </div>
+                                <% } %>
                             </div>
+                            <hr>
                             <div class="button mt-3">
-                                <button class="btn btn-warning w-100" id="goToPayment">Proceed to Payment</button>
+                                <p class="text-danger">Sorry, there is no refund policy available as of now.</p>
+                                <button class="btn btn-warning w-100" id="goToPayment">Confirm order</button>
                             </div>
                         </div>
                     </div>
-                    <% } %>
+                    
                 </div>
             </div>
         </div>
@@ -224,38 +257,8 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-
-        ////// To add a new address \\\\\\
-        document.getElementById('add-address').addEventListener('click', function () {
-            const userId = this.dataset.userid;
-            console.log(userId)
-            window.location.href = `/addAddressFromCheckout/${userId}`; 
-        });
-
-        // To go to payment
-        document.getElementById('goToPayment').addEventListener('click' , async  function(event){
-            event.preventDefault()
-            // Get the selected address ID
-            const selectedAddressId = document.querySelector('input[name="selectedAddress"]:checked').value;
-            console.log("Selected address :",selectedAddressId)
-            // Construct the URL with the selected address ID as a parameter
-            const url = `/payment/${selectedAddressId}`;
-            
-            // Redirect to the next page (payment page) with the selected address ID
-            window.location.href = url;
-        })
         
-        ////// Go to shop \\\\\\
-        function goToShop(event){
-            event.preventDefault()
-            window.location.href = '/shop'
-        }
-
-        ////// Go To Cart \\\\\\
-        function goToCart(event){
-            event.preventDefault()
-            window.location.href = '/cart'
-        }
+       
     </script>
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"

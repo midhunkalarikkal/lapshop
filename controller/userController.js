@@ -9,6 +9,7 @@ const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
 const Wishlist = require('../models/wishlistModel')
 const Cart = require('../models/cartModel')
+const Coupon = require('../models/couponModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -911,6 +912,29 @@ const getUserNewAddressFromCheckout = async(req,res)=>{
     }
 }
 
+// To get the payment page
+const getPaymentPage = async(req,res)=>{
+    try{
+        const addressId = req.params.selectedAddressId
+        console.log("here")
+        let userAddress = await Address.find({ _id : addressId})
+        console.log("User selected address :",userAddress)
+        let userId = req.session.user._id
+        console.log("userId :",userId)
+        let cart = await Cart.find({ userId : userId}).populate({
+            path: "items.product",
+            populate: { path: "brand" }
+          });
+        const userCart = cart[0]
+        let coupon = await Coupon.find({isBlocked : false})
+        console.log(coupon)
+        res.render('user/payment' , {userAddress , userCart , coupon})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 
 
 
@@ -946,6 +970,7 @@ module.exports = {
     AddToWishlist,
     deleteProductFromWishlist,
     getCheckout,
-    getUserNewAddressFromCheckout
+    getUserNewAddressFromCheckout,
+    getPaymentPage
 }
 
