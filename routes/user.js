@@ -13,21 +13,21 @@ const cartController = require('../controller/cartController')
 //To get home page
 userRouter.get('/',userController.getHome)
 //To get the login page
-userRouter.get('/login',userAuth.isUserLoggedOut,userController.getLogin)
+userRouter.get('/login',userController.getLogin)
 //To post the user login data and give access to user home page
 userRouter.post('/login',userController.postLogin)
 //To get user register page
-userRouter.get('/register',userAuth.isUserLoggedOut,userController.getRegister)
+userRouter.get('/register',userController.getRegister)
 //To post user registered data to otp page
 userRouter.post('/register',userController.postRegister)
 //To verify otp and get the login page
-userRouter.post('/otpverify',userAuth.isUserLoggedOut,userController.postRegisterOtp)
+userRouter.post('/otpverify',userController.postRegisterOtp)
 //To logout user
 userRouter.get('/logout',userAuth.isUserLoggedIn,userController.getLogout)
 //To get the otp page
-userRouter.get('/otp',userAuth.isUserLoggedOut,userController.getotppage)
+userRouter.get('/otp',userController.getotppage)
 //To resend otp
-userRouter.post('/resendotp',userAuth.isUserLoggedOut,userController.resendOtp)
+userRouter.post('/resendotp',userController.resendOtp)
 //To get user profile
 userRouter.get('/userProfile',userAuth.isUserLoggedIn,userController.getUserProfile)
 //To post user updated info
@@ -51,13 +51,16 @@ userRouter.post('/submitOtp',userAuth.isUserLoggedIn,userController.checkOtpForC
 
 userRouter.post('/updatePassword',userAuth.isUserLoggedIn,userController.postUserNewPass)
 
-userRouter.get('/forgotPassword',userAuth.isUserLoggedOut,userController.getForgotPassword)
 
-userRouter.post('/fpassPostEmail',userAuth.isUserLoggedOut,userController.postForgotPasswordEmail)
+//To get the forgot password page from login form
+userRouter.get('/forgotPassword',userController.getForgotPassword)
+//To send the email to server for sending the opt to the email
+userRouter.post('/fpassPostEmail',userController.postForgotPasswordEmail)
+//To the send the otp to email
+userRouter.post('/fpassPostOtp',userController.postForgotPasswordOtp)
+//To update the new password from forgot password
+userRouter.post('/fpassPostPassword',userController.postForgotPasswordNewPass)
 
-userRouter.post('/fpassPostOtp',userAuth.isUserLoggedOut,userController.postForgotPasswordOtp)
-
-userRouter.post('/fpassPostPassword',userAuth.isUserLoggedOut,userController.postForgotPasswordNewPass)
 
 userRouter.get('/productDetail/:productId',userController.getProductDetail)
 
@@ -80,7 +83,7 @@ userRouter.post('/deleteProductFromWishlist',userAuth.isUserLoggedIn,userControl
 userRouter.get('/cart',userAuth.isUserLoggedIn,cartController.getCartPage)
 
 //To add a product to cart from shop or product detail page
-userRouter.post('/addProductToCartFromShop',cartController.postProductToCartFromShop)
+userRouter.post('/addProductToCartFromShop',userAuth.isUserLoggedIn,cartController.postProductToCartFromShop)
 
 //To add a product to cart from wishlist
 userRouter.post('/addProductToCart',userAuth.isUserLoggedIn,cartController.postProductToCart)

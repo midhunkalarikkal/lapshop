@@ -170,6 +170,7 @@ const postLogin = async (req, res) => {
         if(!user || user === null){
             return res.render("user/login", {type: "danger", message: "No user found with this email.", userDetails , cartItemCount})
         }
+        userDetails = req.session.userNC
         const homeCarousel = await HomeCarousel.find()
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({ isBlocked : false})
@@ -185,7 +186,7 @@ const postLogin = async (req, res) => {
 
         
             if (user.isblocked) {
-                return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails , cartItemCount})
+                return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails})
             }
             
             //password matching
