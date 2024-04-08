@@ -18,27 +18,27 @@
                                         <div class="mb-3 col-md-10">
                                             <label for="Name" class="form-label">Name</label>
                                             <input type="text" class="form-control" name="name" id="name"
-                                                required onmouseleave="validateName()">
+                                                required oninput="validateName()">
                                             <span id="nameError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="AddressLine" class="form-label">Address line</label>
                                             <textarea class="form-control" name="addressLine" id="addressLine" rows="1"
                                                 required
-                                                onmouseleave="validateAddressLine()"></textarea>
+                                                oninput="validateAddressLine()"></textarea>
                                             <span id="addressLineError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="Phone" class="form-label">Phone</label>
                                             <input type="text" class="form-control" name="phone" id="phone"
                                                  required
-                                                onmouseleave="validatePhone()">
+                                                 oninput="validatePhone()">
                                             <span id="phoneError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="City" class="form-label">City</label>
                                             <input type="text" class="form-control" name="city" id="city"
-                                                 required onmouseleave="validateCity()">
+                                                 required oninput="validateCity()">
                                             <span id="cityError" class="text-danger"></span>
                                         </div>
                                         <div class="mt-5 d-md-block d-none">
@@ -52,27 +52,27 @@
                                             <label for="District" class="form-label">District</label>
                                             <input type="text" class="form-control" name="district" id="district"
                                                 required
-                                                onmouseleave="validateDistrict()">
+                                                oninput="validateDistrict()">
                                             <span id="districtError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="State" class="form-label">State</label>
                                             <input type="text" class="form-control" name="state" id="state"
                                                  required
-                                                onmouseleave="validateState()">
+                                                 oninput="validateState()">
                                             <span id="stateError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="Pincode" class="form-label">Pincode</label>
                                             <input type="text" class="form-control" name="pincode" id="pincode"
                                                  required
-                                                onmouseleave="validatePincode()">
+                                                 oninput="validatePincode()">
                                             <span id="pincodeError" class="text-danger"></span>
                                         </div>
                                         <div class="mb-3 col-md-10">
                                             <label for="Country" class="form-label">Country</label>
-                                            <input type="text" class="form-control" name="country" id="country"
-                                             required>
+                                            <input type="text" class="form-control" name="country" id="country" value="India"
+                                             required readonly>
                                         </div>
                                     </div>
                                     <div class="mt-4 d-block d-md-none">
@@ -98,6 +98,11 @@
 
                 const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
 
+                if (name === "") {
+                    nameInput.classList.remove('is-invalid');
+                    nameError.textContent = '';
+                    return false;
+                }
                 if (!namePattern.test(name)) {
                     nameInput.classList.add('is-invalid');
                     nameError.textContent = 'Name must contain only alphabets and spaces.';
@@ -121,6 +126,11 @@
 
                 const phonePattern = /^\d{10}$/;
 
+                if (phone === "") {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneError.textContent = '';
+                    return false;
+                }
                 if (!phonePattern.test(phone)) {
                     phoneInput.classList.add('is-invalid');
                     phoneError.textContent = 'Phone number must contain only 10 digits';
@@ -138,6 +148,11 @@
                 const addressLine = addressLineInput.value
                 const addressLineError = document.getElementById('addressLineError');
 
+                if (addressLine === "") {
+                    addressLineInput.classList.remove('is-invalid');
+                    addressLineError.textContent = '';
+                    return false;
+                }
                 if (addressLine.length < 5) {
                     addressLineInput.classList.add('is-invalid');
                     addressLineError.textContent = 'Address line must be at least 5 characters';
@@ -160,6 +175,11 @@
                 const pincodeError = document.getElementById('pincodeError');
                 const pincodePattern = /^[1-9]\d{5}$/;
 
+                if (pincode === "") {
+                    pincodeInput.classList.remove('is-invalid');
+                    pincodeError.textContent = '';
+                    return false;
+                }
                 if (!pincodePattern.test(pincode)) {
                     pincodeInput.classList.add('is-invalid');
                     pincodeError.textContent = 'Pin code must be six digits long, starting with a digit between 1 and 9.';
@@ -179,6 +199,11 @@
 
                 const cityPattern = /^[a-zA-Z\s]+$/;
 
+                if (city === "") {
+                    cityInput.classList.remove('is-invalid');
+                    cityError.textContent = '';
+                    return false;
+                }
                 if (!cityPattern.test(city)) {
                     cityInput.classList.add('is-invalid');
                     cityError.textContent = 'City must contain only alphabets and spaces';
@@ -202,6 +227,11 @@
 
                 const districtPattern = /^[a-zA-Z\s]+$/;
 
+                if (district === "") {
+                    districtInput.classList.remove('is-invalid');
+                    districtError.textContent = '';
+                    return false;
+                }
                 if (!districtPattern.test(district)) {
                     districtInput.classList.add('is-invalid');
                     districtError.textContent = 'District must contain only alphabets and spaces';
@@ -225,6 +255,11 @@
 
                 const statePattern = /^[a-zA-Z\s]+$/;
 
+                if (state === "") {
+                    stateInput.classList.remove('is-invalid');
+                    stateError.textContent = '';
+                    return false;
+                }
                 if (state.length < 3 || state.length > 15) {
                     stateInput.classList.add('is-invalid');
                     stateError.textContent = 'State must be between 3 and 15 characters long';
@@ -270,8 +305,6 @@
                         pincode: document.getElementById('pincode').value,
                         country: document.getElementById('country').value
                     };
-
-                    try {
                         const response = await fetch(form.action, {
                             method: 'POST',
                             headers: {
@@ -280,7 +313,15 @@
                             body: JSON.stringify(formData)
                         });
 
-                        const data = await response.json();
+                        const contentType = response.headers.get('content-type');
+                        let data;
+                        const message = "Your account is blocked, Please contact us"
+                        const type = "danger"
+                        if (contentType && contentType.includes('application/json')) {
+                            data = await response.json();
+                        } else {
+                            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                        }
 
                         if (response.ok) {
                             Swal.fire("Success!",
@@ -294,19 +335,12 @@
                                 data.message, "error"
                             );
                         }
-                    } catch (error) {
-                        console.error('Error:', error);
-                        Swal.fire("Error!",
-                            "An error occurred while processing your request.", "error"
-                        );
-                    }
                 } else {
                     Swal.fire("Error!",
                         "Please fix the errors in the form.", "error"
                     );
                 }
             });
-
             ////// Cancel button goBack function \\\\\\
             function goBack() {
                 window.location.href = "/userProfile"

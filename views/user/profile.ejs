@@ -58,7 +58,7 @@
                                                 <i class="fas fa-cart-shopping"></i>
                                             </div>
                                             <div class="col-8 d-flex justify-content-start">
-                                                <a href="#" class="mx-2">Your cart</a>
+                                                <a href="/cart" class="mx-2">Your cart</a>
                                             </div>
                                         </div>
                                         <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
@@ -198,7 +198,7 @@
                                                                 <i class="fas fa-cart-shopping"></i>
                                                             </div>
                                                             <div class="col-8 d-flex justify-content-start">
-                                                                <a href="#" class="mx-2">Your cart</a>
+                                                                <a href="/cart" class="mx-2">Your cart</a>
                                                             </div>
                                                         </div>
                                                         <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
@@ -408,10 +408,13 @@
                 body: JSON.stringify(formData)
             })
                 .then(response => {
-                    if (response.ok) {
-                        return response.json();
+                    const contentType = response.headers.get('content-type');
+                    const message = "Your account is blocked, Please contact us"
+                    const type = "danger"
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json(); 
                     } else {
-                        throw new Error('Failed to update user information');
+                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
                     }
                 }).then(data => {
                     Swal.fire({
@@ -474,10 +477,13 @@
                 method: 'POST',
                 body: formData
             }).then(response => {
-                if (response.ok) {
-                    return response.json();
+                const contentType = response.headers.get('content-type');
+                const message = "Your account is blocked, Please contact us"
+                const type = "danger"
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json(); 
                 } else {
-                    throw new Error('Failed to upload profile image');
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
                 }
             }).then(data => {
                 Swal.fire({
@@ -519,10 +525,13 @@
                         fetch(`/deleteAddress/${addressId}`, {
                             method: 'DELETE'
                         }).then(response => {
-                            if (response.ok) {
-                                return response.json(); // Parse JSON response
+                            const contentType = response.headers.get('content-type');
+                            const message = "Your account is blocked, Please contact us"
+                            const type = "danger"
+                            if (contentType && contentType.includes('application/json')) {
+                                return response.json(); 
                             } else {
-                                throw new Error('Failed to delete address');
+                                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
                             }
                         }).then(data => {
                             Swal.fire({
@@ -588,33 +597,40 @@
                 body: JSON.stringify(formData)
             });
             if (response.ok) {
-            Swal.fire("Success!", "OTP sent successfully", "success");
-            document.getElementById("submitOtp").disabled = false;
-            document.getElementById("sendOtp").disabled = true; 
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    Swal.fire("Success!", "OTP sent successfully", "success");
+                    document.getElementById("submitOtp").disabled = false;
+                    document.getElementById("sendOtp").disabled = true; 
 
-            let timeLeft = 30;
-            const timerElement = document.getElementById('timer');
-            const timerInterval = setInterval(() => {
-                const minutes = Math.floor(timeLeft / 60);
-                const seconds = timeLeft % 60;
-                timerElement.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                timeLeft--;
-                if(timeLeft < 10){
-                    timerElement.style.color = "red"
-                }
+                    let timeLeft = 30;
+                    const timerElement = document.getElementById('timer');
+                    const timerInterval = setInterval(() => {
+                        const minutes = Math.floor(timeLeft / 60);
+                        const seconds = timeLeft % 60;
+                        timerElement.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                        timeLeft--;
+                        if(timeLeft < 10){
+                            timerElement.style.color = "red"
+                        }
 
-                if (timeLeft < 0) {
-                    clearInterval(timerInterval);
-                    document.getElementById("sendOtp").disabled = false;
-                    document.getElementById("submitOtp").disabled = true;
-                    document.getElementById("sendOtp").innerText = "Resend OTP";
-                    timerElement.innerText = "00:00";
-                    timerElement.style.color = "black"
+                        if (timeLeft < 0) {
+                            clearInterval(timerInterval);
+                            document.getElementById("sendOtp").disabled = false;
+                            document.getElementById("submitOtp").disabled = true;
+                            document.getElementById("sendOtp").innerText = "Resend OTP";
+                            timerElement.innerText = "00:00";
+                            timerElement.style.color = "black"
+                        }
+                    }, 1000);
+                } else {
+                    const message = "Your account is blocked, Please contact us"
+                    const type = "danger"
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
                 }
-            }, 1000);
-        } else {
-            Swal.fire("Error!", "Failed to send OTP", "error");
-        }
+            } else {
+                Swal.fire("Error!", "Failed to send OTP", "error");
+            }
         } catch (error) {
             console.error('Error:', error);
         }
@@ -636,11 +652,17 @@
         body: JSON.stringify(formData)
     })
     .then(response => {
-        if (response.ok) {
-            $('#verifyModal').modal('hide');
-            $('#passModal').modal('show');
+        if (contentType && contentType.includes('application/json')) {
+            if (response.ok) {
+                $('#verifyModal').modal('hide');
+                $('#passModal').modal('show');
+            } else {
+                throw new Error('Incorrect OTP');
+            }
         } else {
-            throw new Error('Incorrect OTP');
+            const message = "Your account is blocked, Please contact us"
+            const type = "danger"
+            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
         }
     })
     .catch(error => {
@@ -679,15 +701,22 @@ document.getElementById('submitPass').addEventListener('click', async function (
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
-        });
-
-        if (response.ok) {
-            Swal.fire("Success!", "Password updated successfully", "success").then(() => {
-                $('#passModal').modal('hide');
-            });
-        } else {
-            Swal.fire("Error!", "Failed to update password", "error");
-        }
+        })
+        .then(response => {
+                if (contentType && contentType.includes('application/json')) {
+                    if (response.ok) {
+                        Swal.fire("Success!", "Password updated successfully", "success").then(() => {
+                            $('#passModal').modal('hide');
+                        });
+                    } else {
+                        Swal.fire("Error!", "Failed to update password", "error");
+                    }
+                } else {
+                    const message = "Your account is blocked, Please contact us"
+                    const type = "danger"
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+            }
+        })
     } catch (error) {
         console.error('Error:', error);
         Swal.fire("Error!", "An error occurred while processing your request", "error");

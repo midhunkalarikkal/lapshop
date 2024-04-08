@@ -196,9 +196,9 @@
         ////// Function to delete a product from wishlist \\\\\\
         function deleteProduct(delbtn) {
             const productId = delbtn.getAttribute("data-prod-id");
-            console.log("productId :", productId)
+            console.log("productId :", productId);
 
-            console.log("data :", productId)
+            console.log("data :", productId);
             fetch('/deleteProductFromWishlist', {
                 method: 'POST',
                 headers: {
@@ -206,56 +206,38 @@
                 },
                 body: JSON.stringify({ productId: productId })
             })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    console.log("Product deletion response:", data);
-                    Swal.fire({
-                        title: "Success",
-                        text: data.message,
-                        icon: "success",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    });
-                })
-                .catch(error => {
-                    console.error('Error deleting product:', error);
-                    if (error.message.includes('404')) {
-                        Swal.fire({
-                            title: "Error",
-                            text: error.message,
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    } else if (error.message.includes('400')) {
-                        Swal.fire({
-                            title: "Error",
-                            text: error.message,
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        Swal.fire({
-                            title: "Error",
-                            text: "Internal server error.",
-                            icon: "error",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    }
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                const message = "Your account is blocked, Please contact us"
+                const type = "danger"
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json(); 
+                } else {
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                }
+            })
+            .then(data => {
+                Swal.fire({
+                    title: "Success",
+                    text: data.message,
+                    icon: "success",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
                 });
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: "Error",
+                    text: error.message,
+                    icon: "error",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            });
         }
 
         ////// Function to redirect to cart page \\\\\\
@@ -269,14 +251,23 @@
             const productId = element.getAttribute('data-prod-id');
             console.log('Product ID:', productId);
 
-            fetch('/addProductToCart', {
+            fetch('/addProductToCartFromWishlist', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ productId: productId })
             })
-            .then(response => response.json())
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                const message = "Your account is blocked, Please contact us"
+                const type = "danger"
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json(); 
+                } else {
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                }
+            })
             .then(data => {
                 if (data.success) {
                     Swal.fire({

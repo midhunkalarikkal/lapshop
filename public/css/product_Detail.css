@@ -321,15 +321,22 @@
 }
 
 /*======> Product detail view buttons <======*/
-.addtocart-btn,
-.buynow-btn {
+.goToCart-btn{
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.addtocart-btn{
     background-color: var(--primary-color);
     color: var(--secondary-color);
 }
 
 /*======> Product detail view buttons <======*/
-.addtocart-btn:hover,
-.buynow-btn:hover {
+.goToCart-btn:hover{
+    background-color: var(--btnhover-color);
+}
+
+.addtocart-btn:hover{
     background-color: var(--btnhover-color);
 }
 

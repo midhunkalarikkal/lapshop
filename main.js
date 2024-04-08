@@ -43,6 +43,7 @@ app.use('/',userRoute)
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
 
+
 // app.get("/submitError", (req, res) => {
 //     const errorMessage = req.query.message;
 //     res.render("user/registration", { title: "LapShop Register", type: "danger", message: errorMessage });

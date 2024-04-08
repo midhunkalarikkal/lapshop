@@ -9,6 +9,7 @@ userRouter.use(bodyParser.urlencoded({extended:true}));
 
 const userController = require('../controller/userController')
 const cartController = require('../controller/cartController')
+const wishlistController = require('../controller/wishlistController')
 
 //To get home page
 userRouter.get('/',userController.getHome)
@@ -61,41 +62,35 @@ userRouter.post('/fpassPostOtp',userController.postForgotPasswordOtp)
 //To update the new password from forgot password
 userRouter.post('/fpassPostPassword',userController.postForgotPasswordNewPass)
 
-
+//To get the product detailed page
 userRouter.get('/productDetail/:productId',userController.getProductDetail)
-
 //To get the shop page , this have a page query from the shop pagination
 userRouter.get('/shop',userController.getUserShop)
-
 //To get the categorizes products in shop page
 userRouter.post('/shopCategoryId',userController.getCatProduct)
 
+
 //To get the wishlist page
-userRouter.get('/wishlist',userAuth.isUserLoggedIn,userController.getWishlistPage)
-
+userRouter.get('/wishlist',userAuth.isUserLoggedIn,wishlistController.getWishlistPage)
 //To add a produt to wishlist
-userRouter.post('/addToWishlist',userAuth.isUserLoggedIn,userController.AddToWishlist)
-
+userRouter.post('/addToWishlist',userAuth.isUserLoggedIn,wishlistController.AddToWishlist)
 //To delete a product from wishlist
-userRouter.post('/deleteProductFromWishlist',userAuth.isUserLoggedIn,userController.deleteProductFromWishlist)
+userRouter.post('/deleteProductFromWishlist',userAuth.isUserLoggedIn,wishlistController.deleteProductFromWishlist)
+//To add a product to cart from wishlist
+userRouter.post('/addProductToCartFromWishlist',userAuth.isUserLoggedIn,wishlistController.postProductToCart)
+
 
 //To get the cart page
 userRouter.get('/cart',userAuth.isUserLoggedIn,cartController.getCartPage)
-
 //To add a product to cart from shop or product detail page
 userRouter.post('/addProductToCartFromShop',userAuth.isUserLoggedIn,cartController.postProductToCartFromShop)
-
-//To add a product to cart from wishlist
-userRouter.post('/addProductToCart',userAuth.isUserLoggedIn,cartController.postProductToCart)
-
 //To increment cart item quantity
 userRouter.post('/incrementCartProduct',userAuth.isUserLoggedIn,cartController.postCartProductQtyInc)
-
 //To decrement cart item quantity
 userRouter.post('/decrementCartProduct',userAuth.isUserLoggedIn,cartController.postCartProductQtyDec)
-
 //To delete a product from cart
 userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,cartController.deleteProductFromCart)
+
 
 //To get the checkout page
 userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
@@ -103,6 +98,7 @@ userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
 //To add new address from checkout page
 userRouter.get('/addAddressFromCheckout/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
 
+//To get the payment page
 userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)
 
 module.exports = userRouter

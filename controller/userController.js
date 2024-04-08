@@ -88,11 +88,11 @@ const postRegister = async (req, res) => {
     try {
         const otp = generateOtp()
         saveOtp = otp;
-        console.log("SaveOtp before =",saveOtp)
+        // console.log("SaveOtp before =",saveOtp)
         
         function clearSaveOtp() {
             saveOtp = ""; 
-            console.log("SaveOtp after =",saveOtp)
+            // console.log("SaveOtp after =",saveOtp)
         }
         setTimeout(clearSaveOtp, 30000);
 
@@ -126,7 +126,7 @@ const postRegisterOtp = async (req, res) => {
         const otp5 = enteredOtp.otp5;
         const otp6 = enteredOtp.otp6;
         const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
-        console.log(concatenatedOTP)
+        // console.log(concatenatedOTP)
 
         
         if(concatenatedOTP === saveOtp){
@@ -158,8 +158,8 @@ const postRegisterOtp = async (req, res) => {
             }
         
     } catch (error) {
-        console.log("postRegisterotp error")
         console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -176,11 +176,11 @@ const postLogin = async (req, res) => {
         const category = await Category.find({ isBlocked : false})
         const userId = user._id
         const cart = await Cart.find({ userId : userId})
-        console.log("cart :",cart)
+        // console.log("cart :",cart)
         if(cart != ""){
             cartItemCount = cart[0].items.length
         }
-        console.log("cartItemCount :",cartItemCount)
+        // console.log("cartItemCount :",cartItemCount)
         
         const password  = req.body.password
 
@@ -196,7 +196,7 @@ const postLogin = async (req, res) => {
                     return res.status(500).send('An error occurred while comparing the passwords.');
                 } if (result) {
                     req.session.user = user;
-                    req.session.userNC = { userName : user.fullname , cartItemCount}
+                    req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
                     console.log("userNC :",req.session.userNC)
                     userDetails = req.session.userNC
                     return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category})
@@ -214,7 +214,9 @@ const postLogin = async (req, res) => {
 const getLogin = async (req, res) => {
     try {
         userDetails = req.session.userNC
-        return res.render('user/login', {type: "", message: "", userDetails})
+        const message = req.query.message || '';
+        const type = req.query.type || '';
+        return res.render('user/login', {type , message, userDetails})
     } catch (error) {
         console.log(error)
     }
@@ -241,8 +243,8 @@ const getHome = async (req, res) => {
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({isBlocked : false})
-        console.log("best offer products : ", bestOfferProducts)
-        console.log("Category : ", category)
+        // console.log("best offer products : ", bestOfferProducts)
+        // console.log("Category : ", category)
         userDetails = req.session.userNC
         return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category })
     } catch (error) {
@@ -278,7 +280,7 @@ const resendOtp = async(req,res)=>{
         sendOtpMail(enteredEmail,otp);
         function clearSaveOtp() {
             saveOtp = ""; 
-            console.log("SaveOtp after resend =",saveOtp)
+            // console.log("SaveOtp after resend =",saveOtp)
         }
         setTimeout(clearSaveOtp, 30000);
     }catch(error){
@@ -293,7 +295,7 @@ const getUserProfile = async(req,res)=>{
         const userData = await User.findById(userId)
         const createdDate = new Date(userData.created);
         const address = await Address.find({userId : userId})
-        console.log(address)
+        // console.log(address)
         const formattedDate = createdDate.toISOString().split('T')[0];
         userDetails = req.session.userNC
         res.render('user/profile',{userData, formattedDate , userDetails, address})
@@ -331,7 +333,7 @@ const postUserProfileImage = async(req,res)=>{
 
         if(user.profileimage){
             existingimage = user.profileimage
-            console.log(user.profileimage)
+            // console.log(user.profileimage)
             const imagePath = path.join(__dirname, "../public/images/UserProfile", existingimage);
             fs.unlinkSync(imagePath);
         }
@@ -363,33 +365,39 @@ const getUserShop = async(req,res)=>{
         const brand = await Brand.find({ isBlocked : false})
         let categoryId = []
         let brandId = []
-        let prodId =[]
+        let wishlistProdId = []
+        let cartProdId = []
         userDetails = req.session.userNC
 
         if(!req.session.user){
-            console.log("Session user : no user in session",)
+            // console.log("Session user : no user in session",)
             prodId =[]
+            cartProdId = []
         }else{
-            console.log("Session user :",req.session.user)
-            console.log("User id :",req.session.user._id)
+            // console.log("Session user :",req.session.user)
+            // console.log("User id :",req.session.user._id)
             const user = req.session.user
             const wishlist = await Wishlist.find({ userId : user._id})
             if(wishlist != ""){
-                console.log("Wishlist :",wishlist)
-                const wishlistProducts = wishlist[0].products
-                console.log("WishlistProducts :", wishlistProducts)
-                const productsId = wishlistProducts.map(item => item.product);
-                prodId = productsId
+                // const wishlistProducts = wishlist[0].products
+                // const productsId = wishlistProducts.map(item => item.product);
+                wishlistProdId = wishlist[0].products.map(item => item.product);
+                console.log("wishlistProductId :",wishlistProdId)
+            }
+            const cart = await Cart.find({ userId : user._id }) 
+            if(cart){
+                cartProdId = cart[0].items.map(item => item.product)
+                console.log("cartProductId :",cartProdId)
             }
         }
-        console.log("Products id's:", prodId);
+        // console.log("Products id's:", prodId);
 
         const page = parseInt(req.query.page) || 1;  // This is coming from the first pagination a tag from shop.ejs
         const limit = 6; 
         
-        console.log("Get user shop")
+        // console.log("Get user shop")
 
-        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, prodId ,
+        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId,
             totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
@@ -402,33 +410,40 @@ const getUserShop = async(req,res)=>{
 // To get the categorized products
 const getCatProduct = async(req,res)=>{
     try{
-        console.log("Here")
-        console.log("res body :",req.body)
-        console.log("res body categories :",req.body.categories)
-        console.log("res body brands :",req.body.brands)
-        console.log("res body sortCriteria :",req.body.sortCriteria)
-        console.log("req body currentPage :", req.body.currentPage)
-        console.log("Search input value :",req.body.inputValue)
+        // console.log("Here")
+        // console.log("res body :",req.body)
+        // console.log("res body categories :",req.body.categories)
+        // console.log("res body brands :",req.body.brands)
+        // console.log("res body sortCriteria :",req.body.sortCriteria)
+        // console.log("req body currentPage :", req.body.currentPage)
+        // console.log("Search input value :",req.body.inputValue)
         let productData
         let prodId =[]
+        let cartProdId = []
 
         if(!req.session.user){
-            console.log("categorized products api Session user : no user in session",)
-            prodId =[]
+            // console.log("categorized products api Session user : no user in session",)
+            prodId = []
+            cartProdId = []
         }else{
-            console.log("categorized products api Session user :",req.session.user)
-            console.log("categorized products api User id :",req.session.user._id)
+            // console.log("categorized products api Session user :",req.session.user)
+            // console.log("categorized products api User id :",req.session.user._id)
             const user = req.session.user
             const wishlist = await Wishlist.find({ userId : user._id})
             if(wishlist != ""){
-                console.log("categorized products api Wishlist :",wishlist)
+                // console.log("categorized products api Wishlist :",wishlist)
                 const wishlistProducts = wishlist[0].products
-                console.log("categorized products apiWishlistProducts :", wishlistProducts)
+                // console.log("categorized products apiWishlistProducts :", wishlistProducts)
                 const productsId = wishlistProducts.map(item => item.product);
                 prodId = productsId
             }
+            const cart = await Cart.find({ userId : user._id }) 
+            if(cart){
+                cartProdId = cart[0].items.map(item => item.product)
+                console.log("cartProductId :",cartProdId)
+            }
         }
-        console.log("categorized products api Products id's:", prodId);
+        // console.log("categorized products api Products id's:", prodId);
         
 
         if(req.body){
@@ -486,14 +501,22 @@ const getCatProduct = async(req,res)=>{
                     ],
                     isBlocked: false
                 };
+            } else if (brands.length > 0 && categories.length > 0 && !searchInput) {
+                query = {
+                    $and: [
+                        { brand: { $in: brands } },
+                        { category: { $in: categories } }
+                    ],
+                    isBlocked: false
+                };
             }
 
             productData = await Product.find(query).skip(skip).limit(perPage);
             const totalProducts = await Product.countDocuments(query);
             const totalPages = Math.ceil(totalProducts / perPage);
                 
-            console.log("productData :",productData)
-            console.log("totalPages :",totalPages)
+            // console.log("productData :",productData)
+            // console.log("totalPages :",totalPages)
             
             // Sorting the products with the user selected sort type
             if(sortCriteria === "highToLow"){
@@ -502,9 +525,9 @@ const getCatProduct = async(req,res)=>{
                 productData.sort((a,b) => a.offerPrice - b.offerPrice)
             }
 
-            console.log(productData)
+            // console.log(productData)
 
-            res.status(200).json({ message : "Categorized products", productData , totalPages , prodId})
+            res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
         }else{
             res.status(400).json({ message : "No categorized found" })
         }
@@ -519,7 +542,7 @@ const getCatProduct = async(req,res)=>{
 const getUserNewAddress = async(req,res)=>{
     try{
         const userId = req.params.userId
-        console.log(userId)
+        // console.log(userId)
         userDetails = req.session.userNC
         return res.render('user/addAddress',{userDetails , userId})
     }catch(error){
@@ -532,9 +555,9 @@ const getUserNewAddress = async(req,res)=>{
 const postUserAddress = async(req,res)=>{
     try{
         const { name, addressLine, phone, city, district, state, pincode, country} = req.body
-        console.log("req.body : ",name, addressLine, phone, city, district, state, pincode, country)
+        // console.log("req.body : ",name, addressLine, phone, city, district, state, pincode, country)
         const userId = req.params.userId
-        console.log(userId)
+        // console.log(userId)
 
         const user = await User.findById(userId)
         if(!user){
@@ -564,7 +587,7 @@ const postUserAddress = async(req,res)=>{
 const postAddressDelete = async (req, res) => {
     try {
         const addressId = req.params.addressId;
-        console.log(addressId);
+        // console.log(addressId);
 
         const deletedAddress = await Address.findByIdAndDelete(addressId);
         if (!deletedAddress) {
@@ -582,9 +605,9 @@ const postAddressDelete = async (req, res) => {
 const getUserEditAddress = async(req,res)=>{
     try{
         const addressId = req.params.addressId
-        console.log(addressId)
+        // console.log(addressId)
         const userAddress = await Address.findById(addressId)
-        console.log(userAddress)
+        // console.log(userAddress)
         userDetails = req.session.userNC
         return res.render('user/updateAddress',{userAddress, userDetails})
     }catch(error){
@@ -597,7 +620,7 @@ const getUserEditAddress = async(req,res)=>{
 const postUpdateUserAddress = async (req, res) => {
     try {
         const addressId = req.params.addressId;
-        console.log(addressId , req.body)
+        // console.log(addressId , req.body)
         
         // Extract form data from req.body
         const newaddress = {
@@ -636,11 +659,11 @@ const postOtpForChangePass = async (req, res) => {
         const { email } = req.body;
         const otp = generateOtp();
         saveOtp = otp;
-        console.log("SaveOtp before =", saveOtp);
+        // console.log("SaveOtp before =", saveOtp);
 
         function clearSaveOtp() {
             saveOtp = "";
-            console.log("SaveOtp after =", saveOtp);
+            // console.log("SaveOtp after =", saveOtp);
         }
         setTimeout(clearSaveOtp, 30000);
 
@@ -672,7 +695,7 @@ const checkOtpForChangePass = async(req,res)=>{
 const postUserNewPass = async (req, res) => {
     try {
         const { newPass, userId } = req.body;
-        console.log(newPass , userId)
+        // console.log(newPass , userId)
         const user = await User.findById(userId);
 
         if (!user) {
@@ -706,7 +729,7 @@ const getForgotPassword = async(req,res)=>{
 const postForgotPasswordEmail = async(req,res)=>{
     try{
         const email = req.body.email
-        console.log("Email :",email)
+        // console.log("Email :",email)
         enteredEmail = email
         const user = await User.findOne({ email : email})
         if(!user){
@@ -714,11 +737,11 @@ const postForgotPasswordEmail = async(req,res)=>{
         }else{
             const otp = generateOtp();
             saveOtp = otp;
-            console.log("SaveOtp before =", saveOtp);
+            // console.log("SaveOtp before =", saveOtp);
 
             function clearSaveOtp() {
                 saveOtp = "";
-                console.log("SaveOtp after =", saveOtp);
+                // console.log("SaveOtp after =", saveOtp);
             }
             setTimeout(clearSaveOtp, 30000);
 
@@ -755,8 +778,8 @@ const postForgotPasswordOtp = async(req,res)=>{
 const postForgotPasswordNewPass = async (req, res) => {
     try {
         const { newPassword } = req.body; // Assuming enteredEmail is sent in the request body
-        console.log("Email :", enteredEmail);
-        console.log("newPassword :", newPassword);
+        // console.log("Email :", enteredEmail);
+        // console.log("newPassword :", newPassword);
         
         const user = await User.findOne({ email: enteredEmail });
         if (!user) {
@@ -788,112 +811,36 @@ const postForgotPasswordNewPass = async (req, res) => {
 //To get the product detail page
 const getProductDetail = async(req,res)=>{
     try{
+        let cartProdId = []
         const productId = req.params.productId
         const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}])
         const productCategory = productData.category
         const sameCategoryProduct = await Product.find({category : productCategory._id})
         userDetails = req.session.userNC
+        if(userDetails){
+            let userId = userDetails.userId
+            let cart = await Cart.find({ userId : userId})
+            cartProdId = cart[0].items.map(item => item.product)
+            console.log("Cart :",cartProdId)
+        }
         
-        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct})
+        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ success : false, message : "Internal server error" })
     }
 }
 
-// To get the wishlist page
-const getWishlistPage = async(req,res)=>{
-    try{
-        let prodId = []
-        let wishlistProducts = []
-        userDetails = req.session.userNC
-        const user = req.session.user
-        const wishlist = await Wishlist.find({ userId : user._id})
-        if(wishlist != ""){
-            wishlistProducts = wishlist[0].products
-            const productsId = wishlistProducts.map(item => item.product);
-            prodId = productsId
-        }
-        const products = await Product.find({_id : {$in : prodId}}).populate("brand")
-        res.render('user/wishlist', {userDetails , products ,wishlistProducts})
-    }catch(error){
-        console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
-    }
-}
-
-//To add and delete a product to and from a wishlist
-const AddToWishlist = async(req,res)=>{
-    try{
-        const productId = req.body.productId
-        const userId = req.session.user._id 
-        const existingWishlist = await Wishlist.findOne({ userId: userId });
-
-        if (existingWishlist) {
-            const isProductInWishlist = existingWishlist.products.some(item => item.product.equals(productId));
-            
-            if (isProductInWishlist) {
-                existingWishlist.products = existingWishlist.products.filter(item => !item.product.equals(productId));
-                await existingWishlist.save();
-                return res.status(200).json({ added: false, message: "Product deleted from your wishlist." });
-            } else {
-                existingWishlist.products.push({ product: productId });
-                await existingWishlist.save();
-                return res.status(200).json({ added: true, message: "Product added to your wishlist." });
-            }
-        } else {
-            
-            const newWishlist = new Wishlist({
-                userId: userId,
-                products: [{ product: productId }]
-            });
-            await newWishlist.save();
-            return res.status(200).json({ message: "Product added to your wishlist." });
-        }
-
-    }catch(error){
-        console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
-    }
-}
-
-//To delete a product from wishlist
-const deleteProductFromWishlist = async(req,res)=>{
-    try{
-  
-        const productId = req.body.productId
-        const userId = req.session.user._id
-        
-
-        if(!productId){
-            return res.status(404).json({ messagr : "Product deletion error , please try again."})
-        }
-        
-        const wishlist = await Wishlist.findOneAndUpdate({ userId: userId },
-            { $pull: { products: { product: productId } } },
-            { new: true }
-            );
-            
-            if (!wishlist) {
-                return res.status(404).json({ message: "Wishlist not found." });
-            }
-    
-            return res.status(200).json({ message: "Product deleted from wishlist ." });
-    }catch(error){
-        console.log(error.message)
-        return res.status(500).json({ message : "Internal server error." })
-    }
-}
 
 //To go to checkout
 const getCheckout = async(req,res)=>{
     try{
         let userId = req.session.user._id
-        console.log(userId)
+        // console.log(userId)
         let userCart = await Cart.find({ userId : userId})
-        console.log(userCart)
+        // console.log(userCart)
         let userAddress = await Address.find({ userId : userId})
-        console.log(userAddress)
+        // console.log(userAddress)
         res.render('user/checkout' , { userCart , userAddress })
     }catch(error){
         console.log(error.message)
@@ -904,7 +851,7 @@ const getCheckout = async(req,res)=>{
 const getUserNewAddressFromCheckout = async(req,res)=>{
     try{
         const userId = req.params.userId
-        console.log(userId)
+        // console.log(userId)
         userDetails = req.session.userNC
         return res.render('user/addAddressFromCheckout',{userDetails , userId})
     }catch(error){
@@ -917,11 +864,11 @@ const getUserNewAddressFromCheckout = async(req,res)=>{
 const getPaymentPage = async(req,res)=>{
     try{
         const addressId = req.params.selectedAddressId
-        console.log("here")
+        // console.log("here")
         let userAddress = await Address.find({ _id : addressId})
-        console.log("User selected address :",userAddress)
+        // console.log("User selected address :",userAddress)
         let userId = req.session.user._id
-        console.log("userId :",userId)
+        // console.log("userId :",userId)
         let cart = await Cart.find({ userId : userId}).populate({
             path: "items.product",
             populate: { path: "brand" }
@@ -967,9 +914,6 @@ module.exports = {
     postForgotPasswordNewPass,
     getProductDetail,
     getCatProduct,
-    getWishlistPage,
-    AddToWishlist,
-    deleteProductFromWishlist,
     getCheckout,
     getUserNewAddressFromCheckout,
     getPaymentPage
