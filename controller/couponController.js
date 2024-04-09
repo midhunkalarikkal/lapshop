@@ -63,20 +63,13 @@ const adminUpdateCoupon = async(req, res) => {
         console.log("Request params :",req.params.couponId)
         const coupon = await Coupon.findById(req.params.couponId);
 
-        // // Check if start date or end date is empty
-        if (req.body.couponStartDate === "" || req.body.couponEndDate === "") {
-            coupon.couponName = req.body.couponName;
-            coupon.couponCode = req.body.couponCode;
-            coupon.minAmount = req.body.couponMinAmount,
-            coupon.couponAmount = req.body.couponAmount;
-        } else {
-            coupon.couponName = req.body.couponName;
-            coupon.couponCode = req.body.couponCode;
-            coupon.startDate = req.body.couponStartDate;
-            coupon.endDate = req.body.couponEndDate;
-            coupon.minAmount = req.body.couponMinAmount,
-            coupon.couponAmount = req.body.couponAmount;
-        }
+       
+            coupon.couponName = req.body.couponName || coupon.couponName
+            coupon.couponCode = req.body.couponCode || coupon.couponCode
+            coupon.startDate = req.body.couponStartDate || coupon.startDate
+            coupon.endDate = req.body.couponEndDate || coupon.endDate
+            coupon.minAmount = req.body.couponMinAmount || coupon.minAmount
+            coupon.couponAmount = req.body.couponAmount || coupon.couponAmount
 
         // // Save the updated coupon
         await coupon.save();

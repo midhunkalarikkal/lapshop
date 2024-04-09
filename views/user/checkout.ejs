@@ -236,12 +236,22 @@
         document.getElementById('goToPayment').addEventListener('click' , async  function(event){
             event.preventDefault()
             // Get the selected address ID
-            const selectedAddressId = document.querySelector('input[name="selectedAddress"]:checked').value;
+            const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked')
+            if (!selectedAddress) {
+
+            Swal.fire({
+                icon: 'info',
+                title: 'Address not selected',
+                text: 'Please select an address',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return;
+        }
+         const selectedAddressId = selectedAddress.value;
             console.log("Selected address :",selectedAddressId)
-            // Construct the URL with the selected address ID as a parameter
             const url = `/payment/${selectedAddressId}`;
-            
-            // Redirect to the next page (payment page) with the selected address ID
             window.location.href = url;
         })
         

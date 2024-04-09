@@ -116,9 +116,7 @@
                         Swal.fire("Error!",
                             data.message, 
                             "error"
-                        ).then(() => {
-                            window.location.href = '/admin/coupons';
-                        });
+                        )
                     }
                 } catch (error) {
                     console.error('Error:', error);

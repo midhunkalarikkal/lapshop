@@ -241,15 +241,21 @@ const getLogout = async(req,res)=>{
 //To get the user home
 const getHome = async (req, res) => {
     try {
+        const currentDate = new Date();
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
         console.log("coupon :",coupon)
-        // console.log("best offer products : ", bestOfferProducts)
-        // console.log("Category : ", category)
+
+        const validCoupons = coupon.filter(coupon => {
+            const startDate = new Date(coupon.startDate);
+            const endDate = new Date(coupon.endDate);
+            return startDate <= currentDate && endDate >= currentDate;
+        });
+        
         userDetails = req.session.userNC
-        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon})
+        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons})
     } catch (error) {
         console.log(error)
     }
@@ -866,6 +872,7 @@ const getUserNewAddressFromCheckout = async(req,res)=>{
 // To get the payment page
 const getPaymentPage = async(req,res)=>{
     try{
+        const currentDate = new Date();
         const addressId = req.params.selectedAddressId
         // console.log("here")
         let userAddress = await Address.find({ _id : addressId})
@@ -877,14 +884,34 @@ const getPaymentPage = async(req,res)=>{
             populate: { path: "brand" }
           });
         const userCart = cart[0]
-        let coupon = await Coupon.find({isBlocked : false})
-        console.log(coupon)
-        res.render('user/payment' , {userAddress , userCart , coupon})
+        let coupon = await Coupon.find({isBlocked : false })
+        console.log("coupon :",coupon)
+        
+         // Filter coupons that are valid based on start and end dates
+         const validCoupons = coupon.filter(coupon => {
+            const startDate = new Date(coupon.startDate);
+            const endDate = new Date(coupon.endDate);
+            return startDate <= currentDate && endDate >= currentDate;
+        });
+
+        console.log("Valid coupons:", validCoupons);
+
+        res.render('user/payment' , {userAddress , userCart , coupon : validCoupons})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
     }
 }
+
+// To confirm an order
+// const postConfirmOrder = async(req,res)=>{
+//     try{
+//         const userId = req.session.user._id
+//     }catch(error){
+//         console.log(error.message)
+//         return res.status(500).json({ message : "Internal server error" })
+//     }
+// }
 
 
 

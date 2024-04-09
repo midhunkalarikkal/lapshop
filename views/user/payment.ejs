@@ -180,19 +180,21 @@
                                 <p class="text-success">Select payment and confirm order</p>
                             </div>
                             <hr>
-                            <% if(coupon){ %>
+                            <% if(coupon !== " "){ %>
                                 <% coupon.forEach((coupon, index)=>{ %>
-                            <div class="coupon shadow p-2" style="border: 2px solid rgb(19, 192, 79);">
-                                <h6 class="text-center">Coupon <%= coupon.couponName %></h6>
-                                <div class="coupon-body d-flex align-item-center justify-content-center mb-2" id="coupon-body">
-                                    <input type="text" class="form-control" placeholder="Coupon code" id="userCouponCode">
-                                    <button class="btn btn-success btn-sm mx-1">Apply</button>
-                                    <input type="text" id="couponCode" value="<%= coupon[0].couponCode %>" hidden>
-                                </div>
-                                <h6 class="text-center text-success d-none" id="coupon-applied">🎉Congradulations, You have applied coupon.🎉</h6>
-                            </div>
-                            <hr>
-                            <% }) %>
+                                    <div class="coupon shadow p-2" id="coupon" style="border: 2px solid rgb(19, 192, 79);">
+                                        <h6 class="text-center">Coupon <%= coupon.couponName %></h6>
+                                        <div class="coupon-body d-flex align-item-center justify-content-center mb-2" id="coupon-body">
+                                            <input type="text" class="form-control" placeholder="Coupon code" id="userCouponCode">
+                                            <button class="btn btn-success btn-sm mx-1" onclick="submitCoupon()">Apply</button>
+                                            <input type="hidden" id="couponCode" value="<%= coupon.couponCode %>">
+                                            <input type="hidden" id="couponAmount" value="<%= coupon.couponAmount %>">
+                                            <input type="hidden" id="coupnMinAmount" value="<%= coupon.minAmount %>">
+                                        </div>
+                                    </div>
+                                    <h6 class="text-center text-success d-none" id="coupon-applied">🎉Congradulations, Coupon applied.🎉</h6>
+                                    <hr>
+                                <% }) %>
                             <% } %>
                             <div class="checkbox-payment">
                                 <div class="razorpay d-flex flex-row">
@@ -215,21 +217,22 @@
                                         <h6>Total : </h6> <h6>₹ <%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice).toFixed(2) %></h6>
                                     </div>
                                     <div class="total d-flex justify-content-between">
-                                        <h6>Delivery : </h6> <h6>₹ 0</h6>
+                                        <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
                                     </div>
                                     <div class="total d-flex justify-content-between">
                                         <h6>Discount : </h6> <h6>₹ <%= userCart.totalCartDiscountPrice %></h6>
                                     </div> 
                                 <hr>
                                 <div class="total d-flex justify-content-between">
-                                    <h5>Subtotal : </h5> <h5>₹ <%= userCart.totalCartPrice %></h5>
+                                    <h5>Subtotal : </h5> <h5>₹ <span id="couponAppliedTotal"><%= userCart.totalCartPrice %></span></h5>
+                                    <input type="hidden" id="subTotal" value="<%= userCart.totalCartPrice %>">
                                 </div>
                                 <% } %>
                             </div>
                             <hr>
                             <div class="button mt-3">
                                 <p class="text-danger">Sorry, there is no refund policy available as of now.</p>
-                                <button class="btn btn-warning w-100" id="goToPayment">Confirm order</button>
+                                <button onclick="confirmOrder()" class="btn btn-warning w-100" id="goToPayment">Confirm order</button>
                             </div>
                         </div>
                     </div>
@@ -259,7 +262,76 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+
+    // To appy coupon
+    let couponAppliedTotal;
+    let withoutcouponTotal = Number(document.getElementById('subTotal').value)
+
+    function submitCoupon(){
+        const userCouponCode = document.getElementById("userCouponCode").value
+        const couponCode = document.getElementById("couponCode").value
+        const subTotal = Number(document.getElementById('subTotal').value)
+        const couponAmount = Number(document.getElementById("couponAmount").value)
+        const couponMinAmount = Number(document.getElementById("coupnMinAmount").value)
+        console.log("coupon code :",couponCode)
+        console.log("userCouponCode :",userCouponCode)
+        console.log("subTotal :", subTotal)
+        console.log("couponMinAmount :", couponMinAmount)
+        console.log("couponAmount :",couponAmount)
+
+        if (!userCouponCode) {
+            Swal.fire({
+                icon: 'info',
+                title: 'No coupon code',
+                text: 'Please enter the coupon code.',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return false;
+        }  
+
+        if (userCouponCode !== couponCode) {
+            Swal.fire({
+                icon: 'info',
+                title: 'Invalid coupon code',
+                text: 'Please enter a valid coupon code.',
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return false;
+        } 
+
+        if (subTotal < couponMinAmount ) {
+            Swal.fire({
+                icon: 'info',
+                title: "Insufficient order amount",
+                text: `Coupon is valid only for minimum order price ${couponMinAmount}`,
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return false;
+        }
+            couponAppliedTotal = subTotal - couponAmount;
+            document.getElementById('couponAppliedTotal').innerText = couponAppliedTotal;
+            document.getElementById("coupon").classList.add("d-none");
+            document.getElementById("coupon-applied").classList.remove("d-none");
+            console.log("Coupon code ok");
+            return true;
+    }
+
+    function confirmOrder(){
+        if(couponAppliedTotal && couponAppliedTotal !== undefined && couponAppliedTotal !== ""){
+            console.log("newSubTotal :",couponAppliedTotal)
+        }else{
+            console.log("subTotal :",withoutcouponTotal)
+        }
+    }
+    
         
+
        
     </script>
     <!--Bootstrap-->
