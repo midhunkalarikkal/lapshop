@@ -174,6 +174,7 @@ const postLogin = async (req, res) => {
         const homeCarousel = await HomeCarousel.find()
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({ isBlocked : false})
+        const coupon = await Coupon.find({ isBlocked : false})
         const userId = user._id
         const cart = await Cart.find({ userId : userId})
         // console.log("cart :",cart)
@@ -199,7 +200,7 @@ const postLogin = async (req, res) => {
                     req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
                     console.log("userNC :",req.session.userNC)
                     userDetails = req.session.userNC
-                    return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category})
+                    return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , coupon})
                 } else {
                     // Passwords don't match    
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
@@ -243,10 +244,12 @@ const getHome = async (req, res) => {
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({isBlocked : false})
+        const coupon = await Coupon.find({ isBlocked : false})
+        console.log("coupon :",coupon)
         // console.log("best offer products : ", bestOfferProducts)
         // console.log("Category : ", category)
         userDetails = req.session.userNC
-        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category })
+        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon})
     } catch (error) {
         console.log(error)
     }

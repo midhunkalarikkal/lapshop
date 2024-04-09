@@ -392,7 +392,7 @@ p,
 /*======> Parallax one start <======*/
 
 .parallax-one {
-  background: url('../images/HomeCarousels/1709548195587-Add\ wall\ 5.jpg') no-repeat;
+  background: url('../images/HomeCarousels/Ad\ wall\ 2.jpg') no-repeat;
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -401,15 +401,6 @@ p,
 /*======> Parallax one end <======*/
 
 /*======> Parallax two start <======*/
-.parallaxtwo-inner {
-  padding: 10% 0;
-}
-
-.parallaxtwo-h1 {
-  font-size: 120px;
-  text-align: center;
-  color: rgba(255, 255, 255, .4);
-}
 
 .parallax-two {
   background: url('../images/HomeCarousels/1709548071821-Add\ wall\ 1.jpg') no-repeat;
@@ -418,13 +409,50 @@ p,
   background-attachment: fixed;
 }
 
-.parallaxtwo-para {
-  font-size: 16px;
-  color: #555;
-  text-align: justify;
-  line-height: 30px;
-  margin: 0 50px 40px;
+
+.coupon-card{
+  background: linear-gradient(135deg, #34a15a, var(--primary-color));
+  color: #fff;
+  text-align: center;
+  padding: 40px 80px;
+  border-radius: 15px;
+  box-shadow: 0 10px 10px 0 rgba(0,0,0,0.15);
+  position: relative;
+
 }
+
+.coupon-card h3{
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 40px;
+
+}
+.coupon-card p{
+  font-size: 15px;
+
+}
+.coupon-row{
+  display: flex;
+  align-items: center;
+  margin: 25px auto;
+  width: fit-content;
+
+}
+#cpnCode{
+  border: 1px dashed #fff;
+  padding: 10px 20px;
+}
+#cpnBtn{
+  border: 1px solid var(--third-color);
+  background: var(--third-color);
+  padding: 10px 20px;
+  color: var(--primary-color);
+  cursor: pointer;
+}
+
+
+
+
 /*======> Parallax two end <======*/
 
 /*======> best offer products start <======*/
@@ -438,10 +466,6 @@ p,
 
 .section-title{
   font-weight: 600;
-}
-
-.box-two{
-  border: 1px solid var(--outline-color);
 }
 /*======> best offer products end <======*/
 
@@ -472,7 +496,7 @@ p,
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.card-title, .card-text, .btn {
+.card-title, .card-text, .cardbtn {
   position: relative;
   z-index: 2;
   opacity: 0;
@@ -484,7 +508,7 @@ p,
 }
 
 .card-body:hover .card-text,
-.card-body:hover .btn {
+.card-body:hover .cardbtn {
   opacity: 1;
 }
 
@@ -510,7 +534,7 @@ p,
   background-color: rgba(0, 0, 0, 0.5);
 }
 
-.card-title-first, .card-text, .btn {
+.card-title-first, .card-text, .cardbtn {
   position: relative;
   z-index: 2;
   transition: opacity 0.3s ease, transform 0.3s ease;
@@ -527,13 +551,12 @@ p,
 }
 
 .card-body:hover .card-text,
-.card-body:hover .btn {
+.card-body:hover .cardbtn {
   opacity: 1;
   transform: translateY(50%);
 }
 
 .card-title-first{
   background-color: #050505a5;
-  border: 2px solid var(--secondary-color);
 }
 /*======> Category cards end <======*/
