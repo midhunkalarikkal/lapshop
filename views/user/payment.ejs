@@ -181,16 +181,18 @@
                             </div>
                             <hr>
                             <% if(coupon){ %>
+                                <% coupon.forEach((coupon, index)=>{ %>
                             <div class="coupon shadow p-2" style="border: 2px solid rgb(19, 192, 79);">
-                                <h6 class="text-center">Coupon <%= coupon[0].couponName %></h6>
+                                <h6 class="text-center">Coupon <%= coupon.couponName %></h6>
                                 <div class="coupon-body d-flex align-item-center justify-content-center mb-2" id="coupon-body">
-                                    <input type="text" placeholder="Coupon code" id="userCouponCode">
+                                    <input type="text" class="form-control" placeholder="Coupon code" id="userCouponCode">
                                     <button class="btn btn-success btn-sm mx-1">Apply</button>
                                     <input type="text" id="couponCode" value="<%= coupon[0].couponCode %>" hidden>
                                 </div>
                                 <h6 class="text-center text-success d-none" id="coupon-applied">🎉Congradulations, You have applied coupon.🎉</h6>
                             </div>
                             <hr>
+                            <% }) %>
                             <% } %>
                             <div class="checkbox-payment">
                                 <div class="razorpay d-flex flex-row">
