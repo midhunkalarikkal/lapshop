@@ -39,6 +39,11 @@
                                             value="">
                                     </div>
                                     <div class="mb-3 col-lg-10">
+                                        <label for="couponMinAmount" class="form-label">Coupon min amount</label>
+                                        <input type="text" class="form-control" name="couponMinAmount" id="couponMinAmount"
+                                            value="<%= coupon.minAmount %>">
+                                    </div>
+                                    <div class="mb-3 col-lg-10">
                                         <label for="couponAmount" class="form-label">Coupon amount in percentage</label>
                                         <input type="text" class="form-control" name="couponAmount" id="couponAmount"
                                             value="<%= coupon.couponAmount %>" required>
@@ -74,6 +79,7 @@
                 const couponCode = document.getElementById("couponCode").value;
                 const couponStartDate = document.getElementById("couponStartDate").value;
                 const couponEndDate = document.getElementById('couponEndDate').value;
+                const couponMinAmount = document.getElementById('couponMinAmount').value
                 const couponAmount = document.getElementById('couponAmount').value;
 
                 const couponBody = {
@@ -82,6 +88,7 @@
                     couponCode,
                     couponStartDate,
                     couponEndDate,
+                    couponMinAmount,
                     couponAmount
                 };
 

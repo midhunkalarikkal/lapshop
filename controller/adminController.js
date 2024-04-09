@@ -728,7 +728,7 @@ const postAdminCoupon = async(req,res)=>{
     try{
 
         console.log(req.body)
-            const { couponName , couponCode , couponStartDate , couponEndDate , couponAmount } = req.body;
+            const { couponName , couponCode , couponStartDate , couponEndDate , couponAmount , couponMinAmount} = req.body;
 
             const existingCoupon = await Coupon.findOne({  couponName: { $regex: new RegExp(couponName, 'i') } });
             if (existingCoupon) {
@@ -745,6 +745,7 @@ const postAdminCoupon = async(req,res)=>{
                 couponCode: couponCode,
                 startDate: couponStartDate,
                 endDate: couponEndDate,
+                minAmount: couponMinAmount,
                 couponAmount: couponAmount
             });
             await newCoupon.save();
@@ -777,12 +778,14 @@ const adminUpdateCoupon = async(req, res) => {
         if (req.body.couponStartDate === "" || req.body.couponEndDate === "") {
             coupon.couponName = req.body.couponName;
             coupon.couponCode = req.body.couponCode;
+            coupon.minAmount = req.body.couponMinAmount,
             coupon.couponAmount = req.body.couponAmount;
         } else {
             coupon.couponName = req.body.couponName;
             coupon.couponCode = req.body.couponCode;
             coupon.startDate = req.body.couponStartDate;
             coupon.endDate = req.body.couponEndDate;
+            coupon.minAmount = req.body.couponMinAmount,
             coupon.couponAmount = req.body.couponAmount;
         }
 
@@ -849,10 +852,9 @@ module.exports = {
     postAdminAdCarousel,
     adminBlockAdCarousel,
     adminDeleteAdCarousel,
-    getAdminCoupon,
-    postAdminCoupon,
-    adminEditCoupon,
-    adminUpdateCoupon,
-    adminBlockCoupon
-    
+    // getAdminCoupon,
+    // postAdminCoupon,
+    // adminEditCoupon,
+    // adminUpdateCoupon,
+    // adminBlockCoupon
 }

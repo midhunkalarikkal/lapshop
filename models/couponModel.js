@@ -21,6 +21,10 @@ const couponSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    minAmount:{
+        type: Number,
+        required: true
+    },
     isBlocked:{
         type: Boolean,
         required: true,

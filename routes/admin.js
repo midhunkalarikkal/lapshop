@@ -14,6 +14,7 @@ adminRouter.use(bodyParser.json());
 adminRouter.use(bodyParser.urlencoded({extended:true}));
 
 const adminController = require('../controller/adminController')
+const couponController = require('../controller/couponController')
 
 adminRouter.get('/',adminController.getAdminlogin)
 
@@ -81,16 +82,15 @@ adminRouter.post('/blockAdCarousel/:adCarouselId',adminAuth.isAdminLoggedIn,admi
 
 adminRouter.delete('/adCarouselDelete/:adCarouselId',adminAuth.isAdminLoggedIn,adminController.adminDeleteAdCarousel)
 
-adminRouter.get('/coupons',adminAuth.isAdminLoggedIn,adminController.getAdminCoupon)
-
-adminRouter.post('/AddNewCoupon',adminAuth.isAdminLoggedIn,adminController.postAdminCoupon)
-
+//To get the coupon page
+adminRouter.get('/coupons',adminAuth.isAdminLoggedIn,couponController.getAdminCoupon)
+// To add new coupon
+adminRouter.post('/AddNewCoupon',adminAuth.isAdminLoggedIn,couponController.postAdminCoupon)
 //To get the edit coupon page
-adminRouter.get('/couponEdit/:couponId',adminAuth.isAdminLoggedIn,adminController.adminEditCoupon)
-
+adminRouter.get('/couponEdit/:couponId',adminAuth.isAdminLoggedIn,couponController.adminEditCoupon)
 //To update the edited coupon
-adminRouter.post('/updateCoupon/:couponId',adminAuth.isAdminLoggedIn,adminController.adminUpdateCoupon)
-
-adminRouter.post('/blockCoupon/:couponId',adminAuth.isAdminLoggedIn,adminController.adminBlockCoupon)
+adminRouter.post('/updateCoupon/:couponId',adminAuth.isAdminLoggedIn,couponController.adminUpdateCoupon)
+// To block or unblock a coupon
+adminRouter.post('/blockCoupon/:couponId',adminAuth.isAdminLoggedIn,couponController.adminBlockCoupon)
 
 module.exports = adminRouter

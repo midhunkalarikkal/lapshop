@@ -26,6 +26,7 @@
                                         <th class="text-center text-light">Start Date</th>
                                         <th class="text-center text-light">End Date</th>
                                         <th class="text-center text-light">Amount</th>
+                                        <th class="text-center text-light">Min Amount</th>
                                         <th class="text-center text- light">Controls</th>
                                         <th class="text-center text-light">Edit</th>
                                     </tr>
@@ -47,6 +48,9 @@
                                             </td>
                                             <td>
                                                 <%= coupon.endDate.toLocaleDateString() %>
+                                            </td>
+                                            <td>
+                                                <%= coupon.minAmount %>
                                             </td>
                                             <td>
                                                 <%= coupon.couponAmount %>
@@ -91,26 +95,31 @@
                     <form id="couponForm" action="/admin/AddNewCoupon" method="POST">
                         <div class="mb-3">
                             <label for="couponName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="couponName" name="couponName">
+                            <input type="text" class="form-control" id="couponName" name="couponName" required>
                         </div>
                         <div class="mb-3">
                             <label for="couponCode" class="form-label">Code</label>
-                            <input type="text" class="form-control" id="couponCode" name="couponCode">
+                            <input type="text" class="form-control" id="couponCode" name="couponCode" required>
                         </div>
                         <div class="mb-3">
                             <label for="couponStartDate" class="form-label mx-2">Start date</label>
                             <input type="date" name="couponStartDate" id="couponStartDate"
-                                class="form-control form-control-md">
+                                class="form-control form-control-md" required>
                         </div>
                         <div class="mb-3">
                             <label for="couponEndDate" class="form-label mx-2">End date</label>
                             <input type="date" name="couponEndDate" id="couponEndDate"
-                                class="form-control form-control-md">
+                                class="form-control form-control-md" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="couponMinAmount" class="form-label mx-2">Minimum amount</label>
+                            <input type="text" name="couponMinAmount" id="couponMinAmount"
+                                class="form-control form-control-md" required>
                         </div>
                         <div class="mb-3">
                             <label for="couponAmount" class="form-label mx-2">Amount</label>
                             <input type="text" name="couponAmount" id="couponAmount"
-                                class="form-control form-control-md">
+                                class="form-control form-control-md" required>
                         </div>
                     </form>
                 </div>
@@ -131,10 +140,11 @@
             const couponCode = document.getElementById("couponCode").value;
             const couponStartDate = document.getElementById("couponStartDate").value;
             const couponEndDate = document.getElementById('couponEndDate').value;
+            const couponMinAmount = document.getElementById('couponMinAmount').value
             const couponAmount = document.getElementById('couponAmount').value;
 
             const couponBody = {
-                couponName, couponCode, couponStartDate, couponEndDate, couponAmount
+                couponName, couponCode, couponStartDate, couponEndDate, couponAmount , couponMinAmount
             }
 
             console.log(couponBody)
