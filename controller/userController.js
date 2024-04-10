@@ -10,6 +10,7 @@ const AdCarousel = require('../models/adCarousel')
 const Wishlist = require('../models/wishlistModel')
 const Cart = require('../models/cartModel')
 const Coupon = require('../models/couponModel')
+const Order = require('../models/orderModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const bodyParser = require('body-parser');
@@ -394,7 +395,7 @@ const getUserShop = async(req,res)=>{
                 console.log("wishlistProductId :",wishlistProdId)
             }
             const cart = await Cart.find({ userId : user._id }) 
-            if(cart){
+            if(cart != ""){
                 cartProdId = cart[0].items.map(item => item.product)
                 console.log("cartProductId :",cartProdId)
             }
@@ -904,14 +905,85 @@ const getPaymentPage = async(req,res)=>{
 }
 
 // To confirm an order
-// const postConfirmOrder = async(req,res)=>{
-//     try{
-//         const userId = req.session.user._id
-//     }catch(error){
-//         console.log(error.message)
-//         return res.status(500).json({ message : "Internal server error" })
-//     }
-// }
+const postConfirmOrder = async(req,res)=>{
+    try{
+        console.log("req.session.user :",req.session.user)
+        console.log("req.session.userNC :",req.session.NC)
+        const userId = req.session.user._id
+        const addressId = req.body.userAddressId
+        const totalAmount = req.body.totalAmount
+        const paymentMethod = req.body.paymentMethod
+        let couponId = "";
+        if(req.body.couponId){
+            couponId = req.body.couponId
+        }
+        const cart = await Cart.find({ userId : userId})
+        const coupon = await Coupon.find({_id : couponId })
+        console.log("UserId :",userId)
+        console.log("addressId :",addressId)
+        console.log("totalAmount :",totalAmount)
+        console.log("paymentMethod :",paymentMethod)
+        console.log("couponId :",couponId)
+        console.log("cart :",cart[0])
+        console.log("coupon :",coupon[0])
+        let cartIdToUpdate = cart[0]._id
+        console.log("cart id :",cartIdToUpdate)
+
+        const newOrder = new Order({
+            userId : userId,
+            orderedItems: cart[0].items.map(item => ({
+                product: item.product,
+                quantity: item.quantity,
+                totalPrice: item.totalPrice,
+                statusDate: new Date()
+            })),
+            address : addressId,
+            paymentMethod : paymentMethod,
+            orderTotal : totalAmount,
+            orderDate: new Date()
+        })
+    
+        const orderSaved = await newOrder.save()
+        if (orderSaved && coupon !== "") {
+            coupon[0].appliedUsers.push({ userId: userId });
+            await coupon[0].save();
+            cart[0].items = [];
+            cart[0].totalCartPrice = 0;
+            cart[0].totalCartDiscountPrice = 0;
+            req.session.userNC.cartItemCount = cart[0].items.length
+            await cart[0].save()
+            console.log("updated cart :",cart[0])
+            console.log("req.session.NC :",req.session.NC)
+            return res.status(200).json({ message: "Order placed successfully." });
+        } else if (!orderSaved) {
+            return res.status(400).json({ error: "Failed to save order." });
+        } else {
+            cart[0].items = [];
+            cart[0].totalCartPrice = 0;
+            cart[0].totalCartDiscountPrice = 0;
+            req.session.userNC.cartItemCount = cart[0].items.length
+            await cart[0].save()
+            console.log("updated cart :",cart[0])
+            console.log("req.session.userNC :",req.session.userNC)
+            return res.status(200).json({ message: "Order placed successfully." });
+        }
+        
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+// To get the order confirm page
+const getOrderConfirmed = async(req,res)=>{
+    try{
+        userDetails = req.session.userNC
+        return res.render('user/orderConfirmation',{userDetails})
+    }catch(error){
+        console.log(error.message)
+        return res.stauts(500).json({ message : "Internal server error" })
+    }
+}
 
 
 
@@ -946,6 +1018,8 @@ module.exports = {
     getCatProduct,
     getCheckout,
     getUserNewAddressFromCheckout,
-    getPaymentPage
+    getPaymentPage,
+    postConfirmOrder,
+    getOrderConfirmed
 }
 

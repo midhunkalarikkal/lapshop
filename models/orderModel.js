@@ -12,10 +12,6 @@ const orderSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Product'
         },
-        name:{
-            type: String,
-            required: true
-        },
         quantity:{
             type: Number,
             required: true
@@ -34,13 +30,14 @@ const orderSchema = new mongoose.Schema({
         }
     }],
     address:{
-        type: Address.schema,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Address",
         required: true
     },
     paymentMethod: {
         type: String,
-        enum: ["COD" , "ONLINE" , "WALLET" , "RAZORPAY"],
-        default: "COD"
+        enum: ["cod" , "wallet" , "razorpay"],
+        default: "cod"
     },
     paidAt: {
         type: Date,

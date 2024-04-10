@@ -167,6 +167,7 @@
                                     <%= userAddress[0].country %> <br>
                                     Phone : <%= userAddress[0].phone %> 
                                 </p>
+                                <input type="hidden" id="userAddress" value="<%= userAddress[0]._id  %>">
                                 <% } %>
                             </div>               
                             </div>
@@ -190,26 +191,27 @@
                                             <input type="hidden" id="couponCode" value="<%= coupon.couponCode %>">
                                             <input type="hidden" id="couponAmount" value="<%= coupon.couponAmount %>">
                                             <input type="hidden" id="coupnMinAmount" value="<%= coupon.minAmount %>">
+                                            <input type="hidden"  id="couponId" value="<%= coupon._id %>">
                                         </div>
                                     </div>
-                                    <h6 class="text-center text-success d-none" id="coupon-applied">🎉Congradulations, Coupon applied.🎉</h6>
+                                    <h6 class="text-center text-success d-none" id="coupon-applied">🎉Congradulations, Coupon applied. You got flat <%= coupon.couponAmount %> on this order.🎉</h6>
                                     <hr>
                                 <% }) %>
                             <% } %>
                             <div class="checkbox-payment">
                                 <div class="razorpay d-flex flex-row">
-                                    <input type="checkbox" name="razorpay" id="razorpay">
+                                    <input type="checkbox" name="paymentMethod" id="razorpay">
                                     <label for="razorpay" class="mx-2">Razorpay</label>
                                 </div>
                                 <div class="cod d-flex flex-row">
-                                    <input type="checkbox" name="cod" id="cod">
+                                    <input type="checkbox" name="paymentMethod" id="cod">
                                     <label for="cod" class="mx-2">Cash on delivery</label>
                                 </div>
                                 <div class="wallet d-flex flex-row">
-                                    <input type="checkbox" name="wallet" id="wallet">
+                                    <input type="checkbox" name="paymentMethod" id="wallet">
                                     <label for="wallet" class="mx-2">Wallet</label>
                                 </div>
-                            </div>
+                            </div>                            
                             <hr>
                             <div class="details">
                                 <% if(userCart){ %>
@@ -263,7 +265,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
 
-    // To appy coupon
+    ////// To appy coupon \\\\\\
     let couponAppliedTotal;
     let withoutcouponTotal = Number(document.getElementById('subTotal').value)
 
@@ -273,21 +275,15 @@
         const subTotal = Number(document.getElementById('subTotal').value)
         const couponAmount = Number(document.getElementById("couponAmount").value)
         const couponMinAmount = Number(document.getElementById("coupnMinAmount").value)
+        const couponId = document.getElementById("couponId").value;
         console.log("coupon code :",couponCode)
         console.log("userCouponCode :",userCouponCode)
         console.log("subTotal :", subTotal)
         console.log("couponMinAmount :", couponMinAmount)
         console.log("couponAmount :",couponAmount)
+        console.log("couponId :",couponId)
 
         if (!userCouponCode) {
-            Swal.fire({
-                icon: 'info',
-                title: 'No coupon code',
-                text: 'Please enter the coupon code.',
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
             return false;
         }  
 
@@ -319,17 +315,99 @@
             document.getElementById("coupon").classList.add("d-none");
             document.getElementById("coupon-applied").classList.remove("d-none");
             console.log("Coupon code ok");
-            return true;
+            return couponId;
     }
 
-    function confirmOrder(){
-        if(couponAppliedTotal && couponAppliedTotal !== undefined && couponAppliedTotal !== ""){
-            console.log("newSubTotal :",couponAppliedTotal)
-        }else{
-            console.log("subTotal :",withoutcouponTotal)
+    document.querySelectorAll('input[name="paymentMethod"]').forEach(function(checkbox) {
+        checkbox.addEventListener('click', function() {
+            document.querySelectorAll('input[name="paymentMethod"]').forEach(function(cb) {
+                if (cb !== checkbox) {
+                    cb.checked = false;
+                }
+            });
+            console.log(checkbox)
+        });
+    });
+        
+    function confirmOrder() {
+        const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
+        if(!selectedPaymentMethod){
+            Swal.fire({
+                icon: 'info',
+                title: "NO PAYMENT METHOD",
+                text: "Please select your payment method.",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return false;
         }
+        const selectedPaymentMethodId = selectedPaymentMethod.id;
+        const userAddressId = document.getElementById("userAddress").value;
+        let totalAmount;
+
+        if (couponAppliedTotal && couponAppliedTotal !== undefined && couponAppliedTotal !== "") {
+            totalAmount = couponAppliedTotal;
+        } else {
+            totalAmount = Number(document.getElementById('subTotal').value);
+        }
+
+        const data = {
+            paymentMethod: selectedPaymentMethodId,
+            userAddressId: userAddressId,
+            totalAmount: totalAmount
+        };
+
+        // If coupon is applied, add coupon ID to the data
+        const couponId = submitCoupon();
+        if (couponId) {
+            data.couponId = couponId;
+        }
+
+        console.log("data :",data)
+
+        fetch('/postPayment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            const contentType = response.headers.get('content-type');
+            const message = "Your account is blocked, Please contact us"
+            const type = "danger"
+            if (contentType && contentType.includes('application/json')) {
+                return response.json(); 
+            } else {
+                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+            }
+        })
+        .then(data => {
+            if (data && data.error) {
+                throw new Error(data.error);
+            }
+            Swal.fire({
+                title: "Success",
+                text: data.message,
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            })
+        })
+        .catch(error => {
+            Swal.fire({
+                title: "Error",
+                text: error,
+                icon: "error",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            })
+        });
     }
-    
+
         
 
        

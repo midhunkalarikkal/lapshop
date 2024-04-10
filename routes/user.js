@@ -101,4 +101,10 @@ userRouter.get('/addAddressFromCheckout/:userId',userAuth.isUserLoggedIn,userCon
 //To get the payment page
 userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)
 
+//To confirm payemnt
+userRouter.post('/postPayment',userAuth.isUserLoggedIn,userController.postConfirmOrder)
+
+//To get order confirmation page
+userRouter.get('/orderConfirmation',userAuth.isUserLoggedIn,userController.getOrderConfirmed)
+
 module.exports = userRouter

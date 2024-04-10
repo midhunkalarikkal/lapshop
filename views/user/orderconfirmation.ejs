@@ -1,0 +1,59 @@
+<!-- User navbar -->
+<%-include("../userpartials/Navbar.ejs")%>
+
+    <head>
+        
+    </head>
+    <section class="view">
+        <!-- Edit -->
+        <div class="cart-wrap mt-5">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-md-8">    
+                        <div class="product-card-each mt-4 shadow p-5">
+                            <div class="head d-flex align-items-center justify-content-center">
+                                <lord-icon
+                                    src="https://cdn.lordicon.com/guqkthkk.json"
+                                    trigger="in"
+                                    delay="1500"
+                                    state="in-reveal"
+                                    style="width:100px;height:100px">
+                                </lord-icon>
+                                <h4 class="text-center">Congratulatio, your order has been placed.</h4>
+                            </div>
+                            <div class="thankyounote">
+                                <p class="text-center">Thank you for your purchase from LapShop! Your order is confirmed. Happy shopping!</p>
+                            </div>
+                            <div class="center d-flex">
+                                <div class="left col-md-6">
+                                    <div class="Order details mt-4">
+                                        <h6>Expected delivery Aplil 2024 20</h6>
+                                        <h6>Payment : Cash on delivery</h6>
+                                        <h6>Amount : ₹ <span class="text-success">109537</span></h6>
+                                        <h6>Deliverying to :</h6>
+                                        <p class="">Midhun Kalarikkal, kalarikkal house, kuttippuram, malappuram kerala pincode: 679571, India, Phone 8157974230</p>
+                                    </div>
+                                </div>
+                                <div class="right col-md-6 d-flex align-item-center justify-content-center">
+                                    <lord-icon
+                                    src="https://cdn.lordicon.com/hsrrkevt.json"
+                                    trigger="loop"
+                                    state="loop-cycle"
+                                    style="width:250px;height:250px">
+                                </lord-icon>
+                            </div>
+                        </div>
+                            <div class="buttons d-flex mt-3">
+                                <button onclick="goToShop()" class="btn btn-success" id="shopping">Continue shopping</button>
+                                <button onclick="goToOrder()" class="btn btn-success mx-3" id="orders">Review orders</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Edit -->
+    </section>
+    <script src="https://cdn.lordicon.com/lordicon.js"></script>
+    <!-- User footer -->
+    <%-include("../userpartials/Footer.ejs")%>
