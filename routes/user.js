@@ -96,7 +96,7 @@ userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,cartController.
 userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
 
 //To add new address from checkout page
-userRouter.get('/addAddressFromCheckout/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
+userRouter.get('/addAddressFromCheckout',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
 
 //To get the payment page
 userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)

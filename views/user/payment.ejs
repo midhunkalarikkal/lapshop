@@ -222,7 +222,7 @@
                                         <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
                                     </div>
                                     <div class="total d-flex justify-content-between">
-                                        <h6>Discount : </h6> <h6>₹ <%= userCart.totalCartDiscountPrice %></h6>
+                                        <h6>Product discount : </h6> <h6>₹ <%= userCart.totalCartDiscountPrice %></h6>
                                     </div> 
                                 <hr>
                                 <div class="total d-flex justify-content-between">
@@ -262,31 +262,41 @@
     </footer>
     <!-- footer end -->
 
+
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
 
     ////// To appy coupon \\\\\\
+    let coupon = document.getElementById("coupon") ? document.getElementById("coupon") : ""
     let couponAppliedTotal;
     let withoutcouponTotal = Number(document.getElementById('subTotal').value)
 
-    function submitCoupon(){
-        const userCouponCode = document.getElementById("userCouponCode").value
-        const couponCode = document.getElementById("couponCode").value
-        const subTotal = Number(document.getElementById('subTotal').value)
-        const couponAmount = Number(document.getElementById("couponAmount").value)
-        const couponMinAmount = Number(document.getElementById("coupnMinAmount").value)
-        const couponId = document.getElementById("couponId").value;
-        console.log("coupon code :",couponCode)
-        console.log("userCouponCode :",userCouponCode)
-        console.log("subTotal :", subTotal)
-        console.log("couponMinAmount :", couponMinAmount)
-        console.log("couponAmount :",couponAmount)
-        console.log("couponId :",couponId)
+    
+        function submitCoupon(){
+            const userCouponCode = document.getElementById("userCouponCode").value
+            const couponCode = document.getElementById("couponCode").value
+            const subTotal = Number(document.getElementById('subTotal').value)
+            const couponAmount = Number(document.getElementById("couponAmount").value)
+            const couponMinAmount = Number(document.getElementById("coupnMinAmount").value)
+            const couponId = document.getElementById("couponId").value;
+            
+            console.log("coupon code :",couponCode)
+            console.log("userCouponCode :",userCouponCode)
+            console.log("subTotal :", subTotal)
+            console.log("couponMinAmount :", couponMinAmount)
+            console.log("couponAmount :",couponAmount)
+            console.log("couponId :",couponId)
+            
+            if (!userCouponCode || !couponCode || !subTotal || !couponAmount || !couponMinAmount || !couponId) {
+                console.error("One or more coupon elements are missing.");
+                return false;
+            }
 
+        
         if (!userCouponCode) {
             return false;
         }  
-
+        
         if (userCouponCode !== couponCode) {
             Swal.fire({
                 icon: 'info',
@@ -298,7 +308,7 @@
             });
             return false;
         } 
-
+        
         if (subTotal < couponMinAmount ) {
             Swal.fire({
                 icon: 'info',
@@ -310,14 +320,14 @@
             });
             return false;
         }
-            couponAppliedTotal = subTotal - couponAmount;
-            document.getElementById('couponAppliedTotal').innerText = couponAppliedTotal;
-            document.getElementById("coupon").classList.add("d-none");
-            document.getElementById("coupon-applied").classList.remove("d-none");
-            console.log("Coupon code ok");
-            return couponId;
+        couponAppliedTotal = subTotal - couponAmount;
+        document.getElementById('couponAppliedTotal').innerText = couponAppliedTotal;
+        document.getElementById("coupon").classList.add("d-none");
+        document.getElementById("coupon-applied").classList.remove("d-none");
+        console.log("Coupon code ok");
+        return couponId;
     }
-
+    
     document.querySelectorAll('input[name="paymentMethod"]').forEach(function(checkbox) {
         checkbox.addEventListener('click', function() {
             document.querySelectorAll('input[name="paymentMethod"]').forEach(function(cb) {
@@ -344,12 +354,13 @@
         }
         const selectedPaymentMethodId = selectedPaymentMethod.id;
         const userAddressId = document.getElementById("userAddress").value;
+        const subTotal = Number(document.getElementById('subTotal').value);
         let totalAmount;
 
         if (couponAppliedTotal && couponAppliedTotal !== undefined && couponAppliedTotal !== "") {
-            totalAmount = couponAppliedTotal;
+                totalAmount = couponAppliedTotal;
         } else {
-            totalAmount = Number(document.getElementById('subTotal').value);
+            totalAmount = subTotal
         }
 
         const data = {
@@ -358,10 +369,12 @@
             totalAmount: totalAmount
         };
 
-        // If coupon is applied, add coupon ID to the data
-        const couponId = submitCoupon();
-        if (couponId) {
-            data.couponId = couponId;
+        // If the coupon is not empty, call submitCoupon function
+        if (coupon && coupon !== " " && coupon !== 0) {
+            const couponId = submitCoupon();
+            if (couponId) {
+                data.couponId = couponId;
+            }
         }
 
         console.log("data :",data)
@@ -394,6 +407,8 @@
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false
+            }).then(()=>{
+                window.location.href = "/orderConfirmation"
             })
         })
         .catch(error => {

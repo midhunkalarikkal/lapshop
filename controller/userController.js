@@ -860,7 +860,7 @@ const getCheckout = async(req,res)=>{
 
 const getUserNewAddressFromCheckout = async(req,res)=>{
     try{
-        const userId = req.params.userId
+        const userId = req.session.user._id
         // console.log(userId)
         userDetails = req.session.userNC
         return res.render('user/addAddressFromCheckout',{userDetails , userId})
@@ -892,7 +892,8 @@ const getPaymentPage = async(req,res)=>{
          const validCoupons = coupon.filter(coupon => {
             const startDate = new Date(coupon.startDate);
             const endDate = new Date(coupon.endDate);
-            return startDate <= currentDate && endDate >= currentDate;
+            const userNotApplied = coupon.appliedUsers.every(user => user.userId.toString() !== userId.toString());
+            return startDate <= currentDate && endDate >= currentDate && userNotApplied;
         });
 
         console.log("Valid coupons:", validCoupons);
@@ -908,24 +909,28 @@ const getPaymentPage = async(req,res)=>{
 const postConfirmOrder = async(req,res)=>{
     try{
         console.log("req.session.user :",req.session.user)
-        console.log("req.session.userNC :",req.session.NC)
+        console.log("req.session.userNC :",req.session.userNC)
         const userId = req.session.user._id
         const addressId = req.body.userAddressId
         const totalAmount = req.body.totalAmount
         const paymentMethod = req.body.paymentMethod
         let couponId = "";
+        let coupon = null;
+
+        const cart = await Cart.find({ userId : userId})
         if(req.body.couponId){
             couponId = req.body.couponId
+            console.log("couponId :",couponId)
         }
-        const cart = await Cart.find({ userId : userId})
-        const coupon = await Coupon.find({_id : couponId })
+        if (couponId && couponId !== null) {
+            coupon = await Coupon.findById(couponId);
+            console.log("coupon :", coupon);
+        }
         console.log("UserId :",userId)
         console.log("addressId :",addressId)
         console.log("totalAmount :",totalAmount)
         console.log("paymentMethod :",paymentMethod)
-        console.log("couponId :",couponId)
         console.log("cart :",cart[0])
-        console.log("coupon :",coupon[0])
         let cartIdToUpdate = cart[0]._id
         console.log("cart id :",cartIdToUpdate)
 
@@ -944,9 +949,9 @@ const postConfirmOrder = async(req,res)=>{
         })
     
         const orderSaved = await newOrder.save()
-        if (orderSaved && coupon !== "") {
-            coupon[0].appliedUsers.push({ userId: userId });
-            await coupon[0].save();
+        if (orderSaved && coupon  && coupon !== "") {
+            coupon.appliedUsers.push({ userId: userId });
+            await coupon.save();
             cart[0].items = [];
             cart[0].totalCartPrice = 0;
             cart[0].totalCartDiscountPrice = 0;
@@ -978,7 +983,34 @@ const postConfirmOrder = async(req,res)=>{
 const getOrderConfirmed = async(req,res)=>{
     try{
         userDetails = req.session.userNC
-        return res.render('user/orderConfirmation',{userDetails})
+        const userId = req.session.user._id
+        const order = await Order.find({userId : userId})
+        console.log("order :",order)
+        const latestOrder = order.sort((a, b) => b.orderDate - a.orderDate)[0];
+        console.log("latest order :",latestOrder)
+        const addressId = latestOrder.address
+        const deliveryAddress = await Address.findById(addressId)
+        let paymentMethod = latestOrder.paymentMethod
+        if(paymentMethod === "cod"){
+            paymentMethod = "Cash on delivery."
+        }else if( paymentMethod === "wallet"){
+            paymentMethod = "Wallet payment."
+        }else if(paymentMethod === "razorpay"){
+            paymentMethod = "Online razorpay payment."
+        }
+        const orderTotal = latestOrder.orderTotal
+        const orderedDate = latestOrder.orderDate
+        const expectedDelivery = new Date(orderedDate);
+            expectedDelivery.setDate(expectedDelivery.getDate() + 4);
+        const data = {
+            address : deliveryAddress,
+            paymentMethod : paymentMethod,
+            orderTotal : orderTotal,
+            orderedDate : orderedDate,
+            expectedDelivery : expectedDelivery
+        }
+        console.log("data :",data)
+        return res.render('user/orderConfirmation',{userDetails , data})
     }catch(error){
         console.log(error.message)
         return res.stauts(500).json({ message : "Internal server error" })

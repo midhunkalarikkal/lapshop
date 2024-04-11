@@ -19,7 +19,7 @@
                                     state="in-reveal"
                                     style="width:100px;height:100px">
                                 </lord-icon>
-                                <h4 class="text-center">Congratulatio, your order has been placed.</h4>
+                                <h4 class="text-center">Your order has been placed.</h4>
                             </div>
                             <div class="thankyounote">
                                 <p class="text-center">Thank you for your purchase from LapShop! Your order is confirmed. Happy shopping!</p>
@@ -27,11 +27,13 @@
                             <div class="center d-flex">
                                 <div class="left col-md-6">
                                     <div class="Order details mt-4">
-                                        <h6>Expected delivery Aplil 2024 20</h6>
-                                        <h6>Payment : Cash on delivery</h6>
-                                        <h6>Amount : ₹ <span class="text-success">109537</span></h6>
+                                        <% if(data && data !== ""){ %>
+                                        <h6>Expected delivery : <span> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
+                                        <h6>Payment : <%= data.paymentMethod %></h6>
+                                        <h6>Amount : ₹ <span class="text-success"><%= data.orderTotal %></span></h6>
                                         <h6>Deliverying to :</h6>
-                                        <p class="">Midhun Kalarikkal, kalarikkal house, kuttippuram, malappuram kerala pincode: 679571, India, Phone 8157974230</p>
+                                        <p class=""><%= data.address.name %>, <%= data.address.addressLine %>, Phone : <%= data.address.phone %>, <%= data.address.city %>, <%= data.address.distrcit %>, <%= data.address.state %>, <%= data.address.pincode %>, <%= data.address.country %></p>
+                                        <% } %>
                                     </div>
                                 </div>
                                 <div class="right col-md-6 d-flex align-item-center justify-content-center">

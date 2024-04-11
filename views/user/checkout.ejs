@@ -140,8 +140,10 @@
                         <div class="product-card-each mt-4 shadow d-flex">
                             <div class="col-12 p-3">
                                 <p class="fw-semibold">Selected address will be used to bill and ship product</p>
-                                <% if (userAddress !== "") { %>
-                                <% userAddress.forEach((address, index) => { %>
+                                <% if (!userAddress || userAddress.length === 0) { %>
+                                    <p class="text-danger">You haven't added any address yet</p>
+                                <% } else { %>
+                                    <% userAddress.forEach((address, index) => { %>
                                         <div class="row mb-1">
                                             <div class="d-flex">
                                                 <input type="radio" name="selectedAddress" value="<%= address._id %>" id="address<%= address._id  %>" />
@@ -160,11 +162,11 @@
                                             </div>
                                         </div>
                                     <% }); %>
+                                <% } %>
                                     <div class="address-btn">
                                         <button class="mx-3"  
                                             style="color: blue; border: none; background-color: #f1f1f100;" 
-                                            id="add-address"
-                                            data-userId="<%= userAddress[0].userId %>">
+                                            id="add-address">
                                             <i class="fa-solid fa-plus" style="color: blue;"></i>
                                             Add new address
                                         </button>
@@ -174,9 +176,6 @@
                                         <button class="btn btn-primary" onclick="goToCart(event)">Review cart</button>
                                     </div>
                                 </div>
-                                <% } else{ %>
-                                    <p class="text-danger">You haven't added any address yet</p>
-                                <% } %>
                             </div>
                         </div>
                     
@@ -227,9 +226,7 @@
 
         ////// To add a new address \\\\\\
         document.getElementById('add-address').addEventListener('click', function () {
-            const userId = this.dataset.userid;
-            console.log(userId)
-            window.location.href = `/addAddressFromCheckout/${userId}`; 
+            window.location.href = `/addAddressFromCheckout`; 
         });
 
         // To go to payment
