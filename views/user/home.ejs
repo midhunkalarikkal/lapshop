@@ -6,9 +6,11 @@
     <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:wght@300&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:wght@300&display=swap"
+      rel="stylesheet">
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   </head>
 
   <section class="view mt-4 wrapper">
@@ -35,23 +37,23 @@
                 </div>
               </div>
             </div>
-          <% }); %>
-        <% } else { %>
-          <div class="carousel-item active">
-            <img src="/static/images/HomeCarousels/Ad wall 3.jpg" class="d-block w-100" alt="...">
-            <div class="carousel-caption d-none d-md-block">
-              <div class="tagline">
-                <h4>Empowering Your Digital Journey Daily.</h4>
-              </div>
-              <div class="desc--btn">
-                <div class="desc">
-                  <h6>Experience peak performance with our cutting-edge laptop technology solutions.</h6>
+            <% }); %>
+              <% } else { %>
+                <div class="carousel-item active">
+                  <img src="/static/images/HomeCarousels/Ad wall 3.jpg" class="d-block w-100" alt="...">
+                  <div class="carousel-caption d-none d-md-block">
+                    <div class="tagline">
+                      <h4>Empowering Your Digital Journey Daily.</h4>
+                    </div>
+                    <div class="desc--btn">
+                      <div class="desc">
+                        <h6>Experience peak performance with our cutting-edge laptop technology solutions.</h6>
+                      </div>
+                      <button class="shop-btn" id="shop-btn">Shop Now</button>
+                    </div>
+                  </div>
                 </div>
-                <button class="shop-btn" id="shop-btn">Shop Now</button>
-              </div>
-            </div>
-          </div>
-        <% } %>
+                <% } %>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
         data-bs-slide="prev">
@@ -68,42 +70,50 @@
     <section class="parallax-one p-3">
       <div class="container">
         <div class="row p-3">
-        <% if(category){ %>
-          <% category.forEach((cat,index)=>{ %>
-          <div class="col-md-6">
-            <div class="card m-3 border-0">
-              <div class="card-body d-flex flex-column justify-content-center" style="background-image: url('/static/images/CategoryImages/<%= cat.image %>'); background-size: cover; background-position: center;">
-                <h3 class="card-title-first text-light text-center position-absolute top-50 start-50 translate-middle"><%= cat.name %></h3>
-                <h4 class="card-title text-light text-center"><%= cat.name %></h4>
-                <h6 class="card-text text-light text-center"><%= cat.desc %></h6>
-                <a href="/shop" class="text-center cardbtn text-light">Shop Now <i class="fa-solid fa-arrow-right" style="color: #ffffff;"></i></a>
+          <% if(category){ %>
+            <% category.forEach((cat,index)=>{ %>
+              <div class="col-md-6">
+                <div class="card m-3 border-0">
+                  <div class="card-body d-flex flex-column justify-content-center"
+                    style="background-image: url('/static/images/CategoryImages/<%= cat.image %>'); background-size: cover; background-position: center;">
+                    <h3
+                      class="card-title-first text-light text-center position-absolute top-50 start-50 translate-middle">
+                      <%= cat.name %>
+                    </h3>
+                    <h4 class="card-title text-light text-center">
+                      <%= cat.name %>
+                    </h4>
+                    <h6 class="card-text text-light text-center">
+                      <%= cat.desc %>
+                    </h6>
+                    <a href="/shop" class="text-center cardbtn text-light">Shop Now <i class="fa-solid fa-arrow-right"
+                        style="color: #ffffff;"></i></a>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <% }) %>
-          <% }else{ %>
-            <h1>Happy shopping</h1>
-            <% } %>
+              <% }) %>
+                <% }else{ %>
+                  <h1>Happy shopping</h1>
+                  <% } %>
         </div>
-      </div>  
-    </section>
-    
-    <!-- Best offer products start -->
-    <div class="parallaxone-para p-3">
-      <div class="text-left mt-3">
-        <h4 class="section-title"><span class="px-2">Best deals await! Grab yours now</span></h4>
       </div>
-      <section class="" id="sectiontwo">
-        <div class="col-12">
-          <div class="scroll-container">
-            <div class="d-flex overflow-auto p-3">
-              <% if(bestOfferProducts !="" ){ %>
+    </section>
+
+    <!-- Best offer products start -->
+    <% if(bestOfferProducts !="" ){ %>
+      <div class="parallaxone-para p-3">
+        <div class="text-left mt-3">
+          <h4 class="section-title"><span class="px-2">Best deals await! Grab yours now</span></h4>
+        </div>
+        <section class="" id="sectiontwo">
+          <div class="col-12">
+            <div class="scroll-container">
+              <div class="d-flex overflow-auto p-3">
                 <% bestOfferProducts.forEach((product , index)=>{ %>
                   <a href="/productDetail/<%= product._id %>" class="product-outline">
                     <div class="box-two mx-2 text-center shadow" style="flex: 0 0 auto;">
                       <div class="img">
-                        <img src="/static/images/ProductImages/<%= product.images[0] %>"
-                        alt="No image">
+                        <img src="/static/images/ProductImages/<%= product.images[0] %>" alt="No image">
                       </div>
                       <div class="name">
                         <h5>
@@ -114,92 +124,93 @@
                         <h6>Min <%= product.discountPercentage %> off</h6>
                       </div>
                     </div>
-                          </a>
-                          <% }) %>
-                              <% }else{ %>
-                                  <h3 class="text-center bg-warning">No same category Product found</h3>
-                                  <% } %>
+                  </a>
+                  <% }) %>
               </div>
-              
             </div>
           </div>
         </section>
       </div>
-      <!-- Best offer products end -->
-    <% if(coupon !== ""){ %>
-      <% coupon.forEach((coupon , index)=>{ %>
-      <section class="parallax-two p-5">
-        <div class="parallaxtwo-inner d-flex justify-content-center ">
-          <div class="coupon-card col-8">
-            <h4>Hey, <% if(userDetails){ %><%= userDetails.userName ,%> <% } %>Get flat <%= coupon.couponAmount %> off on your order</h4>
-            <di class="coupon-row">
-                <span id="cpnCode"><%= coupon.couponCode %></span>
-                <span class="mx-2" id="cpnBtn">Copy Code</span>
-            </di>
-            <input type="hidden" value="<%= coupon.endDate %>" id="countdownTime">
-            <div id="countdown"></div>
-            <p>Copy coupon code use, it in the payment</p>
-        </div>
-        </div>
-      </section>
-      <% }) %>
-    <% } %>
+      <% } %>
+        <!-- Best offer products end -->
+        <% if(coupon !=="" ){ %>
+          <% coupon.forEach((coupon , index)=>{ %>
+            <section class="parallax-two p-5">
+              <div class="parallaxtwo-inner d-flex justify-content-center ">
+                <div class="coupon-card col-8">
+                  <h4>Hey, <% if(userDetails){ %>
+                      <%= userDetails.userName ,%>
+                        <% } %>Get flat <%= coupon.couponAmount %> off on your order</h4>
+                  <di class="coupon-row">
+                    <span id="cpnCode">
+                      <%= coupon.couponCode %>
+                    </span>
+                    <span class="mx-2" id="cpnBtn">Copy Code</span>
+                  </di>
+                  <input type="hidden" value="<%= coupon.endDate %>" id="countdownTime">
+                  <div id="countdown"></div>
+                  <p>Copy coupon code use, it in the payment</p>
+                </div>
+              </div>
+            </section>
+            <% }) %>
+              <% } %>
 
-    <!--  Edit end -->
+                <!--  Edit end -->
 
-    
+
   </section>
-  
+
   <script>
-    document.getElementById('shop-btn').addEventListener("click",function(){
+    document.getElementById('shop-btn').addEventListener("click", function () {
       window.location.href = "/shop"
     })
 
     // For copying the coupon code
     var cpnBtn = document.getElementById("cpnBtn");
-            var cpnCode = document.getElementById("cpnCode");
+    var cpnCode = document.getElementById("cpnCode");
 
-            cpnBtn.onclick = function(){
-                navigator.clipboard.writeText(cpnCode.innerHTML);
-                cpnBtn.innerHTML ="COPIED";
-                setTimeout(function(){
-                    cpnBtn.innerHTML="COPY CODE";
-                }, 3000);
-            }
-
-            //Countdown
-            const endDateStr = document.getElementById('countdownTime').value;
-  const endDate = new Date(endDateStr).getTime(); // Parse string to Date object
-
-  // Update the countdown every second
-  const countdownInterval = setInterval(updateCountdown, 1000);
-
-  function updateCountdown() {
-    // Get the current date and time (in milliseconds)
-    const now = new Date().getTime();
-
-    // Calculate the time remaining in milliseconds
-    const timeRemaining = endDate - now;
-
-    // Calculate days, hours, minutes, and seconds
-    const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-    // Display the countdown in the "countdown" element
-    const countdownElement = document.getElementById("countdown");
-    countdownElement.innerHTML = `Time remaining: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-    // If the countdown is over, stop updating it
-    if (timeRemaining <= 0) {
-      clearInterval(countdownInterval);
-      countdownElement.innerHTML = "Coupon expired";
+    cpnBtn.onclick = function () {
+      navigator.clipboard.writeText(cpnCode.innerHTML);
+      cpnBtn.innerHTML = "COPIED";
+      setTimeout(function () {
+        cpnBtn.innerHTML = "COPY CODE";
+      }, 3000);
     }
-  }
 
-  // Call updateCountdown function once to display the countdown immediately
-  updateCountdown();
+    //Countdown
+    const endDateStr = document.getElementById('countdownTime').value;
+    const endDate = new Date(endDateStr).getTime(); // Parse string to Date object
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    function updateCountdown() {
+      // Get the current date and time (in milliseconds)
+      const now = new Date().getTime();
+
+      // Calculate the time remaining in milliseconds
+      const timeRemaining = endDate - now;
+
+      // Calculate days, hours, minutes, and seconds
+      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+      // Display the countdown in the "countdown" element
+      const countdownElement = document.getElementById("countdown");
+      countdownElement.innerHTML = `Time remaining: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+      // If the countdown is over, stop updating it
+      if (timeRemaining <= 0) {
+        clearInterval(countdownInterval);
+        countdownElement.innerHTML = "Coupon expired";
+      }
+    }
+
+    // Call updateCountdown function once to display the countdown immediately
+    updateCountdown();
   </script>
 
   <!-- User footer -->

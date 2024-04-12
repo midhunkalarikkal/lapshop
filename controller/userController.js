@@ -1017,6 +1017,24 @@ const getOrderConfirmed = async(req,res)=>{
     }
 }
 
+// To get orders
+const getOrders = async(req,res)=>{
+    try{
+        userDetails = req.session.userNC
+        const userId = req.session.user._id
+        const order = await Order.find({ userId: userId }).populate({
+            path: "orderedItems.product",
+            populate:  [{ path: "brand" }, { path: "category" }]
+        });
+        console.log("orders :",order)
+        console.log("Ordered items :",order[0].orderedItems)
+        return res.render('user/orders',{userDetails , order})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 
 
 
@@ -1052,6 +1070,7 @@ module.exports = {
     getUserNewAddressFromCheckout,
     getPaymentPage,
     postConfirmOrder,
-    getOrderConfirmed
+    getOrderConfirmed,
+    getOrders
 }
 
