@@ -1035,6 +1035,14 @@ const getOrders = async(req,res)=>{
     }
 }
 
+const get505Error = async(req,res)=>{
+    try{
+        return res.render('user/error505')
+    }catch(error){
+        console.log(error.message)
+    }
+}
+
 
 
 
@@ -1071,6 +1079,7 @@ module.exports = {
     getPaymentPage,
     postConfirmOrder,
     getOrderConfirmed,
-    getOrders
+    getOrders,
+    get505Error
 }
 

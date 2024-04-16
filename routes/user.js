@@ -107,6 +107,10 @@ userRouter.post('/postPayment',userAuth.isUserLoggedIn,userController.postConfir
 //To get order confirmation page
 userRouter.get('/orderConfirmation',userAuth.isUserLoggedIn,userController.getOrderConfirmed)
 
+//To get the order page
 userRouter.get('/orders',userAuth.isUserLoggedIn,userController.getOrders)
+
+//To get the 505 error page
+userRouter.get('/505Error',userAuth.isUserLoggedIn,userController.get505Error)
 
 module.exports = userRouter
