@@ -1043,6 +1043,22 @@ const get505Error = async(req,res)=>{
     }
 }
 
+const getOrderDetail = async(req,res)=>{
+    try{
+        console.log("Request.params.prodId :",req.params.orderId)
+        const orderId = req.params.orderId
+        const order = await Order.find({ _id : orderId}).populate({
+            path: "orderedItems.product",
+            populate:  [{ path: "brand" }, { path: "category" }]
+        });
+        console.log("order :",order)
+        return res.render('user/orderDetail',{userDetails , order})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal serer error" })
+    }
+}
+
 
 
 
@@ -1080,6 +1096,7 @@ module.exports = {
     postConfirmOrder,
     getOrderConfirmed,
     getOrders,
-    get505Error
+    get505Error,
+    getOrderDetail
 }
 

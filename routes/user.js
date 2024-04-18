@@ -113,4 +113,7 @@ userRouter.get('/orders',userAuth.isUserLoggedIn,userController.getOrders)
 //To get the 505 error page
 userRouter.get('/505Error',userAuth.isUserLoggedIn,userController.get505Error)
 
+// To get the order detail page
+userRouter.get('/orderDetail/:orderId',userAuth.isUserLoggedIn,userController.getOrderDetail)
+
 module.exports = userRouter
