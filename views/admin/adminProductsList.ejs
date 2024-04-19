@@ -2,7 +2,10 @@
 <%-include("../adminpartials/admin_navbar.ejs")%>
 
 <section class="view">
-    <div class="container mt-5">
+    <!-- <div class="side-bar col-2 bg-success">
+       
+    </div> -->
+    <div class="container mt-5 ">
         <!-- Heading and category adding button start -->
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
@@ -10,11 +13,12 @@
                     <h1>Products</h1>
                     <button type="button" class="btn btn-outline-success btn-sm" id="addProduct">Add new product</button>
                 </div>
+                <hr>
             </div>
         </div>
         <!-- Heading and category adding button end -->
         <!-- Table row start -->
-        <div class="row d-flex flex-row align-items-center justify-content-center mt-4">
+        <div class="row d-flex flex-row align-items-center justify-content-center">
             <div class="table-responsive col-lg-10">
                     <% if(productData != ""){  %>
                         <table class="table text-center table-striped my-5 p-1">

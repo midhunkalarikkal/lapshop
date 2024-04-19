@@ -21,6 +21,44 @@
         
         <!-- Custom css for admin navbar and footer -->
     <link rel='stylesheet' href='/static/css/admin_nav_footer.css' type="text/css" />
+    <style>
+        .side-menu{
+            height: 100vh;
+            width: 20%;
+            left: -20%;
+            background-color: rgb(255, 255, 255);
+            top: 0;
+            position: fixed;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            overflow-y: scroll;
+            z-index: 1;
+        }
+
+        .side-menu.open {
+            left: 0;
+        }
+
+        .sidebar-btn{
+            border-bottom: 1px solid #2b2c2b;
+            height: 6vh;
+        }
+
+        .sidebar-btn:hover{
+            background-color: #2b2c2b;
+        }
+
+        .isidebaropen , .isidebarclose{
+            background-color: #2b2c2b00;
+        }
+
+        #side-menu-open , #side-menu-close-btn{
+            background-color: #2b2c2b00;
+            border: 0;
+        }
+        
+    </style>
 </head>
 
 <body>
@@ -31,10 +69,14 @@
     <div id="page-container">
     <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
         <div class="container">
-
+            
+            <div class="logo col-lg-1 d-none d-lg-block">
+                <button id="side-menu-open" class="hamburger-all"><i class="fa-solid fa-bars isidebaropen fa-2x"></i></button>
+                <button id="side-menu-close-btn" class="d-none"><i class="fa-solid fa-xmark isidebarclose fa-2x"></i></button>
+            </div>
             <!-- Navbar Logo -->
-            <div class="logo col-lg-2">
-                <a href="" class="navbar-brand">
+            <div class="logo col-lg-3">
+                <a href="" class="navbar-brand mx-2">
                     <span class="fw-bold fs-3">LapShop</span>
                 </a>
             </div>
@@ -47,7 +89,7 @@
             </div>
 
             <!-- Navbar rightsdie icons -->
-            <div class="facaac col-lg-8">
+            <div class="facaac col-lg-6 d-lg-none">
                 <div class="collapse navbar-collapse d-lg-flex align-items-center justify-content-center" id="navmenu">
                     <ul class="navbar-nav">
                         <li class="nav-item ">
@@ -71,21 +113,14 @@
                         <li class="nav-item">
                             <a href="/admin/coupons" class="nav-link">Coupons</a>
                         </li>
-                        <li class="dropdown nav-item dropnav">
-                            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Banners
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item" href="/admin/homeCarousel" class="nav-link">Home Carousel</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" href="/admin/adCarousel" class="nav-link">Ad-carousel</a>
-                                </li>
-                            </ul>
+                        <li class="nav-item">
+                            <a href="/admin/homeCarousel" class="nav-link">Home Carousel</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/admin/adCarousel" class="nav-link">Ad-carousel</a>
                         </li>
                         <li class="nav-item d-block d-lg-none">
-                            <a href="/admin/logout" class="nav-link">Logout</a>
+                            <a href="/admin/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -93,9 +128,60 @@
             <!-- Logout button -->
             <div class="logout col-lg-2 d-none d-lg-block collapse navbar-collapse">
                 <a href="/admin/logout" class="navbar-brand ms-auto">
-                    <span class="fw-small fs-5">Logout</span>
+                    <span class="fw-small fs-5"><i class="fa-solid fa-right-from-bracket"></i> Logout</span>
                 </a>
             </div>
         </div>
     </nav>
     <!-- Navbar end -->
+    <div id="side-menu" class="side-menu mt-5 bg-secondary">
+        <div class="side-menu-box mt-2">
+            <a href="/admin/home">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-house mx-2" style="color: #60e67b;"></i>Home</button>
+            </a>
+            <a href="/admin/products">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-laptop mx-2" style="color: #60e67b;"></i>Products</button>
+            </a>
+            <a href="/admin/users">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-users mx-2" style="color: #60e67b;"></i>Users</button>
+            </a>
+            <a href="/admin/orders">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-box-open mx-2" style="color: #60e67b;"></i>Orders</button>
+            </a>
+            <a href="/admin/brands">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-copyright mx-2" style="color: #60e67b;"></i>Brands</button>
+            </a>
+            <a href="/admin/category">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-filter mx-2" style="color: #60e67b;"></i>Category</button>
+            </a>
+            <a href="/admin/coupons">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-clipboard-check mx-2" style="color: #60e67b;"></i>Coupons</button>
+            </a>
+            <a href="/admin/homeCarousel">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-image mx-2" style="color: #60e67b;"></i>Home Carousel</button>
+            </a>
+            <a href="/admin/adCarousel">
+                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-image mx-2" style="color: #60e67b;"></i>Ad-carousel</button>
+            </a>
+        </div>
+    </div>
+    
+    <script>
+        const openmenubtn = document.getElementById("side-menu-open");
+        const menuclose = document.getElementById("side-menu-close-btn");
+        const sidemenu = document.getElementById("side-menu");
+        
+        menuclose.classList.add("d-none");
+
+        openmenubtn.addEventListener('click', function () {
+            sidemenu.classList.add('open');
+            menuclose.classList.remove("d-none");
+            openmenubtn.classList.add("d-none");
+        });
+        
+        menuclose.addEventListener('click', function () {
+            sidemenu.classList.remove('open');
+            menuclose.classList.add("d-none");
+            openmenubtn.classList.remove("d-none");
+        });
+    </script>
