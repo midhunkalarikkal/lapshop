@@ -118,7 +118,7 @@
                                             <span class="product-name"><span class="heads">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
                                             <span class="product-name"><span class="heads">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
                                             <span class="product-name"><span class="heads">Order status : </span><%= order[i].orderedItems[j].status %></span>
-                                            <span class="product-name"><span class="heads">Staus date : </span><%= order[i].orderedItems[j].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                                            <span class="product-name"><span class="heads">Status date : </span><%= order[i].orderedItems[j].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
                                         </div>
                                     </div>
                                     <% } %>
