@@ -5,6 +5,7 @@ const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
 const Brand = require('../models/brandModel')
 const Coupon = require('../models/couponModel')
+const Order = require('../models/orderModel')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
@@ -712,6 +713,36 @@ const adminDeleteAdCarousel = async (req, res) => {
 };
 
 
+const getOrders = async(req,res)=>{
+    try{
+        const orders = await Order.find().populate({
+            path: "orderedItems.product",
+            populate:  [{ path: "brand" }, { path: "category" }]
+        });
+        console.log("Orders :",orders)
+        return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+const getOrderDetail = async(req,res)=>{
+    try{
+        console.log("Request.params.prodId :",req.params.orderId)
+        const orderId = req.params.orderId
+        const order = await Order.find({ _id : orderId}).populate({
+            path: "orderedItems.product",
+            populate:  [{ path: "brand" }, { path: "category" }]
+        }).populate("address");
+        console.log("order :",order)
+        return res.render('admin/adminOrderDetails',{ title : "Lapshop Admin" , order})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal serer error" })
+    }
+}
+
 
 
 module.exports = {
@@ -747,5 +778,7 @@ module.exports = {
     getAdCarousel,
     postAdminAdCarousel,
     adminBlockAdCarousel,
-    adminDeleteAdCarousel
+    adminDeleteAdCarousel,
+    getOrders,
+    getOrderDetail
 }

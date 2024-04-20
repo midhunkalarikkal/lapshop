@@ -93,4 +93,8 @@ adminRouter.post('/updateCoupon/:couponId',adminAuth.isAdminLoggedIn,couponContr
 // To block or unblock a coupon
 adminRouter.post('/blockCoupon/:couponId',adminAuth.isAdminLoggedIn,couponController.adminBlockCoupon)
 
+adminRouter.get('/orders',adminAuth.isAdminLoggedIn,adminController.getOrders)
+
+adminRouter.get('/adminOrderDetail/:orderId',adminAuth.isAdminLoggedIn,adminController.getOrderDetail)
+
 module.exports = adminRouter

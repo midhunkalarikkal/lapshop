@@ -1,0 +1,155 @@
+<!-- Admin header -->
+<%-include("../adminpartials/admin_navbar.ejs")%>
+
+<section class="view">
+    <div class="container mt-5 ">
+        <!-- Heading start -->
+        <div class="row">
+            <div class="col-lg-10 offset-lg-1">
+                <div class="head d-flex justify-content-between align-items-center">
+                    <h1>Orders</h1>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <!-- Heading end -->
+        <!-- Table row start -->
+        <div class="row d-flex flex-row align-items-center justify-content-center">
+            <div class="table-responsive col-lg-10">
+                    <% if(orders && orders !== "" && Array.isArray(orders)){ %>
+                        <table class="table text-center table-striped my-5 p-1">
+                                <thead>
+                                    <tr class="table-dark">
+                                        <th class="text-center text-light">OrderId</th>
+                                        <th class="text-center text-light">UserId</th>
+                                        <th class="text-center text-light">Item</th>
+                                        <th class="text-center text-light">Order total</th>
+                                        <th class="text-center text-light">Order staus</th>
+                                        <th class="text-center text-light">Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for(let i = 0; i < orders.length; i++){ %>
+                                        <% for(let j = 0; j < orders[i].orderedItems.length; j++){ %>
+                                        <tr class="align-middle">
+                                            <td>
+                                                <%= orders[i]._id.toString().slice(-6)  %>
+                                            </td>
+                                            <td>
+                                                <%= orders[i].userId.toString().slice(-6)  %>
+                                            </td>
+                                            <td>
+                                                <%= orders[i].orderedItems[j].product.brand.name %>
+                                                <%= orders[i].orderedItems[j].product.name %>
+                                            </td>
+                                            <td>
+                                                <select class="form-select" id="orderStatus<%= i %>_<%= j %>">
+                                                    <option value="Processing" <% if (orders[i].orderedItems[j].status === 'Processing') { %> selected <% } %>>Processing</option>
+                                                    <option value="Shipped" <% if (orders[i].orderedItems[j].status === 'Shipped') { %> selected <% } %>>Shipped</option>
+                                                    <option value="Delivered" <% if (orders[i].orderedItems[j].status === 'Delivered') { %> selected <% } %>>Delivered</option>
+                                                    <option value="User cancelled" <% if (orders[i].orderedItems[j].status === 'User cancelled') { %> selected <% } %>>User cancelled</option>
+                                                    <option value="admin cancelled" <% if (orders[i].orderedItems[j].status === 'admin cancelled') { %> selected <% } %>>admin cancelled</option>
+                                                    <option value="return approved" <% if (orders[i].orderedItems[j].status === 'return approved') { %> selected <% } %>>return approved</option>
+                                                    <option value="return rejected" <% if (orders[i].orderedItems[j].status === 'return rejected') { %> selected <% } %>>return rejected</option>
+                                                </select>
+                                            </td>
+                                            <td>
+                                                ₹ <%= orders[i].orderTotal %>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= orders[i]._id %>">Details</button>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                        <% } %>
+                                </tbody>
+                            </table>
+                            <% }else{ %>
+                            <div class="alert alert-info text-center" role="alert">No Orders found in the database.</div>
+                     <% } %>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Script for the sweet alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    
+    // Script for block and unblock the user
+        document.querySelectorAll('.prod-switch').forEach(function(userSwitch) {
+        userSwitch.addEventListener('change', function () {
+            var productId = this.dataset.productId;
+            var blockStatus = this.value;
+
+            // Confirm the action with a modal dialog
+            Swal.fire({
+                title: 'Confirmation',
+                text: 'Are you sure you want to change the block status?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send a POST request to the server
+                    fetch(`/admin/blockProduct${productId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ blockStatus: blockStatus })
+                    })
+                    .then(response => {
+                        // Check if the response is successful
+                        if (response.ok) {
+                            return response.json();
+                        } else {
+                            throw new Error('Failed to update product block status.');
+                        }
+                    })
+                    .then(data => {
+                        // Handle the response data
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Product block status has been updated.'
+                        });
+                    })
+                    .catch(error => {
+                        // Handle errors
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: error.message
+                        });
+                    });
+                } else {
+                    // Action cancelled
+                    location.reload();
+                }
+            });
+        });
+    });
+
+    // Script for redirecting to order detailed page
+    function goToOrderDetail(button) {
+        const orderId = button.getAttribute('data-orderId');
+        console.log("orderId :", orderId);
+        window.location.href = `adminOrderDetail/${orderId}`;
+    }
+
+    
+        
+        //Script for the data table
+        $(document).ready(function(){
+            $("table").DataTable({
+                order : [0, 'desc']
+            })
+        })
+    </script>
+    
+    
+    <!-- Admin footer -->
+    <%-include("../adminpartials/admin_footer.ejs")%>
