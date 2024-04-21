@@ -424,7 +424,7 @@ const getCatProduct = async(req,res)=>{
         // console.log("res body :",req.body)
         // console.log("res body categories :",req.body.categories)
         // console.log("res body brands :",req.body.brands)
-        // console.log("res body sortCriteria :",req.body.sortCriteria)
+        console.log("res body sortCriteria :",req.body.sortCriteria)
         // console.log("req body currentPage :", req.body.currentPage)
         // console.log("Search input value :",req.body.inputValue)
         let productData
@@ -533,9 +533,13 @@ const getCatProduct = async(req,res)=>{
                 productData.sort((a,b) => b.offerPrice - a.offerPrice)
             }else if(sortCriteria === "lowToHigh"){
                 productData.sort((a,b) => a.offerPrice - b.offerPrice)
+            }else if(sortCriteria === "ascending"){
+                productData.sort((a,b) => a.name.localeCompare(b.name))
+            }else if(sortCriteria === "descending"){
+                productData.sort((a,b) => b.name.localeCompare(a.name))
             }
 
-            // console.log(productData)
+            console.log(productData)
 
             res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
         }else{

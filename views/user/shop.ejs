@@ -69,6 +69,18 @@
                                             <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
                                         </a>
                                     </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <input type="radio" class="custom-control-input" id="A-Z">    
+                                            <label class="custom-control-label" for="A-Z">A - Z</label>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="#">
+                                            <input type="radio" class="custom-control-input" id="Z-A">    
+                                            <label class="custom-control-label" for="Z-A">Z - A</label>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -146,7 +158,7 @@
 
                     <!-- Sorting Start -->
                     <div class="border-bottom mb-4 pb-4">
-                        <h6 class="font-weight-semi-bold mb-4">Sort by price</h6>
+                        <h6 class="font-weight-semi-bold mb-4">Sort products</h6>
                         <form>
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="radio" class="custom-control-input" id="price-HighToLow">
@@ -155,6 +167,14 @@
                             <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
                                 <input type="radio" class="custom-control-input" id="price-LowToHigh">
                                 <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
+                            </div>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="radio" class="custom-control-input" id="A-Z">
+                                <label class="custom-control-label" for="A-Z">A - Z</label>
+                            </div>
+                            <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                                <input type="radio" class="custom-control-input" id="Z-A">
+                                <label class="custom-control-label" for="Z-A">Z - A</label>
                             </div>
                         </form>
                     </div>
@@ -345,6 +365,10 @@
                     sortCriteria = "highToLow";
                 } else if (selectedSortCriteria === "price-LowToHigh") {
                     sortCriteria = "lowToHigh";
+                } else if (selectedSortCriteria === "A-Z") {
+                    sortCriteria = "ascending";
+                }else if (selectedSortCriteria === "Z-A") {
+                    sortCriteria = "descending";
                 } else {
                     sortCriteria = null;
                 }
