@@ -200,15 +200,15 @@
                             <% } %>
                             <div class="checkbox-payment">
                                 <div class="razorpay d-flex flex-row">
-                                    <input type="checkbox" name="paymentMethod" id="razorpay">
+                                    <input type="radio" name="paymentMethod" id="razorpay">
                                     <label for="razorpay" class="mx-2">Razorpay</label>
                                 </div>
                                 <div class="cod d-flex flex-row">
-                                    <input type="checkbox" name="paymentMethod" id="cod">
+                                    <input type="radio" name="paymentMethod" id="cod">
                                     <label for="cod" class="mx-2">Cash on delivery</label>
                                 </div>
                                 <div class="wallet d-flex flex-row">
-                                    <input type="checkbox" name="paymentMethod" id="wallet">
+                                    <input type="radio" name="paymentMethod" id="wallet">
                                     <label for="wallet" class="mx-2">Wallet</label>
                                 </div>
                             </div>                            
@@ -264,6 +264,7 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
     ////// To appy coupon \\\\\\
@@ -280,12 +281,12 @@
             const couponMinAmount = Number(document.getElementById("coupnMinAmount").value)
             const couponId = document.getElementById("couponId").value;
             
-            console.log("coupon code :",couponCode)
-            console.log("userCouponCode :",userCouponCode)
-            console.log("subTotal :", subTotal)
-            console.log("couponMinAmount :", couponMinAmount)
-            console.log("couponAmount :",couponAmount)
-            console.log("couponId :",couponId)
+            // console.log("coupon code :",couponCode)
+            // console.log("userCouponCode :",userCouponCode)
+            // console.log("subTotal :", subTotal)
+            // console.log("couponMinAmount :", couponMinAmount)
+            // console.log("couponAmount :",couponAmount)
+            // console.log("couponId :",couponId)
             
             if (!userCouponCode || !couponCode || !subTotal || !couponAmount || !couponMinAmount || !couponId) {
                 console.error("One or more coupon elements are missing.");
@@ -328,16 +329,16 @@
         return couponId;
     }
     
-    document.querySelectorAll('input[name="paymentMethod"]').forEach(function(checkbox) {
-        checkbox.addEventListener('click', function() {
-            document.querySelectorAll('input[name="paymentMethod"]').forEach(function(cb) {
-                if (cb !== checkbox) {
-                    cb.checked = false;
-                }
-            });
-            console.log(checkbox)
-        });
-    });
+    // document.querySelectorAll('input[name="paymentMethod"]').forEach(function(checkbox) {
+    //     checkbox.addEventListener('click', function() {
+    //         document.querySelectorAll('input[name="paymentMethod"]').forEach(function(cb) {
+    //             if (cb !== checkbox) {
+    //                 cb.checked = false;
+    //             }
+    //         });
+    //         console.log(checkbox)
+    //     });
+    // });
         
     function confirmOrder() {
         const selectedPaymentMethod = document.querySelector('input[name="paymentMethod"]:checked');
@@ -356,30 +357,35 @@
         const userAddressId = document.getElementById("userAddress").value;
         const subTotal = Number(document.getElementById('subTotal').value);
         let totalAmount;
+        let paymentMethod = selectedPaymentMethodId;
+        let couponId = null;
 
         if (couponAppliedTotal && couponAppliedTotal !== undefined && couponAppliedTotal !== "") {
-                totalAmount = couponAppliedTotal;
+            totalAmount = couponAppliedTotal;
         } else {
             totalAmount = subTotal
         }
 
         const data = {
             paymentMethod: selectedPaymentMethodId,
-            userAddressId: userAddressId,
             totalAmount: totalAmount
         };
 
+
         // If the coupon is not empty, call submitCoupon function
         if (coupon && coupon !== " " && coupon !== 0) {
-            const couponId = submitCoupon();
-            if (couponId) {
-                data.couponId = couponId;
-            }
+            couponId = submitCoupon();
+            // if (couponId) {
+            //     data.couponId = couponId;
+            // }
+            console.log("couponId :",couponId)
         }
 
-        console.log("data :",data)
+        console.log("totalAmount :",totalAmount)
+        console.log("paymentMethod :",paymentMethod)
+        console.log("userAddressId :",userAddressId)
 
-        fetch('/postPayment', {
+        fetch('/orderConfirmation', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -397,30 +403,58 @@
             }
         })
         .then(data => {
-            if (data && data.error) {
-                throw new Error(data.error);
+            if (data.success) {
+              if (paymentMethod === "razorpay") {
+                var options = {
+                  key: "" + data.key_id + "",
+                  amount: "" + data.amount + "",
+                  currency: "INR",
+                  name: "LapShop",
+                  description: "Your laptop",
+                  image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAYFBMVEX///8Aru8ArO8Aqe4AqO4wtPA1uPE6uvG24vnI6vtIvfLZ8fz6/v9Lv/Lo9f1SwfNxyvTR7fv1/P5ox/Tl9v3C5vqCz/Wd2fep3vjt+f655PmU1vd9y/SK0fbi9P0NsfBjAXEwAAADr0lEQVR4nO3c3ZKiMBAFYEgAQWRBQREFef+3HHBmdv5qtmLOReq457vcnYtOpSGd0DGKRERERERERERERERERERERERERERERERERORxZd9sszTNFps32Rfph/sf1adL6Jgf0c/WGhM/whg7D6HjdpUb+9Dg3tkxdOSO2sRrfMs0NqFDd7Pxm8B1Ds+hY3eyfezx+zKHu9DBu2i8ZzC2fejgXeS+z+Ayg5vQwbsY/FM0Nl3o6F0ADyFHjvb+DyFHjnb+D2GcUNQzmf8AOXJ0AnJ0Gzp4F3v/AXK8R3ez/wA5crQBqjWKHD0C71HL8B49AMUMx5aifvYcPQPvUYoc7YAcTShydAPkaB06eBdXIEdjhhwtkYcwDx29C6CY4cjRE1KPHkJH76BANoXH0NE7QApu04aO3kULLIUzw/noBSm4i9DRO4AKborvMMDpYZyGDt4FUnAnt9DRO+iQYobi4AIpuCk2hUjBbZ694E4ouhJSYAYpPmcjBTfFQrFHCu4ydPQudML9O45d7xF4CGeGXe/Bf3yx3YeO3gWwKbTX0MG7AN6jHNUasGcyFCthNHhPoa0Yzi2iqPB8kRpDsRBGnk0lxpqJYT/x6rw2AH/3Y8L+stYmts45EvRd0U/jODZNu6gXVVVtt5tPtlVVt20zTtO1P5+PFIWoCJ/DsOi67nYrF/tXRVEcF5fLJb87FvuS5w36SdnMySf2X5b/ztqe7FVzTB4s24xN4pFpkF5dliapeMboeYJh7Cl05K4q372F5dg7IR9kTBY6djfAV0NL8WEb+mKRUDTQQCf6FE1QUIsJyUkNdNrGsdOHWhQYvm9jn/A5DtygCzIUp8JRifQKcVSoT/+JFLskM4WO3skFaafhyFPgkkXMUYIPyCRyvE+RniGKvjaoX4EkT5GeE5L6FOjJ4Lg4CvUsmCp09E5y5GVDcakLaoSmuFACNQpzXLjAFkWGCwnYsdQcOngn0E6R46Af2SlybDKg210Uv9ri3UN0n0SORREq3igOwaE8pegZfv6bpFieciyK0Mkbx6KI5CnHohiNz/5TZv/BzyhhP4VFsShCP7nHsSgih+AkO0Xk3izHohjtMu8hWoprpcsQa99nkeVJjKLro62Z7zi+mq5uldcYWfps7srTLz/J/vOWxseljJnijP/DLZ/qdF6bg9cm6WWw85xmm6qu2zd1/XZPo1r/sbmSLBbf7Ibhz2oYhgPXjRkRERERERERERERERERERERERERERERERHh8gI/MTSJ2unvZgAAAABJRU5ErkJggg==",
+                  order_id: "" + data.order_id + "", 
+                  handler: function (response) {
+                    let redirectUrl;
+                    if(couponId !== null){
+                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&couponId=${couponId}`;
+                    }else{
+                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}`;
+                    }
+                    window.location.href = redirectUrl;
+                },
+                prefill: {
+                    name: "" + data.name + "", 
+                      email: "" + data.email + "",
+                      contact: "9000090000", 
+                    },
+                    notes: {
+                        address: "Razorpay Corporate Office",
+                    },
+                    theme: {
+                        color: "#ffc107",
+                    },
+                };
+                var rzp1 = new Razorpay(options);
+                rzp1.on("payment.failed", function (response) {
+                    alert("Payment Failed");
+                });
+                rzp1.open();
+            } else if (paymentMethod === "cod") {
+                let redirectUrl;
+                    if(couponId !== null){
+                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&couponId=${couponId}`;
+                    }else{
+                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}`;
+                    }
+                window.location.href = redirectUrl;
             }
-            Swal.fire({
-                title: "Success",
-                text: data.message,
-                icon: "success",
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            }).then(()=>{
-                window.location.href = "/orderConfirmation"
-            })
-        })
-        .catch(error => {
-            Swal.fire({
-                title: "Error",
-                text: error,
-                icon: "error",
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            })
-        });
+        } else {
+            alert(data.msg);
+        }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
     }
 
         

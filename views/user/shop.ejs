@@ -511,6 +511,17 @@
                                 productCardFooter.append(addToCartButton);
                             }
                         }
+
+                        const defaultAddToCartButton = $(`
+                                    <button class="card-footer d-flex justify-content-center"
+                                            data-prod-id="${product._id}"
+                                            onclick="addToCart(this)">
+                                        <a href="#" class="btn btn-sm p-0">
+                                            <i class="fas fa-shopping-cart"></i> Add to cart
+                                        </a>
+                                    </button>
+                                `);
+                                productCardFooter.append(defaultAddToCartButton);
                        
 
                         ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
@@ -637,12 +648,13 @@
             })
                 .then(response => {
                     const contentType = response.headers.get('content-type');
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
+                    // const message = "Your account is blocked, Please contact us"
+                    // const type = "danger"
                     if (contentType && contentType.includes('application/json')) {
                         return response.json(); 
                     } else {
-                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                        window.location.href = `/login`;
+                        // ?message=${encodeURIComponent(message)}&type=${type}
                     }
                 })
                 .then(data => {
@@ -683,12 +695,13 @@
             })
                 .then(response => {
                     const contentType = response.headers.get('content-type');
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
+                    // const message = "Your account is blocked, Please contact us"
+                    // const type = "danger"
                     if (contentType && contentType.includes('application/json')) {
                         return response.json(); 
                     } else {
-                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                        window.location.href = `/login`;
+                        // ?message=${encodeURIComponent(message)}&type=${type}
                     }
                 })
                 .then(data => {

@@ -50,10 +50,10 @@
                                                 <%= coupon.endDate.toLocaleDateString() %>
                                             </td>
                                             <td>
-                                                <%= coupon.minAmount %>
+                                                <%= coupon.couponAmount %>
                                             </td>
                                             <td>
-                                                <%= coupon.couponAmount %>
+                                                <%= coupon.minAmount %>
                                             </td>
                                             <td>
                                                 <input type="radio" class="coupon-switch" data-cpId="<%= coupon._id %>" id="block_<%= coupon._id %>" name="block<%= coupon._id %>" value="block" <% if(coupon.isBlocked) { %>checked<% } %>>

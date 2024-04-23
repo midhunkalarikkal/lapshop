@@ -101,11 +101,14 @@ userRouter.get('/addAddressFromCheckout',userAuth.isUserLoggedIn,userController.
 //To get the payment page
 userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)
 
-//To confirm payemnt
-userRouter.post('/postPayment',userAuth.isUserLoggedIn,userController.postConfirmOrder)
+//To make a order placed
+userRouter.get('/placeOrder',userAuth.isUserLoggedIn,userController.placeOrder)
 
-//To get order confirmation page
-userRouter.get('/orderConfirmation',userAuth.isUserLoggedIn,userController.getOrderConfirmed)
+//To confirm order by paymnet
+userRouter.post('/orderConfirmation',userAuth.isUserLoggedIn,userController.orderConfirmation)
+
+//To get payment success page
+userRouter.get('/paymentSuccess',userAuth.isUserLoggedIn,userController.getPaymentSuccess)
 
 //To get the order page
 userRouter.get('/orders',userAuth.isUserLoggedIn,userController.getOrders)

@@ -1,4 +1,5 @@
 require('dotenv').config()
+const razorpayInstance = require('../config/razorpayConfig');
 const bcrypt = require('bcrypt')
 const User = require('../models/userModel')
 const Product = require('../models/productModel')
@@ -910,20 +911,21 @@ const getPaymentPage = async(req,res)=>{
 }
 
 // To confirm an order
-const postConfirmOrder = async(req,res)=>{
+const placeOrder = async(req,res)=>{
     try{
         console.log("req.session.user :",req.session.user)
         console.log("req.session.userNC :",req.session.userNC)
         const userId = req.session.user._id
-        const addressId = req.body.userAddressId
-        const totalAmount = req.body.totalAmount
-        const paymentMethod = req.body.paymentMethod
-        let couponId = "";
+        const addressId = req.query.addressId
+        const totalAmount = req.query.amount
+        const paymentMethod = req.query.paymentMethod
+
+        let couponId = null;
         let coupon = null;
 
         const cart = await Cart.find({ userId : userId})
-        if(req.body.couponId){
-            couponId = req.body.couponId
+        if(req.query.couponId){
+            couponId = req.query.couponId
             console.log("couponId :",couponId)
         }
         if (couponId && couponId !== null) {
@@ -963,10 +965,8 @@ const postConfirmOrder = async(req,res)=>{
             await cart[0].save()
             console.log("updated cart :",cart[0])
             console.log("req.session.NC :",req.session.NC)
-            return res.status(200).json({ message: "Order placed successfully." });
-        } else if (!orderSaved) {
-            return res.status(400).json({ error: "Failed to save order." });
-        } else {
+            return res.redirect('/paymentSuccess');
+        } else if(orderSaved) {
             cart[0].items = [];
             cart[0].totalCartPrice = 0;
             cart[0].totalCartDiscountPrice = 0;
@@ -974,7 +974,7 @@ const postConfirmOrder = async(req,res)=>{
             await cart[0].save()
             console.log("updated cart :",cart[0])
             console.log("req.session.userNC :",req.session.userNC)
-            return res.status(200).json({ message: "Order placed successfully." });
+            return res.redirect('/paymentSuccess');
         }
         
     }catch(error){
@@ -983,8 +983,63 @@ const postConfirmOrder = async(req,res)=>{
     }
 }
 
+
+const orderConfirmation = async(req,res)=>{
+    try{
+        const amount = req.body.totalAmount
+        const paymentMethod = req.body.paymentMethod
+        
+        if (paymentMethod === "razorpay") {
+            console.log("i am creating instance");
+            const name = req.session.user.fullname;
+            const email = req.session.user.email;
+            const options = {
+            amount: amount * 100,
+            currency: "INR",
+            receipt: "midhunkalarikkalp@gmail.com",
+            };
+            razorpayInstance.orders.create(options, (err, order) => {
+            if (!err) {
+                res.status(200).send({
+                success: true,
+                msg: "order created",
+                order_id: order.id,
+                amount: amount,
+                key_id: process.env.KEY_ID,
+                name: name,
+                email: email,
+                });
+            } else {
+                res.status(400).send({ success: false, msg: "SOmething went wrong!" });
+            }
+            });
+            console.log("i have done with instance creation");
+        }
+        if (paymentMethod === "cod") {
+            res.status(200).send({
+                success: true,
+            });
+        }
+        // if(paymentMethod === "wallet"){
+        //   const userInfo = await User.findOne({ _id: req.session.userData?._id });
+        //   console.log(userInfo)
+        //   const walletBalance = userInfo.wallet;
+        //   return res.json({
+        //     success: true,
+        //     paymentMethod,
+        //     walletBalance,
+        //     paymentAmount: req.session?.userData?.total,
+        //   });
+        // }
+
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 // To get the order confirm page
-const getOrderConfirmed = async(req,res)=>{
+const getPaymentSuccess = async(req,res)=>{
     try{
         userDetails = req.session.userNC
         const userId = req.session.user._id
@@ -1098,10 +1153,11 @@ module.exports = {
     getCheckout,
     getUserNewAddressFromCheckout,
     getPaymentPage,
-    postConfirmOrder,
-    getOrderConfirmed,
+    placeOrder,
+    getPaymentSuccess,
     getOrders,
     get505Error,
-    getOrderDetail
+    getOrderDetail,
+    orderConfirmation
 }
 
