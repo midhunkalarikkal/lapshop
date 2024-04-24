@@ -10,6 +10,7 @@ userRouter.use(bodyParser.urlencoded({extended:true}));
 const userController = require('../controller/userController')
 const cartController = require('../controller/cartController')
 const wishlistController = require('../controller/wishlistController')
+const orderController = require('../controller/orderController')
 
 //To get home page
 userRouter.get('/',userController.getHome)
@@ -102,21 +103,21 @@ userRouter.get('/addAddressFromCheckout',userAuth.isUserLoggedIn,userController.
 userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)
 
 //To make a order placed
-userRouter.get('/placeOrder',userAuth.isUserLoggedIn,userController.placeOrder)
+userRouter.get('/placeOrder',userAuth.isUserLoggedIn,orderController.placeOrder)
 
 //To confirm order by paymnet
-userRouter.post('/orderConfirmation',userAuth.isUserLoggedIn,userController.orderConfirmation)
+userRouter.post('/orderConfirmation',userAuth.isUserLoggedIn,orderController.orderConfirmation)
+
+//To get the order page
+userRouter.get('/orders',userAuth.isUserLoggedIn,orderController.getOrders)
+
+// To get the order detail page
+userRouter.get('/orderDetail/:orderId',userAuth.isUserLoggedIn,orderController.getOrderDetail)
 
 //To get payment success page
 userRouter.get('/paymentSuccess',userAuth.isUserLoggedIn,userController.getPaymentSuccess)
 
-//To get the order page
-userRouter.get('/orders',userAuth.isUserLoggedIn,userController.getOrders)
-
 //To get the 505 error page
 userRouter.get('/505Error',userAuth.isUserLoggedIn,userController.get505Error)
-
-// To get the order detail page
-userRouter.get('/orderDetail/:orderId',userAuth.isUserLoggedIn,userController.getOrderDetail)
 
 module.exports = userRouter

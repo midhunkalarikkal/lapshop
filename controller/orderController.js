@@ -1,22 +1,27 @@
+const razorpayInstance = require('../config/razorpayConfig');
 const Cart = require('../models/cartModel')
 const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
+const Product = require('../models/productModel')
+
+let userDetails;
 
 // To confirm an order
-const postConfirmOrder = async(req,res)=>{
+const placeOrder = async(req,res)=>{
     try{
         console.log("req.session.user :",req.session.user)
         console.log("req.session.userNC :",req.session.userNC)
         const userId = req.session.user._id
-        const addressId = req.body.userAddressId
-        const totalAmount = req.body.totalAmount
-        const paymentMethod = req.body.paymentMethod
-        let couponId = "";
+        const addressId = req.query.addressId
+        const totalAmount = req.query.amount
+        const paymentMethod = req.query.paymentMethod
+
+        let couponId = null;
         let coupon = null;
 
         const cart = await Cart.find({ userId : userId})
-        if(req.body.couponId){
-            couponId = req.body.couponId
+        if(req.query.couponId){
+            couponId = req.query.couponId
             console.log("couponId :",couponId)
         }
         if (couponId && couponId !== null) {
@@ -29,14 +34,16 @@ const postConfirmOrder = async(req,res)=>{
         console.log("paymentMethod :",paymentMethod)
         console.log("cart :",cart[0])
         let cartIdToUpdate = cart[0]._id
+        let productQuantity = 0
         console.log("cart id :",cartIdToUpdate)
+      
 
         const newOrder = new Order({
             userId : userId,
             orderedItems: cart[0].items.map(item => ({
                 product: item.product,
                 quantity: item.quantity,
-                totalPrice: item.totalPrice,
+                totalPrice: item.totalPrice, // actually this is price of a single quanityty
                 statusDate: new Date()
             })),
             address : addressId,
@@ -47,6 +54,14 @@ const postConfirmOrder = async(req,res)=>{
     
         const orderSaved = await newOrder.save()
         if (orderSaved && coupon  && coupon !== "") {
+            // Update product stock for each item in cart
+            await Promise.all(cart[0].items.map(async (item) => {
+                const product = await Product.findById(item.product);
+                console.log("product quantity :", product.noOfStock);
+                console.log("orderedItem quantity :", item.quantity);
+                product.noOfStock -= item.quantity;
+                await product.save();
+            }));
             coupon.appliedUsers.push({ userId: userId });
             await coupon.save();
             cart[0].items = [];
@@ -56,10 +71,16 @@ const postConfirmOrder = async(req,res)=>{
             await cart[0].save()
             console.log("updated cart :",cart[0])
             console.log("req.session.NC :",req.session.NC)
-            return res.status(200).json({ message: "Order placed successfully." });
-        } else if (!orderSaved) {
-            return res.status(400).json({ error: "Failed to save order." });
-        } else {
+            return res.redirect('/paymentSuccess');
+        } else if(orderSaved) {
+            // Update product stock for each item in cart
+            await Promise.all(cart[0].items.map(async (item) => {
+                const product = await Product.findById(item.product);
+                console.log("product quantity :", product.noOfStock);
+                console.log("orderedItem quantity :", item.quantity);
+                product.noOfStock -= item.quantity;
+                await product.save();
+            }));
             cart[0].items = [];
             cart[0].totalCartPrice = 0;
             cart[0].totalCartDiscountPrice = 0;
@@ -67,7 +88,7 @@ const postConfirmOrder = async(req,res)=>{
             await cart[0].save()
             console.log("updated cart :",cart[0])
             console.log("req.session.userNC :",req.session.userNC)
-            return res.status(200).json({ message: "Order placed successfully." });
+            return res.redirect('/paymentSuccess');
         }
         
     }catch(error){
@@ -76,41 +97,58 @@ const postConfirmOrder = async(req,res)=>{
     }
 }
 
-// To get the order confirm page
-const getOrderConfirmed = async(req,res)=>{
+
+const orderConfirmation = async(req,res)=>{
     try{
-        userDetails = req.session.userNC
-        const userId = req.session.user._id
-        const order = await Order.find({userId : userId})
-        console.log("order :",order)
-        const latestOrder = order.sort((a, b) => b.orderDate - a.orderDate)[0];
-        console.log("latest order :",latestOrder)
-        const addressId = latestOrder.address
-        const deliveryAddress = await Address.findById(addressId)
-        let paymentMethod = latestOrder.paymentMethod
-        if(paymentMethod === "cod"){
-            paymentMethod = "Cash on delivery."
-        }else if( paymentMethod === "wallet"){
-            paymentMethod = "Wallet payment."
-        }else if(paymentMethod === "razorpay"){
-            paymentMethod = "Online razorpay payment."
+        const amount = req.body.totalAmount
+        const paymentMethod = req.body.paymentMethod
+        
+        if (paymentMethod === "razorpay") {
+            console.log("i am creating instance");
+            const name = req.session.user.fullname;
+            const email = req.session.user.email;
+            const options = {
+            amount: amount * 100,
+            currency: "INR",
+            receipt: "midhunkalarikkalp@gmail.com",
+            };
+            razorpayInstance.orders.create(options, (err, order) => {
+            if (!err) {
+                res.status(200).send({
+                success: true,
+                msg: "order created",
+                order_id: order.id,
+                amount: amount,
+                key_id: process.env.KEY_ID,
+                name: name,
+                email: email,
+                });
+            } else {
+                res.status(400).send({ success: false, msg: "SOmething went wrong!" });
+            }
+            });
+            console.log("i have done with instance creation");
         }
-        const orderTotal = latestOrder.orderTotal
-        const orderedDate = latestOrder.orderDate
-        const expectedDelivery = new Date(orderedDate);
-            expectedDelivery.setDate(expectedDelivery.getDate() + 4);
-        const data = {
-            address : deliveryAddress,
-            paymentMethod : paymentMethod,
-            orderTotal : orderTotal,
-            orderedDate : orderedDate,
-            expectedDelivery : expectedDelivery
+        if (paymentMethod === "cod") {
+            res.status(200).send({
+                success: true,
+            });
         }
-        console.log("data :",data)
-        return res.render('user/orderConfirmation',{userDetails , data})
+        // if(paymentMethod === "wallet"){
+        //   const userInfo = await User.findOne({ _id: req.session.userData?._id });
+        //   console.log(userInfo)
+        //   const walletBalance = userInfo.wallet;
+        //   return res.json({
+        //     success: true,
+        //     paymentMethod,
+        //     walletBalance,
+        //     paymentAmount: req.session?.userData?.total,
+        //   });
+        // }
+
     }catch(error){
         console.log(error.message)
-        return res.stauts(500).json({ message : "Internal server error" })
+        return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -119,12 +157,13 @@ const getOrders = async(req,res)=>{
     try{
         userDetails = req.session.userNC
         const userId = req.session.user._id
-        const order = await Order.find({ userId: userId }).populate({
+        let order = []
+        order = await Order.find({ userId: userId }).populate({
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
         });
         console.log("orders :",order)
-        console.log("Ordered items :",order[0].orderedItems)
+        // console.log("Ordered items :",order[0].orderedItems)
         return res.render('user/orders',{userDetails , order})
     }catch(error){
         console.log(error.message)
@@ -132,8 +171,26 @@ const getOrders = async(req,res)=>{
     }
 }
 
+
+const getOrderDetail = async(req,res)=>{
+    try{
+        console.log("Request.params.prodId :",req.params.orderId)
+        const orderId = req.params.orderId
+        const order = await Order.find({ _id : orderId}).populate({
+            path: "orderedItems.product",
+            populate:  [{ path: "brand" }, { path: "category" }]
+        }).populate("address");
+        console.log("order :",order)
+        return res.render('user/orderDetail',{userDetails , order})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal serer error" })
+    }
+}
+
 module.exports = {
-    postConfirmOrder,
-    getOrderConfirmed,
-    getOrders
+    placeOrder,
+    orderConfirmation,
+    getOrders,
+    getOrderDetail
 }
