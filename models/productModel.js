@@ -3,56 +3,56 @@ const mongoose = require('mongoose')
 const productSchema = new mongoose.Schema({
     name : {
         type : String,
-        requird : true
+        required : true
     },
     brand : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Brand',
-        requird : true
+        required : true
     },
     description : {
         type : String,
-        requird : true
+        required : true
     },
     colour : {
         type : String,
-        requird : true
+        required : true
     },
     category : {
         type : mongoose.Schema.Types.ObjectId,
         ref : 'Category',
-        requird : true
+        required : true
     },
     noOfStock : {
         type : Number,
-        requird : true
+        required : true
     },
     realPrice : {
         type : Number,
-        require :  true
+        required :  true
     },
     offerPrice : {
         type : Number,
-        require :  true
+        required :  true
     },
     discountPercentage : {
         type : Number,
-        require :  true
+        required :  true
     },
     images : [
         {
         type : String,
-        require :  true
+        required :  true
         },
     ],
     isBlocked : {
         type : Boolean,
-        require : true,
+        required : true,
         default : false
     },
     created : {
         type : Date,
-        requird : true,
+        required : true,
         default : Date.now
     }
 })
