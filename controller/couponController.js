@@ -19,14 +19,20 @@ const postAdminCoupon = async(req,res)=>{
         console.log(req.body)
             const { couponName , couponCode , couponStartDate , couponEndDate , couponAmount , couponMinAmount} = req.body;
 
-            const existingCoupon = await Coupon.findOne({  couponName: { $regex: new RegExp(couponName, 'i') } });
-            if (existingCoupon) {
-                return res.status(400).json({ error: "Coupon with same name already exists" });
+            const existingCoupon = await Coupon.findOne({
+                $or: [
+                    { couponName: { $regex: new RegExp(couponName, 'i') } },
+                    { couponCode: { $regex: new RegExp(couponCode, 'i') } }
+                ]
+            });
+            console.log("existing coupon :", existingCoupon)
+            if (existingCoupon !== null) {
+                return res.status(400).json({ error: "Coupon with the same name or code already exists" });
             }
 
             // Date validation
             if (new Date(couponStartDate) >= new Date(couponEndDate)) {
-                return res.status(400).json({ error: "End date must be after start date" });
+                return res.status(400).json({ error: "End date must be greater than start date" });
             }
 
             const newCoupon = new Coupon({
@@ -63,17 +69,28 @@ const adminUpdateCoupon = async(req, res) => {
         console.log("Request params :",req.params.couponId)
         const coupon = await Coupon.findById(req.params.couponId);
 
-       
-            coupon.couponName = req.body.couponName || coupon.couponName
-            coupon.couponCode = req.body.couponCode || coupon.couponCode
-            coupon.startDate = req.body.couponStartDate || coupon.startDate
-            coupon.endDate = req.body.couponEndDate || coupon.endDate
-            coupon.minAmount = req.body.couponMinAmount || coupon.minAmount
-            coupon.couponAmount = req.body.couponAmount || coupon.couponAmount
+        const existCoupon = await Coupon.find({
+            _id: { $ne: req.params.couponId },
+            $or: [
+                { couponCode: { $regex: new RegExp(`^${req.body.couponCode}$`, "i") } },
+                { couponName: { $regex: new RegExp(req.body.couponName, 'i') } }
+            ]
+        });
+        console.log("exist coupon :",existCoupon)
+        if(existCoupon.length > 0){
+            return res.status(400).json({ message: "Coupon code already exist" });
+        }
 
-        // // Save the updated coupon
+        coupon.couponName = req.body.couponName || coupon.couponName
+        coupon.couponCode = req.body.couponCode || coupon.couponCode
+        coupon.startDate = req.body.couponStartDate || coupon.startDate
+        coupon.endDate = req.body.couponEndDate || coupon.endDate
+        coupon.minAmount = req.body.couponMinAmount || coupon.minAmount
+        coupon.couponAmount = req.body.couponAmount || coupon.couponAmount
+
+
         await coupon.save();
-        console.log("UPdated succesfully")
+        console.log("Coupon updated succesfully")
         return res.status(200).json({ message: "Coupon updated successfully" });
     } catch (error) {
         console.log(error.message);

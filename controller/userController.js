@@ -890,12 +890,15 @@ const getPaymentPage = async(req,res)=>{
           });
         const userCart = cart[0]
         let coupon = await Coupon.find({isBlocked : false })
-        console.log("coupon :",coupon)
+        console.log("payment page coupons :",coupon)
         
          // Filter coupons that are valid based on start and end dates
          const validCoupons = coupon.filter(coupon => {
+            console.log("coupon name :",coupon.couponName)
             const startDate = new Date(coupon.startDate);
+            console.log("coupon start date :",coupon.startDate)
             const endDate = new Date(coupon.endDate);
+            console.log("coupon end date :",coupon.endDate)
             const userNotApplied = coupon.appliedUsers.every(user => user.userId.toString() !== userId.toString());
             return startDate <= currentDate && endDate >= currentDate && userNotApplied;
         });

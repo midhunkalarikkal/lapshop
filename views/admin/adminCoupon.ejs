@@ -95,31 +95,38 @@
                     <form id="couponForm" action="/admin/AddNewCoupon" method="POST">
                         <div class="mb-3">
                             <label for="couponName" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="couponName" name="couponName" required>
+                            <input type="text" class="form-control" id="couponName" name="couponName" required oninput="checkName()">
+                            <span id="nameError" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="couponCode" class="form-label">Code</label>
-                            <input type="text" class="form-control" id="couponCode" name="couponCode" required>
+                            <input type="text" class="form-control" id="couponCode" name="couponCode" required oninput="checkCode()">
+                            <span id="codeError" class="text-danger"></span>
                         </div>
                         <div class="mb-3">
                             <label for="couponStartDate" class="form-label mx-2">Start date</label>
                             <input type="date" name="couponStartDate" id="couponStartDate"
-                                class="form-control form-control-md" required>
+                            class="form-control form-control-md" required>
+                            
                         </div>
                         <div class="mb-3">
                             <label for="couponEndDate" class="form-label mx-2">End date</label>
                             <input type="date" name="couponEndDate" id="couponEndDate"
-                                class="form-control form-control-md" required>
+                            class="form-control form-control-md" required>
+                            
                         </div>
                         <div class="mb-3">
-                            <label for="couponMinAmount" class="form-label mx-2">Minimum amount</label>
+                            <label for="couponMinAmount" class="form-label mx-2">Minimum order amount</label>
                             <input type="text" name="couponMinAmount" id="couponMinAmount"
-                                class="form-control form-control-md" required>
+                            class="form-control form-control-md" required min="0" max="50000" oninput="checkMinAmount()">
+                            <span id="minAmountError" class="text-danger"></span>
+                            
                         </div>
                         <div class="mb-3">
-                            <label for="couponAmount" class="form-label mx-2">Amount</label>
+                            <label for="couponAmount" class="form-label mx-2">Amount / percentage</label>
                             <input type="text" name="couponAmount" id="couponAmount"
-                                class="form-control form-control-md" required>
+                            class="form-control form-control-md" required oninput="checkAmount()">
+                            <span id="amountError" class="text-danger"></span>
                         </div>
                     </form>
                 </div>
@@ -134,6 +141,121 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
+        ////// To check the coupon code \\\\\\
+        function checkCode() {
+            const codeInput = document.getElementById('couponCode');
+            const couponCode = codeInput.value.trim();
+            const codeError = document.getElementById('codeError');
+
+            const codePattern = /^[A-Z0-9]+$/;
+
+            if (couponCode === "") {
+                codeInput.classList.remove('is-invalid');
+                codeError.textContent = '';
+                return false;
+            }
+            if (!codePattern.test(couponCode)) {
+                codeInput.classList.add('is-invalid');
+                codeError.textContent = 'Code must contain uppercase and numbers.';
+                return false;
+            } else if (couponCode.length < 5 || couponCode.length > 10) {
+                codeInput.classList.add('is-invalid');
+                codeError.textContent = 'Code must be between 5 and 10 characters long';
+                return false;
+            } else {
+                codeInput.classList.remove('is-invalid');
+                codeError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// To check the coupon name \\\\\\
+        function checkName() {
+            const nameInput = document.getElementById('couponName');
+            const couponName = nameInput.value.trim();
+            const nameError = document.getElementById('nameError');
+
+            const namePattern = /^[A-Za-z\s]+$/;
+
+            if (couponName === "") {
+                nameInput.classList.remove('is-invalid');
+                nameError.textContent = '';
+                return false;
+            }
+            if (!namePattern.test(couponName)) {
+                nameInput.classList.add('is-invalid');
+                nameError.textContent = 'Name must contain alphabets.';
+                return false;
+            } else if (couponName.length < 5 || couponName.length > 15) {
+                nameInput.classList.add('is-invalid');
+                nameError.textContent = 'Code must be between 5 and 15 characters long';
+                return false;
+            } else {
+                nameInput.classList.remove('is-invalid');
+                nameError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// To check the coupon minimum order amount \\\\\\
+        function checkMinAmount() {
+            const couponMinAmountInput = document.getElementById('couponMinAmount');
+            const couponMinAmount = couponMinAmountInput.value.trim();
+            const minAmountError = document.getElementById('minAmountError');
+
+            const minAmountPattern = /^[1-9]\d*$/;
+
+            if (couponMinAmount === "") {
+                couponMinAmountInput.classList.remove('is-invalid');
+                minAmountError.textContent = '';
+                return false;
+            }
+            if (!minAmountPattern.test(couponMinAmount)) {
+                couponMinAmountInput.classList.add('is-invalid');
+                minAmountError.textContent = 'Amount must contain positive numbers.';
+                return false;
+            } else if (couponMinAmount < 100 || couponMinAmount > 50000) {
+                couponMinAmountInput.classList.add('is-invalid');
+                minAmountError.textContent = 'Amount must be between 100 and 50000.';
+                return false;
+            } else {
+                couponMinAmountInput.classList.remove('is-invalid');
+                minAmountError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// To check the coupon amount / percentage \\\\\\
+        function checkAmount() {
+            const couponAmountInput = document.getElementById('couponAmount');
+            const couponAmount = couponAmountInput.value.trim();
+            const amountError = document.getElementById('amountError');
+
+            const amountPattern = /^[1-9]\d*$/;
+
+            if (couponAmount === "") {
+                couponAmountInput.classList.remove('is-invalid');
+                amountError.textContent = '';
+                return false;
+            }
+            if (!amountPattern.test(couponAmount)) {
+                couponAmountInput.classList.add('is-invalid');
+                amountError.textContent = 'Amount must contain positive numbers.';
+                return false;
+            } else if (couponAmount < 1 || couponAmount > 5000) {
+                couponAmountInput.classList.add('is-invalid');
+                amountError.textContent = 'Amount must be between 1 and 5000.';
+                return false;
+            } else {
+                couponAmountInput.classList.remove('is-invalid');
+                amountError.textContent = '';
+                return true;
+            }
+        }
+
+       
+
         ////// To add new home coupon through fetch \\\\\
         document.getElementById("save").addEventListener("click", async function () {
             const couponName = document.getElementById("couponName").value;
@@ -145,6 +267,14 @@
 
             const couponBody = {
                 couponName, couponCode, couponStartDate, couponEndDate, couponAmount , couponMinAmount
+            }
+
+            if( !checkCode() || !checkName() || !checkMinAmount() || !checkAmount()){
+                Swal.fire({
+                        icon: 'Erro',
+                        title: 'Error in input field!',
+                    })
+                    return false;
             }
 
             console.log(couponBody)

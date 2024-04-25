@@ -180,25 +180,20 @@
 
     //Countdown
     const endDateStr = document.getElementById('countdownTime').value;
-    const endDate = new Date(endDateStr).getTime(); // Parse string to Date object
+    const endDate = new Date(endDateStr).getTime();
 
     // Update the countdown every second
     const countdownInterval = setInterval(updateCountdown, 1000);
 
     function updateCountdown() {
-      // Get the current date and time (in milliseconds)
       const now = new Date().getTime();
-
-      // Calculate the time remaining in milliseconds
       const timeRemaining = endDate - now;
 
-      // Calculate days, hours, minutes, and seconds
       const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
       const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
 
-      // Display the countdown in the "countdown" element
       const countdownElement = document.getElementById("countdown");
       countdownElement.innerHTML = `Time remaining: ${days}d ${hours}h ${minutes}m ${seconds}s`;
 
