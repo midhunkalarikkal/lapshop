@@ -26,6 +26,7 @@ p,
   --sixth-color: #e4e4e4;
   --offerprice-color: #22a751;
   --realprice-color: #be2626;
+  --couponbg: #d4d454;
 }
 
 /*======> Home carousel shop button <======*/
@@ -344,6 +345,7 @@ p,
   .content h2 {
     font-size: 10rem;
   }
+  
 
   /* Best offer css start */
   .box-two {
@@ -409,48 +411,52 @@ p,
   background-attachment: fixed;
 }
 
-
 .coupon-card{
-  background: linear-gradient(135deg, #34a15a, var(--primary-color));
-  color: #fff;
-  text-align: center;
-  padding: 40px 80px;
-  border-radius: 15px;
-  box-shadow: 0 10px 10px 0 rgba(0,0,0,0.15);
-  position: relative;
-
+  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  border-radius: 10px;
 }
 
-.coupon-card h3{
-  font-size: 28px;
-  font-weight: 400;
-  line-height: 40px;
-
-}
-.coupon-card p{
-  font-size: 15px;
-
-}
-.coupon-row{
-  display: flex;
-  align-items: center;
-  margin: 25px auto;
-  width: fit-content;
-
-}
-#cpnCode{
-  border: 1px dashed #fff;
-  padding: 10px 20px;
-}
-#cpnBtn{
-  border: 1px solid var(--third-color);
-  background: var(--third-color);
-  padding: 10px 20px;
-  color: var(--primary-color);
-  cursor: pointer;
+.coupon-head{
+  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
 }
 
+.coupon-amount {
+  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
+.coupon-p{
+  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.coupon-code{
+  background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
+  border: 0;
+  font-weight: 600;
+  color: var(--secondary-color);
+}
+
+.coupon-button{
+  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  border: 0;
+  color: var(--secondary-color);
+}
+
+#countdown{
+  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
 
 
 /*======> Parallax two end <======*/

@@ -11,6 +11,7 @@
       rel="stylesheet">
     <link rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+    
   </head>
 
   <section class="view mt-4 wrapper">
@@ -132,80 +133,62 @@
         </section>
       </div>
       <% } %>
-        <!-- Best offer products end -->
-        <% if(coupon !=="" ){ %>
-          <% coupon.forEach((coupon , index)=>{ %>
-            <section class="parallax-two p-5">
-              <div class="parallaxtwo-inner d-flex justify-content-center ">
-                <div class="coupon-card col-8">
-                  <h4>Hey, <% if(userDetails){ %>
-                      <%= userDetails.userName ,%>
-                        <% } %>Get flat <%= coupon.couponAmount %> off on your order</h4>
-                  <di class="coupon-row">
-                    <span id="cpnCode">
-                      <%= coupon.couponCode %>
-                    </span>
-                    <span class="mx-2" id="cpnBtn">Copy Code</span>
-                  </di>
-                  <input type="hidden" value="<%= coupon.endDate %>" id="countdownTime">
-                  <div id="countdown"></div>
-                  <p>Copy coupon code use, it in the payment</p>
+      <!-- Best offer products end -->
+      <% if(coupon && coupon.length > 0){ %>
+        <section class="parallax-two p-5">
+          <div class="row d-flex justify-content-around">
+              <% for(let i = 0; i < coupon.length; i++ ){ %>
+                <div class="coupon-card col-md-5 mt-3 p-4 shadow">
+                  <h5 class="text-center coupon-head"><%= coupon[i].couponName %></h5>
+                  <% if(coupon[i].couponAmount <= 100){ %>
+                    <div class="text d-flex align-items-center justify-content-center">
+                      <h2 class="coupon-amount coupon-amount"><%= coupon[i].couponAmount %>% OFF</h2>
+                    </div>
+                    <p class="coupon-p text-center">Get discount on your minimum <%= coupon[i].minAmount %> order</p>
+                  <% }else{ %>
+                    <div class="text d-flex align-items-center justify-content-center">
+                      <h2 class="coupon-amount"><%= coupon[i].couponAmount %></h2>
+                      <h5 class="mx-1 my-2 coupon-amount">Rs</h5>
+                    </div>
+                    <p class="coupon-p text-center">Get Flat discount on your minimum <%= coupon[i].minAmount %> order</p>
+                  <% } %>
+                  <div class="coupon-body d-flex flex-column flex-lg-row justify-content-center align-items-center">
+                      <input type="text" class="coupon-code text-center p-2" value="<%= coupon[i].couponCode %>" id="coupon-code" readonly>
+                      <button id="coupon-button" class="coupon-button p-2 my-2 my-lg-0">COPY CODE</button>
+                  </div>
+                  <div class="countdown text-center mt-3">
+                    <p id="countdown">Valid up to <%= coupon[i].endDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></p>
                 </div>
               </div>
-            </section>
-            <% }) %>
               <% } %>
-
-                <!--  Edit end -->
-
-
+            </div>
+          </section>
+          <% } %>
+          <!--  Edit end -->
   </section>
+  
 
   <script>
+    ////// To go to shop page \\\\\\
     document.getElementById('shop-btn').addEventListener("click", function () {
       window.location.href = "/shop"
     })
 
-    // For copying the coupon code
-    var cpnBtn = document.getElementById("cpnBtn");
-    var cpnCode = document.getElementById("cpnCode");
+    ////// Get all coupon buttons and coupon codes \\\\\\
+    var cpnBtns = document.querySelectorAll(".coupon-button");
+    var cpnCodes = document.querySelectorAll(".coupon-code");
 
-    cpnBtn.onclick = function () {
-      navigator.clipboard.writeText(cpnCode.innerHTML);
-      cpnBtn.innerHTML = "COPIED";
-      setTimeout(function () {
-        cpnBtn.innerHTML = "COPY CODE";
-      }, 3000);
-    }
+    cpnBtns.forEach(function (btn, index) {
+      btn.onclick = function () {
+        var code = cpnCodes[index].value;
+        navigator.clipboard.writeText(code);
+        btn.innerHTML = "COPIED";
+        setTimeout(function () {
+          btn.innerHTML = "COPY CODE";
+        }, 3000);
+      };
+    });
 
-    //Countdown
-    const endDateStr = document.getElementById('countdownTime').value;
-    const endDate = new Date(endDateStr).getTime();
-
-    // Update the countdown every second
-    const countdownInterval = setInterval(updateCountdown, 1000);
-
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const timeRemaining = endDate - now;
-
-      const days = Math.floor(timeRemaining / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
-
-      const countdownElement = document.getElementById("countdown");
-      countdownElement.innerHTML = `Time remaining: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-
-      // If the countdown is over, stop updating it
-      if (timeRemaining <= 0) {
-        clearInterval(countdownInterval);
-        countdownElement.innerHTML = "Coupon expired";
-      }
-    }
-
-    // Call updateCountdown function once to display the countdown immediately
-    updateCountdown();
   </script>
 
   <!-- User footer -->

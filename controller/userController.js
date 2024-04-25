@@ -247,15 +247,27 @@ const getHome = async (req, res) => {
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
+        let validCoupons;
         console.log("coupon :",coupon)
+        userDetails = req.session.userNC
+        console.log("userDetails from homepage :",userDetails)
 
-        const validCoupons = coupon.filter(coupon => {
+        validCoupons = coupon.filter(coupon => {
             const startDate = new Date(coupon.startDate);
             const endDate = new Date(coupon.endDate);
             return startDate <= currentDate && endDate >= currentDate;
         });
+
+        if(userDetails && userDetails.userId){
+            validCoupons = coupon.filter(coupon => {
+                const startDate = new Date(coupon.startDate);
+                const endDate = new Date(coupon.endDate);
+                const userNotApplied = coupon.appliedUsers.every(user => user.userId.toString() !== userId.toString());
+                return startDate <= currentDate && endDate >= currentDate && userNotApplied;
+            });
+        }
+        console.log("Valid coupons :",validCoupons)
         
-        userDetails = req.session.userNC
         return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons})
     } catch (error) {
         console.log(error)
