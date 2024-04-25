@@ -486,6 +486,12 @@ p,
 /*======> Parallax two end <======*/
 
 /*======> best offer products start <======*/
+
+.best-product-head{
+  color: var(--third-color);
+  font-weight: 600;
+}
+
 .box-two .name {
   color: var(--third-color);
 }
@@ -500,6 +506,14 @@ p,
 /*======> best offer products end <======*/
 
 /*======> Category cards start <======*/
+
+.parallax-one{
+  background-image: linear-gradient(to right, #434343 0%, black 100%);
+}
+
+.category-head{
+  color: var(--secondary-color);
+}
 
 .card-body {
   border-radius: 5px;
@@ -530,3 +544,4 @@ p,
   color: var(--secondary-color);
 }
 /*======> Category cards end <======*/
+
