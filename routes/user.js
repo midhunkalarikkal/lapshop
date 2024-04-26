@@ -11,6 +11,7 @@ const userController = require('../controller/userController')
 const cartController = require('../controller/cartController')
 const wishlistController = require('../controller/wishlistController')
 const orderController = require('../controller/orderController')
+const couponController = require('../controller/couponController')
 
 //To get home page
 userRouter.get('/',userController.getHome)
@@ -119,5 +120,8 @@ userRouter.get('/paymentSuccess',userAuth.isUserLoggedIn,userController.getPayme
 
 //To get the 505 error page
 userRouter.get('/505Error',userAuth.isUserLoggedIn,userController.get505Error)
+
+//To apply coupon
+userRouter.post('/applyCoupon',userAuth.isUserLoggedIn,couponController.applyCoupon)
 
 module.exports = userRouter

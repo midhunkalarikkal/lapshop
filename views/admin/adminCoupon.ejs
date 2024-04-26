@@ -243,9 +243,9 @@
                 couponAmountInput.classList.add('is-invalid');
                 amountError.textContent = 'Amount must contain positive numbers.';
                 return false;
-            } else if (couponAmount < 1 || couponAmount > 5000) {
+            } else if (couponAmount < 1 || couponAmount > 10000) {
                 couponAmountInput.classList.add('is-invalid');
-                amountError.textContent = 'Amount must be between 1 and 5000.';
+                amountError.textContent = 'Amount must be between 1 and 10000.';
                 return false;
             } else {
                 couponAmountInput.classList.remove('is-invalid');
