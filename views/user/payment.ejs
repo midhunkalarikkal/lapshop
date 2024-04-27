@@ -271,10 +271,6 @@
     let couponAmount = document.getElementById("coupon-amount") ? document.getElementById("coupon-amount") : ""
     let subTotal = document.getElementById('subTotal')
 
-    console.log("coupon :",coupon)
-
-
-    
         function submitCoupon(){
             const userCouponCode = document.getElementById("userCouponCode").value
             console.log("userCouponCode :",userCouponCode)
@@ -327,37 +323,7 @@
             .catch(error => {
                 console.error('Fetch error:', error);
             });
-            
-            
-            
-
-        
-        
-        // if (userCouponCode !== couponCode) {
-        //     Swal.fire({
-        //         icon: 'info',
-        //         title: 'Invalid coupon code',
-        //         text: 'Please enter a valid coupon code.',
-        //         timer: 2000,
-        //         timerProgressBar: true,
-        //         showConfirmButton: false
-        //     });
-        //     return false;
-        // } 
-        
-        // if (subTotal < couponMinAmount ) {
-        //     Swal.fire({
-        //         icon: 'info',
-        //         title: "Insufficient order amount",
-        //         text: `Coupon is valid only for minimum order price ${couponMinAmount}`,
-        //         timer: 2000,
-        //         timerProgressBar: true,
-        //         showConfirmButton: false
-        //     });
-        //     return false;
-        // }
-        
-    }
+        }
     
     
         

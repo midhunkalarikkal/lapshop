@@ -911,8 +911,7 @@ const getPaymentPage = async(req,res)=>{
             console.log("coupon start date :",coupon.startDate)
             const endDate = new Date(coupon.endDate);
             console.log("coupon end date :",coupon.endDate)
-            const userNotApplied = coupon.appliedUsers.every(user => user.userId.toString() !== userId.toString());
-            return startDate <= currentDate && endDate >= currentDate && userNotApplied;
+            return startDate <= currentDate && endDate >= currentDate;
         });
 
         console.log("Valid coupons:", validCoupons);

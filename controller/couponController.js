@@ -135,6 +135,16 @@ const applyCoupon = async (req, res) => {
             if (userCouponCode) {
                 if (coupon.startDate <= currentDate && coupon.endDate >= currentDate) {
                     console.log("Coupo is valid")
+                    const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
+                    console.log("applied users :",appliedUserIds)
+
+                    for(let i = 0; i < appliedUserIds.length; i++){
+                        if(appliedUserIds[i] === userId){
+                            console.log("userId existing")
+                            return res.status(400).json({ success: false, message : "You have already used this coupon."})
+                        }
+                    }
+
                     if (cart[0].totalCartPrice >= coupon.minAmount) {
                         console.log("User is eligible for applying coupon")
                         console.log("Coupon appied")
@@ -146,6 +156,9 @@ const applyCoupon = async (req, res) => {
                             newSubTotal = cart[0].totalCartPrice - coupon.couponAmount
                             console.log("newSubTotal :", newSubTotal)
                         }
+                        
+                        coupon.appliedUsers.push(userId)
+                        await coupon.save()
                         return res.status(200).json({ success: true, message: "Coupon applied successfully", newSubTotal, couponAmount: coupon.couponAmount })
                     } else {
                         console.log("User is not eligible for applying coupon")
