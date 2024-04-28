@@ -122,36 +122,37 @@
       </div>
       <% } %>
       <!-- Best offer products end -->
-      <% if(coupon && coupon.length > 0){ %>
-        <section class="parallax-two p-5">
-          <div class="row d-flex justify-content-around">
-              <% for(let i = 0; i < coupon.length; i++ ){ %>
-                <div class="coupon-card col-md-5 mt-3 p-4 shadow">
-                  <h5 class="text-center coupon-head"><%= coupon[i].couponName %></h5>
-                  <% if(coupon[i].couponAmount <= 100){ %>
-                    <div class="text d-flex align-items-center justify-content-center">
-                      <h2 class="coupon-amount coupon-amount"><%= coupon[i].couponAmount %>% OFF</h2>
-                    </div>
-                    <p class="coupon-p text-center">Get extra discount on your minimum <%= coupon[i].minAmount %> order</p>
-                  <% }else{ %>
-                    <div class="text d-flex align-items-center justify-content-center">
-                      <h2 class="coupon-amount"><%= coupon[i].couponAmount %></h2>
-                      <h5 class="mx-1 my-2 coupon-amount">Rs</h5>
-                    </div>
-                    <p class="coupon-p text-center">Get Flat discount on your minimum <%= coupon[i].minAmount %> order</p>
-                  <% } %>
-                  <div class="coupon-body d-flex flex-column flex-lg-row justify-content-center align-items-center">
-                      <input type="text" class="coupon-code text-center p-2" value="<%= coupon[i].couponCode %>" id="coupon-code" readonly>
-                      <button id="coupon-button" class="coupon-button p-2 my-2 my-lg-0">COPY CODE</button>
-                  </div>
-                  <div class="countdown text-center mt-3">
+      <% if(coupon){ %>
+            <section class="parallax-two p-5">
+              <div class="row d-flex justify-content-around">
+                <% for(let i = 0; i < coupon.length; i++ ){ %>
+                  <div class="coupon-card col-md-5 mt-3 p-4 shadow">
+                    <h5 class="text-center coupon-head"><%= coupon[i].couponName %></h5>
+                    <% if(coupon[i].couponAmount <= 100){ %>
+                      <div class="text d-flex align-items-center justify-content-center">
+                        <h2 class="coupon-amount coupon-amount"><%= coupon[i].couponAmount %>% OFF</h2>
+                      </div>
+                      <p class="coupon-p text-center">Get extra discount on your minimum <%= coupon[i].minAmount %> order</p>
+                      <% }else{ %>
+                        <div class="text d-flex align-items-center justify-content-center">
+                          <h2 class="coupon-amount"><%= coupon[i].couponAmount %></h2>
+                          <h5 class="mx-1 my-2 coupon-amount">Rs</h5>
+                        </div>
+                        <p class="coupon-p text-center">Get Flat discount on your minimum <%= coupon[i].minAmount %> order</p>
+                        <% } %>
+                        <div class="coupon-body d-flex flex-column flex-lg-row justify-content-center align-items-center">
+                          <input type="text" class="coupon-code text-center p-2" value="<%= coupon[i].couponCode %>" id="coupon-code" readonly>
+                          <button id="coupon-button" class="coupon-button p-2 my-2 my-lg-0">COPY CODE</button>
+                        </div>
+                        <div class="countdown text-center mt-3">
                     <p id="countdown">Valid up to <%= coupon[i].endDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></p>
                 </div>
               </div>
               <% } %>
             </div>
           </section>
-          <% } %>
+        <% } %>
+      
           <!--  Edit end -->
   </section>
   

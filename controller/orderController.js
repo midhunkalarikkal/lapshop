@@ -37,8 +37,8 @@ const placeOrder = async(req,res)=>{
             const coupon = await Coupon.find({ couponCode : couponCode})
             console.log("coupon :",coupon)
             console.log("coupon applied :",coupon.appliedUsers)
-            // const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
-            // console.log("applied users :",appliedUserIds)
+            const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
+            console.log("applied users :",appliedUserIds)
             // for(let i = 0; i < appliedUserIds.length; i++){
             //     if(appliedUserIds[i] === userId){
             //         console.log("userId existing")

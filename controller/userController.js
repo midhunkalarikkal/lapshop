@@ -201,7 +201,8 @@ const postLogin = async (req, res) => {
                     req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
                     console.log("userNC :",req.session.userNC)
                     userDetails = req.session.userNC
-                    return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , coupon})
+                    res.redirect('/')
+                    // return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , coupon})
                 } else {
                     // Passwords don't match    
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
@@ -249,21 +250,31 @@ const getHome = async (req, res) => {
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
         let validCoupons = coupon
+        let newValidCoupons = []
         console.log("coupon :",coupon)
+        console.log("coupon length :",coupon.length)
         console.log("NC :",req.session.userNC)
         userDetails = req.session.userNC
         console.log("userDetails from homepage :",userDetails)
-
-        if (userDetails && userDetails.userId && userDetails !== undefined) {
-            const userId = userDetails.userId;
-            validCoupons = coupon.filter(coupon => {
-                const userNotApplied = coupon.appliedUsers.every(appliedUser => appliedUser.userId.toString() !== userId.toString());
-                return userNotApplied;
+        if (req.session.user) {
+            const user = req.session.user;
+            console.log("session user :", user);
+            console.log("userId type :", typeof user._id);
+        
+            coupon.forEach((c, i) => {
+                console.log("coupon " + i);
+                const valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
+                if (!valid) {
+                    console.log("session user")
+                    console.log("valid coupons after user:",c)
+                    newValidCoupons.push(c)
+                }
             });
+            validCoupons = newValidCoupons
         }
 
-        console.log("Valid coupons :",validCoupons)
-        
+        console.log("New valid coupons :",newValidCoupons)
+        console.log("Valid coupons before user:",validCoupons)
         return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons })
     } catch (error) {
         console.log(error)
