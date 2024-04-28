@@ -34,17 +34,12 @@ const placeOrder = async(req,res)=>{
         console.log("cart id :",cartIdToUpdate)
 
         if(couponCode && couponCode !== ""){
-            const coupon = await Coupon.find({ couponCode : couponCode})
-            console.log("coupon :",coupon)
-            console.log("coupon applied :",coupon.appliedUsers)
-            const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
-            console.log("applied users :",appliedUserIds)
-            // for(let i = 0; i < appliedUserIds.length; i++){
-            //     if(appliedUserIds[i] === userId){
-            //         console.log("userId existing")
-            //         couponApplied = true
-            //     }
-            // }
+            console.log("coupon applied")
+            console.log("couponCode :",couponCode)
+            couponApplied = true
+        }else{
+            console.log("coupon not applied :",)
+            console.log("coupon code :",couponCode)
         }
 
         const newOrder = new Order({
@@ -108,7 +103,7 @@ const orderConfirmation = async(req,res)=>{
             if (!err) {
                 res.status(200).send({
                 success: true,
-                msg: "order created",
+                message: "order created",
                 order_id: order.id,
                 amount: amount,
                 key_id: process.env.KEY_ID,
@@ -116,7 +111,7 @@ const orderConfirmation = async(req,res)=>{
                 email: email,
                 });
             } else {
-                res.status(400).send({ success: false, msg: "SOmething went wrong!" });
+                res.status(400).send({ success: false, message: "SOmething went wrong!" });
             }
             });
             console.log("i have done with instance creation");
