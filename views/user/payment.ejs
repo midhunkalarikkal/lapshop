@@ -403,13 +403,21 @@
             return false;
         }
 
-        const selectedPaymentMethodId = selectedPaymentMethod.id;
+        const paymentMethod = selectedPaymentMethod.id;
         const userAddressId = document.getElementById("userAddress").value;
-        const subTotal = Number(document.getElementById('subTotal').value);
-        let paymentMethod = selectedPaymentMethodId;
+        const subTotal = document.getElementById('subTotal').innerText;
+
+        console.log("order confirmation start")
+        console.log("payment Method :",paymentMethod)
+        console.log("type of payment Method :",typeof paymentMethod)
+        console.log("user address id :",userAddressId)
+        console.log("type of user address id :",typeof userAddressId)
+        console.log("subtotal :",subTotal)
+        console.log("type of subtotal :",typeof subTotal)
+        console.log("order confirmation end")
 
         const data = {
-            paymentMethod: selectedPaymentMethodId,
+            paymentMethod: paymentMethod,
             totalAmount: subTotal
         };
 
@@ -444,12 +452,7 @@
                   image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAYFBMVEX///8Aru8ArO8Aqe4AqO4wtPA1uPE6uvG24vnI6vtIvfLZ8fz6/v9Lv/Lo9f1SwfNxyvTR7fv1/P5ox/Tl9v3C5vqCz/Wd2fep3vjt+f655PmU1vd9y/SK0fbi9P0NsfBjAXEwAAADr0lEQVR4nO3c3ZKiMBAFYEgAQWRBQREFef+3HHBmdv5qtmLOReq457vcnYtOpSGd0DGKRERERERERERERERERERERERERERERERERORxZd9sszTNFps32Rfph/sf1adL6Jgf0c/WGhM/whg7D6HjdpUb+9Dg3tkxdOSO2sRrfMs0NqFDd7Pxm8B1Ds+hY3eyfezx+zKHu9DBu2i8ZzC2fejgXeS+z+Ayg5vQwbsY/FM0Nl3o6F0ADyFHjvb+DyFHjnb+D2GcUNQzmf8AOXJ0AnJ0Gzp4F3v/AXK8R3ez/wA5crQBqjWKHD0C71HL8B49AMUMx5aifvYcPQPvUYoc7YAcTShydAPkaB06eBdXIEdjhhwtkYcwDx29C6CY4cjRE1KPHkJH76BANoXH0NE7QApu04aO3kULLIUzw/noBSm4i9DRO4AKborvMMDpYZyGDt4FUnAnt9DRO+iQYobi4AIpuCk2hUjBbZ694E4ouhJSYAYpPmcjBTfFQrFHCu4ydPQudML9O45d7xF4CGeGXe/Bf3yx3YeO3gWwKbTX0MG7AN6jHNUasGcyFCthNHhPoa0Yzi2iqPB8kRpDsRBGnk0lxpqJYT/x6rw2AH/3Y8L+stYmts45EvRd0U/jODZNu6gXVVVtt5tPtlVVt20zTtO1P5+PFIWoCJ/DsOi67nYrF/tXRVEcF5fLJb87FvuS5w36SdnMySf2X5b/ztqe7FVzTB4s24xN4pFpkF5dliapeMboeYJh7Cl05K4q372F5dg7IR9kTBY6djfAV0NL8WEb+mKRUDTQQCf6FE1QUIsJyUkNdNrGsdOHWhQYvm9jn/A5DtygCzIUp8JRifQKcVSoT/+JFLskM4WO3skFaafhyFPgkkXMUYIPyCRyvE+RniGKvjaoX4EkT5GeE5L6FOjJ4Lg4CvUsmCp09E5y5GVDcakLaoSmuFACNQpzXLjAFkWGCwnYsdQcOngn0E6R46Af2SlybDKg210Uv9ri3UN0n0SORREq3igOwaE8pegZfv6bpFieciyK0Mkbx6KI5CnHohiNz/5TZv/BzyhhP4VFsShCP7nHsSgih+AkO0Xk3izHohjtMu8hWoprpcsQa99nkeVJjKLro62Z7zi+mq5uldcYWfps7srTLz/J/vOWxseljJnijP/DLZ/qdF6bg9cm6WWw85xmm6qu2zd1/XZPo1r/sbmSLBbf7Ibhz2oYhgPXjRkRERERERERERERERERERERERERERERERHh8gI/MTSJ2unvZgAAAABJRU5ErkJggg==",
                   order_id: "" + data.order_id + "", 
                   handler: function (response) {
-                    let redirectUrl;
-                    if(couponId !== null){
-                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&couponId=${couponId}`;
-                    }else{
-                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}`;
-                    }
+                    let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}`;
                     window.location.href = redirectUrl;
                 },
                 prefill: {
@@ -470,12 +473,7 @@
                 });
                 rzp1.open();
             } else if (paymentMethod === "cod") {
-                let redirectUrl;
-                    if(couponId !== null){
-                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&couponId=${couponId}`;
-                    }else{
-                        redirectUrl = `/placeOrder?amount=${totalAmount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}`;
-                    }
+                let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}`;
                 window.location.href = redirectUrl;
             }
         } else {

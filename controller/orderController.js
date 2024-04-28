@@ -15,28 +15,17 @@ const placeOrder = async(req,res)=>{
         const addressId = req.query.addressId
         const totalAmount = req.query.amount
         const paymentMethod = req.query.paymentMethod
-
-        let couponId = null;
-        let coupon = null;
-
-        const cart = await Cart.find({ userId : userId})
-        if(req.query.couponId){
-            couponId = req.query.couponId
-            console.log("couponId :",couponId)
-        }
-        if (couponId && couponId !== null) {
-            coupon = await Coupon.findById(couponId);
-            console.log("coupon :", coupon);
-        }
+        
         console.log("UserId :",userId)
         console.log("addressId :",addressId)
         console.log("totalAmount :",totalAmount)
+        console.log("type of totoalAmount :",totalAmount)
         console.log("paymentMethod :",paymentMethod)
+
+        const cart = await Cart.find({ userId : userId})
         console.log("cart :",cart[0])
         let cartIdToUpdate = cart[0]._id
-        let productQuantity = 0
         console.log("cart id :",cartIdToUpdate)
-      
 
         const newOrder = new Order({
             userId : userId,
@@ -53,7 +42,7 @@ const placeOrder = async(req,res)=>{
         })
     
         const orderSaved = await newOrder.save()
-        if (orderSaved && coupon  && coupon !== "") {
+        if (orderSaved) {
             // Update product stock for each item in cart
             await Promise.all(cart[0].items.map(async (item) => {
                 const product = await Product.findById(item.product);
@@ -62,8 +51,6 @@ const placeOrder = async(req,res)=>{
                 product.noOfStock -= item.quantity;
                 await product.save();
             }));
-            coupon.appliedUsers.push({ userId: userId });
-            await coupon.save();
             cart[0].items = [];
             cart[0].totalCartPrice = 0;
             cart[0].totalCartDiscountPrice = 0;
@@ -72,25 +59,7 @@ const placeOrder = async(req,res)=>{
             console.log("updated cart :",cart[0])
             console.log("req.session.NC :",req.session.NC)
             return res.redirect('/paymentSuccess');
-        } else if(orderSaved) {
-            // Update product stock for each item in cart
-            await Promise.all(cart[0].items.map(async (item) => {
-                const product = await Product.findById(item.product);
-                console.log("product quantity :", product.noOfStock);
-                console.log("orderedItem quantity :", item.quantity);
-                product.noOfStock -= item.quantity;
-                await product.save();
-            }));
-            cart[0].items = [];
-            cart[0].totalCartPrice = 0;
-            cart[0].totalCartDiscountPrice = 0;
-            req.session.userNC.cartItemCount = cart[0].items.length
-            await cart[0].save()
-            console.log("updated cart :",cart[0])
-            console.log("req.session.userNC :",req.session.userNC)
-            return res.redirect('/paymentSuccess');
-        }
-        
+        } 
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
