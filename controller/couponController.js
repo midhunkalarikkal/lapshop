@@ -193,6 +193,9 @@ const cancelCoupon = async(req,res)=>{
                 console.log("User entered cancelCouponCode coupon :", coupon)
                 const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
                 console.log("applied users :",appliedUserIds)
+                const cart = await Cart.find({ userId : userId})
+                const cartTotal = cart[0].totalCartPrice
+                console.log("totalCartPrice :",cartTotal)
 
                 for(let i = 0; i < appliedUserIds.length; i++){
                     if(appliedUserIds[i] === userId){
@@ -200,7 +203,7 @@ const cancelCoupon = async(req,res)=>{
                         coupon.appliedUsers.pull(userId)
                         console.log("updated coupon appliedUsers array :",coupon.appliedUsers)
                         await coupon.save()
-                        // return res.status(400).json({ success: false, message : "You have already used this coupon."})
+                        return res.status(200).json({ success: true, message : "Coupon cancelation successfull." , cartTotal })
                     }
                 }
             }else{

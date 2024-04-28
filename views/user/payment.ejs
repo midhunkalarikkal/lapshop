@@ -352,35 +352,33 @@
                 }
             }).then(data => {
                 console.log(data)
-                // if(data.success){
-                //     Swal.fire({
-                //         title: "Success",
-                //         text: data.message,
-                //         icon: "success",
-                //         timer: 2000,
-                //         timerProgressBar: true,
-                //         showConfirmButton: false
-                //     })
-                    // coupon.classList.add("d-none")
-                    // couponApplied.classList.remove("d-none")
-                    // if(data.couponAmount <= 99){
-                    //     couponAmount.innerText = data.couponAmount+" %"
-                    // }else if(data.couponAmount >= 100){
-                    //     couponAmount.innerText = data.couponAmount
-                    // }
-                    // subTotal.innerText = data.newSubTotal
-                    // cancelCouponInput.value = data.userCouponCode
+                if(data.success){
+                    Swal.fire({
+                        title: "Success",
+                        text: data.message,
+                        icon: "success",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                    console.log("cartTotal :",data.cartTotal)
+                    coupon.classList.remove("d-none")
+                    couponApplied.classList.add("d-none")
+                    subTotal.innerText = ""
+                    subTotal.innerText = data.cartTotal
+                    couponAmount.innerText = ""
+                    cancelCouponInput.value = ""
 
-                // }else if(!data.success){
-                //     Swal.fire({
-                //         title: "Info",
-                //         text: data.message,
-                //         icon: "info",
-                //         timer: 2000,
-                //         timerProgressBar: true,
-                //         showConfirmButton: false
-                //     })
-                // }
+                }else if(!data.success){
+                    Swal.fire({
+                        title: "Info",
+                        text: data.message,
+                        icon: "info",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    })
+                }
             })
             .catch(error => {
                 console.error('Fetch error:', error);
