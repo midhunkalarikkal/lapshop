@@ -182,7 +182,8 @@
                                     </div>
                                     <div class="coupon-applied text-center d-none" id="coupon-applied">
                                         <h6 class="text-center text-success" id="coupon-applied">🎉Congradulations, Coupon applied. You got flat <span id="coupon-amount"></span> on this order.🎉</h6>     
-                                        <button class="btn btn-danger cancel-coupon btn-sm">Cancel coupon</button>                                    
+                                        <button class="btn btn-danger cancel-coupon btn-sm" onclick="cancelCoupon()">Cancel coupon</button>
+                                        <input type="text" id="cancelCouponId" hidden>                                    
                                     </div>
                                 <% } %>
                                 </div>               
@@ -265,12 +266,13 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
-    ////// To appy coupon \\\\\\
-    let coupon = document.getElementById("coupon") ? document.getElementById("coupon") : ""
-    let couponApplied = document.getElementById("coupon-applied") ? document.getElementById("coupon-applied") : ""
-    let couponAmount = document.getElementById("coupon-amount") ? document.getElementById("coupon-amount") : ""
-    let subTotal = document.getElementById('subTotal')
-
+        let coupon = document.getElementById("coupon") ? document.getElementById("coupon") : ""
+        let couponApplied = document.getElementById("coupon-applied") ? document.getElementById("coupon-applied") : ""
+        let couponAmount = document.getElementById("coupon-amount") ? document.getElementById("coupon-amount") : ""
+        let subTotal = document.getElementById('subTotal')
+        let cancelCouponInput = document.getElementById("cancelCouponId") ? document.getElementById("cancelCouponId") : ""
+        
+        ////// To appy coupon \\\\\\
         function submitCoupon(){
             const userCouponCode = document.getElementById("userCouponCode").value
             console.log("userCouponCode :",userCouponCode)
@@ -309,6 +311,8 @@
                         couponAmount.innerText = data.couponAmount
                     }
                     subTotal.innerText = data.newSubTotal
+                    cancelCouponInput.value = data.userCouponCode
+
                 }else if(!data.success){
                     Swal.fire({
                         title: "Info",
@@ -319,6 +323,64 @@
                         showConfirmButton: false
                     })
                 }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+        }
+
+        ////// To cancel coupon \\\\\\
+        function cancelCoupon(){
+            const userCancelCouponCode = document.getElementById("cancelCouponId").value
+            console.log("userCancelCouponCode :",userCancelCouponCode)
+
+            fetch('/cancelCoupon',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({userCancelCouponCode})
+            })
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                const message = "Your account is blocked, Please contact us"
+                const type = "danger"
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json(); 
+                } else {
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                }
+            }).then(data => {
+                console.log(data)
+                // if(data.success){
+                //     Swal.fire({
+                //         title: "Success",
+                //         text: data.message,
+                //         icon: "success",
+                //         timer: 2000,
+                //         timerProgressBar: true,
+                //         showConfirmButton: false
+                //     })
+                    // coupon.classList.add("d-none")
+                    // couponApplied.classList.remove("d-none")
+                    // if(data.couponAmount <= 99){
+                    //     couponAmount.innerText = data.couponAmount+" %"
+                    // }else if(data.couponAmount >= 100){
+                    //     couponAmount.innerText = data.couponAmount
+                    // }
+                    // subTotal.innerText = data.newSubTotal
+                    // cancelCouponInput.value = data.userCouponCode
+
+                // }else if(!data.success){
+                //     Swal.fire({
+                //         title: "Info",
+                //         text: data.message,
+                //         icon: "info",
+                //         timer: 2000,
+                //         timerProgressBar: true,
+                //         showConfirmButton: false
+                //     })
+                // }
             })
             .catch(error => {
                 console.error('Fetch error:', error);

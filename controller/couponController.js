@@ -159,7 +159,7 @@ const applyCoupon = async (req, res) => {
                         
                         coupon.appliedUsers.push(userId)
                         await coupon.save()
-                        return res.status(200).json({ success: true, message: "Coupon applied successfully", newSubTotal, couponAmount: coupon.couponAmount })
+                        return res.status(200).json({ success: true, message: "Coupon applied successfully", newSubTotal, couponAmount: coupon.couponAmount , userCouponCode })
                     } else {
                         console.log("User is not eligible for applying coupon")
                         return res.status(400).json({ success: false, message: `This coupon is valid for order purchase amount ${couponMinAmount}.`})
@@ -181,11 +181,44 @@ const applyCoupon = async (req, res) => {
     }
 }
 
+// To cancel applied coupon
+const cancelCoupon = async(req,res)=>{
+    try{
+        console.log("cancel coupon api")
+        console.log("req.body : ",req.body)
+        const cancelCouponName = req.body.userCancelCouponCode
+        const userId = req.session.user._id
+            if(cancelCouponName){
+                const coupon = await Coupon.findOne({ $and: [{ couponCode: cancelCouponName }, { isBlocked: false }] })
+                console.log("User entered cancelCouponCode coupon :", coupon)
+                const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
+                console.log("applied users :",appliedUserIds)
+
+                for(let i = 0; i < appliedUserIds.length; i++){
+                    if(appliedUserIds[i] === userId){
+                        console.log("userId existing")
+                        coupon.appliedUsers.pull(userId)
+                        console.log("updated coupon appliedUsers array :",coupon.appliedUsers)
+                        await coupon.save()
+                        // return res.status(400).json({ success: false, message : "You have already used this coupon."})
+                    }
+                }
+            }else{
+                return res.status(400).json({ success : false, message : "coupon not found error."})
+            }
+        console.log("cancelCouponName :",cancelCouponName)
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ messag : "Internal server error" })
+    }
+}
+
 module.exports = {
     getAdminCoupon,
     postAdminCoupon,
     adminEditCoupon,
     adminUpdateCoupon,
     adminBlockCoupon,
-    applyCoupon
+    applyCoupon,
+    cancelCoupon
 }

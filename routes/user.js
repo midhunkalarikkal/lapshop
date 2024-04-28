@@ -124,4 +124,7 @@ userRouter.get('/505Error',userAuth.isUserLoggedIn,userController.get505Error)
 //To apply coupon
 userRouter.post('/applyCoupon',userAuth.isUserLoggedIn,couponController.applyCoupon)
 
+//To cancel applied coupon
+userRouter.post('/cancelCoupon',userAuth.isUserLoggedIn,couponController.cancelCoupon)
+
 module.exports = userRouter
