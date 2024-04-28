@@ -173,6 +173,11 @@
                                         <div class="total d-flex justify-content-between">
                                             <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
                                         </div>
+                                        <% if(order[i].couponApplied){ %>
+                                            <div class="total d-flex justify-content-between">
+                                                <h6>Coupon : </h6> <h6 class="text-success">Applied</h6>
+                                            </div>
+                                        <% } %>
                                         <hr>
                                         <div class="total d-flex justify-content-between">
                                             <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
