@@ -130,9 +130,7 @@ const orderConfirmation = async(req,res)=>{
             console.log("i have done with instance creation");
         }
         if (paymentMethod === "cod") {
-            res.status(200).send({
-                success: true,
-            });
+            res.status(200).send({ success: true });
         }
         // if(paymentMethod === "wallet"){
         //   const userInfo = await User.findOne({ _id: req.session.userData?._id });
