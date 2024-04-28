@@ -53,6 +53,16 @@ const orderSchema = new mongoose.Schema({
     },
     orderDate:{
         type: Date
+    },
+    couponApplied:{
+        type: Boolean,
+        required: true,
+        default: false
+    },
+    paymentStatus : {
+        type: Boolean,
+        required: true,
+        default: false
     }
 })
 

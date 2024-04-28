@@ -9,23 +9,43 @@ let userDetails;
 // To confirm an order
 const placeOrder = async(req,res)=>{
     try{
+        console.log("place order api start")
         console.log("req.session.user :",req.session.user)
         console.log("req.session.userNC :",req.session.userNC)
         const userId = req.session.user._id
         const addressId = req.query.addressId
         const totalAmount = req.query.amount
         const paymentMethod = req.query.paymentMethod
+        const paymentStatus = req.query.paymentStatus
+        const couponCode = req.query.coupon 
+        let couponApplied = false
         
         console.log("UserId :",userId)
         console.log("addressId :",addressId)
         console.log("totalAmount :",totalAmount)
         console.log("type of totoalAmount :",totalAmount)
         console.log("paymentMethod :",paymentMethod)
+        console.log("payment status :",paymentStatus)
+        console.log("coupon Name :",couponCode)
 
         const cart = await Cart.find({ userId : userId})
         console.log("cart :",cart[0])
         let cartIdToUpdate = cart[0]._id
         console.log("cart id :",cartIdToUpdate)
+
+        if(couponCode && couponCode !== ""){
+            const coupon = await Coupon.find({ couponCode : couponCode})
+            console.log("coupon :",coupon)
+            console.log("coupon applied :",coupon.appliedUsers)
+            // const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
+            // console.log("applied users :",appliedUserIds)
+            // for(let i = 0; i < appliedUserIds.length; i++){
+            //     if(appliedUserIds[i] === userId){
+            //         console.log("userId existing")
+            //         couponApplied = true
+            //     }
+            // }
+        }
 
         const newOrder = new Order({
             userId : userId,
@@ -38,7 +58,9 @@ const placeOrder = async(req,res)=>{
             address : addressId,
             paymentMethod : paymentMethod,
             orderTotal : totalAmount,
-            orderDate: new Date()
+            orderDate: new Date(),
+            couponApplied: couponApplied,
+            paymentStatus: paymentStatus
         })
     
         const orderSaved = await newOrder.save()
@@ -69,6 +91,7 @@ const placeOrder = async(req,res)=>{
 
 const orderConfirmation = async(req,res)=>{
     try{
+        console.log("order confirmation api start")
         const amount = req.body.totalAmount
         const paymentMethod = req.body.paymentMethod
         

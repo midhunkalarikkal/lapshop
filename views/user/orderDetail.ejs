@@ -158,45 +158,17 @@
                                     <hr>
                                     <h5>Order total</h5>
                                     <hr>
-                                    <div class="col-md-3">
-                                        <%
-                                            // Initialize totalamount variable
-                                            let totalamount = 0;
-
-                                            // Loop through ordered items and sum up the totalPrice
-                                            for (let k = 0; k < order[i].orderedItems.length; k++) {
-                                                totalamount += order[i].orderedItems[k].totalPrice;
-                                            }
-                                        %>
-                                        <% if(totalamount == order[i].orderTotal){ %>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Coupon applied : </h6> <h6>No</h6>
-                                            </div>
-                                            <hr>
-                                            <div class="total d-flex justify-content-between">
-                                                <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
-                                            </div> 
-                                        <% }else{ %>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal + 5000 %> </h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Coupon applied : </h6> <h6>Yes (₹5000)</h6>
-                                            </div>
-                                            <hr>
-                                            <div class="total d-flex justify-content-between">
-                                                <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
-                                            </div> 
-                                        <% } %>
+                                    <div class="col-md-6">
+                                        <div class="total d-flex justify-content-between">
+                                            <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
+                                        </div>
+                                        <div class="total d-flex justify-content-between">
+                                            <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
+                                        </div>
+                                        <hr>
+                                        <div class="total d-flex justify-content-between">
+                                            <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
+                                        </div> 
                                     </div>
                                     <hr>
                                 </div>

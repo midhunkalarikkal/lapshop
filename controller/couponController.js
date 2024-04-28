@@ -1,6 +1,22 @@
 const Coupon = require('../models/couponModel')
 const Cart = require('../models/cartModel')
 
+
+// To delete expired coupons
+async function deleteExpiredCoupons() {
+    try {
+        const currentDate = new Date();
+        const expiredCoupons = await Coupon.find({ endDate: { $lt: currentDate } });
+        await Coupon.deleteMany({ _id: { $in: expiredCoupons.map(coupon => coupon._id) } });
+        console.log(`Deleted ${expiredCoupons.length} expired coupons.`);
+    } catch (error) {
+        console.error('Error deleting expired coupons:', error);
+    }
+}
+
+const intervalInMilliseconds = 24 * 60 * 60 * 1000;
+setInterval(deleteExpiredCoupons, intervalInMilliseconds);
+
 // To get the admin coupon page
 const getAdminCoupon = async (req, res) => {
     try {
@@ -133,8 +149,6 @@ const applyCoupon = async (req, res) => {
 
         if (coupon) {
             if (userCouponCode) {
-                if (coupon.startDate <= currentDate && coupon.endDate >= currentDate) {
-                    console.log("Coupo is valid")
                     const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
                     console.log("applied users :",appliedUserIds)
 
@@ -164,10 +178,6 @@ const applyCoupon = async (req, res) => {
                         console.log("User is not eligible for applying coupon")
                         return res.status(400).json({ success: false, message: `This coupon is valid for order purchase amount ${couponMinAmount}.`})
                     }
-                } else {
-                    console.log("coupon is not valid")
-                    return res.status(400).json({ success: false, message: "Sorry, This coupon is not valid."})
-                }
             } else {
                 console.log("Coupon not appied")
                 return res.status(200).json({ success: false, message: "Coupon code is not matching." })

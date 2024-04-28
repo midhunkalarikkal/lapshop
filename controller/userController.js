@@ -242,33 +242,29 @@ const getLogout = async(req,res)=>{
 //To get the user home
 const getHome = async (req, res) => {
     try {
+        console.log("Home api start")
         const currentDate = new Date();
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
-        let validCoupons;
+        let validCoupons = coupon
         console.log("coupon :",coupon)
+        console.log("NC :",req.session.userNC)
         userDetails = req.session.userNC
         console.log("userDetails from homepage :",userDetails)
 
-        validCoupons = coupon.filter(coupon => {
-            const startDate = new Date(coupon.startDate);
-            const endDate = new Date(coupon.endDate);
-            return startDate <= currentDate && endDate >= currentDate;
-        });
-
-        if(userDetails && userDetails.userId){
+        if (userDetails && userDetails.userId && userDetails !== undefined) {
+            const userId = userDetails.userId;
             validCoupons = coupon.filter(coupon => {
-                const startDate = new Date(coupon.startDate);
-                const endDate = new Date(coupon.endDate);
-                const userNotApplied = coupon.appliedUsers.every(user => user.userId.toString() !== userId.toString());
-                return startDate <= currentDate && endDate >= currentDate && userNotApplied;
+                const userNotApplied = coupon.appliedUsers.every(appliedUser => appliedUser.userId.toString() !== userId.toString());
+                return userNotApplied;
             });
         }
+
         console.log("Valid coupons :",validCoupons)
         
-        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons})
+        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons })
     } catch (error) {
         console.log(error)
     }
@@ -903,153 +899,13 @@ const getPaymentPage = async(req,res)=>{
         const userCart = cart[0]
         let coupon = await Coupon.find({isBlocked : false })
         console.log("payment page coupons :",coupon)
-        
-         // Filter coupons that are valid based on start and end dates
-         const validCoupons = coupon.filter(coupon => {
-            console.log("coupon name :",coupon.couponName)
-            const startDate = new Date(coupon.startDate);
-            console.log("coupon start date :",coupon.startDate)
-            const endDate = new Date(coupon.endDate);
-            console.log("coupon end date :",coupon.endDate)
-            return startDate <= currentDate && endDate >= currentDate;
-        });
 
-        console.log("Valid coupons:", validCoupons);
-
-        res.render('user/payment' , {userAddress , userCart , coupon : validCoupons})
+        res.render('user/payment' , {userAddress , userCart , coupon})
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
     }
 }
-
-// To confirm an order
-// const placeOrder = async(req,res)=>{
-//     try{
-//         console.log("req.session.user :",req.session.user)
-//         console.log("req.session.userNC :",req.session.userNC)
-//         const userId = req.session.user._id
-//         const addressId = req.query.addressId
-//         const totalAmount = req.query.amount
-//         const paymentMethod = req.query.paymentMethod
-
-//         let couponId = null;
-//         let coupon = null;
-
-//         const cart = await Cart.find({ userId : userId})
-//         if(req.query.couponId){
-//             couponId = req.query.couponId
-//             console.log("couponId :",couponId)
-//         }
-//         if (couponId && couponId !== null) {
-//             coupon = await Coupon.findById(couponId);
-//             console.log("coupon :", coupon);
-//         }
-//         console.log("UserId :",userId)
-//         console.log("addressId :",addressId)
-//         console.log("totalAmount :",totalAmount)
-//         console.log("paymentMethod :",paymentMethod)
-//         console.log("cart :",cart[0])
-//         let cartIdToUpdate = cart[0]._id
-//         console.log("cart id :",cartIdToUpdate)
-
-//         const newOrder = new Order({
-//             userId : userId,
-//             orderedItems: cart[0].items.map(item => ({
-//                 product: item.product,
-//                 quantity: item.quantity,
-//                 totalPrice: item.totalPrice, // actually this is price of a single quanityty
-//                 statusDate: new Date()
-//             })),
-//             address : addressId,
-//             paymentMethod : paymentMethod,
-//             orderTotal : totalAmount,
-//             orderDate: new Date()
-//         })
-    
-//         const orderSaved = await newOrder.save()
-//         if (orderSaved && coupon  && coupon !== "") {
-//             coupon.appliedUsers.push({ userId: userId });
-//             await coupon.save();
-//             cart[0].items = [];
-//             cart[0].totalCartPrice = 0;
-//             cart[0].totalCartDiscountPrice = 0;
-//             req.session.userNC.cartItemCount = cart[0].items.length
-//             await cart[0].save()
-//             console.log("updated cart :",cart[0])
-//             console.log("req.session.NC :",req.session.NC)
-//             return res.redirect('/paymentSuccess');
-//         } else if(orderSaved) {
-//             cart[0].items = [];
-//             cart[0].totalCartPrice = 0;
-//             cart[0].totalCartDiscountPrice = 0;
-//             req.session.userNC.cartItemCount = cart[0].items.length
-//             await cart[0].save()
-//             console.log("updated cart :",cart[0])
-//             console.log("req.session.userNC :",req.session.userNC)
-//             return res.redirect('/paymentSuccess');
-//         }
-        
-//     }catch(error){
-//         console.log(error.message)
-//         return res.status(500).json({ message : "Internal server error" })
-//     }
-// }
-
-
-// const orderConfirmation = async(req,res)=>{
-//     try{
-//         const amount = req.body.totalAmount
-//         const paymentMethod = req.body.paymentMethod
-        
-//         if (paymentMethod === "razorpay") {
-//             console.log("i am creating instance");
-//             const name = req.session.user.fullname;
-//             const email = req.session.user.email;
-//             const options = {
-//             amount: amount * 100,
-//             currency: "INR",
-//             receipt: "midhunkalarikkalp@gmail.com",
-//             };
-//             razorpayInstance.orders.create(options, (err, order) => {
-//             if (!err) {
-//                 res.status(200).send({
-//                 success: true,
-//                 msg: "order created",
-//                 order_id: order.id,
-//                 amount: amount,
-//                 key_id: process.env.KEY_ID,
-//                 name: name,
-//                 email: email,
-//                 });
-//             } else {
-//                 res.status(400).send({ success: false, msg: "SOmething went wrong!" });
-//             }
-//             });
-//             console.log("i have done with instance creation");
-//         }
-//         if (paymentMethod === "cod") {
-//             res.status(200).send({
-//                 success: true,
-//             });
-//         }
-        // if(paymentMethod === "wallet"){
-        //   const userInfo = await User.findOne({ _id: req.session.userData?._id });
-        //   console.log(userInfo)
-        //   const walletBalance = userInfo.wallet;
-        //   return res.json({
-        //     success: true,
-        //     paymentMethod,
-        //     walletBalance,
-        //     paymentAmount: req.session?.userData?.total,
-        //   });
-        // }
-
-//     }catch(error){
-//         console.log(error.message)
-//         return res.status(500).json({ message : "Internal server error" })
-//     }
-// }
 
 // To get the order confirm page
 const getPaymentSuccess = async(req,res)=>{
@@ -1089,25 +945,6 @@ const getPaymentSuccess = async(req,res)=>{
     }
 }
 
-// To get orders
-// const getOrders = async(req,res)=>{
-//     try{
-//         userDetails = req.session.userNC
-//         const userId = req.session.user._id
-//         let order = []
-//         order = await Order.find({ userId: userId }).populate({
-//             path: "orderedItems.product",
-//             populate:  [{ path: "brand" }, { path: "category" }]
-//         });
-//         console.log("orders :",order)
-//         console.log("Ordered items :",order[0].orderedItems)
-//         return res.render('user/orders',{userDetails , order})
-//     }catch(error){
-//         console.log(error.message)
-//         return res.status(500).json({ message : "Internal server error" })
-//     }
-// }
-
 const get505Error = async(req,res)=>{
     try{
         return res.render('user/error505')
@@ -1115,24 +952,6 @@ const get505Error = async(req,res)=>{
         console.log(error.message)
     }
 }
-
-// const getOrderDetail = async(req,res)=>{
-//     try{
-//         console.log("Request.params.prodId :",req.params.orderId)
-//         const orderId = req.params.orderId
-//         const order = await Order.find({ _id : orderId}).populate({
-//             path: "orderedItems.product",
-//             populate:  [{ path: "brand" }, { path: "category" }]
-//         }).populate("address");
-//         console.log("order :",order)
-//         return res.render('user/orderDetail',{userDetails , order})
-//     }catch(error){
-//         console.log(error.message)
-//         return res.status(500).json({ message : "Internal serer error" })
-//     }
-// }
-
-
 
 
 module.exports = {
