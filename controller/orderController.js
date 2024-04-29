@@ -3,6 +3,7 @@ const Cart = require('../models/cartModel')
 const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
 const Product = require('../models/productModel')
+const Wallet = require('../models/walletModel')
 
 let userDetails;
 
