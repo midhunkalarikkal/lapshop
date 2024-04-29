@@ -956,6 +956,56 @@ const getPaymentSuccess = async(req,res)=>{
     }
 }
 
+// To get the address edit page from checout
+const getUserEditAddressFromCheckout = async(req,res)=>{
+    try{
+        const addressId = req.params.addressId
+        console.log("Address Id :",addressId)
+        const address = await Address.findById(addressId)
+        console.log("address :",address)
+        userDetails = req.session.userNC
+        return res.render('user/editAddressFromCheckout',{ userDetails, address})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+const updateAddressFromCheckout = async(req,res)=>{
+    try{
+        console.log("Address updating from checkout")
+        const addressId = req.params.addressId
+        console.log("AddressId :",addressId)
+        // Extract form data from req.body
+        const newaddress = {
+            name: req.body.name,
+            addressLine: req.body.addressLine,
+            phone: req.body.phone,
+            city: req.body.city,
+            district: req.body.district,
+            state: req.body.state,
+            pincode: req.body.pincode,
+            country: req.body.country
+        };
+
+        // Update the address using the extracted form data
+        const updatedAddress = await Address.findOneAndUpdate(
+            { _id: addressId },
+            newaddress,
+            { new: true }
+        );
+
+        if (updatedAddress) {
+            return res.status(200).json({ message: "Address updated successfully" });
+        } else {
+            return res.status(500).json({ message: "Failed to update address" });
+        }
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 const get505Error = async(req,res)=>{
     try{
         return res.render('user/error505')
@@ -995,12 +1045,10 @@ module.exports = {
     getCatProduct,
     getCheckout,
     getUserNewAddressFromCheckout,
+    getUserEditAddressFromCheckout,
+    updateAddressFromCheckout,
     getPaymentPage,
     getPaymentSuccess,
-    get505Error,
-    // placeOrder,
-    // getOrders,
-    // getOrderDetail,
-    // orderConfirmation
+    get505Error
 }
 

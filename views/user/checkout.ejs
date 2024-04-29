@@ -148,32 +148,33 @@
                                             <div class="d-flex">
                                                 <input type="radio" name="selectedAddress" value="<%= address._id %>" id="address<%= address._id  %>" />
                                                 <h6 class="mx-2 mt-2"><%= address.name %></h6>
+                                                <button class="btn btn-primary btn-sm border-0 text-primary" id="edit-address" data-adId="<%= address._id %>" style="background-color: #00000000;"><i class="fa-regular fa-pen-to-square text-primary"></i> Edit</button>
                                             </div>
                                             <div class="col-12 address text-muted">
                                                 <p>
                                                     <%= address.addressLine %>,
                                                     <span>Phone:</span> <%= address.phone %>,
-                                                    <%= address.city %>,
-                                                    <span>Pincode:</span> <%= address.pincode %>,
+                                                    <%= address.city %>, <br>
                                                     <%= address.district %>,
                                                     <%= address.state %>,
-                                                    <%= address.country %>
+                                                    <span>Pincode:</span> <%= address.pincode %>,
+                                                    <%= address.country %> <br>
                                                 </p>
                                             </div>
                                         </div>
                                     <% }); %>
                                 <% } %>
                                     <div class="address-btn">
-                                        <button class="mx-3"  
-                                            style="color: blue; border: none; background-color: #f1f1f100;" 
+                                        <button class="mx-3 border-0 text-primary"  
+                                            style="background-color: #f1f1f100;" 
                                             id="add-address">
-                                            <i class="fa-solid fa-plus" style="color: blue;"></i>
+                                            <i class="fa-solid fa-plus text-primary"></i>
                                             Add new address
                                         </button>
                                     </div>
                                     <div class="extra-btns my-3">
-                                        <button class="btn btn-primary" onclick="goToShop(event)">Continue shopping</button>
-                                        <button class="btn btn-primary" onclick="goToCart(event)">Review cart</button>
+                                        <button class="btn btn-primary btn-sm" onclick="goToShop(event)">Continue shopping</button>
+                                        <button class="btn btn-primary btn-sm" onclick="goToCart(event)">Review cart</button>
                                     </div>
                                 </div>
                             </div>
@@ -228,6 +229,13 @@
         document.getElementById('add-address').addEventListener('click', function () {
             window.location.href = `/addAddressFromCheckout`; 
         });
+
+        ////// To go to edit address page \\\\\\
+        document.getElementById('edit-address').addEventListener("click",function(){
+            const addressId = this.dataset.adid;
+            console.log("Addres id :",addressId)
+            window.location.href = `/editAddressFromCheckout/${addressId}`; 
+        })
 
         // To go to payment
         document.getElementById('goToPayment').addEventListener('click' , async  function(event){

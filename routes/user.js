@@ -100,6 +100,12 @@ userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
 //To add new address from checkout page
 userRouter.get('/addAddressFromCheckout',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
 
+//To edit address from checkou
+userRouter.get('/editAddressFromCheckout/:addressId',userAuth.isUserLoggedIn,userController.getUserEditAddressFromCheckout)
+
+//To update address from checkout
+userRouter.post('/updateAddressFromCheckout/:addressId',userAuth.isUserLoggedIn,userController.updateAddressFromCheckout)
+
 //To get the payment page
 userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)
 
