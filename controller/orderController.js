@@ -6,6 +6,24 @@ const Product = require('../models/productModel')
 
 let userDetails;
 
+
+//To delete the online payment order after 1 day which have payment status failed
+async function getOnlinePaymentOrders() {
+    try {
+        const orders = await Order.find({ $and: [{ paymentMethod: "razorpay" }, { paymentStatus: false }] });
+        console.log("Razorpay orders:", orders);
+
+        setTimeout(async () => {
+            const deletedOrders = await Order.deleteMany({ $and: [{ paymentMethod: "razorpay" }, { paymentStatus: false }] });
+            console.log("Deleted orders:", deletedOrders);
+        }, 86400000);//One day
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+getOnlinePaymentOrders();
+
 // To confirm an order
 const placeOrder = async(req,res)=>{
     try{
