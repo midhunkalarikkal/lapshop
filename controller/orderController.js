@@ -267,7 +267,8 @@ const userCancelOrder = async(req,res)=>{
                 wallet = new Wallet({
                     user: userId,
                     type: "credit",
-                    amount: 0
+                    amount: 0,
+                    updatedAt : new Date()
                 });
             }
             wallet.amount += order.orderTotal;
@@ -311,7 +312,7 @@ const adminCancelOrder = async(req,res)=>{
 
             await Wallet.findOneAndUpdate(
                 { user: userId },
-                { user: userId, type: "credit", amount: newAmount },
+                { user: userId, type: "credit", amount: newAmount , updatedAt : new Date()},
                 { upsert: true }
             );
         }
@@ -323,7 +324,7 @@ const adminCancelOrder = async(req,res)=>{
             const productQty = order.orderedItems[i].quantity
             await Product.updateOne({_id : productId}, { $inc: { noOfStock:  productQty} })
         }
-        
+
         order.status = "Admin cancelled"
         await order.save()
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
