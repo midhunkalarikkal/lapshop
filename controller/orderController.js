@@ -262,17 +262,13 @@ const userCancelOrder = async(req,res)=>{
         const order = await Order.findById(orderId)
         console.log("Order :",order)
         if(order.paymentStatus === true){
-            let wallet = await Wallet.findOne({ user: userId });
-            if (!wallet) {
-                wallet = new Wallet({
-                    user: userId,
-                    type: "credit",
-                    amount: 0,
-                    updatedAt : new Date()
-                });
-            }
-            wallet.amount += order.orderTotal;
-            await wallet.save();
+            const wallet = new Wallet({
+                user: userId,
+                type: "credit",
+                amount: order.orderTotal,
+                updatedAt : new Date()
+            });
+        await wallet.save();
         }
         order.status = "Cancelled"
 
@@ -302,19 +298,13 @@ const adminCancelOrder = async(req,res)=>{
         const userId = order.userId
         console.log("userId :",userId)
         if(order.paymentStatus === true){
-            const wallet = await Wallet.findOne({ user: userId });
-            let currentAmount = 0;
-            if (wallet) {
-                currentAmount = wallet.amount;
-            }
-
-            const newAmount = currentAmount + order.orderTotal;
-
-            await Wallet.findOneAndUpdate(
-                { user: userId },
-                { user: userId, type: "credit", amount: newAmount , updatedAt : new Date()},
-                { upsert: true }
-            );
+            const wallet = new Wallet({
+                user: userId,
+                type: "credit",
+                amount: order.orderTotal,
+                updatedAt : new Date()
+            });
+        await wallet.save();
         }
 
         const orderedItemsLength = order.orderedItems.length
