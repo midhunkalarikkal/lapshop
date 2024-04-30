@@ -12,6 +12,7 @@ const cartController = require('../controller/cartController')
 const wishlistController = require('../controller/wishlistController')
 const orderController = require('../controller/orderController')
 const couponController = require('../controller/couponController')
+const walletController = require('../controller/walletController')
 
 //To get home page
 userRouter.get('/',userController.getHome)
@@ -135,5 +136,8 @@ userRouter.post('/cancelCoupon',userAuth.isUserLoggedIn,couponController.cancelC
 
 //To cancel an order
 userRouter.post('/cancelOrder',userAuth.isUserLoggedIn,orderController.userCancelOrder)
+
+//To get the wallet page
+userRouter.get('/wallet',userAuth.isUserLoggedIn,walletController.getUserWallet)
 
 module.exports = userRouter
