@@ -101,4 +101,7 @@ adminRouter.get('/adminOrderDetail/:orderId',adminAuth.isAdminLoggedIn,adminCont
 //To change the order status 
 adminRouter.post('/updateOrderStatus',adminAuth.isAdminLoggedIn,orderController.changeOrderStatus)
 
+//To cancel an order
+adminRouter.post('/cancelOrder',adminAuth.isAdminLoggedIn,orderController.adminCancelOrder)
+
 module.exports = adminRouter

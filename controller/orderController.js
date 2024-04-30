@@ -3,7 +3,8 @@ const Cart = require('../models/cartModel')
 const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
 const Product = require('../models/productModel')
-const Wallet = require('../models/walletModel')
+const Wallet = require('../models/walletModel');
+const { postAdminAddProduct } = require('./adminController');
 
 let userDetails;
 
@@ -49,7 +50,7 @@ async function getAdminCancelledOrders() {
                 ]
             });
             console.log("Admin cancelled deleted orders:", deletedOrders);
-        }, 5000);
+        }, 86400000);
     } catch (error) {
         console.error("Error:", error);
     }
@@ -261,14 +262,69 @@ const userCancelOrder = async(req,res)=>{
         const order = await Order.findById(orderId)
         console.log("Order :",order)
         if(order.paymentStatus === true){
-            const newWallet = new Wallet({
-                user : userId,
-                type : "credit",
-                amount : order.orderTotal
-            })
-            await newWallet.save()
+            let wallet = await Wallet.findOne({ user: userId });
+            if (!wallet) {
+                wallet = new Wallet({
+                    user: userId,
+                    type: "credit",
+                    amount: 0
+                });
+            }
+            wallet.amount += order.orderTotal;
+            await wallet.save();
         }
         order.status = "Cancelled"
+
+        const orderedItemsLength = order.orderedItems.length
+        for(let i =0; i< orderedItemsLength; i++){
+            console.log("Product quantity :",order.orderedItems[i].quantity)
+            const productId = order.orderedItems[i].product.toString()
+            const productQty = order.orderedItems[i].quantity
+            await Product.updateOne({_id : productId}, { $inc: { noOfStock:  productQty} })
+        }
+        await order.save()
+        return res.status(200).json({ success : true , message : "Order cancel successfull."})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+//To cancel a order from admin
+const adminCancelOrder = async(req,res)=>{
+    try{
+        console.log("Admin cancel order")
+        const orderId = req.body.orderId
+        console.log("orderId :",orderId)
+        const order = await Order.findById(orderId)
+        console.log("Order :",order)
+        const userId = order.userId
+        console.log("userId :",userId)
+        if(order.paymentStatus === true){
+            const wallet = await Wallet.findOne({ user: userId });
+            let currentAmount = 0;
+            if (wallet) {
+                currentAmount = wallet.amount;
+            }
+
+            const newAmount = currentAmount + order.orderTotal;
+
+            await Wallet.findOneAndUpdate(
+                { user: userId },
+                { user: userId, type: "credit", amount: newAmount },
+                { upsert: true }
+            );
+        }
+
+        const orderedItemsLength = order.orderedItems.length
+        for(let i =0; i< orderedItemsLength; i++){
+            console.log("Product quantity :",order.orderedItems[i].quantity)
+            const productId = order.orderedItems[i].product.toString()
+            const productQty = order.orderedItems[i].quantity
+            await Product.updateOne({_id : productId}, { $inc: { noOfStock:  productQty} })
+        }
+        
+        order.status = "Admin cancelled"
         await order.save()
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
@@ -283,5 +339,6 @@ module.exports = {
     getOrders,
     getOrderDetail,
     changeOrderStatus,
-    userCancelOrder
+    userCancelOrder,
+    adminCancelOrder
 }
