@@ -15,6 +15,7 @@ adminRouter.use(bodyParser.urlencoded({extended:true}));
 
 const adminController = require('../controller/adminController')
 const couponController = require('../controller/couponController')
+const orderController = require('../controller/orderController')
 
 adminRouter.get('/',adminController.getAdminlogin)
 
@@ -96,5 +97,8 @@ adminRouter.post('/blockCoupon/:couponId',adminAuth.isAdminLoggedIn,couponContro
 adminRouter.get('/orders',adminAuth.isAdminLoggedIn,adminController.getOrders)
 
 adminRouter.get('/adminOrderDetail/:orderId',adminAuth.isAdminLoggedIn,adminController.getOrderDetail)
+
+//To change the order status 
+adminRouter.post('/updateOrderStatus',adminAuth.isAdminLoggedIn,orderController.changeOrderStatus)
 
 module.exports = adminRouter

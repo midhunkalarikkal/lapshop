@@ -77,9 +77,9 @@
                         <hr>
                     </div>
                 </div>
+                <% if(order !== "" && order.length > 0){ %>
                 <div class="row justify-content-center mb-3">
                     <div class="col-10 shadow orderDetail">
-                       <% if(order !== "" && order.length > 0){ %>
                             <% for(let i = 0; i < order.length; i++){ %>
                                 <div class="details d-flex flex-column mt-3 p-3 border">
                                     <span class="product-price "><span class="heads">Order id :</span> <%= order[i]._id.toString().slice(-6)  %></span>
@@ -91,6 +91,8 @@
                                     %>
                                     <span class="product-price "><span class="heads">Expected delivery date : </span> <%= deliveryDate  %></span>
                                     <span class="product-price "><span class="heads">Order total : ₹</span> <%= order[i].orderTotal  %></span>
+                                    <span class="product-name"><span class="heads">Order status : </span><%= order[i].status %></span>
+                                    <span class="product-name"><span class="heads">Status date : </span><%= order[i].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
                                 </div>
                                 <div class="item-wrap-border border mt-3">
                                     <% if(order[i].orderedItems.length ===  1){ %>
@@ -108,22 +110,19 @@
                                         <div class="items-wrap d-md-flex p-3">
                                             <div class="item-img col-md-4">
                                                 <span class="heads mx-3">Shipment <%= j+1 %> of <%= order[i].orderedItems.length %></span>
-                                                <a href="/productDetail/" style="cursor: pointer;">
                                                     <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>"
                                                     alt="image loading" class="product-img shadow mt-2">
-                                                </a>
                                             </div>
                                             <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center mt-3 mt-md-0">
                                                 <span class="product-brand"><span class="heads">Brand : </span><%= order[i].orderedItems[j].product.brand.name %></span>
                                                 <span class="product-name"><span class="heads">Model : </span><%= order[i].orderedItems[j].product.name %></span>
+                                                <span class="product-name"><span class="heads">Description : </span><%= order[i].orderedItems[j].product.description %></span>
+                                            </div>
+                                            <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center">
                                                 <span class="product-name"><span class="heads">Category : </span><%= order[i].orderedItems[j].product.category.name %></span>
                                                 <span class="product-name"><span class="heads">Black : </span><%= order[i].orderedItems[j].product.colour %></span>
-                                            </div>
-                                        <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center">
-                                            <span class="product-name"><span class="heads">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
-                                            <span class="product-name"><span class="heads">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
-                                            <span class="product-name"><span class="heads">Order status : </span><%= order[i].orderedItems[j].status %></span>
-                                            <span class="product-name"><span class="heads">Status date : </span><%= order[i].orderedItems[j].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                                                <span class="product-name"><span class="heads">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
+                                                <span class="product-name"><span class="heads">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
                                         </div>
                                     </div>
                                     <% } %>
@@ -142,6 +141,14 @@
                                                     Wallet
                                                 <% } %>
                                             </span>
+                                            <br>
+                                            <br>
+                                            <span class="heads">Payment status</span><br>
+                                            <% if(order[i].paymentStatus === false){ %>
+                                                <Span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button></Span>
+                                            <% }else if(order[i].paymentStatus === true){ %>
+                                                <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
+                                            <% } %>
                                         </div>
                                     </div>
                                     <div class="gap col-1">
@@ -164,51 +171,30 @@
                                     <h5>Order total</h5>
                                     <hr>
                                     <div class="col-md-3">
-                                        <%
-                                            // Initialize totalamount variable
-                                            let totalamount = 0;
-
-                                            // Loop through ordered items and sum up the totalPrice
-                                            for (let k = 0; k < order[i].orderedItems.length; k++) {
-                                                totalamount += order[i].orderedItems[k].totalPrice;
-                                            }
-                                        %>
-                                        <% if(totalamount == order[i].orderTotal){ %>
+                                        <div class="total d-flex justify-content-between">
+                                            <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
+                                        </div>
+                                        <div class="total d-flex justify-content-between">
+                                            <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
+                                        </div>
+                                        <% if(order[i].couponApplied){ %>
                                             <div class="total d-flex justify-content-between">
-                                                <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
+                                                <h6>Coupon : </h6> <h6 class="text-success">Applied</h6>
                                             </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Coupon applied : </h6> <h6>No</h6>
-                                            </div>
-                                            <hr>
-                                            <div class="total d-flex justify-content-between">
-                                                <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
-                                            </div> 
-                                        <% }else{ %>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal + 5000 %> </h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Coupon applied : </h6> <h6>Yes (₹5000)</h6>
-                                            </div>
-                                            <hr>
-                                            <div class="total d-flex justify-content-between">
-                                                <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
-                                            </div> 
                                         <% } %>
+                                        <hr>
+                                        <div class="total d-flex justify-content-between">
+                                            <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
+                                        </div> 
                                     </div>
                                     <hr>
                                 </div>
                             <% } %>
-                        <% } %>
-                    </div>   
-                </div>
+                        </div>   
+                    </div>
+                    <% }else{ %>
+                        <div class="alert alert-info text-center" role="alert">No Orders found in the database.</div>
+                <% } %>
             </div>
         </div>
         

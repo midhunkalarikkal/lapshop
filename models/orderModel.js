@@ -19,14 +19,6 @@ const orderSchema = new mongoose.Schema({
         totalPrice:{
             type: Number,
             required: true
-        },
-        status:{
-            type: String,
-            enum: ["Processing" , "Shipped" , "Delivered" , "User cancelled" , "admin cancelled" , "return approved" , "return rejected" ],
-            default: "Processing"
-        },
-        statusDate : {
-            type : Date
         }
     }],
     address:{
@@ -63,6 +55,14 @@ const orderSchema = new mongoose.Schema({
         type: Boolean,
         required: true,
         default: false
+    },
+    status:{
+        type: String,
+        enum: ["Processing" , "Shipped" , "Delivered" , "admin cancelled","return request","return accept", "return reject" ],
+        default: "Processing"
+    },
+    statusDate : {
+        type : Date
     }
 })
 

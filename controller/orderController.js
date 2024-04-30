@@ -17,13 +17,31 @@ async function getOnlinePaymentOrders() {
         setTimeout(async () => {
             const deletedOrders = await Order.deleteMany({ $and: [{ paymentMethod: "razorpay" }, { paymentStatus: false }] });
             console.log("Deleted orders:", deletedOrders);
-        }, 86400000);//One day
+        }, 86400000);
     } catch (error) {
         console.error("Error:", error);
     }
 }
 
 getOnlinePaymentOrders();
+
+//To delete the order if status is admin cancelled
+async function getAdminCancelledOrders() {
+    try {
+        const orders = await Order.find({ status : "admin cancelled" });
+        console.log("Admin called orders:", orders);
+
+        setTimeout(async () => {
+            const deletedOrders = await Order.deleteMany({ $and: [{ status : "admin cancelled" }, { paymentStatus: false }] });
+            console.log("Admin cancelled deleted orders:", deletedOrders);
+        }, 5000);
+    } catch (error) {
+        console.error("Error:", error);
+    }
+}
+
+getAdminCancelledOrders();
+
 
 // To confirm an order
 const placeOrder = async(req,res)=>{
@@ -67,14 +85,14 @@ const placeOrder = async(req,res)=>{
                 product: item.product,
                 quantity: item.quantity,
                 totalPrice: item.totalPrice, // actually this is price of a single quanityty
-                statusDate: new Date()
             })),
             address : addressId,
             paymentMethod : paymentMethod,
             orderTotal : totalAmount,
             orderDate: new Date(),
             couponApplied: couponApplied,
-            paymentStatus: paymentStatus
+            paymentStatus: paymentStatus,
+            statusDate: new Date()
         })
     
         const orderSaved = await newOrder.save()
@@ -192,9 +210,36 @@ const getOrderDetail = async(req,res)=>{
     }
 }
 
+const changeOrderStatus = async(req,res)=>{
+    try{
+        console.log("change order status api start")
+        const orderId = req.body.orderId
+        const selectedStatus = req.body.selectedStatus
+        console.log("orderId :",orderId)
+        console.log("selectedStatus :",selectedStatus)
+
+        const order = await Order.findById(orderId)
+        console.log("order :",order)
+
+        if(selectedStatus === order.status){
+            return res.status(400).json({ success : false , message : "Order status is same."})
+        }else{
+            order.status = selectedStatus
+            order.statusDate = new Date()
+            await order.save()
+            return res.status(200).json({ success : true , message : `Order status changed to ${selectedStatus}`})
+        }
+        
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 module.exports = {
     placeOrder,
     orderConfirmation,
     getOrders,
-    getOrderDetail
+    getOrderDetail,
+    changeOrderStatus
 }

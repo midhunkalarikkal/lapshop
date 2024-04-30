@@ -86,6 +86,8 @@
                                     %>
                                     <span class="product-price "><span class="heads">Expected delivery date : </span> <%= deliveryDate  %></span>
                                     <span class="product-price "><span class="heads">Order total : ₹</span> <%= order[i].orderTotal  %></span>
+                                    <span class="product-name"><span class="heads">Order status : </span><%= order[i].status %></span>
+                                    <span class="product-name"><span class="heads">Status date : </span><%= order[i].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
                                 </div>
                                 <div class="item-wrap-border border mt-3">
                                     <% if(order[i].orderedItems.length ===  1){ %>
@@ -111,14 +113,13 @@
                                             <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center mt-3 mt-md-0">
                                                 <span class="product-brand"><span class="heads">Brand : </span><%= order[i].orderedItems[j].product.brand.name %></span>
                                                 <span class="product-name"><span class="heads">Model : </span><%= order[i].orderedItems[j].product.name %></span>
-                                                <span class="product-name"><span class="heads">Category : </span><%= order[i].orderedItems[j].product.category.name %></span>
-                                                <span class="product-name"><span class="heads">Black : </span><%= order[i].orderedItems[j].product.colour %></span>
+                                                <span class="product-name"><span class="heads">Descroiption : </span><%= order[i].orderedItems[j].product.description %></span>
                                             </div>
-                                        <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center">
+                                            <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center">
+                                                <span class="product-name"><span class="heads">Category : </span><%= order[i].orderedItems[j].product.category.name %></span>
+                                            <span class="product-name"><span class="heads">Black : </span><%= order[i].orderedItems[j].product.colour %></span>
                                             <span class="product-name"><span class="heads">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
                                             <span class="product-name"><span class="heads">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
-                                            <span class="product-name"><span class="heads">Order status : </span><%= order[i].orderedItems[j].status %></span>
-                                            <span class="product-name"><span class="heads">Status date : </span><%= order[i].orderedItems[j].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
                                         </div>
                                     </div>
                                     <% } %>
@@ -166,7 +167,7 @@
                                     <hr>
                                     <h5>Order total</h5>
                                     <hr>
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="total d-flex justify-content-between">
                                             <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
                                         </div>

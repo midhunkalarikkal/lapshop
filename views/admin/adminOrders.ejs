@@ -22,15 +22,14 @@
                                     <tr class="table-dark">
                                         <th class="text-center text-light">OrderId</th>
                                         <th class="text-center text-light">UserId</th>
-                                        <th class="text-center text-light">Item</th>
+                                        <th class="text-center text-light">Items</th>
+                                        <th class="text-center text-light">Order status</th>
                                         <th class="text-center text-light">Order total</th>
-                                        <th class="text-center text-light">Order staus</th>
                                         <th class="text-center text-light">Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <% for(let i = 0; i < orders.length; i++){ %>
-                                        <% for(let j = 0; j < orders[i].orderedItems.length; j++){ %>
                                         <tr class="align-middle">
                                             <td>
                                                 <%= orders[i]._id.toString().slice(-6)  %>
@@ -39,28 +38,32 @@
                                                 <%= orders[i].userId.toString().slice(-6)  %>
                                             </td>
                                             <td>
-                                                <%= orders[i].orderedItems[j].product.brand.name %>
-                                                <%= orders[i].orderedItems[j].product.name %>
+                                                <% for(let j = 0; j < orders[i].orderedItems.length; j++){ %>
+                                                    <%= orders[i].orderedItems[j].product.brand.name %>
+                                                    <%= orders[i].orderedItems[j].product.name %> ,<br>
+                                                <% } %>
                                             </td>
                                             <td>
-                                                <select class="form-select" id="orderStatus<%= i %>_<%= j %>">
-                                                    <option value="Processing" <% if (orders[i].orderedItems[j].status === 'Processing') { %> selected <% } %>>Processing</option>
-                                                    <option value="Shipped" <% if (orders[i].orderedItems[j].status === 'Shipped') { %> selected <% } %>>Shipped</option>
-                                                    <option value="Delivered" <% if (orders[i].orderedItems[j].status === 'Delivered') { %> selected <% } %>>Delivered</option>
-                                                    <option value="User cancelled" <% if (orders[i].orderedItems[j].status === 'User cancelled') { %> selected <% } %>>User cancelled</option>
-                                                    <option value="admin cancelled" <% if (orders[i].orderedItems[j].status === 'admin cancelled') { %> selected <% } %>>admin cancelled</option>
-                                                    <option value="return approved" <% if (orders[i].orderedItems[j].status === 'return approved') { %> selected <% } %>>return approved</option>
-                                                    <option value="return rejected" <% if (orders[i].orderedItems[j].status === 'return rejected') { %> selected <% } %>>return rejected</option>
-                                                </select>
+                                                <% if(orders[i].status === "Delivered"){ %>
+                                                    <%= orders[i].status %>
+                                                <% }else{ %>
+                                                    <select class="form-select" id="orderStatus_<%= orders[i]._id %>" onchange="updateOrderStatus('<%= orders[i]._id %>')">
+                                                        <option value="Processing" <% if (orders[i].status === 'Processing') { %> selected <% } %>>Processing</option>
+                                                        <option value="Shipped" <% if (orders[i].status === 'Shipped') { %> selected <% } %>>Shipped</option>
+                                                        <option value="Delivered" <% if (orders[i].status === 'Delivered') { %> selected <% } %>>Delivered</option>
+                                                    </select>
+                                                <% } %>
                                             </td>
                                             <td>
                                                 ₹ <%= orders[i].orderTotal %>
                                             </td>
-                                            <td>
+                                            <td class="d-flex flex-column justify-content-center align-items-center">
                                                 <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= orders[i]._id %>">Details</button>
+                                                <% if(orders[i].status !== "Delivered"){ %>
+                                                    <button class="btn btn-danger btn-sm mt-3" id="prod-detail" data-orderId="<%= orders[i]._id %>">Cancel</button>
+                                                <% } %>
                                             </td>
                                         </tr>
-                                        <% } %>
                                         <% } %>
                                 </tbody>
                             </table>
@@ -140,14 +143,61 @@
         window.location.href = `adminOrderDetail/${orderId}`;
     }
 
-    
-        
-        //Script for the data table
-        $(document).ready(function(){
-            $("table").DataTable({
-                order : [0, 'desc']
-            })
+    ////// To change the order status \\\\\\
+    function updateOrderStatus(orderId) {
+        const selectElement = document.getElementById(`orderStatus_${orderId}`);
+        const selectedStatus = selectElement.value;
+
+        console.log("orderId :", orderId);
+        // console.log("orderedItemId :", orderedItemId);
+        console.log("selectedStatus :", selectedStatus);
+
+        // Make a fetch request to send the selected data to the server
+        fetch('/admin/updateOrderStatus', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId, selectedStatus })
         })
+        .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Network response was not ok.');
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: data.message
+            });
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: data.message
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An error occurred. Please try again later.'
+            });
+        });
+    }
+
+    ////// Script for the data table \\\\\\
+    $(document).ready(function(){
+        $("table").DataTable({
+            order : [0, 'desc']
+        })
+    })
     </script>
     
     
