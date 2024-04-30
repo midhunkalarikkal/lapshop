@@ -141,10 +141,13 @@
                                             <br>
                                             <br>
                                             <span class="heads">Payment status</span><br>
-                                            <% if(order[i].paymentStatus === false){ %>
-                                                <Span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button></Span>
-                                            <% }else if(order[i].paymentStatus === true){ %>
-                                                <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
+                                            <% if (order[i].paymentStatus === false) { %>
+                                                <span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button></span>
+                                            <% } else if (order[i].paymentStatus) { %>
+                                                <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span> <br>
+                                                <% if(order[i].status === "Cancelled"){ %>
+                                                    <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
+                                                <% } %>
                                             <% } %>
                                         </div>
                                     </div>

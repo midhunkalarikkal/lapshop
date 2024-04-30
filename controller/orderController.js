@@ -28,11 +28,26 @@ getOnlinePaymentOrders();
 //To delete the order if status is admin cancelled
 async function getAdminCancelledOrders() {
     try {
-        const orders = await Order.find({ status : "admin cancelled" });
+        const orders = await Order.find({
+            $or: [
+                { status: "Admin cancelled" },
+                { status: "Cancelled" }
+            ]
+        });
         console.log("Admin called orders:", orders);
 
         setTimeout(async () => {
-            const deletedOrders = await Order.deleteMany({ $and: [{ status : "admin cancelled" }, { paymentStatus: false }] });
+            const deletedOrders = await Order.deleteMany({
+                $and: [
+                    {
+                        $or: [
+                            { status: "Admin cancelled" },
+                            { status: "Cancelled" }
+                        ]
+                    },
+                    { paymentStatus: false }
+                ]
+            });
             console.log("Admin cancelled deleted orders:", deletedOrders);
         }, 5000);
     } catch (error) {
@@ -148,7 +163,7 @@ const orderConfirmation = async(req,res)=>{
                 email: email,
                 });
             } else {
-                res.status(400).send({ success: false, message: "SOmething went wrong!" });
+                res.status(400).send({ success: false, message: "Something went wrong!" });
             }
             });
             console.log("i have done with instance creation");
@@ -236,10 +251,37 @@ const changeOrderStatus = async(req,res)=>{
     }
 }
 
+// To cancel an order from user
+const userCancelOrder = async(req,res)=>{
+    try{
+        console.log("UserCancelorder api start")
+        const orderId = req.body.orderId
+        console.log("orderId :",orderId)
+        const userId = req.session.user._id
+        const order = await Order.findById(orderId)
+        console.log("Order :",order)
+        if(order.paymentStatus === true){
+            const newWallet = new Wallet({
+                user : userId,
+                type : "credit",
+                amount : order.orderTotal
+            })
+            await newWallet.save()
+        }
+        order.status = "Cancelled"
+        await order.save()
+        return res.status(200).json({ success : true , message : "Order cancel successfull."})
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
 module.exports = {
     placeOrder,
     orderConfirmation,
     getOrders,
     getOrderDetail,
-    changeOrderStatus
+    changeOrderStatus,
+    userCancelOrder
 }

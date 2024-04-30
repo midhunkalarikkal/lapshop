@@ -133,4 +133,7 @@ userRouter.post('/applyCoupon',userAuth.isUserLoggedIn,couponController.applyCou
 //To cancel applied coupon
 userRouter.post('/cancelCoupon',userAuth.isUserLoggedIn,couponController.cancelCoupon)
 
+//To cancel an order
+userRouter.post('/cancelOrder',userAuth.isUserLoggedIn,orderController.userCancelOrder)
+
 module.exports = userRouter
