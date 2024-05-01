@@ -70,6 +70,7 @@ const placeOrder = async(req,res)=>{
         const paymentMethod = req.query.paymentMethod
         const paymentStatus = req.query.paymentStatus
         const couponCode = req.query.coupon 
+        const walletUsed = req.query.walletUsed
         let couponApplied = false
         
         console.log("UserId :",userId)
@@ -92,6 +93,16 @@ const placeOrder = async(req,res)=>{
         }else{
             console.log("coupon not applied :",)
             console.log("coupon code :",couponCode)
+        }
+
+        if(walletUsed && walletUsed !== undefined){
+            const newWallet = new Wallet({
+                user : userId,
+                type : "debit",
+                amount : totalAmount,
+                updatedAt : new Date()
+            })
+            await newWallet.save()
         }
 
         const newOrder = new Order({
@@ -141,6 +152,7 @@ const orderConfirmation = async(req,res)=>{
         console.log("order confirmation api start")
         const amount = req.body.totalAmount
         const paymentMethod = req.body.paymentMethod
+        const userId = req.session.user._id
         
         if (paymentMethod === "razorpay") {
             console.log("i am creating instance");
@@ -171,18 +183,28 @@ const orderConfirmation = async(req,res)=>{
         if (paymentMethod === "cod") {
             res.status(200).send({ success: true });
         }
-        // if(paymentMethod === "wallet"){
-        //   const userInfo = await User.findOne({ _id: req.session.userData?._id });
-        //   console.log(userInfo)
-        //   const walletBalance = userInfo.wallet;
-        //   return res.json({
-        //     success: true,
-        //     paymentMethod,
-        //     walletBalance,
-        //     paymentAmount: req.session?.userData?.total,
-        //   });
-        // }
-
+        if(paymentMethod === "wallet"){
+          const wallet = await Wallet.find({ user : userId})
+          console.log("Wallet api start")
+          console.log("wallet :",wallet)
+          let walletBalance = 0;
+          let totalCreditedAmount = 0;
+          let totalDebitedAmount = 0;
+          wallet.forEach((data)=>{
+            if (data.type === 'credit') {
+                totalCreditedAmount += data.amount; 
+            } else {
+                totalDebitedAmount += data.amount; 
+            }
+          })
+           walletBalance = totalCreditedAmount - totalDebitedAmount;
+          return res.json({
+            success: true,
+            paymentMethod,
+            walletBalance,
+            paymentAmount: amount,
+          });
+        }
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })

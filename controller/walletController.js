@@ -10,15 +10,13 @@ const getUserWallet = async(req,res)=>{
         const wallet = await Wallet.find({user : userId})
         console.log("wallet :",wallet)
         console.log("userDetails :",userDetails)
-        let totalAmount = 0;
         let totalCreditedAmount = 0;
         let creditCount = 0
         let totalDebitedAmount = 0;
         let debitCount = 0
-
+        
         wallet.forEach(transaction => {
-            totalAmount += transaction.amount; 
-    
+            
             if (transaction.type === 'credit') {
                 totalCreditedAmount += transaction.amount; 
                 creditCount++;
@@ -27,6 +25,7 @@ const getUserWallet = async(req,res)=>{
                 debitCount++;
             }
         });
+        let totalAmount = totalCreditedAmount - totalDebitedAmount;
 
         console.log("Total Amount:", totalAmount);
         console.log("Total Credited Amount:", totalCreditedAmount);
