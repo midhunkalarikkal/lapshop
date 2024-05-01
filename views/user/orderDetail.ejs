@@ -85,7 +85,14 @@
                                         const deliveryDate = orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
                                     %>
                                     <span class="product-price "><span class="heads">Expected delivery date : </span> <%= deliveryDate  %></span>
-                                    <span class="product-price "><span class="heads">Order total : ₹</span> <%= order[i].orderTotal  %></span>
+                                    <span class="product-price ">
+                                        <span class="heads">Order total : </span>
+                                        <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
+                                            ₹ <%= order[i].orderTotal + order[i].walletDebitedAmount %>
+                                        <% }else{ %>
+                                            ₹ <%= order[i].orderTotal %>
+                                        <% } %>
+                                    </span>
                                     <span class="product-name"><span class="heads">Order status : </span><%= order[i].status %></span>
                                     <span class="product-name"><span class="heads">Status date : </span><%= order[i].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
                                 </div>
@@ -136,6 +143,8 @@
                                                     Razorpay
                                                 <% }else if(order[i].paymentMethod === "wallet"){ %>
                                                     Wallet
+                                                <% }else if(order[i].paymentMethod === "wallet with razorpay"){ %>
+                                                    Wallet with Razorpay
                                                 <% } %>
                                             </span>
                                             <br>
@@ -171,9 +180,18 @@
                                     <h5>Order total</h5>
                                     <hr>
                                     <div class="col-md-3">
-                                        <div class="total d-flex justify-content-between">
-                                            <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
-                                        </div>
+                                        <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
+                                            <div class="total d-flex justify-content-between">
+                                                <h6>Online paid amount : </h6> <h6>₹ <%= order[i].orderTotal %> </h6>
+                                            </div>
+                                            <div class="total d-flex justify-content-between">
+                                                <h6>Wallet used amount : </h6> <h6>₹ <%= order[i].walletDebitedAmount %> </h6>
+                                            </div>
+                                        <% }else{ %>
+                                            <div class="total d-flex justify-content-between">
+                                                <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
+                                            </div>
+                                        <% } %>
                                         <div class="total d-flex justify-content-between">
                                             <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
                                         </div>
@@ -184,7 +202,13 @@
                                         <% } %>
                                         <hr>
                                         <div class="total d-flex justify-content-between">
-                                            <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">₹<%= order[i].orderTotal %> </h5>
+                                            <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">
+                                                <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
+                                                    ₹ <%= order[i].orderTotal + order[i].walletDebitedAmount %>
+                                                <% }else{ %>
+                                                    ₹ <%= order[i].orderTotal %>
+                                                <% } %>
+                                            </h5>
                                         </div> 
                                     </div>
                                     <hr>

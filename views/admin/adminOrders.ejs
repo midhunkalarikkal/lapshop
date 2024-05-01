@@ -59,7 +59,11 @@
                                                 <% } %>
                                             </td>
                                             <td>
-                                                ₹ <%= orders[i].orderTotal %>
+                                                <% if(orders[i].walletDebitedAmount && orders[i].walletDeitedAmount !== 0){ %>
+                                                    ₹ <%= orders[i].orderTotal + orders[i].walletDebitedAmount %>
+                                                <% }else{ %>
+                                                    ₹ <%= orders[i].orderTotal %>
+                                                <% } %>
                                             </td>
                                             <td class="d-flex flex-column justify-content-center align-items-center">
                                                 <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= orders[i]._id %>">Details</button>
