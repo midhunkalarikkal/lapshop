@@ -66,11 +66,12 @@ const placeOrder = async(req,res)=>{
         console.log("req.session.userNC :",req.session.userNC)
         const userId = req.session.user._id
         const addressId = req.query.addressId
-        const totalAmount = req.query.amount
         const paymentMethod = req.query.paymentMethod
         const paymentStatus = req.query.paymentStatus
         const couponCode = req.query.coupon 
         const walletUsed = req.query.walletUsed
+        const walletdeductedAmount = req.query.walletBalance
+        const totalAmount = req.query.amount
         let couponApplied = false
         
         console.log("UserId :",userId)
@@ -80,6 +81,8 @@ const placeOrder = async(req,res)=>{
         console.log("paymentMethod :",paymentMethod)
         console.log("payment status :",paymentStatus)
         console.log("coupon Name :",couponCode)
+        console.log("wallet used :",walletUsed)
+        console.log()
 
         const cart = await Cart.find({ userId : userId})
         console.log("cart :",cart[0])
@@ -95,14 +98,25 @@ const placeOrder = async(req,res)=>{
             console.log("coupon code :",couponCode)
         }
 
-        if(walletUsed && walletUsed !== undefined){
-            const newWallet = new Wallet({
-                user : userId,
-                type : "debit",
-                amount : totalAmount,
-                updatedAt : new Date()
-            })
-            await newWallet.save()
+        if (walletUsed && walletUsed !== undefined) {
+            if (walletdeductedAmount && walletdeductedAmount !== 0 && walletdeductedAmount !== undefined) {
+                const newWallet = new Wallet({
+                    user: userId,
+                    type: "debit",
+                    amount: walletdeductedAmount,
+                    updatedAt: new Date()
+                });
+                await newWallet.save();
+            }
+            if (!walletdeductedAmount || walletdeductedAmount === 0 || walletdeductedAmount === undefined) {
+                const newWallet = new Wallet({
+                    user: userId,
+                    type: "debit",
+                    amount: totalAmount,
+                    updatedAt: new Date()
+                });
+                await newWallet.save();
+            }
         }
 
         const newOrder = new Order({
@@ -114,6 +128,7 @@ const placeOrder = async(req,res)=>{
             })),
             address : addressId,
             paymentMethod : paymentMethod,
+            walletDebitedAmount : walletdeductedAmount,
             orderTotal : totalAmount,
             orderDate: new Date(),
             couponApplied: couponApplied,
@@ -140,6 +155,53 @@ const placeOrder = async(req,res)=>{
             console.log("req.session.NC :",req.session.NC)
             return res.redirect('/paymentSuccess');
         } 
+    }catch(error){
+        console.log(error.message)
+        return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+// To place order with wallet and razorpay
+const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
+    try{
+        console.log("Place order with wallet and razorpay api start")
+        console.log("req.body :", req.body)
+
+        const paymentAmount = req.body.paymentAmount
+        const userId = req.session.user._id
+        const name = req.session.user.fullname;
+        const email = req.session.user.email;
+        const walletBalance = req.body.walletBalance
+
+        const razorpayAmount = paymentAmount - walletBalance
+
+        console.log("Payment amount: ", paymentAmount);
+        console.log("userId : ",userId)
+        console.log("name :",name)
+        console.log("email :",email)
+        console.log("razorpay amount :",razorpayAmount)
+
+        const options = {
+            amount: razorpayAmount * 100,
+            currency: "INR",
+            receipt: "midhunkalarikkalp@gmail.com",
+            };
+            razorpayInstance.orders.create(options, (err, order) => {
+            if (!err) {
+                res.status(200).send({
+                success: true,
+                message: "order created",
+                order_id: order.id,
+                amount: razorpayAmount,
+                key_id: process.env.KEY_ID,
+                name: name,
+                email: email,
+                });
+            } else {
+                return res.status(400).send({ success: false, message: "Something went wrong!" });
+            }
+            });
+            console.log("i have done with instance creation");
     }catch(error){
         console.log(error.message)
         return res.status(500).json({ message : "Internal server error" })
@@ -282,11 +344,17 @@ const userCancelOrder = async(req,res)=>{
         const userId = req.session.user._id
         const order = await Order.findById(orderId)
         console.log("Order :",order)
+        let orderTotal = order.orderTotal
+
+        if(order.walletDebitedAmount && order.walletDebitedAmount !== undefined && order.walletDebitedAmount !== 0){
+            orderTotal = order.orderTotal + order.walletDebitedAmount
+        }
+
         if(order.paymentStatus === true){
             const wallet = new Wallet({
                 user: userId,
                 type: "credit",
-                amount: order.orderTotal,
+                amount: orderTotal,
                 updatedAt : new Date()
             });
         await wallet.save();
@@ -318,11 +386,18 @@ const adminCancelOrder = async(req,res)=>{
         console.log("Order :",order)
         const userId = order.userId
         console.log("userId :",userId)
+
+        let orderTotal = order.orderTotal
+
+        if(order.walletDebitedAmount && order.walletDebitedAmount !== undefined && order.walletDebitedAmount !== 0){
+            orderTotal = order.orderTotal + order.walletDebitedAmount
+        }
+
         if(order.paymentStatus === true){
             const wallet = new Wallet({
                 user: userId,
                 type: "credit",
-                amount: order.orderTotal,
+                amount: orderTotal,
                 updatedAt : new Date()
             });
         await wallet.save();
@@ -352,5 +427,6 @@ module.exports = {
     getOrderDetail,
     changeOrderStatus,
     userCancelOrder,
-    adminCancelOrder
+    adminCancelOrder,
+    orderConfirmWithWalletAndRazorpay
 }

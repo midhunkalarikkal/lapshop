@@ -31,6 +31,9 @@
                                         <h6>Expected delivery : <span> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
                                         <h6>Payment : <%= data.paymentMethod %></h6>
                                         <h6>Amount : ₹ <span class="text-success"><%= data.orderTotal %></span></h6>
+                                        <% if(data.walletDebitedAmount > 0){ %>
+                                            <h6>Wallet debited : ₹ <span class="text-success"><%= data.walletDebitedAmount %></span></h6>
+                                        <% } %>
                                         <h6>Deliverying to :</h6>
                                         <p class=""><%= data.address.name %>, <%= data.address.addressLine %>, Phone : <%= data.address.phone %>, <%= data.address.city %>, <%= data.address.distrcit %>, <%= data.address.state %>, <%= data.address.pincode %>, <%= data.address.country %></p>
                                         <% } %>

@@ -28,8 +28,12 @@ const orderSchema = new mongoose.Schema({
     },
     paymentMethod: {
         type: String,
-        enum: ["cod" , "wallet" , "razorpay"],
+        enum: ["cod" , "wallet" , "razorpay" , "wallet with razorpay"],
         default: "cod"
+    },
+    walletDebitedAmount: {
+        type: Number,
+        default : 0
     },
     paidAt: {
         type: Date,

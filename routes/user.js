@@ -140,4 +140,7 @@ userRouter.post('/cancelOrder',userAuth.isUserLoggedIn,orderController.userCance
 //To get the wallet page
 userRouter.get('/wallet',userAuth.isUserLoggedIn,walletController.getUserWallet)
 
+//To place order with wallet and razorpay
+userRouter.post('/orderConfirmWithWalletAndRazorpay',userAuth.isUserLoggedIn,orderController.orderConfirmWithWalletAndRazorpay)
+
 module.exports = userRouter

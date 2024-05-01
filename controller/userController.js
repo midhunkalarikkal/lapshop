@@ -939,11 +939,13 @@ const getPaymentSuccess = async(req,res)=>{
         }
         const orderTotal = latestOrder.orderTotal
         const orderedDate = latestOrder.orderDate
+        const walletDebitedAmount = latestOrder.walletDebitedAmount
         const expectedDelivery = new Date(orderedDate);
             expectedDelivery.setDate(expectedDelivery.getDate() + 4);
         const data = {
             address : deliveryAddress,
             paymentMethod : paymentMethod,
+            walletDebitedAmount : walletDebitedAmount,
             orderTotal : orderTotal,
             orderedDate : orderedDate,
             expectedDelivery : expectedDelivery
@@ -952,7 +954,7 @@ const getPaymentSuccess = async(req,res)=>{
         return res.render('user/orderConfirmation',{userDetails , data})
     }catch(error){
         console.log(error.message)
-        return res.stauts(500).json({ message : "Internal server error" })
+        return res.status(500).json({ message : "Internal server error" })
     }
 }
 
