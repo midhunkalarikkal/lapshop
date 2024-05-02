@@ -24,7 +24,8 @@ const getCartPage = async(req,res)=>{
         res.render('user/cart' , {userDetails , cartItems , cart})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -87,7 +88,8 @@ const postProductToCartFromShop = async (req, res) => {
         return res.status(200).json({ message: "Product added to your cart." });
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({  message: "Internal server error." });
+        // return res.status(500).json({  message: "Internal server error." });
+        res.redirect('/errorPage')
     }
 };
 
@@ -118,7 +120,8 @@ const postCartProductQtyInc = async(req,res)=>{
   
     }catch(error){
         console.log(error)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -151,7 +154,8 @@ const postCartProductQtyDec = async(req,res)=>{
   
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ success : false , message : "Internal server error" })
+        // return res.status(500).json({ success : false , message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -191,7 +195,8 @@ const deleteProductFromCart = async(req,res)=>{
         return res.status(200).json({ success : true, message: "Product deleted from your cart ." });
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ success : false, message : "Internal server error." })
+        // return res.status(500).json({ success : false, message : "Internal server error." })
+        res.redirect('/errorPage')
     }
 }
 

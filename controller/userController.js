@@ -160,7 +160,8 @@ const postRegisterOtp = async (req, res) => {
         
     } catch (error) {
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -210,6 +211,7 @@ const postLogin = async (req, res) => {
             });
     } catch (error) {
         console.log(error.message)
+        res.redirect('/errorPage')
     }
 }
 
@@ -222,6 +224,7 @@ const getLogin = async (req, res) => {
         return res.render('user/login', {type , message, userDetails})
     } catch (error) {
         console.log(error)
+        res.redirect('/errorPage')
     }
 }
 
@@ -278,6 +281,7 @@ const getHome = async (req, res) => {
         return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons })
     } catch (error) {
         console.log(error)
+        res.redirect('/errorPage')
     }
 }
 
@@ -287,6 +291,7 @@ const getRegister = async (req, res) => {
         res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
     } catch (error) {
         console.log(error)
+        res.redirect('/errorPage')
     }
 }
 
@@ -297,6 +302,7 @@ const getotppage = async(req,res)=>{
         res.render('user/otpvalidation',{type : "", message : "" , userDetails})
     }catch(error){
         console.log(error.message)
+        res.redirect('/errorPage')
     }
 }
 
@@ -330,7 +336,8 @@ const getUserProfile = async(req,res)=>{
         res.render('user/profile',{userData, formattedDate , userDetails, address})
     }catch(error){
         console.log(error.message)
-        res.status(500).json({ message : "Internal server error"})
+        // res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -350,7 +357,8 @@ const postUserUpdatedInfo = async(req,res)=>{
 
     }catch(error){
         console.log(error.message)
-        res.status(500).json({ message : "Internal server error "})
+        // res.status(500).json({ message : "Internal server error "})
+        res.redirect('/errorPage')
     }
 }
 
@@ -380,7 +388,8 @@ const postUserProfileImage = async(req,res)=>{
         
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error"})
+        // return res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -431,7 +440,8 @@ const getUserShop = async(req,res)=>{
         
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error"})
+        // return res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -566,7 +576,8 @@ const getCatProduct = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error"})
+        // return res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -580,7 +591,8 @@ const getUserNewAddress = async(req,res)=>{
         return res.render('user/addAddress',{userDetails , userId})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error"})
+        // return res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -612,7 +624,8 @@ const postUserAddress = async(req,res)=>{
             return res.status(200).json({ message: "Address added successfully" })
         } catch (error) {
             console.log(error.message);
-            return res.status(500).json({ message: "Internal server error" })
+            // return res.status(500).json({ message: "Internal server error" })
+            res.redirect('/errorPage')
         }
     }
 
@@ -630,7 +643,8 @@ const postAddressDelete = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal server error" });
+        // return res.status(500).json({ message: "Internal server error" });
+        res.redirect('/errorPage')
     }
 }
 
@@ -645,7 +659,8 @@ const getUserEditAddress = async(req,res)=>{
         return res.render('user/updateAddress',{userAddress, userDetails})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -682,7 +697,8 @@ const postUpdateUserAddress = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal server error" });
+        // return res.status(500).json({ message: "Internal server error" });
+        res.redirect('/errorPage')
     }
 };
 
@@ -705,7 +721,8 @@ const postOtpForChangePass = async (req, res) => {
         res.status(200).json({ message: "OTP sent successfully" });
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal server error" });
+        // return res.status(500).json({ message: "Internal server error" });
+        res.redirect('/errorPage')
     }
 };
 
@@ -720,7 +737,8 @@ const checkOtpForChangePass = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error"})
+        // return res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -743,7 +761,8 @@ const postUserNewPass = async (req, res) => {
         return res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
         console.error(error.message);
-        return res.status(500).json({ message: "Internal server error" });
+        // return res.status(500).json({ message: "Internal server error" });
+        res.redirect('/errorPage')
     }
 };
 
@@ -754,7 +773,8 @@ const getForgotPassword = async(req,res)=>{
         return res.render('user/forgotPassword',{userDetails})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -784,7 +804,8 @@ const postForgotPasswordEmail = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Intrnal server error" })
+        // return res.status(500).json({ message : "Intrnal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -803,7 +824,8 @@ const postForgotPasswordOtp = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -837,7 +859,8 @@ const postForgotPasswordNewPass = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal server error" });
+        // return res.status(500).json({ message: "Internal server error" });
+        res.redirect('/errorPage')
     }
 };
 
@@ -860,7 +883,8 @@ const getProductDetail = async(req,res)=>{
         return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ success : false, message : "Internal server error" })
+        // return res.status(500).json({ success : false, message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -877,7 +901,8 @@ const getCheckout = async(req,res)=>{
         res.render('user/checkout' , { userCart , userAddress })
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error"})
+        // return res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -889,7 +914,8 @@ const getUserNewAddressFromCheckout = async(req,res)=>{
         return res.render('user/addAddressFromCheckout',{userDetails , userId})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error"})
+        // return res.status(500).json({ message : "Internal server error"})
+        res.redirect('/errorPage')
     }
 }
 
@@ -914,7 +940,8 @@ const getPaymentPage = async(req,res)=>{
         res.render('user/payment' , {userAddress , userCart , coupon})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -954,7 +981,8 @@ const getPaymentSuccess = async(req,res)=>{
         return res.render('user/orderConfirmation',{userDetails , data})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -969,7 +997,8 @@ const getUserEditAddressFromCheckout = async(req,res)=>{
         return res.render('user/editAddressFromCheckout',{ userDetails, address})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -1004,7 +1033,8 @@ const updateAddressFromCheckout = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 

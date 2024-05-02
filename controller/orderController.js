@@ -157,7 +157,8 @@ const placeOrder = async(req,res)=>{
         } 
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -204,7 +205,8 @@ const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
             console.log("i have done with instance creation");
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -269,7 +271,8 @@ const orderConfirmation = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -288,7 +291,8 @@ const getOrders = async(req,res)=>{
         return res.render('user/orders',{userDetails , order})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -305,7 +309,8 @@ const getOrderDetail = async(req,res)=>{
         return res.render('user/orderDetail',{userDetails , order})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal serer error" })
+        // return res.status(500).json({ message : "Internal serer error" })
+        res.redirect('/errorPage')
     }
 }
 
@@ -372,7 +377,8 @@ const userCancelOrder = async(req,res)=>{
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
