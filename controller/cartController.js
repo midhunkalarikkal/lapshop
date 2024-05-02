@@ -1,13 +1,11 @@
 const Product = require('../models/productModel')
 const Cart = require('../models/cartModel')
 
-let userDetails;
-
 //To get the cart page
 const getCartPage = async(req,res)=>{
     try{
         const userId = req.session.user._id
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         // console.log("userDetails :",userDetails)
         let cart = await Cart.find({userId : userId}).populate({
             path: "items.product",

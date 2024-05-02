@@ -15,18 +15,25 @@ app.use(cookieParser())
 app.use(session({
     name : process.env.SESSION_NAME,
     secret: process.env.SESSION_SECRET,
-    saveUninitialized: true,
+    saveUninitialized: false,
     resave: false,
     cookie: {
         name: 'myCookie',
         maxAge: 1000 * 60 * 60 * 2,
         sameSite: true,
+        // httpOnly: true,
     }
 }))
 
-//middlewares
-// app.use(express.urlencoded({ extended: true }))
-// app.use(express.json())
+//Cache control
+app.use((req, res, next) => {
+    res.set('Cache-Control', 'no-store');
+    next();
+});
+
+// middlewares for the url parsing
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 app.use(morgan('dev'))
 
 //view engine setup
@@ -43,6 +50,7 @@ app.use('/',userRoute)
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
 
+//Erro page middleware for user
 app.use('/*',function(req,res){
     res.redirect('/errorPage')
 })

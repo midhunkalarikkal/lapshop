@@ -2,14 +2,12 @@ const Product = require('../models/productModel')
 const Wishlist = require('../models/wishlistModel')
 const Cart = require('../models/cartModel')
 
-let userDetails;
-
 // To get the wishlist page
 const getWishlistPage = async(req,res)=>{
     try{
         let prodId = []
         let wishlistProducts = []
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         const user = req.session.user
         const wishlist = await Wishlist.find({ userId : user._id})
         if(wishlist != ""){

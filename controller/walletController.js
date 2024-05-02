@@ -1,11 +1,10 @@
 const Wallet = require('../models/walletModel')
 
-let userDetails;
 // To get the wallet page
 const getUserWallet = async(req,res)=>{
     try{
         console.log("get user wallet api start")
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         const userId = req.session.user._id
         const wallet = await Wallet.find({user : userId})
         console.log("wallet :",wallet)

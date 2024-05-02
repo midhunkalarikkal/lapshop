@@ -13,20 +13,8 @@ const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
-const bodyParser = require('body-parser');
 const path = require('path')
 const fs = require('fs')
-const session = require('express-session')
-const express = require('express')
-const app = express()
-
-app.use(session({
-    secret: 'userkey',
-    resave: false,
-    saveUninitialized: false
-}));
-
-app.use(bodyParser.urlencoded({ extended: true }));
 
 //for storing otp
 let saveOtp;
@@ -34,7 +22,6 @@ let enteredFullname;
 let enteredEmail;
 let enteredPhone;
 let enteredPassword;
-let userDetails;
 let cartItemCount;
 
 
@@ -87,6 +74,7 @@ const sendOtpMail = async(email,otp)=>{
 //Sending the register data to otp validation page
 const postRegister = async (req, res) => {
     try {
+        let userDetails = req.session.userNC
         const otp = generateOtp()
         saveOtp = otp;
         // console.log("SaveOtp before =",saveOtp)
@@ -119,6 +107,7 @@ const postRegister = async (req, res) => {
 // Verifying the otp and saving the user in db
 const postRegisterOtp = async (req, res) => {
     try {
+        let userDetails = req.session.userNC
         const enteredOtp = req.body
         const otp1 = enteredOtp.otp;
         const otp2 = enteredOtp.otp2;
@@ -168,15 +157,12 @@ const postRegisterOtp = async (req, res) => {
 //Checking the email and password for user from login page
 const postLogin = async (req, res) => {
     try {
+        let userDetails = req.session.userNC
         const user = await User.findOne({ email: req.body.email });
         if(!user || user === null){
             return res.render("user/login", {type: "danger", message: "No user found with this email.", userDetails , cartItemCount})
         }
-        userDetails = req.session.userNC
-        const homeCarousel = await HomeCarousel.find()
-        const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
-        const category = await Category.find({ isBlocked : false})
-        const coupon = await Coupon.find({ isBlocked : false})
+
         const userId = user._id
         const cart = await Cart.find({ userId : userId})
         // console.log("cart :",cart)
@@ -201,11 +187,8 @@ const postLogin = async (req, res) => {
                     req.session.user = user;
                     req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
                     console.log("userNC :",req.session.userNC)
-                    userDetails = req.session.userNC
                     res.redirect('/')
-                    // return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category , coupon})
-                } else {
-                    // Passwords don't match    
+                } else {  
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
                 }
             });
@@ -218,10 +201,14 @@ const postLogin = async (req, res) => {
 // To get the user login page
 const getLogin = async (req, res) => {
     try {
-        userDetails = req.session.userNC
-        const message = req.query.message || '';
-        const type = req.query.type || '';
-        return res.render('user/login', {type , message, userDetails})
+        if(!req.session.user){
+            let userDetails = req.session.userNC
+            const message = req.query.message || '';
+            const type = req.query.type || '';
+            return res.render('user/login', {type , message, userDetails})
+        }else{
+            res.redirect('/')
+        }
     } catch (error) {
         console.log(error)
         res.redirect('/errorPage')
@@ -232,13 +219,22 @@ const getLogin = async (req, res) => {
 //To get the user logout function
 const getLogout = async(req,res)=>{
     try{
-        req.session.user = "" 
-        req.session.userNC = ""
-        userDetails = ""
-        cartItemCount = ""
-        res.redirect('/')
+        console.log("log out start")
+        console.log("session : ",req.session)
+        req.session.destroy((err) => {
+            if (err) {
+                return res.redirect('/errorPage');
+            }
+            console.log("Logged out");
+            userDetails = ""
+            cartItemCount = ""
+            console.log("after destroying session")
+            console.log("session : ",req.session)
+            return res.redirect('/login')
+        });
     }catch(error){
         console.log(error.message)
+        res.redirect('/errorPage')
     }
 }
 
@@ -256,8 +252,7 @@ const getHome = async (req, res) => {
         let newValidCoupons = []
         console.log("coupon :",coupon)
         console.log("coupon length :",coupon.length)
-        console.log("NC :",req.session.userNC)
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         console.log("userDetails from homepage :",userDetails)
         if (req.session.user) {
             const user = req.session.user;
@@ -288,6 +283,7 @@ const getHome = async (req, res) => {
 //To get the user register page
 const getRegister = async (req, res) => {
     try {
+        let userDetails = req.session.userNC
         res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
     } catch (error) {
         console.log(error)
@@ -332,7 +328,11 @@ const getUserProfile = async(req,res)=>{
         const address = await Address.find({userId : userId})
         // console.log(address)
         const formattedDate = createdDate.toISOString().split('T')[0];
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
+        console.log("userProdile start")
+        console.log("user session : ",req.session.user)
+        console.log("userNC : ",req.session.userNC)
+        console.log("userDetails : ",userDetails)
         res.render('user/profile',{userData, formattedDate , userDetails, address})
     }catch(error){
         console.log(error.message)
@@ -405,7 +405,7 @@ const getUserShop = async(req,res)=>{
         let brandId = []
         let wishlistProdId = []
         let cartProdId = []
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
 
         if(!req.session.user){
             // console.log("Session user : no user in session",)
@@ -587,7 +587,7 @@ const getUserNewAddress = async(req,res)=>{
     try{
         const userId = req.params.userId
         // console.log(userId)
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         return res.render('user/addAddress',{userDetails , userId})
     }catch(error){
         console.log(error.message)
@@ -655,7 +655,7 @@ const getUserEditAddress = async(req,res)=>{
         // console.log(addressId)
         const userAddress = await Address.findById(addressId)
         // console.log(userAddress)
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         return res.render('user/updateAddress',{userAddress, userDetails})
     }catch(error){
         console.log(error.message)
@@ -769,7 +769,7 @@ const postUserNewPass = async (req, res) => {
 //To get the forgot password page from login page
 const getForgotPassword = async(req,res)=>{
     try{
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         return res.render('user/forgotPassword',{userDetails})
     }catch(error){
         console.log(error.message)
@@ -872,8 +872,8 @@ const getProductDetail = async(req,res)=>{
         const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}])
         const productCategory = productData.category
         const sameCategoryProduct = await Product.find({category : productCategory._id})
-        userDetails = req.session.userNC
-        if(userDetails){
+        let userDetails = req.session.userNC
+        if(userDetails && userDetails !== undefined && userDetails !== ""){
             let userId = userDetails.userId
             let cart = await Cart.find({ userId : userId})
             cartProdId = cart[0].items.map(item => item.product)
@@ -910,7 +910,7 @@ const getUserNewAddressFromCheckout = async(req,res)=>{
     try{
         const userId = req.session.user._id
         // console.log(userId)
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         return res.render('user/addAddressFromCheckout',{userDetails , userId})
     }catch(error){
         console.log(error.message)
@@ -948,7 +948,7 @@ const getPaymentPage = async(req,res)=>{
 // To get the order confirm page
 const getPaymentSuccess = async(req,res)=>{
     try{
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         const userId = req.session.user._id
         const order = await Order.find({userId : userId})
         console.log("order :",order)
@@ -993,7 +993,7 @@ const getUserEditAddressFromCheckout = async(req,res)=>{
         console.log("Address Id :",addressId)
         const address = await Address.findById(addressId)
         console.log("address :",address)
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         return res.render('user/editAddressFromCheckout',{ userDetails, address})
     }catch(error){
         console.log(error.message)

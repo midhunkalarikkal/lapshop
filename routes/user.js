@@ -14,6 +14,13 @@ const orderController = require('../controller/orderController')
 const couponController = require('../controller/couponController')
 const walletController = require('../controller/walletController')
 
+const preventCaching = (req, res, next) => {
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+    next();
+  };
+
 //To get home page
 userRouter.get('/',userController.getHome)
 //To get the login page

@@ -5,8 +5,6 @@ const Order = require('../models/orderModel')
 const Product = require('../models/productModel')
 const Wallet = require('../models/walletModel');
 
-let userDetails;
-
 
 //To delete the online payment order after 1 day which have payment status failed
 async function getOnlinePaymentOrders() {
@@ -279,7 +277,7 @@ const orderConfirmation = async(req,res)=>{
 // To get orders
 const getOrders = async(req,res)=>{
     try{
-        userDetails = req.session.userNC
+        let userDetails = req.session.userNC
         const userId = req.session.user._id
         let order = []
         order = await Order.find({ userId: userId }).populate({
