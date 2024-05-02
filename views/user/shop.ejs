@@ -648,13 +648,12 @@
             })
                 .then(response => {
                     const contentType = response.headers.get('content-type');
-                    // const message = "Your account is blocked, Please contact us"
-                    // const type = "danger"
+                    const message = "Your account is blocked, Please contact us"
+                    const type = "danger"
                     if (contentType && contentType.includes('application/json')) {
                         return response.json(); 
                     } else {
-                        window.location.href = `/login`;
-                        // ?message=${encodeURIComponent(message)}&type=${type}
+                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;    
                     }
                 })
                 .then(data => {
