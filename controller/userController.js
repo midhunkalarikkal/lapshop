@@ -67,7 +67,7 @@ const sendOtpMail = async(email,otp)=>{
         }
       })       
     } catch (error) {
-      res.status(500).send('Error sending Otp password');
+        return res.redirect('/errorPage')
     }
   }
 
@@ -77,11 +77,9 @@ const postRegister = async (req, res) => {
         let userDetails = req.session.userNC
         const otp = generateOtp()
         saveOtp = otp;
-        // console.log("SaveOtp before =",saveOtp)
         
         function clearSaveOtp() {
             saveOtp = ""; 
-            // console.log("SaveOtp after =",saveOtp)
         }
         setTimeout(clearSaveOtp, 30000);
 
@@ -100,7 +98,7 @@ const postRegister = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message)
-        return res.render("user/registration", { type: "danger", message: error.message, userDetails});
+        return res.redirect('/errorPage')
     }
 }
 
@@ -116,13 +114,9 @@ const postRegisterOtp = async (req, res) => {
         const otp5 = enteredOtp.otp5;
         const otp6 = enteredOtp.otp6;
         const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
-        // console.log(concatenatedOTP)
-
         
         if(concatenatedOTP === saveOtp){
-
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
-
             const user = new User({
                 fullname : enteredFullname,
                 email : enteredEmail,
@@ -136,21 +130,20 @@ const postRegisterOtp = async (req, res) => {
             if(!userEmail && !userPhone){
                 const userData = await user.save()
                 if(userData){
-                    res.render('user/login',{type : "success" , message : "Registration has been successfull.", userDetails})
+                    return res.render('user/login',{type : "success" , message : "Registration has been successfull.", userDetails})
                 }else{
-                    res.render('user/registration',{type : "danger" , message : "Registration has been failed.", userDetails})
+                    return res.render('user/registration',{type : "danger" , message : "Registration has been failed.", userDetails})
                 }
             }else{
-                res.render('user/registration',{type : "danger" , message : "User already exist.", userDetails})
-              }   
-            }else{
-              res.render("user/otpvalidation",{type : "danger" , message : "Invalid OTP", userDetails});
-            }
+                return res.render('user/registration',{type : "danger" , message : "User already exist.", userDetails})
+            }   
+        }else{
+            return res.render("user/otpvalidation",{type : "danger" , message : "Invalid OTP", userDetails});
+        }
         
     } catch (error) {
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -165,20 +158,16 @@ const postLogin = async (req, res) => {
 
         const userId = user._id
         const cart = await Cart.find({ userId : userId})
-        // console.log("cart :",cart)
         if(cart != ""){
             cartItemCount = cart[0].items.length
         }
-        // console.log("cartItemCount :",cartItemCount)
         
         const password  = req.body.password
 
-        
             if (user.isblocked) {
                 return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails})
             }
             
-            //password matching
             bcrypt.compare(password, user.password, function (err, result) {
                 if (err) {
                     console.log(err);
@@ -186,7 +175,6 @@ const postLogin = async (req, res) => {
                 } if (result) {
                     req.session.user = user;
                     req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
-                    console.log("userNC :",req.session.userNC)
                     res.redirect('/')
                 } else {  
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
@@ -194,7 +182,7 @@ const postLogin = async (req, res) => {
             });
     } catch (error) {
         console.log(error.message)
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -211,7 +199,7 @@ const getLogin = async (req, res) => {
         }
     } catch (error) {
         console.log(error)
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -219,22 +207,16 @@ const getLogin = async (req, res) => {
 //To get the user logout function
 const getLogout = async(req,res)=>{
     try{
-        console.log("log out start")
-        console.log("session : ",req.session)
         req.session.destroy((err) => {
             if (err) {
                 return res.redirect('/errorPage');
             }
-            console.log("Logged out");
-            userDetails = ""
             cartItemCount = ""
-            console.log("after destroying session")
-            console.log("session : ",req.session)
             return res.redirect('/login')
         });
     }catch(error){
         console.log(error.message)
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -271,12 +253,10 @@ const getHome = async (req, res) => {
             validCoupons = newValidCoupons
         }
 
-        console.log("New valid coupons :",newValidCoupons)
-        console.log("Valid coupons before user:",validCoupons)
         return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons })
     } catch (error) {
         console.log(error)
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -284,10 +264,10 @@ const getHome = async (req, res) => {
 const getRegister = async (req, res) => {
     try {
         let userDetails = req.session.userNC
-        res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
+        return res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
     } catch (error) {
         console.log(error)
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -295,10 +275,10 @@ const getRegister = async (req, res) => {
 const getotppage = async(req,res)=>{
     try{
         userDetails = req.session.userNC
-        res.render('user/otpvalidation',{type : "", message : "" , userDetails})
+        return res.render('user/otpvalidation',{type : "", message : "" , userDetails})
     }catch(error){
         console.log(error.message)
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -311,11 +291,11 @@ const resendOtp = async(req,res)=>{
         sendOtpMail(enteredEmail,otp);
         function clearSaveOtp() {
             saveOtp = ""; 
-            // console.log("SaveOtp after resend =",saveOtp)
         }
         setTimeout(clearSaveOtp, 30000);
     }catch(error){
         console.log(error.message)
+        return res.redirect('/errorPage')
     }
 }
 
@@ -326,18 +306,13 @@ const getUserProfile = async(req,res)=>{
         const userData = await User.findById(userId)
         const createdDate = new Date(userData.created);
         const address = await Address.find({userId : userId})
-        // console.log(address)
         const formattedDate = createdDate.toISOString().split('T')[0];
         let userDetails = req.session.userNC
-        console.log("userProdile start")
-        console.log("user session : ",req.session.user)
-        console.log("userNC : ",req.session.userNC)
-        console.log("userDetails : ",userDetails)
-        res.render('user/profile',{userData, formattedDate , userDetails, address})
+        
+        return res.render('user/profile',{userData, formattedDate , userDetails, address})
     }catch(error){
         console.log(error.message)
-        // res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -357,8 +332,7 @@ const postUserUpdatedInfo = async(req,res)=>{
 
     }catch(error){
         console.log(error.message)
-        // res.status(500).json({ message : "Internal server error "})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -370,13 +344,12 @@ const postUserProfileImage = async(req,res)=>{
 
         if(user.profileimage){
             existingimage = user.profileimage
-            // console.log(user.profileimage)
             const imagePath = path.join(__dirname, "../public/images/UserProfile", existingimage);
             fs.unlinkSync(imagePath);
         }
 
         if(!req.file){
-            res.status(400).json({ message : "Image is not uploaded correctly"})
+            return res.status(400).json({ message : "Image is not uploaded correctly"})
         }
 
         const updateUserImage = await User.findByIdAndUpdate(userId, {profileimage : req.file.filename})
@@ -388,8 +361,7 @@ const postUserProfileImage = async(req,res)=>{
         
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -408,17 +380,12 @@ const getUserShop = async(req,res)=>{
         let userDetails = req.session.userNC
 
         if(!req.session.user){
-            // console.log("Session user : no user in session",)
             prodId =[]
             cartProdId = []
         }else{
-            // console.log("Session user :",req.session.user)
-            // console.log("User id :",req.session.user._id)
             const user = req.session.user
             const wishlist = await Wishlist.find({ userId : user._id})
             if(wishlist != ""){
-                // const wishlistProducts = wishlist[0].products
-                // const productsId = wishlistProducts.map(item => item.product);
                 wishlistProdId = wishlist[0].products.map(item => item.product);
                 console.log("wishlistProductId :",wishlistProdId)
             }
@@ -428,20 +395,16 @@ const getUserShop = async(req,res)=>{
                 console.log("cartProductId :",cartProdId)
             }
         }
-        // console.log("Products id's:", prodId);
 
-        const page = parseInt(req.query.page) || 1;  // This is coming from the first pagination a tag from shop.ejs
+        const page = parseInt(req.query.page) || 1;  
         const limit = 6; 
-        
-        // console.log("Get user shop")
 
-        res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId,
+        return res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId,
             totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -449,30 +412,18 @@ const getUserShop = async(req,res)=>{
 // To get the categorized products
 const getCatProduct = async(req,res)=>{
     try{
-        // console.log("Here")
-        // console.log("res body :",req.body)
-        // console.log("res body categories :",req.body.categories)
-        // console.log("res body brands :",req.body.brands)
-        console.log("res body sortCriteria :",req.body.sortCriteria)
-        // console.log("req body currentPage :", req.body.currentPage)
-        // console.log("Search input value :",req.body.inputValue)
         let productData
         let prodId =[]
         let cartProdId = []
 
         if(!req.session.user){
-            // console.log("categorized products api Session user : no user in session",)
             prodId = []
             cartProdId = []
         }else{
-            // console.log("categorized products api Session user :",req.session.user)
-            // console.log("categorized products api User id :",req.session.user._id)
             const user = req.session.user
             const wishlist = await Wishlist.find({ userId : user._id})
             if(wishlist != ""){
-                // console.log("categorized products api Wishlist :",wishlist)
                 const wishlistProducts = wishlist[0].products
-                // console.log("categorized products apiWishlistProducts :", wishlistProducts)
                 const productsId = wishlistProducts.map(item => item.product);
                 prodId = productsId
             }
@@ -482,11 +433,9 @@ const getCatProduct = async(req,res)=>{
                 console.log("cartProductId :",cartProdId)
             }
         }
-        // console.log("categorized products api Products id's:", prodId);
         
 
         if(req.body){
-            // To get the category and brand id's array and filtering to delete null
             const categories = req.body.categories.filter(category => category !== null);
             const brands = req.body.brands.filter(brand => brand !== null);
             
@@ -498,7 +447,6 @@ const getCatProduct = async(req,res)=>{
             const perPage = 6;
             const skip = (currentPage - 1) * perPage;
 
-            // The querry to retrieve the product
             let query = { isBlocked: false };
             if (categories.length > 0 && brands.length > 0 && searchInput) {
                 query = {
@@ -554,10 +502,6 @@ const getCatProduct = async(req,res)=>{
             const totalProducts = await Product.countDocuments(query);
             const totalPages = Math.ceil(totalProducts / perPage);
                 
-            // console.log("productData :",productData)
-            // console.log("totalPages :",totalPages)
-            
-            // Sorting the products with the user selected sort type
             if(sortCriteria === "highToLow"){
                 productData.sort((a,b) => b.offerPrice - a.offerPrice)
             }else if(sortCriteria === "lowToHigh"){
@@ -570,14 +514,13 @@ const getCatProduct = async(req,res)=>{
 
             console.log(productData)
 
-            res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
+            return res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
         }else{
-            res.status(400).json({ message : "No categorized found" })
+            return res.status(400).json({ message : "No categorized found" })
         }
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -586,13 +529,11 @@ const getCatProduct = async(req,res)=>{
 const getUserNewAddress = async(req,res)=>{
     try{
         const userId = req.params.userId
-        // console.log(userId)
         let userDetails = req.session.userNC
         return res.render('user/addAddress',{userDetails , userId})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -600,9 +541,7 @@ const getUserNewAddress = async(req,res)=>{
 const postUserAddress = async(req,res)=>{
     try{
         const { name, addressLine, phone, city, district, state, pincode, country} = req.body
-        // console.log("req.body : ",name, addressLine, phone, city, district, state, pincode, country)
         const userId = req.params.userId
-        // console.log(userId)
 
         const user = await User.findById(userId)
         if(!user){
@@ -624,8 +563,7 @@ const postUserAddress = async(req,res)=>{
             return res.status(200).json({ message: "Address added successfully" })
         } catch (error) {
             console.log(error.message);
-            // return res.status(500).json({ message: "Internal server error" })
-            res.redirect('/errorPage')
+            return res.redirect('/errorPage')
         }
     }
 
@@ -633,7 +571,6 @@ const postUserAddress = async(req,res)=>{
 const postAddressDelete = async (req, res) => {
     try {
         const addressId = req.params.addressId;
-        // console.log(addressId);
 
         const deletedAddress = await Address.findByIdAndDelete(addressId);
         if (!deletedAddress) {
@@ -643,8 +580,7 @@ const postAddressDelete = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
-        // return res.status(500).json({ message: "Internal server error" });
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -652,15 +588,12 @@ const postAddressDelete = async (req, res) => {
 const getUserEditAddress = async(req,res)=>{
     try{
         const addressId = req.params.addressId
-        // console.log(addressId)
         const userAddress = await Address.findById(addressId)
-        // console.log(userAddress)
         let userDetails = req.session.userNC
         return res.render('user/updateAddress',{userAddress, userDetails})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -668,9 +601,7 @@ const getUserEditAddress = async(req,res)=>{
 const postUpdateUserAddress = async (req, res) => {
     try {
         const addressId = req.params.addressId;
-        // console.log(addressId , req.body)
         
-        // Extract form data from req.body
         const newaddress = {
             name: req.body.name,
             addressLine: req.body.addressLine,
@@ -682,7 +613,6 @@ const postUpdateUserAddress = async (req, res) => {
             country: req.body.country
         };
 
-        // Update the address using the extracted form data
         const updatedAddress = await Address.findOneAndUpdate(
             { _id: addressId },
             newaddress,
@@ -697,8 +627,7 @@ const postUpdateUserAddress = async (req, res) => {
 
     } catch (error) {
         console.log(error.message);
-        // return res.status(500).json({ message: "Internal server error" });
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 };
 
@@ -708,21 +637,18 @@ const postOtpForChangePass = async (req, res) => {
         const { email } = req.body;
         const otp = generateOtp();
         saveOtp = otp;
-        // console.log("SaveOtp before =", saveOtp);
 
         function clearSaveOtp() {
             saveOtp = "";
-            // console.log("SaveOtp after =", saveOtp);
         }
         setTimeout(clearSaveOtp, 30000);
 
         sendOtpMail(email, saveOtp);
 
-        res.status(200).json({ message: "OTP sent successfully" });
+        return res.status(200).json({ message: "OTP sent successfully" });
     } catch (error) {
         console.log(error.message);
-        // return res.status(500).json({ message: "Internal server error" });
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 };
 
@@ -737,8 +663,7 @@ const checkOtpForChangePass = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -746,7 +671,6 @@ const checkOtpForChangePass = async(req,res)=>{
 const postUserNewPass = async (req, res) => {
     try {
         const { newPass, userId } = req.body;
-        // console.log(newPass , userId)
         const user = await User.findById(userId);
 
         if (!user) {
@@ -761,8 +685,7 @@ const postUserNewPass = async (req, res) => {
         return res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
         console.error(error.message);
-        // return res.status(500).json({ message: "Internal server error" });
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 };
 
@@ -773,8 +696,7 @@ const getForgotPassword = async(req,res)=>{
         return res.render('user/forgotPassword',{userDetails})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -782,7 +704,6 @@ const getForgotPassword = async(req,res)=>{
 const postForgotPasswordEmail = async(req,res)=>{
     try{
         const email = req.body.email
-        // console.log("Email :",email)
         enteredEmail = email
         const user = await User.findOne({ email : email})
         if(!user){
@@ -790,22 +711,19 @@ const postForgotPasswordEmail = async(req,res)=>{
         }else{
             const otp = generateOtp();
             saveOtp = otp;
-            // console.log("SaveOtp before =", saveOtp);
 
             function clearSaveOtp() {
                 saveOtp = "";
-                // console.log("SaveOtp after =", saveOtp);
             }
             setTimeout(clearSaveOtp, 30000);
 
             sendOtpMail(email, saveOtp);
 
-            res.status(200).json({ message: "OTP has been sent to your email." });
+            return res.status(200).json({ message: "OTP has been sent to your email." });
         }
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Intrnal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -824,18 +742,15 @@ const postForgotPasswordOtp = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
 //To post the new password
 const postForgotPasswordNewPass = async (req, res) => {
     try {
-        const { newPassword } = req.body; // Assuming enteredEmail is sent in the request body
-        // console.log("Email :", enteredEmail);
-        // console.log("newPassword :", newPassword);
-        
+        const { newPassword } = req.body; 
+     
         const user = await User.findOne({ email: enteredEmail });
         if (!user) {
             return res.status(400).json({ message: "User not found" });
@@ -859,8 +774,7 @@ const postForgotPasswordNewPass = async (req, res) => {
         }
     } catch (error) {
         console.log(error.message);
-        // return res.status(500).json({ message: "Internal server error" });
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 };
 
@@ -877,14 +791,12 @@ const getProductDetail = async(req,res)=>{
             let userId = userDetails.userId
             let cart = await Cart.find({ userId : userId})
             cartProdId = cart[0].items.map(item => item.product)
-            console.log("Cart :",cartProdId)
         }
         
         return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ success : false, message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -893,29 +805,23 @@ const getProductDetail = async(req,res)=>{
 const getCheckout = async(req,res)=>{
     try{
         let userId = req.session.user._id
-        // console.log(userId)
         let userCart = await Cart.find({ userId : userId})
-        // console.log(userCart)
         let userAddress = await Address.find({ userId : userId})
-        // console.log(userAddress)
-        res.render('user/checkout' , { userCart , userAddress })
+        return res.render('user/checkout' , { userCart , userAddress })
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
 const getUserNewAddressFromCheckout = async(req,res)=>{
     try{
         const userId = req.session.user._id
-        // console.log(userId)
         let userDetails = req.session.userNC
         return res.render('user/addAddressFromCheckout',{userDetails , userId})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error"})
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -924,24 +830,19 @@ const getPaymentPage = async(req,res)=>{
     try{
         const currentDate = new Date();
         const addressId = req.params.selectedAddressId
-        // console.log("here")
         let userAddress = await Address.find({ _id : addressId})
-        // console.log("User selected address :",userAddress)
         let userId = req.session.user._id
-        // console.log("userId :",userId)
         let cart = await Cart.find({ userId : userId}).populate({
             path: "items.product",
             populate: { path: "brand" }
           });
         const userCart = cart[0]
         let coupon = await Coupon.find({isBlocked : false })
-        console.log("payment page coupons :",coupon)
 
-        res.render('user/payment' , {userAddress , userCart , coupon})
+        return res.render('user/payment' , {userAddress , userCart , coupon})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -977,12 +878,10 @@ const getPaymentSuccess = async(req,res)=>{
             orderedDate : orderedDate,
             expectedDelivery : expectedDelivery
         }
-        console.log("data :",data)
         return res.render('user/orderConfirmation',{userDetails , data})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -990,24 +889,18 @@ const getPaymentSuccess = async(req,res)=>{
 const getUserEditAddressFromCheckout = async(req,res)=>{
     try{
         const addressId = req.params.addressId
-        console.log("Address Id :",addressId)
         const address = await Address.findById(addressId)
-        console.log("address :",address)
         let userDetails = req.session.userNC
         return res.render('user/editAddressFromCheckout',{ userDetails, address})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
 const updateAddressFromCheckout = async(req,res)=>{
     try{
-        console.log("Address updating from checkout")
         const addressId = req.params.addressId
-        console.log("AddressId :",addressId)
-        // Extract form data from req.body
         const newaddress = {
             name: req.body.name,
             addressLine: req.body.addressLine,
@@ -1019,7 +912,6 @@ const updateAddressFromCheckout = async(req,res)=>{
             country: req.body.country
         };
 
-        // Update the address using the extracted form data
         const updatedAddress = await Address.findOneAndUpdate(
             { _id: addressId },
             newaddress,
@@ -1033,8 +925,7 @@ const updateAddressFromCheckout = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
