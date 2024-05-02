@@ -16,7 +16,6 @@ const getAdminlogin = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -66,7 +65,7 @@ const getAdminLogout = async (req, res) => {
 // To get all users data in admin page
 const getAdminUsers = async (req, res) => {
     try {
-        // const userData = await User.find();
+        const userData = await User.find();
         return res.render('admin/adminUsersList', { title: "LapShop Admin",  users: userData })
     } catch (error) {
         console.log(error.message)
@@ -88,7 +87,6 @@ const adminBlockUser = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -106,7 +104,6 @@ const getAdminCategory = async (req, res) => {
 // To add a new category
 const adminAddNewCategory = async (req, res) => {
     try {
-        
             const { categoryName, categoryDesc } = req.body;
 
             // Check if a file was uploaded
@@ -132,7 +129,6 @@ const adminAddNewCategory = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -151,7 +147,6 @@ const adminBlockCategory = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -167,7 +162,6 @@ const getCategoryForEditing = async (req, res) => {
     } catch (error) {
         console.error('Error fetching category data:', error);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ error: "Internal server error" });
     }
 };
 
@@ -200,7 +194,6 @@ const updateCategory = async (req, res) => {
     } catch (error) {
         console.error('Error updating category:', error);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ error: "Internal server error" });
     }
 };
 
@@ -208,9 +201,7 @@ const updateCategory = async (req, res) => {
 const getAdminProducts = async(req,res)=>{
     try{
         const productData = await Product.find().populate([ {path : "category"},{path : "brand"}])
-        // const categoryData = await Category.find()
         return res.render('admin/adminProductsList',{title : "LapShop Admin" , productData})
-        
     }catch(error){
         console.log(error);
         return res.redirect('/admin/adminErrorPage')
@@ -220,13 +211,12 @@ const getAdminProducts = async(req,res)=>{
 // To get the Admin New Product adding page
 const getAdminAddProduct = async(req,res)=>{
     try{
-            const categories = await Category.find()
-            const brands = await Brand.find()
-            return res.render('admin/adminAddProduct',{title : "LapShop Admin", categories , brands , productAdded : false , productExists : false , error : false})
+        const categories = await Category.find()
+        const brands = await Brand.find()
+        return res.render('admin/adminAddProduct',{title : "LapShop Admin", categories , brands , productAdded : false , productExists : false , error : false})
     }catch(error){
         console.log("Error fetching category",error)
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ error : "Internal server error"})
     }
 }
 
@@ -276,7 +266,6 @@ const postAdminAddProduct = async(req,res)=>{
         }catch(error){
             console.log("Error",error)
             return res.redirect('/admin/adminErrorPage')
-            // res.status(500).json({ error : "Internal server error"})
     }
 }
 
@@ -294,7 +283,6 @@ const adminBlockProduct = async(req,res)=>{
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -314,7 +302,6 @@ const adminEditProduct = async(req,res)=>{
     } catch (error) {
         console.error('Error fetching product data:', error);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -350,7 +337,6 @@ const adminDeleteProductImage = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ message: 'Error occurred while deleting image' });
     }
 }
 
@@ -386,7 +372,6 @@ const adminUpdateProduct = async(req,res)=>{
                 }
 
                 await product.save()
-                console.log('Redirect URL:', '/admin/Products?success=Product updated successfully');
                 return res.redirect('/admin/Products?success=Product updated successfully');
         
     }catch(error){
@@ -453,7 +438,6 @@ const adminBlockHomeCarousel = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -475,27 +459,22 @@ const adminDeleteHomeCarousel = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
 
 //To edit a home carousel
 const adminEditHomeCarousel = async(req,res)=>{
     try{
-        
-               const homeCarousel = await HomeCarousel.findOne({_id : req.params.homeCarouselId})
-               console.log(homeCarousel)
-               if(!homeCarousel){
-                    return res.status(404).json({success : false, message : "Home carousel not found"})
-               }else{
-                    return res.render('admin/adminEditHomeCarousel',{title : "LapShop Admin",homeCarousel})
-               } 
-
+        const homeCarousel = await HomeCarousel.findOne({_id : req.params.homeCarouselId})
+        console.log(homeCarousel)
+       if(!homeCarousel){
+            return res.status(404).json({success : false, message : "Home carousel not found"})
+       }else{
+            return res.render('admin/adminEditHomeCarousel',{title : "LapShop Admin",homeCarousel})
+       } 
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ success: false, message: "Internal server error" });
-
     }
 }
 
@@ -530,7 +509,6 @@ const adminUpdateHomeCarousel = async(req,res)=>{
     } catch (error) {
         console.error('Error updating home carousel', error);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -573,7 +551,6 @@ const adminAddNewBrand = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -593,7 +570,6 @@ const adminBlockBrand = async(req,res)=>{
     } catch (error) {
         console.log(error.message);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -610,7 +586,6 @@ const adminEditBrand = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ success: false, message: "Internal server error" });
     }
 }
 
@@ -642,7 +617,6 @@ const adminUpdateBrand = async(req,res)=>{
     } catch (error) {
         console.error('Error updating brand', error);
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ error: "Internal server error" });
     }
 }
 
@@ -654,7 +628,6 @@ const getAdCarousel = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -685,7 +658,6 @@ const postAdminAdCarousel = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message: "Internal server error" })
     }
 }
 
@@ -713,7 +685,6 @@ const adminBlockAdCarousel = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -737,44 +708,8 @@ const adminDeleteAdCarousel = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ success: false, message: "Internal server error" });
     }
 };
-
-
-const getOrders = async(req,res)=>{
-    try{
-        // const orders = await Order.find().populate({
-        //     path: "orderedItems.product",
-        //     populate:  [{ path: "brand" }, { path: "category" }]
-        // });
-        console.log("Orders :",orders)
-        return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders})
-    }catch(error){
-        console.log(error.message)
-        return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message : "Internal server error" })
-    }
-}
-
-const getOrderDetail = async(req,res)=>{
-    try{
-        console.log("Request.params.prodId :",req.params.orderId)
-        const orderId = req.params.orderId
-        const order = await Order.find({ _id : orderId}).populate({
-            path: "orderedItems.product",
-            populate:  [{ path: "brand" }, { path: "category" }]
-        }).populate("address");
-        console.log("order :",order)
-        if(order){
-            return res.render('admin/adminOrderDetails',{ title : "Lapshop Admin" ,order})
-        }
-    }catch(error){
-        console.log(error.message)
-        return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message : "Internal serer error" })
-    }
-}
 
 //To get the admin error page
 const adminErrorPage = async(req,res)=>{
@@ -782,7 +717,6 @@ const adminErrorPage = async(req,res)=>{
         return res.render('admin/adminErrorPage' , {title : "Lapshop Admin"})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -822,7 +756,5 @@ module.exports = {
     postAdminAdCarousel,
     adminBlockAdCarousel,
     adminDeleteAdCarousel,
-    getOrders,
-    getOrderDetail,
     adminErrorPage
 }
