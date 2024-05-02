@@ -3,12 +3,9 @@ const Wallet = require('../models/walletModel')
 // To get the wallet page
 const getUserWallet = async(req,res)=>{
     try{
-        console.log("get user wallet api start")
         let userDetails = req.session.userNC
         const userId = req.session.user._id
         const wallet = await Wallet.find({user : userId})
-        console.log("wallet :",wallet)
-        console.log("userDetails :",userDetails)
         let totalCreditedAmount = 0;
         let creditCount = 0
         let totalDebitedAmount = 0;
@@ -26,14 +23,10 @@ const getUserWallet = async(req,res)=>{
         });
         let totalAmount = totalCreditedAmount - totalDebitedAmount;
 
-        console.log("Total Amount:", totalAmount);
-        console.log("Total Credited Amount:", totalCreditedAmount);
-        console.log("Total Debited Amount:", totalDebitedAmount);
         return res.render('user/wallet',{userDetails, wallet, totalAmount, totalCreditedAmount, totalDebitedAmount, creditCount, debitCount})
     }catch(error){
         console.log(error.message)
-        // res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
