@@ -21,9 +21,9 @@ adminRouter.get('/',adminController.getAdminlogin)
 
 adminRouter.post('/login',adminController.postAdminlogin)
 
-adminRouter.get('/home',adminAuth.isAdminLoggedIn,adminController.getAdminHome)
+adminRouter.get('/logout',adminAuth.isAdminLoggedIn,adminController.getAdminLogout)
 
-adminRouter.get('/logout',adminController.getAdminLogout)
+adminRouter.get('/home',adminAuth.isAdminLoggedIn,adminController.getAdminHome)
 
 adminRouter.get('/users',adminAuth.isAdminLoggedIn,adminController.getAdminUsers)
 
@@ -103,5 +103,8 @@ adminRouter.post('/updateOrderStatus',adminAuth.isAdminLoggedIn,orderController.
 
 //To cancel an order
 adminRouter.post('/cancelOrder',adminAuth.isAdminLoggedIn,orderController.adminCancelOrder)
+
+//To get the admin error page
+adminRouter.get('/adminErrorPage',adminAuth.isAdminLoggedIn,adminController.adminErrorPage)
 
 module.exports = adminRouter

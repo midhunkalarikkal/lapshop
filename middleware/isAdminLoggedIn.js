@@ -1,28 +1,19 @@
-const isAdminLoggedIn = async(req,res,next)=>{
-    try{
+const isAdminLoggedIn = async (req, res, next) => {
+    try {
         if(req.session && req.session.adminData){
             next()
         }else{
-            res.redirect('/admin')
+            console.log("admin session  empty")
+            return res.redirect('/admin/')
         }
-    }catch(error){
-        console.log(error.message)
+    } catch (error) {
+        console.log(error.message);
+        res.status(500).send("Internal Server Error.");
     }
-}
+};
 
-const isAdminLoggedOut = async(req,res,next)=>{
-    try{
-        if (req.session && req.session.adminData ) {
-          res.redirect('/admin/home')
-          } else {
-          next()
-          }
 
-    }catch(error){
-        console.log(error.message)
-    }
-}
 
 module.exports = {
-    isAdminLoggedIn , isAdminLoggedOut
-}
+    isAdminLoggedIn
+};

@@ -50,9 +50,14 @@ app.use('/',userRoute)
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
 
-//Erro page middleware for user
+//Error page middleware for user
 app.use('/*',function(req,res){
     res.redirect('/errorPage')
+})
+
+//Error page middleware for admin
+app.use('/admin/*',function(req,res){
+    res.redirect('/adminErrorPage')
 })
 
 const PORT = process.env.PORT || 4000

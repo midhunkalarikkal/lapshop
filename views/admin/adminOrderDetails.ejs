@@ -91,10 +91,10 @@
                                     %>
                                     <span class="product-price "><span class="heads">Expected delivery date : </span> <%= deliveryDate  %></span>
                                     <span class="product-price "><span class="heads">Order total : </span>
-                                    <% if(orders[i].walletDebitedAmount && orders[i].walletDeitedAmount !== 0){ %>
-                                        ₹ <%= orders[i].orderTotal + orders[i].walletDebitedAmount %>
+                                    <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
+                                        ₹ <%= order[i].orderTotal + order[i].walletDebitedAmount %>
                                     <% }else{ %>
-                                        ₹ <%= orders[i].orderTotal %>
+                                        ₹ <%= order[i].orderTotal %>
                                     <% } %>
                                     </span>
                                     <span class="product-name"><span class="heads">Order status : </span><%= order[i].status %></span>
@@ -179,7 +179,7 @@
                                     <h5>Order total</h5>
                                     <hr>
                                     <div class="col-md-3">
-                                        <% if(orders[i].walletDebitedAmount && orders[i].walletDeitedAmount !== 0){ %>
+                                        <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
                                             <div class="total d-flex justify-content-between">
                                                 <h6>Online paid amount : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
                                             </div>
