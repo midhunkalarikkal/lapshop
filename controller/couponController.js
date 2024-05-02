@@ -1,7 +1,6 @@
 const Coupon = require('../models/couponModel')
 const Cart = require('../models/cartModel')
 
-
 // To delete expired coupons
 async function deleteExpiredCoupons() {
     try {
@@ -193,7 +192,9 @@ const applyCoupon = async (req, res) => {
             return res.status(200).json({ success: false, message: "Sorry, coupon is not available." })
         }
     } catch (error) {
-        return res.status(500).json({ message : "Internal server error" })
+        console.log(error)
+        res.redirect('/errorPage')
+        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -227,8 +228,9 @@ const cancelCoupon = async(req,res)=>{
             }
         console.log("cancelCouponName :",cancelCouponName)
     }catch(error){
-        console.log(error.message)
-        return res.status(500).json({ messag : "Internal server error" })
+        console.log(error)
+        res.redirect('/errorPage')
+        // return res.status(500).json({ messag : "Internal server error" })
     }
 }
 
