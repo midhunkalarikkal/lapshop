@@ -6,7 +6,7 @@ const getCartPage = async(req,res)=>{
     try{
         const userId = req.session.user._id
         let userDetails = req.session.userNC
-        // console.log("userDetails :",userDetails)
+
         let cart = await Cart.find({userId : userId}).populate({
             path: "items.product",
             populate: { path: "brand" }
@@ -17,13 +17,11 @@ const getCartPage = async(req,res)=>{
             return res.render('user/cart', { userDetails, cartItems: [], cart: []});
         }
         const cartItems = cart[0].items
-        // console.log("User cart :", cart)
-        // console.log("Cart items :",cartItems)
+        
         res.render('user/cart' , {userDetails , cartItems , cart})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -34,24 +32,14 @@ const postProductToCartFromShop = async (req, res) => {
         const productId = req.body.productId;
         let product = await Product.findById(productId);
 
-        // Get the existing cart of the user
         let existingCart = await Cart.findOne({ userId: userId });
-
         if (existingCart !== null) {
-
-            // Check if the product already exists in the cart
             const existingItem = existingCart.items.find(item => item.product.equals(productId));
 
             if (existingItem) {
-                // If the product exists, update its quantity and prices
                 console.log("Product already exist in your cart")
                 return res.status(409).json({ message : "Already in your cart."})
-                
-                // existingItem.quantity++;
-                // existingItem.totalPrice +=  product.offerPrice,
-                // existingItem.discountPrice += product.realPrice * (product.discountPercentage / 100)
             } else {
-                // If the product does not exist, add it to the cart
                 existingCart.items.push({
                     product: productId,
                     quantity: 1,
@@ -60,12 +48,10 @@ const postProductToCartFromShop = async (req, res) => {
                     discountPrice: product.realPrice * (product.discountPercentage / 100)
                 });
             }
-            // Update total cart price and total discount price
             existingCart.totalCartPrice = existingCart.items.reduce((total, item) => total + item.totalPrice, 0);
             existingCart.totalCartDiscountPrice = existingCart.items.reduce((total, item) => total + item.discountPrice, 0);
 
         } else {
-            // If the cart does not exist, create a new cart
             existingCart = new Cart({
                 userId: userId,
                 items: [{
@@ -86,7 +72,6 @@ const postProductToCartFromShop = async (req, res) => {
         return res.status(200).json({ message: "Product added to your cart." });
     } catch (error) {
         console.log(error.message);
-        // return res.status(500).json({  message: "Internal server error." });
         res.redirect('/errorPage')
     }
 };
@@ -99,8 +84,6 @@ const postCartProductQtyInc = async(req,res)=>{
         let productId = req.body.productId;
 
         let cart = await Cart.findOne({ userId : userId}).populate('items.product')
-
-        //Find dthe prosuct to  increment quantity
         let product = cart.items.find(item => item.product._id.toString() === productId)
 
         if(product.quantity >= product.product.noOfStock){
@@ -118,7 +101,6 @@ const postCartProductQtyInc = async(req,res)=>{
   
     }catch(error){
         console.log(error)
-        // return res.status(500).json({ message : "Internal server error" })
         res.redirect('/errorPage')
     }
 }
@@ -134,7 +116,6 @@ const postCartProductQtyDec = async(req,res)=>{
             return res.status(404).json({ message : "Cart not found"})
         }
 
-        //Find dthe prosuct to  increment quantity
         let product = cart.items.find(item => item.product._id.toString() === productId)
 
         if(!product){
@@ -152,7 +133,6 @@ const postCartProductQtyDec = async(req,res)=>{
   
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ success : false , message : "Internal server error" })
         res.redirect('/errorPage')
     }
 }
@@ -160,11 +140,8 @@ const postCartProductQtyDec = async(req,res)=>{
 //To delete a product from cart
 const deleteProductFromCart = async(req,res)=>{
     try{
-        console.log("req body:",req.body)
         const productId = req.body.productId
         const userId = req.session.user._id
-        console.log("productId :",productId)
-        console.log("userId :",userId)
 
         if(!productId){
             return res.status(404).json({ success : false, messagr : "Product deletion error , please try again."})
@@ -193,7 +170,6 @@ const deleteProductFromCart = async(req,res)=>{
         return res.status(200).json({ success : true, message: "Product deleted from your cart ." });
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ success : false, message : "Internal server error." })
         res.redirect('/errorPage')
     }
 }
