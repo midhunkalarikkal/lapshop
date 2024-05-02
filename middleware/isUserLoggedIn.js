@@ -5,13 +5,17 @@ const isUserLoggedIn = async (req, res, next) => {
         if(req.session && req.session.user){
             User.findById({_id :req.session.user._id}).lean()
             .then((data)=>{
-                if(data && !data.isblocked){
+                if(!data.isblocked){
+                    console.log("user is not blocked")
                     next()
                 }else{
                     console.log("user is blocked")
-                    const message = "Your account is blocked, please contact us";
-                    const type = "danger";
-                    return res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`)
+                    // let userDetails = ""
+                    // return res.render('user/login',{message : "Your account is blocked, please contact us.", type : "danger", userDetails})
+                    res.redirect('/login')
+                    // const message = "Your account is blocked, please contact us";
+                    // const type = "danger";
+                    // return res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`)
                 }
             })
         }else{

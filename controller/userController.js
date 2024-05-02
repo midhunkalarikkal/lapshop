@@ -189,8 +189,8 @@ const postLogin = async (req, res) => {
 // To get the user login page
 const getLogin = async (req, res) => {
     try {
-        if(!req.session.user){
-            let userDetails = req.session.userNC
+        if(!req.session.user || !req.session.user.isblocked){
+            let userDetails = ""
             const message = req.query.message || '';
             const type = req.query.type || '';
             return res.render('user/login', {type , message, userDetails})
