@@ -1,62 +1,11 @@
 const razorpayInstance = require('../config/razorpayConfig');
 const Cart = require('../models/cartModel')
-const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
 const Product = require('../models/productModel')
 const Wallet = require('../models/walletModel');
 
 
-//To delete the online payment order after 1 day which have payment status failed
-async function getOnlinePaymentOrders() {
-    try {
-        const orders = await Order.find({ $and: [{ paymentMethod: "razorpay" }, { paymentStatus: false }] });
-        console.log("Razorpay orders:", orders);
-
-        setTimeout(async () => {
-            const deletedOrders = await Order.deleteMany({ $and: [{ paymentMethod: "razorpay" }, { paymentStatus: false }] });
-            console.log("Deleted orders:", deletedOrders);
-        }, 86400000);
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-
-getOnlinePaymentOrders();
-
-//To delete the order if status is admin cancelled
-async function getAdminCancelledOrders() {
-    try {
-        const orders = await Order.find({
-            $or: [
-                { status: "Admin cancelled" },
-                { status: "Cancelled" }
-            ]
-        });
-        console.log("Admin called orders:", orders);
-
-        setTimeout(async () => {
-            const deletedOrders = await Order.deleteMany({
-                $and: [
-                    {
-                        $or: [
-                            { status: "Admin cancelled" },
-                            { status: "Cancelled" }
-                        ]
-                    },
-                    { paymentStatus: false }
-                ]
-            });
-            console.log("Admin cancelled deleted orders:", deletedOrders);
-        }, 86400000);
-    } catch (error) {
-        console.error("Error:", error);
-    }
-}
-
-getAdminCancelledOrders();
-
-
-// To confirm an order
+// To place an order from user
 const placeOrder = async(req,res)=>{
     try{
         console.log("place order api start")
@@ -160,7 +109,7 @@ const placeOrder = async(req,res)=>{
     }
 }
 
-// To place order with wallet and razorpay
+// To place order with wallet and razorpay from user
 const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
     try{
         console.log("Place order with wallet and razorpay api start")
@@ -203,12 +152,12 @@ const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
             console.log("i have done with instance creation");
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
         res.redirect('/errorPage')
+        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
-
+// To confirm an order from user
 const orderConfirmation = async(req,res)=>{
     try{
         console.log("order confirmation api start")
@@ -269,12 +218,12 @@ const orderConfirmation = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
         res.redirect('/errorPage')
+        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
-// To get orders
+// To get orders from user
 const getOrders = async(req,res)=>{
     try{
         let userDetails = req.session.userNC
@@ -289,12 +238,12 @@ const getOrders = async(req,res)=>{
         return res.render('user/orders',{userDetails , order})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
         res.redirect('/errorPage')
+        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
-
+// To get the order Detail page from user
 const getOrderDetail = async(req,res)=>{
     try{
         console.log("Request.params.prodId :",req.params.orderId)
@@ -307,34 +256,8 @@ const getOrderDetail = async(req,res)=>{
         return res.render('user/orderDetail',{userDetails , order})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal serer error" })
         res.redirect('/errorPage')
-    }
-}
-
-const changeOrderStatus = async(req,res)=>{
-    try{
-        console.log("change order status api start")
-        const orderId = req.body.orderId
-        const selectedStatus = req.body.selectedStatus
-        console.log("orderId :",orderId)
-        console.log("selectedStatus :",selectedStatus)
-
-        const order = await Order.findById(orderId)
-        console.log("order :",order)
-
-        if(selectedStatus === order.status){
-            return res.status(400).json({ success : false , message : "Order status is same."})
-        }else{
-            order.status = selectedStatus
-            order.statusDate = new Date()
-            await order.save()
-            return res.status(200).json({ success : true , message : `Order status changed to ${selectedStatus}`})
-        }
-        
-    }catch(error){
-        console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // return res.status(500).json({ message : "Internal serer error" })
     }
 }
 
@@ -375,8 +298,72 @@ const userCancelOrder = async(req,res)=>{
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
         res.redirect('/errorPage')
+        // return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+// To get order from admin
+const adminGetOrders = async(req,res)=>{
+    try{
+        const orders = await Order.find().populate({
+            path: "orderedItems.product",
+            populate:  [{ path: "brand" }, { path: "category" }]
+        });
+        console.log("Orders :",orders)
+        return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders})
+    }catch(error){
+        console.log(error.message)
+        return res.redirect('/admin/adminErrorPage')
+        // return res.status(500).json({ message : "Internal server error" })
+    }
+}
+
+// To get order Detail from admin
+const adminGetOrderDetail = async(req,res)=>{
+    try{
+        console.log("Request.params.prodId :",req.params.orderId)
+        const orderId = req.params.orderId
+        const order = await Order.find({ _id : orderId}).populate({
+            path: "orderedItems.product",
+            populate:  [{ path: "brand" }, { path: "category" }]
+        }).populate("address");
+        console.log("order :",order)
+        if(order){
+            return res.render('admin/adminOrderDetails',{ title : "Lapshop Admin" ,order})
+        }
+    }catch(error){
+        console.log(error.message)
+        return res.redirect('/admin/adminErrorPage')
+        // return res.status(500).json({ message : "Internal serer error" })
+    }
+}
+
+// To change order status from admin
+const changeOrderStatus = async(req,res)=>{
+    try{
+        console.log("change order status api start")
+        const orderId = req.body.orderId
+        const selectedStatus = req.body.selectedStatus
+        console.log("orderId :",orderId)
+        console.log("selectedStatus :",selectedStatus)
+
+        const order = await Order.findById(orderId)
+        console.log("order :",order)
+
+        if(selectedStatus === order.status){
+            return res.status(400).json({ success : false , message : "Order status is same."})
+        }else{
+            order.status = selectedStatus
+            order.statusDate = new Date()
+            await order.save()
+            return res.status(200).json({ success : true , message : `Order status changed to ${selectedStatus}`})
+        }
+        
+    }catch(error){
+        console.log(error.message)
+        return res.redirect('/admin/adminErrorPage')
+        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -420,17 +407,22 @@ const adminCancelOrder = async(req,res)=>{
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        return res.redirect('/admin/adminErrorPage')
+        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
 module.exports = {
+    ////// Api for the admin \\\\\
+    changeOrderStatus,
+    adminCancelOrder,
+    adminGetOrders,
+    adminGetOrderDetail,
+    ////// Api for the user \\\\\\
     placeOrder,
     orderConfirmation,
     getOrders,
     getOrderDetail,
-    changeOrderStatus,
     userCancelOrder,
-    adminCancelOrder,
     orderConfirmWithWalletAndRazorpay
 }

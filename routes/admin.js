@@ -94,9 +94,9 @@ adminRouter.post('/updateCoupon/:couponId',adminAuth.isAdminLoggedIn,couponContr
 // To block or unblock a coupon
 adminRouter.post('/blockCoupon/:couponId',adminAuth.isAdminLoggedIn,couponController.adminBlockCoupon)
 
-adminRouter.get('/orders',adminAuth.isAdminLoggedIn,adminController.getOrders)
+adminRouter.get('/orders',adminAuth.isAdminLoggedIn,orderController.adminGetOrders)
 
-adminRouter.get('/adminOrderDetail/:orderId',adminAuth.isAdminLoggedIn,adminController.getOrderDetail)
+adminRouter.get('/adminOrderDetail/:orderId',adminAuth.isAdminLoggedIn,orderController.adminGetOrderDetail)
 
 //To change the order status 
 adminRouter.post('/updateOrderStatus',adminAuth.isAdminLoggedIn,orderController.changeOrderStatus)

@@ -25,7 +25,8 @@ const getAdminCoupon = async (req, res) => {
         return res.render('admin/adminCoupon', { title: "LapShop Admin", couponData })
     } catch (error) {
         console.log(error.message)
-        return res.status(500).json({ message: "Internal server error" })
+        return res.redirect('/admin/adminErrorPage')
+        // return res.status(500).json({ message: "Internal server error" })
     }
 }
 
@@ -64,6 +65,7 @@ const postAdminCoupon = async (req, res) => {
         return res.status(201).json({ message: "Coupon added successfully" });
     } catch (error) {
         console.log(error.message)
+        return res.redirect('/admin/adminErrorPage')
     }
 }
 
@@ -75,7 +77,8 @@ const adminEditCoupon = async (req, res) => {
         return res.render('admin/adminEditCoupon', { title: "LapShop Admin", coupon })
     } catch (error) {
         console.log(error.message)
-        return res.status(500).json({ message: "Internal server error" });
+        return res.redirect('/admin/adminErrorPage')
+        // return res.status(500).json({ message: "Internal server error" });
     }
 }
 
@@ -111,7 +114,8 @@ const adminUpdateCoupon = async (req, res) => {
         return res.status(200).json({ message: "Coupon updated successfully" });
     } catch (error) {
         console.log(error.message);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.redirect('/admin/adminErrorPage')
+        // return res.status(500).json({ message: "Internal server error" });
     }
 };
 
@@ -128,10 +132,12 @@ const adminBlockCoupon = async (req, res) => {
         return res.json({ success: true });
     } catch (error) {
         console.log(error.message)
-        res.status(500).json({ success: false, message: 'Internal server error' });
+        return res.redirect('/admin/adminErrorPage')
+        // res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
+// To apply coupon from user
 const applyCoupon = async (req, res) => {
     try {
         console.log("hi")
@@ -191,7 +197,7 @@ const applyCoupon = async (req, res) => {
     }
 }
 
-// To cancel applied coupon
+// To cancel applied coupon from user
 const cancelCoupon = async(req,res)=>{
     try{
         console.log("cancel coupon api")
@@ -227,11 +233,13 @@ const cancelCoupon = async(req,res)=>{
 }
 
 module.exports = {
+    ////// Api for the admin \\\\\\
     getAdminCoupon,
     postAdminCoupon,
     adminEditCoupon,
     adminUpdateCoupon,
     adminBlockCoupon,
+    ////// Api for the user \\\\\\
     applyCoupon,
     cancelCoupon
 }
