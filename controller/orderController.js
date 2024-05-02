@@ -85,7 +85,6 @@ const placeOrder = async(req,res)=>{
     
         const orderSaved = await newOrder.save()
         if (orderSaved) {
-            // Update product stock for each item in cart
             await Promise.all(cart[0].items.map(async (item) => {
                 const product = await Product.findById(item.product);
                 console.log("product quantity :", product.noOfStock);
@@ -104,8 +103,7 @@ const placeOrder = async(req,res)=>{
         } 
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -152,8 +150,7 @@ const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
             console.log("i have done with instance creation");
     }catch(error){
         console.log(error.message)
-        res.redirect('/errorPage')
-        // return res.status(500).json({ message : "Internal server error" })
+        return res.redirect('/errorPage')
     }
 }
 
@@ -218,8 +215,7 @@ const orderConfirmation = async(req,res)=>{
         }
     }catch(error){
         console.log(error.message)
-        res.redirect('/errorPage')
-        // return res.status(500).json({ message : "Internal server error" })
+        return res.redirect('/errorPage')
     }
 }
 
@@ -234,12 +230,10 @@ const getOrders = async(req,res)=>{
             populate:  [{ path: "brand" }, { path: "category" }]
         });
         console.log("orders :",order)
-        // console.log("Ordered items :",order[0].orderedItems)
         return res.render('user/orders',{userDetails , order})
     }catch(error){
         console.log(error.message)
-        res.redirect('/errorPage')
-        // return res.status(500).json({ message : "Internal server error" })
+        return res.redirect('/errorPage')
     }
 }
 
@@ -256,8 +250,7 @@ const getOrderDetail = async(req,res)=>{
         return res.render('user/orderDetail',{userDetails , order})
     }catch(error){
         console.log(error.message)
-        res.redirect('/errorPage')
-        // return res.status(500).json({ message : "Internal serer error" })
+        return res.redirect('/errorPage')
     }
 }
 
@@ -298,8 +291,7 @@ const userCancelOrder = async(req,res)=>{
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
         console.log(error.message)
-        res.redirect('/errorPage')
-        // return res.status(500).json({ message : "Internal server error" })
+        return res.redirect('/errorPage')
     }
 }
 
@@ -315,7 +307,6 @@ const adminGetOrders = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -335,7 +326,6 @@ const adminGetOrderDetail = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message : "Internal serer error" })
     }
 }
 
@@ -363,7 +353,6 @@ const changeOrderStatus = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -408,7 +397,6 @@ const adminCancelOrder = async(req,res)=>{
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
