@@ -16,11 +16,10 @@ const getWishlistPage = async(req,res)=>{
             prodId = productsId
         }
         const products = await Product.find({_id : {$in : prodId}}).populate("brand")
-        res.render('user/wishlist', {userDetails , products ,wishlistProducts})
+        return res.render('user/wishlist', {userDetails , products ,wishlistProducts})
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -28,7 +27,6 @@ const getWishlistPage = async(req,res)=>{
 const AddToWishlist = async(req,res)=>{
     try{
         const productId = req.body.productId
-        console.log("product id :",productId)
         const userId = req.session.user._id
         
         const existingWishlist = await Wishlist.findOne({ userId: userId });
@@ -57,8 +55,7 @@ const AddToWishlist = async(req,res)=>{
 
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error" })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -72,12 +69,16 @@ const deleteProductFromWishlist = async(req,res)=>{
             { $pull: { products: { product: productId } } },
             { new: true }
             );
+
+        if(!wishlist){
+            return res.status(400).json({ message: "Product deleting from wishlist is error." });
+        }else{
+            return res.status(200).json({ message: "Product deleted from wishlist." });
+        }
     
-            return res.status(200).json({ message: "Product deleted from wishlist ." });
     }catch(error){
         console.log(error.message)
-        // return res.status(500).json({ message : "Internal server error." })
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 }
 
@@ -93,7 +94,6 @@ const postProductToCart = async (req, res) => {
             return res.status(404).json({ success: false, message: "Product not found." });
         }
 
-        // Get the existing cart of the user
         let existingCart = await Cart.findOne({ userId: userId });
 
         if (existingCart !== null) {
@@ -101,7 +101,6 @@ const postProductToCart = async (req, res) => {
             const existingItem = existingCart.items.find(item => item.product.equals(productId));
 
             if (existingItem) {
-                // If the product exists, update its quantity and prices
                 if(existingItem.quantity >= product.noOfStock){
                     return res.status(409).json({ success : false, status : 409, message : "Selected quantity exceeds available stock"})
                 }
@@ -109,7 +108,6 @@ const postProductToCart = async (req, res) => {
                 existingItem.totalPrice +=  product.offerPrice,
                 existingItem.discountPrice += product.realPrice * (product.discountPercentage / 100)
             } else {
-                // If the product does not exist, add it to the cart
                 existingCart.items.push({
                     product: productId,
                     quantity: 1,
@@ -118,12 +116,10 @@ const postProductToCart = async (req, res) => {
                     discountPrice: product.realPrice * (product.discountPercentage / 100)
                 });
             }
-            // Update total cart price and total discount price
             existingCart.totalCartPrice = existingCart.items.reduce((total, item) => total + item.totalPrice, 0);
             existingCart.totalCartDiscountPrice = existingCart.items.reduce((total, item) => total + item.discountPrice, 0);
 
         } else {
-            // If the cart does not exist, create a new cart
             existingCart = new Cart({
                 userId: userId,
                 items: [{
@@ -148,8 +144,7 @@ const postProductToCart = async (req, res) => {
         return res.status(200).json({ success: true, message: "Product added to your cart." });
     } catch (error) {
         console.log(error.message);
-        // return res.status(500).json({ success: false,  message: "Internal server  error" });
-        res.redirect('/errorPage')
+        return res.redirect('/errorPage')
     }
 };
 
