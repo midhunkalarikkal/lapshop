@@ -1008,9 +1008,9 @@ const updateAddressFromCheckout = async(req,res)=>{
     }
 }
 
-const get505Error = async(req,res)=>{
+const getErrorPage = async(req,res)=>{
     try{
-        return res.render('user/error505')
+        return res.render('user/errorPage')
     }catch(error){
         console.log(error.message)
     }
@@ -1051,6 +1051,6 @@ module.exports = {
     updateAddressFromCheckout,
     getPaymentPage,
     getPaymentSuccess,
-    get505Error
+    getErrorPage
 }
 

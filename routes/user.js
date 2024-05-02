@@ -126,7 +126,7 @@ userRouter.get('/orderDetail/:orderId',userAuth.isUserLoggedIn,orderController.g
 userRouter.get('/paymentSuccess',userAuth.isUserLoggedIn,userController.getPaymentSuccess)
 
 //To get the 505 error page
-userRouter.get('/505Error',userAuth.isUserLoggedIn,userController.get505Error)
+userRouter.get('/errorPage',userAuth.isUserLoggedIn,userController.getErrorPage)
 
 //To apply coupon
 userRouter.post('/applyCoupon',userAuth.isUserLoggedIn,couponController.applyCoupon)
