@@ -14,13 +14,6 @@ const orderController = require('../controller/orderController')
 const couponController = require('../controller/couponController')
 const walletController = require('../controller/walletController')
 
-const preventCaching = (req, res, next) => {
-    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-    res.setHeader('Pragma', 'no-cache');
-    res.setHeader('Expires', '0');
-    next();
-  };
-
 //To get home page
 userRouter.get('/',userController.getHome)
 //To get the login page
@@ -39,37 +32,38 @@ userRouter.get('/logout',userAuth.isUserLoggedIn,userController.getLogout)
 userRouter.get('/otp',userController.getotppage)
 //To resend otp
 userRouter.post('/resendotp',userController.resendOtp)
+
 //To get user profile
 userRouter.get('/userProfile',userAuth.isUserLoggedIn,userController.getUserProfile)
 //To post user updated info
 userRouter.post('/updateUserInfo',userAuth.isUserLoggedIn,userController.postUserUpdatedInfo)
 //To add profile image
 userRouter.post('/uploadProfileImage',userAuth.isUserLoggedIn,uploadProfileImage.single('profileImg'),userController.postUserProfileImage)
-
+//To get userAddress adding page from profile
 userRouter.get('/addAddress/:userId',userAuth.isUserLoggedIn,userController.getUserNewAddress)
-
+//To save new address from profile
 userRouter.post('/saveNewAddress/:userId',userAuth.isUserLoggedIn,userController.postUserAddress)
-
+//To delete address from profile
 userRouter.delete('/deleteAddress/:addressId',userAuth.isUserLoggedIn,userController.postAddressDelete)
-
+//To edit user address from profile
 userRouter.get('/editAddress/:addressId',userAuth.isUserLoggedIn,userController.getUserEditAddress)
-
+//To update the edited address from profile
 userRouter.post('/updateAddress/:addressId',userAuth.isUserLoggedIn,userController.postUpdateUserAddress)
-
+//To send otp for password changing from profile
 userRouter.post('/sendOtpForPass',userAuth.isUserLoggedIn,userController.postOtpForChangePass)
-
+//To submit otp for password changing from profile
 userRouter.post('/submitOtp',userAuth.isUserLoggedIn,userController.checkOtpForChangePass)
-
+//To update the changed password from profile
 userRouter.post('/updatePassword',userAuth.isUserLoggedIn,userController.postUserNewPass)
 
 
 //To get the forgot password page from login form
 userRouter.get('/forgotPassword',userController.getForgotPassword)
-//To send the email to server for sending the opt to the email
+//To send the email to server for sending the opt to the email from login
 userRouter.post('/fpassPostEmail',userController.postForgotPasswordEmail)
-//To the send the otp to email
+//To send the otp to email from login
 userRouter.post('/fpassPostOtp',userController.postForgotPasswordOtp)
-//To update the new password from forgot password
+//To update the new password from forgot password from login
 userRouter.post('/fpassPostPassword',userController.postForgotPasswordNewPass)
 
 //To get the product detailed page
@@ -104,50 +98,40 @@ userRouter.post('/deleteProductFromCart',userAuth.isUserLoggedIn,cartController.
 
 //To get the checkout page
 userRouter.get('/checkout',userAuth.isUserLoggedIn,userController.getCheckout)
-
 //To add new address from checkout page
 userRouter.get('/addAddressFromCheckout',userAuth.isUserLoggedIn,userController.getUserNewAddressFromCheckout)
-
-//To edit address from checkou
+//To edit address from checkout page
 userRouter.get('/editAddressFromCheckout/:addressId',userAuth.isUserLoggedIn,userController.getUserEditAddressFromCheckout)
-
 //To update address from checkout
 userRouter.post('/updateAddressFromCheckout/:addressId',userAuth.isUserLoggedIn,userController.updateAddressFromCheckout)
 
 //To get the payment page
 userRouter.get('/payment/:selectedAddressId',userAuth.isUserLoggedIn,userController.getPaymentPage)
-
-//To make a order placed
-userRouter.get('/placeOrder',userAuth.isUserLoggedIn,orderController.placeOrder)
-
 //To confirm order by paymnet
 userRouter.post('/orderConfirmation',userAuth.isUserLoggedIn,orderController.orderConfirmation)
-
-//To get the order page
-userRouter.get('/orders',userAuth.isUserLoggedIn,orderController.getOrders)
-
-// To get the order detail page
-userRouter.get('/orderDetail/:orderId',userAuth.isUserLoggedIn,orderController.getOrderDetail)
-
+//To place order after payment or cod
+userRouter.get('/placeOrder',userAuth.isUserLoggedIn,orderController.placeOrder)
 //To get payment success page
 userRouter.get('/paymentSuccess',userAuth.isUserLoggedIn,userController.getPaymentSuccess)
 
-//To get the 505 error page
-userRouter.get('/errorPage',userAuth.isUserLoggedIn,userController.getErrorPage)
-
-//To apply coupon
-userRouter.post('/applyCoupon',userAuth.isUserLoggedIn,couponController.applyCoupon)
-
-//To cancel applied coupon
-userRouter.post('/cancelCoupon',userAuth.isUserLoggedIn,couponController.cancelCoupon)
-
+//To get the order page
+userRouter.get('/orders',userAuth.isUserLoggedIn,orderController.getOrders)
+// To get the order detail page
+userRouter.get('/orderDetail/:orderId',userAuth.isUserLoggedIn,orderController.getOrderDetail)
 //To cancel an order
 userRouter.post('/cancelOrder',userAuth.isUserLoggedIn,orderController.userCancelOrder)
+//To apply coupon from payment page
+userRouter.post('/applyCoupon',userAuth.isUserLoggedIn,couponController.applyCoupon)
+//To cancel applied coupon from payment page
+userRouter.post('/cancelCoupon',userAuth.isUserLoggedIn,couponController.cancelCoupon)
 
-//To get the wallet page
-userRouter.get('/wallet',userAuth.isUserLoggedIn,walletController.getUserWallet)
 
 //To place order with wallet and razorpay
 userRouter.post('/orderConfirmWithWalletAndRazorpay',userAuth.isUserLoggedIn,orderController.orderConfirmWithWalletAndRazorpay)
+//To get the wallet page
+userRouter.get('/wallet',userAuth.isUserLoggedIn,walletController.getUserWallet)
+
+//To get the 505 error page
+userRouter.get('/errorPage',userAuth.isUserLoggedIn,userController.getErrorPage)
 
 module.exports = userRouter
