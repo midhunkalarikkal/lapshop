@@ -324,16 +324,6 @@
                     })
                 }
             })
-            .catch(error => {
-                Swal.fire({
-                icon: 'eoorr',
-                title: "Internal server error",
-                text: error,
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-            });
         }
 
         ////// To cancel coupon \\\\\\
@@ -389,16 +379,6 @@
                     })
                 }
             })
-            .catch(error => {
-                Swal.fire({
-                icon: 'eoorr',
-                title: "Internal server error",
-                text: error,
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-            });
         }
     
     
@@ -466,7 +446,7 @@
                         currency: "INR",
                         name: "LapShop",
                         description: "Your laptop",
-                        image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAYFBMVEX///8Aru8ArO8Aqe4AqO4wtPA1uPE6uvG24vnI6vtIvfLZ8fz6/v9Lv/Lo9f1SwfNxyvTR7fv1/P5ox/Tl9v3C5vqCz/Wd2fep3vjt+f655PmU1vd9y/SK0fbi9P0NsfBjAXEwAAADr0lEQVR4nO3c3ZKiMBAFYEgAQWRBQREFef+3HHBmdv5qtmLOReq457vcnYtOpSGd0DGKRERERERERERERERERERERERERERERERERORxZd9sszTNFps32Rfph/sf1adL6Jgf0c/WGhM/whg7D6HjdpUb+9Dg3tkxdOSO2sRrfMs0NqFDd7Pxm8B1Ds+hY3eyfezx+zKHu9DBu2i8ZzC2fejgXeS+z+Ayg5vQwbsY/FM0Nl3o6F0ADyFHjvb+DyFHjnb+D2GcUNQzmf8AOXJ0AnJ0Gzp4F3v/AXK8R3ez/wA5crQBqjWKHD0C71HL8B49AMUMx5aifvYcPQPvUYoc7YAcTShydAPkaB06eBdXIEdjhhwtkYcwDx29C6CY4cjRE1KPHkJH76BANoXH0NE7QApu04aO3kULLIUzw/noBSm4i9DRO4AKborvMMDpYZyGDt4FUnAnt9DRO+iQYobi4AIpuCk2hUjBbZ694E4ouhJSYAYpPmcjBTfFQrFHCu4ydPQudML9O45d7xF4CGeGXe/Bf3yx3YeO3gWwKbTX0MG7AN6jHNUasGcyFCthNHhPoa0Yzi2iqPB8kRpDsRBGnk0lxpqJYT/x6rw2AH/3Y8L+stYmts45EvRd0U/jODZNu6gXVVVtt5tPtlVVt20zTtO1P5+PFIWoCJ/DsOi67nYrF/tXRVEcF5fLJb87FvuS5w36SdnMySf2X5b/ztqe7FVzTB4s24xN4pFpkF5dliapeMboeYJh7Cl05K4q372F5dg7IR9kTBY6djfAV0NL8WEb+mKRUDTQQCf6FE1QUIsJyUkNdNrGsdOHWhQYvm9jn/A5DtygCzIUp8JRifQKcVSoT/+JFLskM4WO3skFaafhyFPgkkXMUYIPyCRyvE+RniGKvjaoX4EkT5GeE5L6FOjJ4Lg4CvUsmCp09E5y5GVDcakLaoSmuFACNQpzXLjAFkWGCwnYsdQcOngn0E6R46Af2SlybDKg210Uv9ri3UN0n0SORREq3igOwaE8pegZfv6bpFieciyK0Mkbx6KI5CnHohiNz/5TZv/BzyhhP4VFsShCP7nHsSgih+AkO0Xk3izHohjtMu8hWoprpcsQa99nkeVJjKLro62Z7zi+mq5uldcYWfps7srTLz/J/vOWxseljJnijP/DLZ/qdF6bg9cm6WWw85xmm6qu2zd1/XZPo1r/sbmSLBbf7Ibhz2oYhgPXjRkRERERERERERERERERERERERERERERERHh8gI/MTSJ2unvZgAAAABJRU5ErkJggg==",
+                        image: `/static/images/Bg/desktop/Lapshop logo.png`,
                         order_id: "" + data.order_id + "", 
                         handler: function (response) {
                             let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=true&coupon=${coupon}`;
@@ -528,91 +508,100 @@
                         console.log("wallet deduction not ok. need to use razorpay also.")
                         console.log("wallet + online razorpay deduction ok.")
                         swal.fire({
-                            title : "Not enough wallet balance.",
+                            title: "Not enough wallet balance.",
                             text: "Are you sure want to place this order with wallet with Online payment ?",
-                            confirmButtonText : "Yes",
-                            confirmButton : true
-                        }).then((result)=>{
-                            Swal.fire({
-                                html: `
-                                    <div class="text-center">
-                                        <img src="/static/images/Bg/desktop/wallet.gif" alt="Payment" class="w-25 img-thumbnail">
-                                        <h5 class="mt-3">Paying using your wallet</h5>
-                                        <h6 class="mt-3">Your wallet balance : ${walletBalance}</h6>
-                                    </div>
-                                `,
-                                showCancelButton: true,
-                                confirmButtonText: 'pay with wallet',
-                                confirmButton: true
-                            }).then((result) => {
-                                if (result.isConfirmed) {
+                            showCancelButton: true,
+                            confirmButtonText: "Yes",
+                            confirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed) { // Check if user clicked "Yes"
+                                Swal.fire({
+                                    html: `
+                                        <div class="text-center">
+                                            <img src="/static/images/Bg/desktop/wallet.gif" alt="Payment" class="w-25 img-thumbnail">
+                                            <h5 class="mt-3">Paying using your wallet</h5>
+                                            <h6 class="mt-3">Your wallet balance : ${walletBalance}</h6>
+                                        </div>
+                                    `,
+                                    showCancelButton: true,
+                                    confirmButtonText: 'pay with wallet',
+                                    confirmButton: true
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
 
-                                    paymentMethod = "wallet with razorpay"
+                                        paymentMethod = "wallet with razorpay"
 
-                                    const wwrdata = {
-                                        paymentAmount : subTotal,
-                                        walletBalance : walletBalance
+                                        const wwrdata = {
+                                            paymentAmount : subTotal,
+                                            walletBalance : walletBalance
+                                        }
+
+                                        fetch('/orderConfirmWithWalletAndRazorpay', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify(wwrdata)
+                                        })
+                                        .then(response => {
+                                            const contentType = response.headers.get('content-type');
+                                            const message = "Your account is blocked, Please contact us"
+                                            const type = "danger"
+                                            if (contentType && contentType.includes('application/json')) {
+                                                return response.json(); 
+                                            } else {
+                                                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                                            }
+                                        })
+                                        .then(data => {
+                                            if(data.success){
+                                                console.log("data : ",data)
+                                                var options = {
+                                                    key: "" + data.key_id + "",
+                                                    amount: "" + data.amount + "",
+                                                    currency: "INR",
+                                                    name: "LapShop",
+                                                    description: "Your laptop",
+                                                    image: `/static/images/Bg/desktop/Lapshop logo.png`,
+                                                    order_id: "" + data.order_id + "", 
+                                                    handler: function (response) {
+                                                        let redirectUrl = `/placeOrder?amount=${data.amount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=true&coupon=${coupon}&walletBalance=${walletBalance}&walletUsed=true`;
+                                                        window.location.href = redirectUrl;
+                                                    },
+                                                    prefill: {
+                                                        name: "" + data.name + "", 
+                                                        email: "" + data.email + "",
+                                                        contact: "9000090000", 
+                                                        },
+                                                        notes: {
+                                                            address: "Razorpay Corporate Office",
+                                                        },
+                                                        theme: {
+                                                            color: "#ffc107",
+                                                        },
+                                                };
+                                                var rzp1 = new Razorpay(options);
+                                                rzp1.on("payment.failed", function (response) {
+                                                    swal.fire({
+                                                        icon: 'error', 
+                                                        title: "Online payment Failed",
+                                                        text: "Please try again.",
+                                                        showCancelButton: true
+                                                    });
+                                                });
+                                                rzp1.open();
+                                            } else {
+                                                swal.fire({
+                                                    icon: "error",
+                                                    title: "Payment gateway error.",
+                                                    text: "Please try again.",
+                                                    timerProgressBar: 3000
+                                                })
+                                            }
+                                        })
                                     }
-
-                                    fetch('/orderConfirmWithWalletAndRazorpay', {
-                                        method: 'POST',
-                                        headers: {
-                                            'Content-Type': 'application/json'
-                                        },
-                                        body: JSON.stringify(wwrdata)
-                                    })
-                                    .then(response => {
-                                        const contentType = response.headers.get('content-type');
-                                        const message = "Your account is blocked, Please contact us"
-                                        const type = "danger"
-                                        if (contentType && contentType.includes('application/json')) {
-                                            return response.json(); 
-                                        } else {
-                                            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                                        }
-                                    })
-                                    .then(data => {
-                                        if(data.success){
-                                            console.log("data : ",data)
-                                            var options = {
-                                                key: "" + data.key_id + "",
-                                                amount: "" + data.amount + "",
-                                                currency: "INR",
-                                                name: "LapShop",
-                                                description: "Your laptop",
-                                                image: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAYFBMVEX///8Aru8ArO8Aqe4AqO4wtPA1uPE6uvG24vnI6vtIvfLZ8fz6/v9Lv/Lo9f1SwfNxyvTR7fv1/P5ox/Tl9v3C5vqCz/Wd2fep3vjt+f655PmU1vd9y/SK0fbi9P0NsfBjAXEwAAADr0lEQVR4nO3c3ZKiMBAFYEgAQWRBQREFef+3HHBmdv5qtmLOReq457vcnYtOpSGd0DGKRERERERERERERERERERERERERERERERERORxZd9sszTNFps32Rfph/sf1adL6Jgf0c/WGhM/whg7D6HjdpUb+9Dg3tkxdOSO2sRrfMs0NqFDd7Pxm8B1Ds+hY3eyfezx+zKHu9DBu2i8ZzC2fejgXeS+z+Ayg5vQwbsY/FM0Nl3o6F0ADyFHjvb+DyFHjnb+D2GcUNQzmf8AOXJ0AnJ0Gzp4F3v/AXK8R3ez/wA5crQBqjWKHD0C71HL8B49AMUMx5aifvYcPQPvUYoc7YAcTShydAPkaB06eBdXIEdjhhwtkYcwDx29C6CY4cjRE1KPHkJH76BANoXH0NE7QApu04aO3kULLIUzw/noBSm4i9DRO4AKborvMMDpYZyGDt4FUnAnt9DRO+iQYobi4AIpuCk2hUjBbZ694E4ouhJSYAYpPmcjBTfFQrFHCu4ydPQudML9O45d7xF4CGeGXe/Bf3yx3YeO3gWwKbTX0MG7AN6jHNUasGcyFCthNHhPoa0Yzi2iqPB8kRpDsRBGnk0lxpqJYT/x6rw2AH/3Y8L+stYmts45EvRd0U/jODZNu6gXVVVtt5tPtlVVt20zTtO1P5+PFIWoCJ/DsOi67nYrF/tXRVEcF5fLJb87FvuS5w36SdnMySf2X5b/ztqe7FVzTB4s24xN4pFpkF5dliapeMboeYJh7Cl05K4q372F5dg7IR9kTBY6djfAV0NL8WEb+mKRUDTQQCf6FE1QUIsJyUkNdNrGsdOHWhQYvm9jn/A5DtygCzIUp8JRifQKcVSoT/+JFLskM4WO3skFaafhyFPgkkXMUYIPyCRyvE+RniGKvjaoX4EkT5GeE5L6FOjJ4Lg4CvUsmCp09E5y5GVDcakLaoSmuFACNQpzXLjAFkWGCwnYsdQcOngn0E6R46Af2SlybDKg210Uv9ri3UN0n0SORREq3igOwaE8pegZfv6bpFieciyK0Mkbx6KI5CnHohiNz/5TZv/BzyhhP4VFsShCP7nHsSgih+AkO0Xk3izHohjtMu8hWoprpcsQa99nkeVJjKLro62Z7zi+mq5uldcYWfps7srTLz/J/vOWxseljJnijP/DLZ/qdF6bg9cm6WWw85xmm6qu2zd1/XZPo1r/sbmSLBbf7Ibhz2oYhgPXjRkRERERERERERERERERERERERERERERERHh8gI/MTSJ2unvZgAAAABJRU5ErkJggg==",
-                                                order_id: "" + data.order_id + "", 
-                                                handler: function (response) {
-                                                    let redirectUrl = `/placeOrder?amount=${data.amount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=true&coupon=${coupon}&walletBalance=${walletBalance}&walletUsed=true`;
-                                                    window.location.href = redirectUrl;
-                                                },
-                                                prefill: {
-                                                    name: "" + data.name + "", 
-                                                    email: "" + data.email + "",
-                                                    contact: "9000090000", 
-                                                    },
-                                                    notes: {
-                                                        address: "Razorpay Corporate Office",
-                                                    },
-                                                    theme: {
-                                                        color: "#ffc107",
-                                                    },
-                                            };
-                                            var rzp1 = new Razorpay(options);
-                                            rzp1.on("payment.failed", function (response) {
-                                                // let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=false&coupon=${coupon}`;
-                                                // window.location.href = redirectUrl;
-                                            });
-                                            rzp1.open();
-                                        } else {
-                                            console.log("data :",data)
-                                        }
-                                    })
-                                    .catch(()=>{
-
-                                    })
-                                }
-                            });
+                                })
+                            }
                         })
                     }
                 }
@@ -627,16 +616,6 @@
                 });
             }
           })
-          .catch((error) => {
-            Swal.fire({
-                icon: 'eoorr',
-                title: "Internal server error",
-                text: error,
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-          });
     }
 
         
