@@ -1,11 +1,12 @@
 const Coupon = require('../models/couponModel')
 const Cart = require('../models/cartModel')
 
-// To delete expired coupons
+////// To delete expired coupons \\\\\\
 async function deleteExpiredCoupons() {
     try {
         const currentDate = new Date();
         const expiredCoupons = await Coupon.find({ endDate: { $lt: currentDate } });
+        console.log("Expired coupons :",expiredCoupons)
         await Coupon.deleteMany({ _id: { $in: expiredCoupons.map(coupon => coupon._id) } });
         console.log(`Deleted ${expiredCoupons.length} expired coupons.`);
     } catch (error) {
@@ -15,6 +16,7 @@ async function deleteExpiredCoupons() {
 
 const intervalInMilliseconds = 24 * 60 * 60 * 1000;
 setInterval(deleteExpiredCoupons, intervalInMilliseconds);
+////// To delete expired coupons \\\\\\
 
 // To get the admin coupon page
 const getAdminCoupon = async (req, res) => {
@@ -25,7 +27,6 @@ const getAdminCoupon = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message: "Internal server error" })
     }
 }
 
@@ -77,7 +78,6 @@ const adminEditCoupon = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message: "Internal server error" });
     }
 }
 
@@ -114,7 +114,6 @@ const adminUpdateCoupon = async (req, res) => {
     } catch (error) {
         console.log(error.message);
         return res.redirect('/admin/adminErrorPage')
-        // return res.status(500).json({ message: "Internal server error" });
     }
 };
 
@@ -132,7 +131,6 @@ const adminBlockCoupon = async (req, res) => {
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
-        // res.status(500).json({ success: false, message: 'Internal server error' });
     }
 }
 
@@ -194,7 +192,6 @@ const applyCoupon = async (req, res) => {
     } catch (error) {
         console.log(error)
         res.redirect('/errorPage')
-        // return res.status(500).json({ message : "Internal server error" })
     }
 }
 
@@ -230,7 +227,6 @@ const cancelCoupon = async(req,res)=>{
     }catch(error){
         console.log(error)
         res.redirect('/errorPage')
-        // return res.status(500).json({ messag : "Internal server error" })
     }
 }
 
