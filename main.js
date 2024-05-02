@@ -43,11 +43,9 @@ app.use('/',userRoute)
 const adminRoute = require('./routes/admin')
 app.use('/admin',adminRoute)
 
-
-// app.get("/submitError", (req, res) => {
-//     const errorMessage = req.query.message;
-//     res.render("user/registration", { title: "LapShop Register", type: "danger", message: errorMessage });
-// });
+app.use('/*',function(req,res){
+    res.redirect('/errorPage')
+})
 
 const PORT = process.env.PORT || 4000
 app.listen(PORT,()=>{

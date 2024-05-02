@@ -33,7 +33,8 @@ const getUserWallet = async(req,res)=>{
         return res.render('user/wallet',{userDetails, wallet, totalAmount, totalCreditedAmount, totalDebitedAmount, creditCount, debitCount})
     }catch(error){
         console.log(error.message)
-        return res.status(500).json({ message : "Internal server error" })
+        // res.status(500).json({ message : "Internal server error" })
+        res.redirect('/errorPage')
     }
 }
 
