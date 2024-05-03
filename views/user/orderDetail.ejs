@@ -76,25 +76,32 @@
                     <div class="col-10 shadow orderDetail">
                        <% if(order !== "" && order.length > 0){ %>
                             <% for(let i = 0; i < order.length; i++){ %>
-                                <div class="details d-flex flex-column mt-3 p-3 border">
-                                    <span class="product-price "><span class="heads">Order id :</span> <%= order[i]._id.toString().slice(-6)  %></span>
-                                    <span class="product-price "><span class="heads">Order date :</span> <%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
-                                    <%
-                                        const orderDate = new Date(order[i].orderDate);
-                                        orderDate.setDate(orderDate.getDate() + 4);
-                                        const deliveryDate = orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-                                    %>
-                                    <span class="product-price "><span class="heads">Expected delivery date : </span> <%= deliveryDate  %></span>
-                                    <span class="product-price ">
-                                        <span class="heads">Order total : </span>
-                                        <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
-                                            ₹ <%= order[i].orderTotal + order[i].walletDebitedAmount %>
-                                        <% }else{ %>
-                                            ₹ <%= order[i].orderTotal %>
-                                        <% } %>
-                                    </span>
-                                    <span class="product-name"><span class="heads">Order status : </span><%= order[i].status %></span>
-                                    <span class="product-name"><span class="heads">Status date : </span><%= order[i].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                                <div class="details d-md-flex flex-row mt-3 border">
+                                    <div class="left d-flex flex-column p-3 col-md-8">
+                                        <span class="product-price "><span class="heads">Order id :</span> <%= order[i]._id.toString().slice(-6)  %></span>
+                                        <span class="product-price "><span class="heads">Order date :</span> <%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
+                                        <%
+                                            const orderDate = new Date(order[i].orderDate);
+                                            orderDate.setDate(orderDate.getDate() + 4);
+                                            const deliveryDate = orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
+                                        %>
+                                        <span class="product-price "><span class="heads">Expected delivery date : </span> <%= deliveryDate  %></span>
+                                        <span class="product-price ">
+                                            <span class="heads">Order total : </span>
+                                            <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
+                                                ₹ <%= order[i].orderTotal + order[i].walletDebitedAmount %>
+                                            <% }else{ %>
+                                                ₹ <%= order[i].orderTotal %>
+                                            <% } %>
+                                        </span>
+                                        <span class="product-name"><span class="heads">Order status : </span><%= order[i].status %></span>
+                                        <span class="product-name"><span class="heads">Status date : </span><%= order[i].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
+                                    </div>
+                                    <% if(order[i].status === "Delivered"){ %>
+                                        <div class="left d-flex flex-column p-3 col-md-4 justify-content-end">
+                                            <button class="btn btn-primary btn-sm col-lg-8 col-6 col-md-12" id="downloadInvoice" data-order-Id="<%= order[i]._id %>"><i class="fa-solid fa-file-arrow-down" style="color: white;"></i> Download invoice</button>
+                                        </div>
+                                    <% } %>
                                 </div>
                                 <div class="item-wrap-border border mt-3">
                                     <% if(order[i].orderedItems.length ===  1){ %>
@@ -225,8 +232,14 @@
     <!--  Script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-
-
+        const downloadInvoice = document.getElementById('downloadInvoice') ? document.getElementById('downloadInvoice') : ""
+        if(downloadInvoice){
+            downloadInvoice.addEventListener("click",function(){
+                const orderId = downloadInvoice.getAttribute("data-order-Id")
+                console.log("orderId : ",orderId)
+                // window.location.href = '/downoadInvoice/'
+            })
+        }
     </script>
 
     <!-- User footer -->

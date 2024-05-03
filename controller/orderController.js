@@ -240,6 +240,7 @@ const getOrders = async(req,res)=>{
 // To get the order Detail page from user
 const getOrderDetail = async(req,res)=>{
     try{
+        let userDetails = req.session.userNC
         console.log("Request.params.prodId :",req.params.orderId)
         const orderId = req.params.orderId
         const order = await Order.find({ _id : orderId}).populate({
