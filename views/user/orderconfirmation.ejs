@@ -30,6 +30,12 @@
                                         <% if(data && data !== ""){ %>
                                         <h6>Expected delivery : <span> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
                                         <h6>Payment : <%= data.paymentMethod %></h6>
+                                        <% if(data.paymentStatus === true){ %>
+                                            <h6>Payment status : Success</h6>
+                                        <% }else{ %>
+                                            <h6>Payment status : Pending</h6>
+                                            <p class="p-small">Your order will ship after completing the payent.</p>
+                                        <% } %>
                                         <h6>Amount : ₹ <span class="text-success"><%= data.orderTotal %></span></h6>
                                         <% if(data.walletDebitedAmount > 0){ %>
                                             <h6>Wallet debited : ₹ <span class="text-success"><%= data.walletDebitedAmount %></span></h6>

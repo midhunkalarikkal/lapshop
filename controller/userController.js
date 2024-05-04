@@ -873,6 +873,7 @@ const getPaymentSuccess = async(req,res)=>{
         const data = {
             address : deliveryAddress,
             paymentMethod : paymentMethod,
+            paymentStatus : latestOrder.paymentStatus,
             walletDebitedAmount : walletDebitedAmount,
             orderTotal : orderTotal,
             orderedDate : orderedDate,

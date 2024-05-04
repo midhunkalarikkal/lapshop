@@ -89,20 +89,20 @@ const placeOrder = async(req,res)=>{
     
         const orderSaved = await newOrder.save()
         if (orderSaved) {
-            await Promise.all(cart[0].items.map(async (item) => {
-                const product = await Product.findById(item.product);
-                console.log("product quantity :", product.noOfStock);
-                console.log("orderedItem quantity :", item.quantity);
-                product.noOfStock -= item.quantity;
-                await product.save();
-            }));
-            cart[0].items = [];
-            cart[0].totalCartPrice = 0;
-            cart[0].totalCartDiscountPrice = 0;
-            req.session.userNC.cartItemCount = cart[0].items.length
-            await cart[0].save()
-            console.log("updated cart :",cart[0])
-            console.log("req.session.NC :",req.session.NC)
+                await Promise.all(cart[0].items.map(async (item) => {
+                    const product = await Product.findById(item.product);
+                    console.log("product quantity :", product.noOfStock);
+                    console.log("orderedItem quantity :", item.quantity);
+                    product.noOfStock -= item.quantity;
+                    await product.save();
+                }));
+                cart[0].items = [];
+                cart[0].totalCartPrice = 0;
+                cart[0].totalCartDiscountPrice = 0;
+                req.session.userNC.cartItemCount = cart[0].items.length
+                await cart[0].save()
+                console.log("updated cart :",cart[0])
+                console.log("req.session.NC :",req.session.NC)
             return res.redirect('/paymentSuccess');
         } 
     }catch(error){
@@ -499,6 +499,30 @@ const generateInvoice = async(orderId)=>{
     }
 }
 
+// To repayment the order if the payment is failed
+const repayment = async(req,res)=>{
+    try{
+        console.log("repayment api start")
+        const orderId = req.params.orderId
+        const order = await Order.findById(orderId).populate("orderedItems.product").populate("userId").populate("address")
+        console.log("order : ",order)
+        return res.render("user/repayment",{order})
+    }catch(error){
+        console.log(error.message)
+        return res.redirect('/errorPage')
+    }
+}
+
+const repaymentOrderConfirm = async(req,res)=>{
+    try{
+        console.log("repayment order confirmation api start")
+        const data = req.body
+        console.log("data : ",data)
+    }catch(error){
+        console.log(error)
+    }
+}
+
 module.exports = {
     ////// Api for the admin \\\\\
     changeOrderStatus,
@@ -512,5 +536,7 @@ module.exports = {
     getOrderDetail,
     userCancelOrder,
     orderConfirmWithWalletAndRazorpay,
-    downloadInvoice
+    downloadInvoice,
+    repayment,
+    repaymentOrderConfirm
 }

@@ -115,6 +115,10 @@ userRouter.get('/placeOrder',userAuth.isUserLoggedIn,orderController.placeOrder)
 userRouter.get('/paymentSuccess',userAuth.isUserLoggedIn,userController.getPaymentSuccess)
 //To download the order invoice
 userRouter.get('/downloadInvoice/:orderId',userAuth.isUserLoggedIn,orderController.downloadInvoice)
+//To repayment if the payment failed
+userRouter.get('/rePayment/:orderId',userAuth.isUserLoggedIn,orderController.repayment)
+//To confirm repayment order
+userRouter.post('/rePaymentOrderConfirmation',userAuth.isUserLoggedIn,orderController.repaymentOrderConfirm)
 
 //To get the order page
 userRouter.get('/orders',userAuth.isUserLoggedIn,orderController.getOrders)

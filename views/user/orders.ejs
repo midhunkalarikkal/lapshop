@@ -122,7 +122,7 @@
                                             </span></span>
                                                 <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" ){ %>
                                                 <br>
-                                                <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button>
+                                                <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button>
                                                 <% } %>
                                             </p>
                                         </td>
@@ -183,7 +183,8 @@
                                 <span class="product-price heads">Order total : ₹ <span class="text-success"><%= order[i].orderTotal %></span></span>
                             </p>
                             <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" ){ %>
-                                <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button>
+                                
+                                <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button>
                             <% } %>
                             <button class="btn btn-primary btn-sm" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
                             <% if(order[i].status === "Delivered"){ %>
@@ -273,6 +274,14 @@
                     });
                 }
             });
+        }
+
+        // To complete payment if the payment is failed \\\\\\
+        function repayment(button){
+            console.log("utton clicked")
+            const orderId = button.getAttribute("data-orderId")
+            console.log("order id : ",orderId)
+            window.location.href = `/rePayment/${orderId}`
         }
     </script>
 
