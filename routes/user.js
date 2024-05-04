@@ -113,6 +113,8 @@ userRouter.post('/orderConfirmation',userAuth.isUserLoggedIn,orderController.ord
 userRouter.get('/placeOrder',userAuth.isUserLoggedIn,orderController.placeOrder)
 //To get payment success page
 userRouter.get('/paymentSuccess',userAuth.isUserLoggedIn,userController.getPaymentSuccess)
+//To download the order invoice
+userRouter.get('/downloadInvoice/:orderId',userAuth.isUserLoggedIn,orderController.downloadInvoice)
 
 //To get the order page
 userRouter.get('/orders',userAuth.isUserLoggedIn,orderController.getOrders)

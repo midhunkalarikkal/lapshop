@@ -99,7 +99,9 @@
                                     </div>
                                     <% if(order[i].status === "Delivered"){ %>
                                         <div class="left d-flex flex-column p-3 col-md-4 justify-content-end">
-                                            <button class="btn btn-primary btn-sm col-lg-8 col-6 col-md-12" id="downloadInvoice" data-order-Id="<%= order[i]._id %>"><i class="fa-solid fa-file-arrow-down" style="color: white;"></i> Download invoice</button>
+                                            <a href="/downloadInvoice/<%= order[i]._id %>">
+                                                <button class="btn btn-primary btn-sm col-lg-8 col-6 col-md-12" id="downloadInvoice" data-order-Id="<%= order[i]._id %>"><i class="fa-solid fa-file-arrow-down" style="color: white;"></i> Download invoice</button>
+                                            </a>
                                         </div>
                                     <% } %>
                                 </div>
@@ -232,14 +234,7 @@
     <!--  Script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-        const downloadInvoice = document.getElementById('downloadInvoice') ? document.getElementById('downloadInvoice') : ""
-        if(downloadInvoice){
-            downloadInvoice.addEventListener("click",function(){
-                const orderId = downloadInvoice.getAttribute("data-order-Id")
-                console.log("orderId : ",orderId)
-                // window.location.href = '/downoadInvoice/'
-            })
-        }
+        
     </script>
 
     <!-- User footer -->

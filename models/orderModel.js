@@ -67,6 +67,9 @@ const orderSchema = new mongoose.Schema({
     },
     statusDate : {
         type : Date
+    },
+    invoice : {
+        type : String
     }
 })
 

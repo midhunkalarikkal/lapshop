@@ -3,6 +3,10 @@ const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
 const Product = require('../models/productModel')
 const Wallet = require('../models/walletModel');
+const path = require('path')
+const fs = require('fs')
+const moment = require("moment")
+const easyinvoice = require('easyinvoice')
 
 
 // To place an order from user
@@ -241,13 +245,11 @@ const getOrders = async(req,res)=>{
 const getOrderDetail = async(req,res)=>{
     try{
         let userDetails = req.session.userNC
-        console.log("Request.params.prodId :",req.params.orderId)
         const orderId = req.params.orderId
         const order = await Order.find({ _id : orderId}).populate({
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
         }).populate("address");
-        console.log("order :",order)
         return res.render('user/orderDetail',{userDetails , order})
     }catch(error){
         console.log(error.message)
@@ -401,6 +403,102 @@ const adminCancelOrder = async(req,res)=>{
     }
 }
 
+//To download the order invoice for the user
+const downloadInvoice = async(req,res)=>{
+    try{
+        console.log("download invoice api start")
+        console.log("req.params : ",req.params)
+        const orderId = req.params.orderId
+        console.log("orderId :",orderId)
+
+        const filePath = path.join(
+            __dirname,
+            "..",
+            "public",
+            "invoice",
+            `${orderId}.pdf`
+          );
+      
+          if (!fs.existsSync(filePath)) {
+            // If the invoice file doesn't exist, generate it
+            await generateInvoice(orderId);
+          }
+      
+          fs.readFile(filePath, function (err, data) {
+            res.contentType("application/pdf");
+            res.send(data);
+          });
+    }catch(error){
+        console.log("invoice download error")
+        console.log(error)
+        return res.redirect('/errorPage')
+    }
+}
+
+const generateInvoice = async(orderId)=>{
+    try{
+        console.log("generate invoice api start")
+        const order = await Order.findById(orderId).populate("orderedItems.product").populate("userId").populate("address")
+        console.log("order : ",order)
+
+        const orderedItems = order.orderedItems.map((item) => ({
+            quantity: item.quantity,
+            description: `${item.product.brand} ${item.product.name}`,
+            price: item.totalPrice,
+            Total: order.orderTotal
+          }));
+
+          console.log("orderesItems : ",orderedItems)
+        
+          var data = {
+            apiKey:process.env.EASYINVOICE_API_KEY,
+            mode: "development",
+            images: {
+              logo: "https://firebasestorage.googleapis.com/v0/b/lapshop-e3a21.appspot.com/o/Lapshop%20logo.png?alt=media&token=35295b10-88d1-4c59-a7f6-9c9e49d2758b",
+            },
+            sender: {
+              company: "Lapshop",
+              address: "First street main road",
+              zip: "123456",
+              city: "Banglore",
+              country: "India",
+            },
+            client: {
+              company: order.address.fullname,
+              address: order.address.name + " " +order.address.addressLine,
+              zip: order.address.pincode,
+              city: order.address.city,
+              country: order.address.country,
+            },
+            information: {
+              ID: order._id,
+              date: moment(order.date).format("YYYY-MM-DD HH:mm:ss"),
+            },
+            products: orderedItems,
+            bottomNotice:
+              "Your satisfaction is our priority. Thank you for choosing Lapshop.com",
+            settings: {
+              currency: "INR",
+            },
+          };
+
+        const result = await easyinvoice.createInvoice(data);
+        const folderPath = path.join(__dirname, "..", "public", "invoice");
+        const filePath = path.join(folderPath, `${order._id}.pdf`);
+        fs.mkdirSync(folderPath, { recursive: true });
+        fs.writeFileSync(filePath, result.pdf, "base64");
+
+    order.invoice = filePath;
+    await order.save();
+
+    console.log(`Invoice saved at: ${filePath}`);
+
+    }catch(error){
+        console.log("invoice generate error")
+        console.log(error)
+    }
+}
+
 module.exports = {
     ////// Api for the admin \\\\\
     changeOrderStatus,
@@ -413,5 +511,6 @@ module.exports = {
     getOrders,
     getOrderDetail,
     userCancelOrder,
-    orderConfirmWithWalletAndRazorpay
+    orderConfirmWithWalletAndRazorpay,
+    downloadInvoice
 }
