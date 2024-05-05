@@ -444,7 +444,8 @@
                                         <div class='card-body'>
                                             <h6 class='text-truncate product-name text-center mb-3'>${product.name}</h6>
                                             <div class='d-flex align-items-end'>
-                                                <h6 class='offer-price'>₹${product.offerPrice}</h6>
+                                                <h6 class='offer-price text-danger'>₹${product.discountPercentage}%</h6>
+                                                <h6 class='offer-price mx-2'>₹${product.offerPrice}</h6>
                                                 <h6 class='real-price small mx-3'>₹<del class='real-price'>${product.realPrice}</del></h6>
                                             </div>
                                         </div>
@@ -476,14 +477,23 @@
                         productCardHeader.append(defaultWishlistButton);
 
                         // Dynamically adding the add to cart / go to cart button to the product \\\\\\
-                        const productCardFooter = productDiv.find('.card.product-item'); // Change .card-header.product-outline to .card.product-item
+                        const productCardFooter = productDiv.find('.card.product-item');
+                        let defaultAddToCartButton = $(`
+                                    <button class="card-footer d-flex justify-content-center"
+                                            data-prod-id="${product._id}"
+                                            onclick="addToCart(this)">
+                                        <a href="#" class="btn btn-sm p-0">
+                                            <i class="fas fa-shopping-cart"></i> Add to cart
+                                        </a>
+                                    </button>
+                                `);
 
                         if (cartProdId != "") {
-                            let isInCart = false; // Flag to track if product is in cart
+                            let isInCart = false;
                             for (let i = 0; i < cartProdId.length; i++) {
                                 if (cartProdId[i] == product._id.toString()) {
-                                    isInCart = true; // Set flag to true if product is found in cart
-                                    break; // Exit loop once product is found in cart
+                                    isInCart = true;
+                                    break;
                                 }
                             }
 
@@ -496,7 +506,8 @@
                                         </a>
                                     </button>
                                 `);
-                                productCardFooter.append(goToCartButton);
+                                defaultAddToCartButton = goToCartButton
+                                productCardFooter.append(defaultAddToCartButton);
                             } else {
                                 // If product is not in cart, create the add to cart button
                                 const addToCartButton = $(`
@@ -508,20 +519,10 @@
                                         </a>
                                     </button>
                                 `);
-                                productCardFooter.append(addToCartButton);
+                                defaultAddToCartButton = addToCartButton
+                                productCardFooter.append(defaultAddToCartButton);
                             }
                         }
-
-                        const defaultAddToCartButton = $(`
-                                    <button class="card-footer d-flex justify-content-center"
-                                            data-prod-id="${product._id}"
-                                            onclick="addToCart(this)">
-                                        <a href="#" class="btn btn-sm p-0">
-                                            <i class="fas fa-shopping-cart"></i> Add to cart
-                                        </a>
-                                    </button>
-                                `);
-                                productCardFooter.append(defaultAddToCartButton);
                        
 
                         ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
