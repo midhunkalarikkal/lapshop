@@ -131,6 +131,7 @@
         <!-- main div start -->
         <div class="cart-wrap mt-5">
             <div class="container">
+                <% if(order && order !==""){ %>
                 <div class="d-flex justify-content-between">
                     <h3>Complete your order payment</h3>
                 </div>
@@ -196,12 +197,15 @@
                             <hr>
                             <div class="button mt-3">
                                 <p class="text-danger">Sorry, there is no refund policy available as of now.</p>
+                                <input type="hidden" id="orderId" value="<%= order._id %>">
                                 <button onclick="confirmOrder()" class="btn btn-warning w-100" id="goToPayment">Re pay</button>
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>  
                 </div>
+                <% }else{ %>
+                    <div class="alert alert-info text-center" role="alert">No order found.</div>
+                <% } %>
             </div>
         </div>
         <!-- main div end -->
@@ -232,11 +236,12 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
-function confirmOrder() {
+    function confirmOrder() {
 
         let paymentMethod = document.getElementById("paymentMethod").value;
         let userAddressId = document.getElementById("userAddressId").value;
         let subTotal = document.getElementById('subTotal').innerText;
+        let orderId = document.getElementById("orderId").value
 
         console.log("order confirmation start")
         console.log("payment Method :",paymentMethod)
@@ -245,11 +250,15 @@ function confirmOrder() {
         console.log("type of user address id :",typeof userAddressId)
         console.log("subtotal :",subTotal)
         console.log("type of subtotal :",typeof subTotal)
+        console.log("order id :",orderId)
+        console.log("type of order id : ",typeof orderId)
         console.log("order confirmation end")
 
         const data = {
             paymentMethod: paymentMethod,
-            totalAmount: subTotal
+            totalAmount: subTotal,
+            userAddressId : userAddressId,
+            orderId : orderId
         };
 
         console.log("data :",data)
@@ -274,172 +283,37 @@ function confirmOrder() {
         .then(data => {
             if (data.success) {
                 console.log(data)
-            //     if (paymentMethod === "razorpay") {
-            //         var options = {
-            //             key: "" + data.key_id + "",
-            //             amount: "" + data.amount + "",
-            //             currency: "INR",
-            //             name: "LapShop",
-            //             description: "Your laptop",
-            //             image: `/static/images/Bg/desktop/Lapshop logo.png`,
-            //             order_id: "" + data.order_id + "", 
-            //             handler: function (response) {
-            //                 let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=true&coupon=${coupon}`;
-            //                 window.location.href = redirectUrl;
-            //             },
-            //             prefill: {
-            //                 name: "" + data.name + "", 
-            //                 email: "" + data.email + "",
-            //                 contact: "9000090000", 
-            //                 },
-            //                 notes: {
-            //                     address: "Razorpay Corporate Office",
-            //                 },
-            //                 theme: {
-            //                     color: "#ffc107",
-            //                 },
-            //         };
-            //         var rzp1 = new Razorpay(options);
-            //         rzp1.on("payment.failed", function (response) {
-            //             let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=false&coupon=${coupon}`;
-            //             window.location.href = redirectUrl;
-            //         });
-            //         rzp1.open();
-            //     } else if (paymentMethod === "cod") {
-            //         let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=false&coupon=${coupon}`;
-            //         window.location.href = redirectUrl;
-            //     } else if (paymentMethod === "wallet"){
-                    
-            //         console.log("payment method wallet data : ",data)
-            //         const walletBalance = data.walletBalance
-            //         if(data.paymentAmount <= walletBalance){
-            //             console.log("wallet deduction ok.")
-            //             Swal.fire({
-            //                 html: `
-            //                     <div class="text-center">
-            //                         <img src="/static/images/Bg/desktop/wallet.gif" alt="Payment" class="w-25 img-thumbnail">
-            //                         <h5 class="mt-3">Paying using your wallet</h5>
-            //                         <h5 class="mt-3">Your wallet balance : ${data.walletBalance}</h5>
-            //                     </div>
-            //                 `,
-            //                 showCancelButton: true,
-            //                 confirmButtonText: 'Place order',
-            //                 confirmButton: true
-            //             }).then((result) => {
-            //                 if (result.isConfirmed) {
-            //                     let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=true&coupon=${coupon}&walletUsed=true`;
-            //                     window.location.href = redirectUrl;
-            //                 }
-            //             });
-            //         }else{
-            //             if(data.walletBalance === 0){
-            //                 swal.fire({
-            //                     icon: "info",
-            //                     title : "Wallet balance is 0.",
-            //                     timerProgressBar : 3000
-            //                 })
-            //                 return false;
-            //             }
-            //             console.log("wallet deduction not ok. need to use razorpay also.")
-            //             console.log("wallet + online razorpay deduction ok.")
-            //             swal.fire({
-            //                 title: "Not enough wallet balance.",
-            //                 text: "Are you sure want to place this order with wallet with Online payment ?",
-            //                 showCancelButton: true,
-            //                 confirmButtonText: "Yes",
-            //                 confirmButton: true,
-            //             }).then((result) => {
-            //                 if (result.isConfirmed) { // Check if user clicked "Yes"
-            //                     Swal.fire({
-            //                         html: `
-            //                             <div class="text-center">
-            //                                 <img src="/static/images/Bg/desktop/wallet.gif" alt="Payment" class="w-25 img-thumbnail">
-            //                                 <h5 class="mt-3">Paying using your wallet</h5>
-            //                                 <h6 class="mt-3">Your wallet balance : ${walletBalance}</h6>
-            //                             </div>
-            //                         `,
-            //                         showCancelButton: true,
-            //                         confirmButtonText: 'pay with wallet',
-            //                         confirmButton: true
-            //                     }).then((result) => {
-            //                         if (result.isConfirmed) {
-
-            //                             paymentMethod = "wallet with razorpay"
-
-            //                             const wwrdata = {
-            //                                 paymentAmount : subTotal,
-            //                                 walletBalance : walletBalance
-            //                             }
-
-            //                             fetch('/orderConfirmWithWalletAndRazorpay', {
-            //                                 method: 'POST',
-            //                                 headers: {
-            //                                     'Content-Type': 'application/json'
-            //                                 },
-            //                                 body: JSON.stringify(wwrdata)
-            //                             })
-            //                             .then(response => {
-            //                                 const contentType = response.headers.get('content-type');
-            //                                 const message = "Your account is blocked, Please contact us"
-            //                                 const type = "danger"
-            //                                 if (contentType && contentType.includes('application/json')) {
-            //                                     return response.json(); 
-            //                                 } else {
-            //                                     window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-            //                                 }
-            //                             })
-            //                             .then(data => {
-            //                                 if(data.success){
-            //                                     console.log("data : ",data)
-            //                                     var options = {
-            //                                         key: "" + data.key_id + "",
-            //                                         amount: "" + data.amount + "",
-            //                                         currency: "INR",
-            //                                         name: "LapShop",
-            //                                         description: "Your laptop",
-            //                                         image: `/static/images/Bg/desktop/Lapshop logo.png`,
-            //                                         order_id: "" + data.order_id + "", 
-            //                                         handler: function (response) {
-            //                                             let redirectUrl = `/placeOrder?amount=${data.amount}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=true&coupon=${coupon}&walletBalance=${walletBalance}&walletUsed=true`;
-            //                                             window.location.href = redirectUrl;
-            //                                         },
-            //                                         prefill: {
-            //                                             name: "" + data.name + "", 
-            //                                             email: "" + data.email + "",
-            //                                             contact: "9000090000", 
-            //                                             },
-            //                                             notes: {
-            //                                                 address: "Razorpay Corporate Office",
-            //                                             },
-            //                                             theme: {
-            //                                                 color: "#ffc107",
-            //                                             },
-            //                                     };
-            //                                     var rzp1 = new Razorpay(options);
-            //                                     rzp1.on("payment.failed", function (response) {
-            //                                         swal.fire({
-            //                                             icon: 'error', 
-            //                                             title: "Online payment Failed",
-            //                                             text: "Please try again.",
-            //                                             showCancelButton: true
-            //                                         });
-            //                                     });
-            //                                     rzp1.open();
-            //                                 } else {
-            //                                     swal.fire({
-            //                                         icon: "error",
-            //                                         title: "Payment gateway error.",
-            //                                         text: "Please try again.",
-            //                                         timerProgressBar: 3000
-            //                                     })
-            //                                 }
-            //                             })
-            //                         }
-            //                     })
-            //                 }
-            //             })
-                    // }
-                // }
+                if (paymentMethod === "razorpay") {
+                    var options = {
+                        key: "" + data.key_id + "",
+                        amount: "" + data.amount + "",
+                        currency: "INR",
+                        name: "LapShop",
+                        description: "Your laptop",
+                        image: `/static/images/Bg/desktop/Lapshop logo.png`,
+                        order_id: "" + data.order_id + "", 
+                        handler: function (response) {
+                            let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=true`;
+                            window.location.href = redirectUrl;
+                        },
+                        prefill: {
+                            name: "" + data.name + "", 
+                            email: "" + data.email + "",
+                            contact: "9000090000", 
+                            },
+                            notes: {
+                                address: "Razorpay Corporate Office",
+                            },
+                            theme: {
+                                color: "#ffc107",
+                            },
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.on("payment.failed", function (response) {
+                        let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+                        window.location.href = redirectUrl;
+                    });
+                    rzp1.open();
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -450,7 +324,8 @@ function confirmOrder() {
                     showConfirmButton: false
                 });
             }
-          })
+        }
+        })
     }
 
     

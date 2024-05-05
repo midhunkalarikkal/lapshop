@@ -518,6 +518,66 @@ const repaymentOrderConfirm = async(req,res)=>{
         console.log("repayment order confirmation api start")
         const data = req.body
         console.log("data : ",data)
+        const paymentMethod = req.body.paymentMethod
+        const amount = req.body.totalAmount
+        const orderId = req.body.orderId 
+
+        if (paymentMethod === "razorpay" || paymentMethod === "wallet with razorpay") {
+            console.log("i am creating instance from repayment");
+            const name = req.session.user.fullname;
+            const email = req.session.user.email;
+            const options = {
+            amount: amount * 100,
+            currency: "INR",
+            receipt: "midhunkalarikkalp@gmail.com",
+            };
+            razorpayInstance.orders.create(options, (err, order) => {
+            if (!err) {
+                res.status(200).send({
+                success: true,
+                message: "order created",
+                order_id: order.id,
+                amount: amount,
+                orderId : orderId,
+                key_id: process.env.KEY_ID,
+                name: name,
+                email: email,
+                });
+            } else {
+                res.status(400).send({ success: false, message: "Something went wrong! in repayment" });
+            }
+            });
+            console.log("i have done with instance creation repayment");
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
+
+// To place order for the repayment order
+const rePaymentPlaceOrder = async(req,res)=>{
+    try{
+        console.log("repayment place order api start")
+        console.log("req.session.user :",req.session.user)
+        console.log("req.session.userNC :",req.session.userNC)
+
+        const paymentStatus = req.query.paymentStatus
+        const totalAmount = req.query.amount
+        const orderId = req.query.orderId
+
+        console.log("totalAmount :",totalAmount)
+        console.log("payment status :",paymentStatus)
+        console.log("orderId : ",orderId)
+
+        const order = await Order.findById(orderId)
+        order.paymentStatus = paymentStatus
+        order.orderTotal = totalAmount
+        order.statusDate = new Date()
+        const orderSaved = await order.save()
+    
+        if (orderSaved) {
+            return res.redirect('/paymentSuccess');
+        } 
     }catch(error){
         console.log(error)
     }
@@ -538,5 +598,6 @@ module.exports = {
     orderConfirmWithWalletAndRazorpay,
     downloadInvoice,
     repayment,
-    repaymentOrderConfirm
+    repaymentOrderConfirm,
+    rePaymentPlaceOrder
 }

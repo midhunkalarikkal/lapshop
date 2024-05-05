@@ -119,6 +119,8 @@ userRouter.get('/downloadInvoice/:orderId',userAuth.isUserLoggedIn,orderControll
 userRouter.get('/rePayment/:orderId',userAuth.isUserLoggedIn,orderController.repayment)
 //To confirm repayment order
 userRouter.post('/rePaymentOrderConfirmation',userAuth.isUserLoggedIn,orderController.repaymentOrderConfirm)
+//To place order for the repayment
+userRouter.get('/rePaymentPlaceOrder',userAuth.isUserLoggedIn,orderController.rePaymentPlaceOrder)
 
 //To get the order page
 userRouter.get('/orders',userAuth.isUserLoggedIn,orderController.getOrders)
