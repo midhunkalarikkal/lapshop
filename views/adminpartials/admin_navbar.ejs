@@ -26,7 +26,6 @@
             height: 100vh;
             width: 20%;
             left: -20%;
-            background-color: rgb(255, 255, 255);
             top: 0;
             position: fixed;
             transition: 0.3s ease-in-out;
@@ -34,6 +33,9 @@
             flex-direction: column;
             overflow-y: scroll;
             z-index: 1;
+            background: #00bf8f;
+            background: -webkit-linear-gradient(to right, #001510, #00bf8f);
+            background: linear-gradient(to right, #001510, #00bf8f);
         }
 
         .side-menu.open {
@@ -134,7 +136,8 @@
         </div>
     </nav>
     <!-- Navbar end -->
-    <div id="side-menu" class="side-menu mt-5 bg-secondary">
+    <!-- side bar start -->
+    <div id="side-menu" class="side-menu mt-5">
         <div class="side-menu-box mt-2">
             <a href="/admin/home">
                 <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-house mx-2" style="color: #60e67b;"></i>Home</button>
@@ -165,6 +168,7 @@
             </a>
         </div>
     </div>
+    <!-- side bar end -->
     
     <script>
         const openmenubtn = document.getElementById("side-menu-open");
