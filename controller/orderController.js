@@ -513,6 +513,7 @@ const repayment = async(req,res)=>{
     }
 }
 
+// To confirm the repayment
 const repaymentOrderConfirm = async(req,res)=>{
     try{
         console.log("repayment order confirmation api start")
@@ -583,12 +584,89 @@ const rePaymentPlaceOrder = async(req,res)=>{
     }
 }
 
+// To return an order from user 
+const userReturnOrder = async(req,res)=>{
+    try{
+        console.log("return order api start")
+        const orderId = req.body.orderId
+        const order = await Order.findById(orderId)
+        order.status = "Request return"
+        order.statusDate = new Date()
+        const updateOrder = await order.save()
+        if(updateOrder){
+            return res.status(200).json({ success : true , message : "Order return requested."})
+        }else{
+            return res.status(400).json({ success : false , message : "Order return requesting failed"})
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
+
+//To accept an order return request in admin from user
+const adminAcceptReturn = async(req,res)=>{
+    try{
+        console.log(" Admin order return request accept")
+        const orderId = req.body.orderId
+        const userId = req.session.user._id
+        const order = await Order.findById(orderId)
+        const amount = order.orderTotal
+        if(order){
+            order.status = "Return accepted"
+            order.statusDate = new Date()
+            const updateOrder = await order.save()
+            if(updateOrder){
+                const wallet = new Wallet({
+                    user: userId,
+                    type: "credit",
+                    amount: amount,
+                    updatedAt : new Date()
+                });
+                await wallet.save();
+                return res.status(200).json({ success : true , message : "Return request accepted" })
+            }else{                
+                return res.status(400).json({ success : false , message : "Return request accepting error." })
+            }
+        }else{
+            return res.status(400).json({ success : false , message : "No order found." })
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
+
+//To reject an order return request in admin from user
+const adminRejectReturn = async(req,res)=>{
+    try{
+        console.log(" Admin order return request reject")
+        const orderId = req.body.orderId
+        const order = await Order.findById(orderId)
+        const amount = order.orderTotal
+        if(order){
+            order.status = "Return rejected"
+            order.statusDate = new Date()
+            const updateOrder = await order.save()
+            if(updateOrder){
+                return res.status(200).json({ success : true , message : "Return request rejected" })
+            }else{                
+                return res.status(400).json({ success : false , message : "Return request rejecting error." })
+            }
+        }else{
+            return res.status(400).json({ success : false , message : "No order found." })
+        }
+    }catch(error){
+        console.log(error)
+    }
+}
+
 module.exports = {
     ////// Api for the admin \\\\\
     changeOrderStatus,
     adminCancelOrder,
     adminGetOrders,
     adminGetOrderDetail,
+    adminAcceptReturn,
+    adminRejectReturn,
     ////// Api for the user \\\\\\
     placeOrder,
     orderConfirmation,
@@ -599,5 +677,6 @@ module.exports = {
     downloadInvoice,
     repayment,
     repaymentOrderConfirm,
-    rePaymentPlaceOrder
+    rePaymentPlaceOrder,
+    userReturnOrder
 }

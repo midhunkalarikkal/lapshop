@@ -25,7 +25,7 @@
                                         <th class="text-center text-light">Items</th>
                                         <th class="text-center text-light">Order status</th>
                                         <th class="text-center text-light">Order total</th>
-                                        <th class="text-center text-light">Detail</th>
+                                        <th class="text-center text-light">D / c</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -44,14 +44,18 @@
                                                 <% } %>
                                             </td>
                                             <td>
-                                                <% if(orders[i].status === "Delivered" || orders[i].status === "Cancelled" || orders[i].status === "Admin cancelled"){ %>
+                                                <% if(orders[i].status === "Delivered" || orders[i].status === "Cancelled" || orders[i].status === "Admin cancelled" || orders[i].status === "Request return" || orders[i].status === "Return accepted" || orders[i].status === "Return rejected"){ %>
                                                     <% if(orders[i].status === "Cancelled" || orders[i].status === "Admin cancelled"){ %>
-                                                        <span class="text-danger"><%= orders[i].status %></span>
+                                                        <span class="text-danger"><%= orders[i].status %></span>   
+                                                    <% }else if(orders[i].status === "Request return"){ %>
+                                                        <span class=""><%= orders[i].status %></span>
+                                                        <button class="btn" id="order-returnAccept" onclick="returnAccept(this)" data-orderId="<%= orders[i]._id %>"><i class="fa-solid fa-check text-sucess"></i></button>
+                                                        <button class="btn" id="order-returnReject" onclick="returnReject(this)" data-orderId="<%= orders[i]._id %>"><i class="fa-solid fa-xmark text-danger"></i></button>      
                                                     <% }else{ %>
                                                         <span class=""><%= orders[i].status %></span>
                                                     <% } %>
                                                 <% }else{ %>
-                                                    <select class="form-select" id="orderStatus_<%= orders[i]._id %>" onchange="updateOrderStatus('<%= orders[i]._id %>')">
+                                                    <select class="form-select w-75" id="orderStatus_<%= orders[i]._id %>" onchange="updateOrderStatus('<%= orders[i]._id %>')">
                                                         <option value="Processing" <% if (orders[i].status === 'Processing') { %> selected <% } %>>Processing</option>
                                                         <option value="Shipped" <% if (orders[i].status === 'Shipped') { %> selected <% } %>>Shipped</option>
                                                         <option value="Delivered" <% if (orders[i].status === 'Delivered') { %> selected <% } %>>Delivered</option>
@@ -67,7 +71,7 @@
                                             </td>
                                             <td class="d-flex flex-column justify-content-center align-items-center">
                                                 <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= orders[i]._id %>">Details</button>
-                                                <% if(orders[i].status !== "Delivered" && orders[i].status !== "Cancelled" && orders[i].status !== "Admin cancelled"){ %>
+                                                <% if(orders[i].status !== "Delivered" && orders[i].status !== "Cancelled" && orders[i].status !== "Admin cancelled" && orders[i].status !== "Request return"){ %>
                                                     <button class="btn btn-danger btn-sm mt-3" id="prod-detail" onclick="cancelOrder(this)" data-orderId="<%= orders[i]._id %>">Cancel</button>
                                                 <% } %>
                                             </td>
@@ -184,7 +188,105 @@
                 icon: 'success',
                 title: 'Success!',
                 text: data.message
+            }).then(()=>{
+                location.reload()
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: data.message
             });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An error occurred. Please try again later.'
+            });
+        });
+    }
+
+    ////// To accept a return request from user \\\\\\
+    function returnAccept(button) {
+        console.log("return accept button clicked")
+        const orderId = button.getAttribute("data-orderId")
+
+        console.log("orderId :", orderId);
+
+        fetch('/admin/returnAccept', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId})
+        })
+        .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Network response was not ok.');
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: data.message
+            }).then(()=>{
+                location.reload()
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: data.message
+            });
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error!',
+                text: 'An error occurred. Please try again later.'
+            });
+        });
+    }
+
+     ////// To reject a return request from user \\\\\\
+     function returnReject(button) {
+        console.log("return accept button clicked")
+        const orderId = button.getAttribute("data-orderId")
+
+        console.log("orderId :", orderId);
+
+        fetch('/admin/returnReject', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ orderId})
+        })
+        .then(response => {
+        if (response.ok) {
+            return response.json();
+        } else {
+            throw new Error('Network response was not ok.');
+        }
+    })
+    .then(data => {
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success!',
+                text: data.message
+            }).then(()=>{
+                location.reload()
+            })
         } else {
             Swal.fire({
                 icon: 'error',

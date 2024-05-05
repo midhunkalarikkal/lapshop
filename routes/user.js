@@ -121,6 +121,8 @@ userRouter.get('/rePayment/:orderId',userAuth.isUserLoggedIn,orderController.rep
 userRouter.post('/rePaymentOrderConfirmation',userAuth.isUserLoggedIn,orderController.repaymentOrderConfirm)
 //To place order for the repayment
 userRouter.get('/rePaymentPlaceOrder',userAuth.isUserLoggedIn,orderController.rePaymentPlaceOrder)
+//To request to return an order
+userRouter.post("/returnOrder",userAuth.isUserLoggedIn,orderController.userReturnOrder)
 
 //To get the order page
 userRouter.get('/orders',userAuth.isUserLoggedIn,orderController.getOrders)

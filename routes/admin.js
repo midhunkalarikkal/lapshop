@@ -67,6 +67,8 @@ adminRouter.get('/orders',adminAuth.isAdminLoggedIn,orderController.adminGetOrde
 adminRouter.get('/adminOrderDetail/:orderId',adminAuth.isAdminLoggedIn,orderController.adminGetOrderDetail)
 adminRouter.post('/updateOrderStatus',adminAuth.isAdminLoggedIn,orderController.changeOrderStatus)
 adminRouter.post('/cancelOrder',adminAuth.isAdminLoggedIn,orderController.adminCancelOrder)
+adminRouter.post('/returnAccept',adminAuth.isAdminLoggedIn,orderController.adminAcceptReturn)
+adminRouter.post('/returnReject',adminAuth.isAdminLoggedIn,orderController.adminRejectReturn)
 
 adminRouter.get('/adminErrorPage',adminAuth.isAdminLoggedIn,adminController.adminErrorPage)
 

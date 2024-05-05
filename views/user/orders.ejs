@@ -276,12 +276,79 @@
             });
         }
 
-        // To complete payment if the payment is failed \\\\\\
+        ////// To complete payment if the payment is failed \\\\\\
         function repayment(button){
             console.log("utton clicked")
             const orderId = button.getAttribute("data-orderId")
             console.log("order id : ",orderId)
             window.location.href = `/rePayment/${orderId}`
+        }
+
+        ////// To got orderDetail page \\\\\\
+        function goToOrderDetail(button) {
+            const orderId = button.getAttribute('data-orderId');
+            console.log("orderId :", orderId);
+            window.location.href = `/orderDetail/${orderId}`;
+        }
+
+        ////// To return an order \\\\\\
+        function returnOrder(button){
+            const orderId = button.getAttribute("data-orderId")
+            console.log("orderId :",orderId)
+
+            Swal.fire({
+                title: 'Are you sure want to return this order?',
+                text: 'This cancel cannot be undone!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, cancel it!',
+                cancelButtonText: 'No, keep it'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('/returnOrder', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ orderId })
+                    })
+                    .then(response => {
+                        const contentType = response.headers.get('content-type');
+                        const message = "Your account is blocked, Please contact us";
+                        const type = "danger";
+                        if (contentType && contentType.includes('application/json')) {
+                            return response.json(); 
+                        } else {
+                            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                        }
+                    })
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: data.message
+                            }).then(()=>{
+                                location.reload()
+                            })
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: data.message
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An error occurred. Please try again later.'
+                        });
+                    });
+                }
+            });
         }
     </script>
 
