@@ -1,5 +1,226 @@
 <%-include("../adminpartials/admin_navbar.ejs")%>
-<section class="view">
-    
-</section>
-<%-include("../adminpartials/admin_footer.ejs")%>
+
+    <head>
+        <style>
+            .fa {
+                color: #50c878;
+            }
+        </style>
+    </head>
+    <section class="view">
+        <div class="container p-3 mt-5">
+            <div class="first-box shadow d-sm-flex flex-wrap p-4 justify-content-between">
+                <div class="col-sm-6 col-lg-2 mb-4">
+                    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
+                        <i class="fa fa-users fa-3x"></i>
+                        <div class="ms-3">
+                            <p class="mb-2">Total Users</p>
+                            <h4 class="mb-0">
+                                <%= topBoxData.totalUsers %>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-2 mb-4">
+                    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
+                        <i class="fa fa-box-open fa-3x"></i>
+                        <div class="ms-3">
+                            <p class="mb-2">Total Orders</p>
+                            <h4 class="mb-0">
+                                <%= topBoxData.totalOrders %>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-2 mb-4">
+                    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
+                        <i class="fa fa-filter fa-3x"></i>
+                        <div class="ms-3">
+                            <p class="mb-2">Total category</p>
+                            <h4 class="mb-0">
+                                <%= topBoxData.totalCategories %>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-2 mb-4">
+                    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
+                        <i class="fa fa-copyright fa-3x"></i>
+                        <div class="ms-3">
+                            <p class="mb-2">Total brands</p>
+                            <h4 class="mb-0">
+                                <%= topBoxData.totalBrands %>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6 col-lg-2 mb-4">
+                    <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
+                        <i class="fa fa-clipboard fa-3x"></i>
+                        <div class="ms-3">
+                            <p class="mb-2">Total coupons</p>
+                            <h4 class="mb-0">
+                                <%= topBoxData.totalCoupons %>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="second mt-3 shadow p-5">
+                <h4>Orders statistics</h4>
+                <div class="buttons">
+                    <button class="btn btn-primary btn-sm" id="daily">Daily</button>
+                    <button class="btn btn-primary btn-sm" id="weekly">Weekly</button>
+                    <button class="btn btn-primary btn-sm" id="yearly">Yearly</button>
+                </div>
+                <div class="d-md-flex justify-content-around">
+                    <div class="col-md-8">
+                        <div>
+                            <canvas id="myCharttwo"></canvas>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mt-3 mt-md-0">
+                        <div>
+                            <canvas id="myChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Script start -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script>
+        const ctx = document.getElementById('myChart');
+
+        const chartOne = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Online', 'Cod', 'Wallet', 'Wallet with online'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: ["<%= paymentCount.razorpayCount %>", "<%= paymentCount.codCount %>", "<%= paymentCount.walletCount %>", "<%= paymentCount.walletWithRazorpayCount %>"],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        const ctxtwo = document.getElementById('myCharttwo');
+
+        const chartTwo = new Chart(ctxtwo, {
+            type: 'line',
+            data: {
+                labels: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                datasets: [{
+                    label: 'Orders',
+                    data: [12, 19, 3, 5, 2, 3, 4],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        console.log("chartOne.data.data : ", chartOne.data.datasets[0].data)
+
+        const dailybtn = document.getElementById('daily')
+        const weeklybtn = document.getElementById('weekly')
+        const yearlybtn = document.getElementById('yearly')
+
+        console.log("daily : ",daily)
+        console.log("weekly : ",weekly)
+        console.log("yearly : ",yearly)
+
+        ////// Weekly orders \\\\\\
+        const weeklyData = <%- JSON.stringify( timedOrders.weeklyOrders )%>
+        console.log("weekly data : ",weeklyData )
+
+        weeklybtn.addEventListener("click", function () {
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const weeklyCount = Array(7).fill(0);
+
+            weeklyData.forEach(order => {
+                const orderDate = new Date(order.orderDate);
+                const day = orderDate.getDay();
+                console.log(`Order Date: ${orderDate.toDateString()}, Day of Week: ${daysOfWeek[day]}`);
+                weeklyCount[day]++;
+            });
+
+            chartTwo.data.labels = daysOfWeek;
+            chartTwo.data.datasets[0].data = weeklyCount;
+            chartTwo.update();
+        });
+
+        ////// Daily orders \\\\\\
+        window.addEventListener('DOMContentLoaded', (event) => {
+    const dailyData = <%- JSON.stringify( timedOrders.dailyOrders )%>;
+    console.log("Daily data : ",dailyData);
+
+    const hoursOfDay = Array.from({ length: 24 }, (_, i) => {
+        const hour = i === 0 ? 12 : (i <= 12 ? i : i - 12);
+        const period = i < 12 ? 'AM' : 'PM';
+        return `${hour} ${period}`;
+    });
+
+    const ordersPerHour = Array(24).fill(0);
+
+    const updateDailyChart = (dailyData) => {
+        dailyData.forEach(order => {
+            const orderDate = new Date(order.orderDate);
+            const hour = orderDate.getHours();
+            ordersPerHour[hour]++;
+        });
+
+        chartTwo.data.labels = hoursOfDay;
+        chartTwo.data.datasets[0].data = ordersPerHour;
+        chartTwo.update();
+    };
+
+    dailybtn.addEventListener('click', function () {
+        updateDailyChart(dailyData);
+    });
+
+    updateDailyChart(dailyData); // Call it once to initialize the chart
+});
+
+        ////// monthly orders \\\\\\
+        const yearlyData = <%- JSON.stringify(timedOrders.yearlyOrders )%>
+
+        console.log("Yearly data : ", yearlyData);
+
+        yearlybtn.addEventListener('click', function () {
+            const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            const monthlyCount = Array(12).fill(0);
+
+            yearlyData.forEach(order => {
+                const orderDate = new Date(order.orderDate);
+                const month = orderDate.getMonth();
+                console.log(`Order Date: ${orderDate.toDateString()}, Month: ${monthsOfYear[month]}`);
+                monthlyCount[month]++;
+            });
+
+            chartTwo.data.labels = monthsOfYear;
+            chartTwo.data.datasets[0].data = monthlyCount;
+            chartTwo.update();
+        });
+
+        
+
+    </script>
+    <!-- Script end -->
+    <%-include("../adminpartials/admin_footer.ejs")%>

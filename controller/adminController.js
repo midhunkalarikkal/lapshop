@@ -5,6 +5,7 @@ const HomeCarousel = require('../models/homeCarousel')
 const AdCarousel = require('../models/adCarousel')
 const Brand = require('../models/brandModel')
 const Order = require('../models/orderModel')
+const Coupon = require('../models/couponModel')
 const fs = require('fs')
 const path = require('path')
 
@@ -31,7 +32,7 @@ const postAdminlogin = async (req, res) => {
         };
         if (email == adminData.email && password == adminData.password) {
             req.session.adminData = adminData
-            return res.render('admin/adminhome', { title: "LapShop Admin" });
+            return res.redirect('/admin/home');
         } else {
             return res.render("admin/adminlogin", { title: "Lapshop admin", type: "danger", message: "Invalid credentials" })
         }
@@ -41,10 +42,80 @@ const postAdminlogin = async (req, res) => {
     }
 }
 
+const getDailyDeliveredOrders = async () => {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    return await Order.find({
+      status : "Delivered",
+      orderDate: { $gte: startOfDay },
+    })
+  };
+
+  const getWeeklyDeliveredOrders = async () => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    return await Order.find({
+      status : "Cancelled",
+      orderDate: { $gte: oneWeekAgo },
+    })
+  };
+  
+  const getYearlyDeliveredOrders = async () => {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    const pastYearOrders = await Order.find({
+        status: "Cancelled",
+        orderDate: { $gte: oneYearAgo }
+    });
+    return pastYearOrders;
+};
+
 // To get admin homepage
 const getAdminHome = async (req, res) => {
     try {
-        return res.render("admin/adminhome", { title: "LapShop Admin" })
+        const totalUsers = await User.countDocuments()
+        const totalOrders = await Order.countDocuments()
+        const totalCategories = await Category.countDocuments()
+        const totalBrands = await Brand.countDocuments()
+        const totalCoupons = await Coupon.countDocuments()
+        let razorpayCount = 0;
+        let codCount = 0;
+        let walletCount = 0;
+        let walletWithRazorpayCount = 0;
+        
+        const orders = await Order.find()
+
+        const dailyOrders = await getDailyDeliveredOrders();
+        const weeklyOrders = await getWeeklyDeliveredOrders()
+        const yearlyOrders = await getYearlyDeliveredOrders()
+        console.log("dailyOrders : ", dailyOrders);
+        console.log("weeklyOrders : ",weeklyOrders);
+        console.log("yearlyOrders : ",yearlyOrders)
+        
+        orders.forEach(order => {
+            switch (order.paymentMethod) {
+                case 'razorpay':
+                    razorpayCount++;
+                    break;
+                case 'cod':
+                    codCount++;
+                    break;
+                case 'wallet':
+                    walletCount++;
+                    break;
+                case 'wallet with razorpay':
+                    walletWithRazorpayCount++;
+                    break;
+                default:
+                    break;
+                }
+        });
+        let topBoxData = { totalUsers : totalUsers , totalOrders : totalOrders , totalCategories : totalCategories , totalBrands : totalBrands , totalCoupons : totalCoupons}
+        let paymentCount = {razorpayCount : razorpayCount , codCount : codCount , walletCount : walletCount , walletWithRazorpayCount : walletWithRazorpayCount}
+        let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrders , yearlyOrders : yearlyOrders}
+
+
+        return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders})
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
