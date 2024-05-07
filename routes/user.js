@@ -17,9 +17,9 @@ const walletController = require('../controller/walletController')
 //To get home page
 userRouter.get('/',userController.getHome)
 //To get the login page
-userRouter.get('/login',userController.getLogin)
+userRouter.get('/login',userAuth.isUserLogout,userController.getLogin)
 //To post the user login data and give access to user home page
-userRouter.post('/login',userController.postLogin)
+userRouter.post('/login',userAuth.isUserLogout,userController.postLogin)
 //To get user register page
 userRouter.get('/register',userController.getRegister)
 //To post user registered data to otp page
