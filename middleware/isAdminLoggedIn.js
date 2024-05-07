@@ -8,7 +8,7 @@ const isAdminLoggedIn = async (req, res, next) => {
             return res.redirect('/admin/')
         }
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
         res.status(500).send("Internal Server Error.");
     }
 };
@@ -21,7 +21,7 @@ const isAdminLogout = async(req,res,next)=>{
             next()
         }
     } catch (error) {
-        console.log(error.message);
+        console.log(error);
     }
 }
 

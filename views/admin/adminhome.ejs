@@ -87,23 +87,62 @@
                 </div>
             </div>
             <div class="third mt-3 shadow p-5">
-                <div id="productList">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Product Name</th>
-                                <th>Count</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% Object.entries(productCounts).forEach(([productName, count]) => { %>
+                <h4>Best selling</h4>
+                <div class="d-flex justify-content-around">
+                    <div id="productList">
+                        <table class="table text-center table-striped p-1 border">
+                            <thead>
                                 <tr>
-                                    <td><%= productName %></td>
-                                    <td><%= count %></td>
+                                    <th>Product Name</th>
+                                    <th>Count</th>
                                 </tr>
-                            <% }); %>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <% Object.entries(productCounts).forEach(([productName, count]) => { %>
+                                    <tr>
+                                        <td><%= productName %></td>
+                                        <td><%= count %></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="categoryList">
+                        <table class="table text-center table-striped p-1 border">
+                            <thead>
+                                <tr>
+                                    <th>Category Name</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% Object.entries(categoryCounts).forEach(([categoryName, count]) => { %>
+                                    <tr>
+                                        <td><%= categoryName %></td>
+                                        <td><%= count %></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="brandList">
+                        <table class="table text-center table-striped p-1 border">
+                            <thead>
+                                <tr>
+                                    <th>Brand Name</th>
+                                    <th>Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% Object.entries(brandCounts).forEach(([brandName, count]) => { %>
+                                    <tr>
+                                        <td><%= brandName %></td>
+                                        <td><%= count %></td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -188,35 +227,35 @@
 
         ////// Daily orders \\\\\\
         window.addEventListener('DOMContentLoaded', (event) => {
-    const dailyData = <%- JSON.stringify( timedOrders.dailyOrders )%>;
-    console.log("Daily data : ",dailyData);
+            const dailyData = <%- JSON.stringify( timedOrders.dailyOrders )%>;
+            console.log("Daily data : ",dailyData);
 
-    const hoursOfDay = Array.from({ length: 24 }, (_, i) => {
-        const hour = i === 0 ? 12 : (i <= 12 ? i : i - 12);
-        const period = i < 12 ? 'AM' : 'PM';
-        return `${hour} ${period}`;
-    });
+            const hoursOfDay = Array.from({ length: 24 }, (_, i) => {
+                const hour = i === 0 ? 12 : (i <= 12 ? i : i - 12);
+                const period = i < 12 ? 'AM' : 'PM';
+                return `${hour} ${period}`;
+            });
 
-    const ordersPerHour = Array(24).fill(0);
+            const ordersPerHour = Array(24).fill(0);
 
-    const updateDailyChart = (dailyData) => {
-        dailyData.forEach(order => {
-            const orderDate = new Date(order.orderDate);
-            const hour = orderDate.getHours();
-            ordersPerHour[hour]++;
+            const updateDailyChart = (dailyData) => {
+                dailyData.forEach(order => {
+                    const orderDate = new Date(order.orderDate);
+                    const hour = orderDate.getHours();
+                    ordersPerHour[hour]++;
+                });
+
+                chartTwo.data.labels = hoursOfDay;
+                chartTwo.data.datasets[0].data = ordersPerHour;
+                chartTwo.update();
+            };
+
+            dailybtn.addEventListener('click', function () {
+                updateDailyChart(dailyData);
+            });
+
+            updateDailyChart(dailyData); // Call it once to initialize the chart
         });
-
-        chartTwo.data.labels = hoursOfDay;
-        chartTwo.data.datasets[0].data = ordersPerHour;
-        chartTwo.update();
-    };
-
-    dailybtn.addEventListener('click', function () {
-        updateDailyChart(dailyData);
-    });
-
-    updateDailyChart(dailyData); // Call it once to initialize the chart
-});
 
         ////// monthly orders \\\\\\
         const yearlyData = <%- JSON.stringify(timedOrders.yearlyOrders )%>

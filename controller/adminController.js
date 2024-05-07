@@ -92,6 +92,67 @@ const bestSellingProducts = async (req, res) => {
     return productCounts;
 };
 
+// To return best selling categories
+const bestSellingCategories = async (req, res) => {
+    console.log("best selling categories start")
+    const orders = await Order.find()
+    .populate({
+        path: "orderedItems",
+        populate: {
+            path: "product",
+            populate: {
+                path: "category"
+            }
+        }
+    });
+    console.log("orders : ",orders)
+    const categoryCounts = {};
+
+    orders.forEach(order => {
+        order.orderedItems.forEach(item => {
+            console.log("item : ",item)
+            const categoryName = item.product.category.name;
+            console.log("item product category : ",item.product.category.name)
+            if (categoryName in categoryCounts) {
+                categoryCounts[categoryName]++;
+            } else {
+                categoryCounts[categoryName] = 1;
+            }
+        });
+    });
+
+    return categoryCounts;
+};
+
+// To return best selling brands
+const bestSellingBrands = async (req, res) => {
+    // const orders = await Order.find().populate("orderedItems.product.brand");
+    const orders = await Order.find()
+    .populate({
+        path: "orderedItems",
+        populate: {
+            path: "product",
+            populate: {
+                path: "brand"
+            }
+        }
+    });
+    const brandCounts = {};
+
+    orders.forEach(order => {
+        order.orderedItems.forEach(item => {
+            const brandName = item.product.brand.name;
+            if (brandName in brandCounts) {
+                brandCounts[brandName]++;
+            } else {
+                brandCounts[brandName] = 1;
+            }
+        });
+    });
+
+    return brandCounts;
+};
+
 // To get admin homepage
 const getAdminHome = async (req, res) => {
     try {
@@ -107,14 +168,20 @@ const getAdminHome = async (req, res) => {
         
         const orders = await Order.find()
 
-        const dailyOrders = await getDailyDeliveredOrders();
-        const weeklyOrders = await getWeeklyDeliveredOrders()
-        const yearlyOrders = await getYearlyDeliveredOrders()
-        const productCounts = await bestSellingProducts()
+        const [dailyOrders, weeklyOrders, yearlyOrders, productCounts, categoryCounts, brandCounts] = await Promise.all([
+            getDailyDeliveredOrders(),
+            getWeeklyDeliveredOrders(),
+            getYearlyDeliveredOrders(),
+            bestSellingProducts(),
+            bestSellingCategories(),
+            bestSellingBrands()
+        ]);
         console.log("dailyOrders : ", dailyOrders);
         console.log("weeklyOrders : ",weeklyOrders);
         console.log("yearlyOrders : ",yearlyOrders)
         console.log("best selling products : ",productCounts)
+        console.log("best selling categories : ",categoryCounts)
+        console.log("best selling brands : ",brandCounts)
         
         orders.forEach(order => {
             switch (order.paymentMethod) {
@@ -139,7 +206,7 @@ const getAdminHome = async (req, res) => {
         let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrders , yearlyOrders : yearlyOrders}
 
 
-        return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , productCounts})
+        return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , productCounts , categoryCounts , brandCounts})
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
