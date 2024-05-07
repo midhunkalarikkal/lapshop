@@ -42,6 +42,7 @@ const postAdminlogin = async (req, res) => {
     }
 }
 
+// To return the daily order data
 const getDailyDeliveredOrders = async () => {
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
@@ -51,6 +52,7 @@ const getDailyDeliveredOrders = async () => {
     })
   };
 
+  // To return the weekly order data
   const getWeeklyDeliveredOrders = async () => {
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
@@ -59,7 +61,8 @@ const getDailyDeliveredOrders = async () => {
       orderDate: { $gte: oneWeekAgo },
     })
   };
-  
+
+// To retun the monthly order data
   const getYearlyDeliveredOrders = async () => {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
@@ -68,6 +71,25 @@ const getDailyDeliveredOrders = async () => {
         orderDate: { $gte: oneYearAgo }
     });
     return pastYearOrders;
+};
+
+// To return best selling products
+const bestSellingProducts = async (req, res) => {
+    const orders = await Order.find().populate("orderedItems.product");
+    const productCounts = {};
+
+    orders.forEach(order => {
+        order.orderedItems.forEach(item => {
+            const productName = item.product.name;
+            if (productName in productCounts) {
+                productCounts[productName]++;
+            } else {
+                productCounts[productName] = 1;
+            }
+        });
+    });
+
+    return productCounts;
 };
 
 // To get admin homepage
@@ -88,9 +110,11 @@ const getAdminHome = async (req, res) => {
         const dailyOrders = await getDailyDeliveredOrders();
         const weeklyOrders = await getWeeklyDeliveredOrders()
         const yearlyOrders = await getYearlyDeliveredOrders()
+        const productCounts = await bestSellingProducts()
         console.log("dailyOrders : ", dailyOrders);
         console.log("weeklyOrders : ",weeklyOrders);
         console.log("yearlyOrders : ",yearlyOrders)
+        console.log("best selling products : ",productCounts)
         
         orders.forEach(order => {
             switch (order.paymentMethod) {
@@ -115,7 +139,7 @@ const getAdminHome = async (req, res) => {
         let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrders , yearlyOrders : yearlyOrders}
 
 
-        return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders})
+        return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , productCounts})
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
@@ -125,8 +149,14 @@ const getAdminHome = async (req, res) => {
 // To logout from admin page
 const getAdminLogout = async (req, res) => {
     try {
-        req.session.adminData = false
-        res.render('admin/adminlogin', { title: "Lapdhop Admin", type: "success", message: "Logout successfully" })
+        req.session.destroy((err) => {
+            if (err) {
+                return res.redirect('/admin/adminErrorPage');
+            }
+            return res.redirect('/admin/')
+        })
+        // req.session.adminData = false
+        // res.render('admin/adminlogin', { title: "Lapdhop Admin", type: "success", message: "Logout successfully" })
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')

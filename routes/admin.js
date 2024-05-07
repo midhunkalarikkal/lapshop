@@ -17,8 +17,8 @@ const adminController = require('../controller/adminController')
 const couponController = require('../controller/couponController')
 const orderController = require('../controller/orderController')
 
-adminRouter.get('/',adminController.getAdminlogin)
-adminRouter.post('/login',adminController.postAdminlogin)
+adminRouter.get('/',adminAuth.isAdminLogout,adminController.getAdminlogin)
+adminRouter.post('/login',adminAuth.isAdminLogout,adminController.postAdminlogin)
 adminRouter.get('/logout',adminAuth.isAdminLoggedIn,adminController.getAdminLogout)
 adminRouter.get('/home',adminAuth.isAdminLoggedIn,adminController.getAdminHome)
 

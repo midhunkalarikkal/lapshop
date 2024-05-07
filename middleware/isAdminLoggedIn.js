@@ -1,7 +1,8 @@
 const isAdminLoggedIn = async (req, res, next) => {
     try {
-        if(req.session && req.session.adminData){
-            next()
+        if(req.session.adminData){
+            console.log("admin Data : ",req.session.adminData)
+            return next()
         }else{
             console.log("admin session  empty")
             return res.redirect('/admin/')
@@ -12,8 +13,19 @@ const isAdminLoggedIn = async (req, res, next) => {
     }
 };
 
-
+const isAdminLogout = async(req,res,next)=>{
+    try {
+        if(req.session.adminData){
+            res.redirect('/admin/home')
+        }else{
+            next()
+        }
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
 module.exports = {
-    isAdminLoggedIn
+    isAdminLoggedIn,
+    isAdminLogout
 };
