@@ -21,7 +21,7 @@
                                 <thead>
                                     <tr class="table-dark">
                                         <th class="text-center text-light">OrderId</th>
-                                        <th class="text-center text-light">UserId</th>
+                                        <th class="text-center text-light">Date</th>
                                         <th class="text-center text-light">Items</th>
                                         <th class="text-center text-light">Order status</th>
                                         <th class="text-center text-light">Order total</th>
@@ -35,7 +35,7 @@
                                                 <%= orders[i]._id.toString().slice(-6)  %>
                                             </td>
                                             <td>
-                                                <%= orders[i].userId.toString().slice(-6)  %>
+                                                <%= orders[i].orderDate  %>
                                             </td>
                                             <td>
                                                 <% for(let j = 0; j < orders[i].orderedItems.length; j++){ %>
@@ -164,7 +164,6 @@
         const selectedStatus = selectElement.value;
 
         console.log("orderId :", orderId);
-        // console.log("orderedItemId :", orderedItemId);
         console.log("selectedStatus :", selectedStatus);
 
         // Make a fetch request to send the selected data to the server

@@ -228,13 +228,15 @@ const getOrders = async(req,res)=>{
     try{
         let userDetails = req.session.userNC
         const userId = req.session.user._id
-        let order = []
-        order = await Order.find({ userId: userId }).populate({
+  
+        let order = await Order.find({ userId: userId }).populate({
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
         });
+
+        const sortedOrders = order.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
         console.log("orders :",order)
-        return res.render('user/orders',{userDetails , order})
+        return res.render('user/orders',{userDetails , order : sortedOrders})
     }catch(error){
         console.log(error.message)
         return res.redirect('/errorPage')
@@ -304,9 +306,10 @@ const adminGetOrders = async(req,res)=>{
         const orders = await Order.find().populate({
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
-        });
-        console.log("Orders :",orders)
-        return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders})
+        })
+        const sortedOrders = orders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+        console.log("Orders :",sortedOrders)
+        return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders : sortedOrders})
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
@@ -343,15 +346,17 @@ const changeOrderStatus = async(req,res)=>{
 
         const order = await Order.findById(orderId)
         console.log("order :",order)
+        console.log("order paymentMethod : ",order.paymentMethod)
 
         if(selectedStatus === order.status){
             return res.status(400).json({ success : false , message : "Order status is same."})
-        }else{
+        }else if(selectedStatus === "Delivered" && order.paymentMethod === "cod"){
+            order.paymentStatus = true
+        }
             order.status = selectedStatus
             order.statusDate = new Date()
             await order.save()
             return res.status(200).json({ success : true , message : `Order status changed to ${selectedStatus}`})
-        }
         
     }catch(error){
         console.log(error.message)
