@@ -198,7 +198,7 @@
                             <div class="button mt-3">
                                 <p class="text-danger">Sorry, there is no refund policy available as of now.</p>
                                 <input type="hidden" id="orderId" value="<%= order._id %>">
-                                <button onclick="confirmOrder()" class="btn btn-warning w-100" id="goToPayment">Re pay</button>
+                                <button class="btn btn-warning w-100" id="goToPayment">Re pay</button>
                             </div>
                         </div>
                     </div>  
@@ -236,7 +236,9 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
-    function confirmOrder() {
+    document.getElementById('goToPayment').addEventListener("click",function(){
+
+   
 
         let paymentMethod = document.getElementById("paymentMethod").value;
         let userAddressId = document.getElementById("userAddressId").value;
@@ -257,11 +259,8 @@
         const data = {
             paymentMethod: paymentMethod,
             totalAmount: subTotal,
-            userAddressId : userAddressId,
             orderId : orderId
         };
-
-        console.log("data :",data)
 
         fetch('/rePaymentOrderConfirmation', {
             method: 'POST',
@@ -282,7 +281,7 @@
         })
         .then(data => {
             if (data.success) {
-                console.log(data)
+                console.log("data : ",data)
                 if (paymentMethod === "razorpay") {
                     var options = {
                         key: "" + data.key_id + "",
@@ -326,7 +325,7 @@
             }
         }
         })
-    }
+    })
 
     
     

@@ -420,14 +420,14 @@ const downloadInvoice = async(req,res)=>{
           );
       
           if (!fs.existsSync(filePath)) {
-            // If the invoice file doesn't exist, generate it
             await generateInvoice(orderId);
           }
-      
+
           fs.readFile(filePath, function (err, data) {
             res.contentType("application/pdf");
             res.send(data);
           });
+      
     }catch(error){
         console.log("invoice download error")
         console.log(error)
@@ -435,69 +435,84 @@ const downloadInvoice = async(req,res)=>{
     }
 }
 
-const generateInvoice = async(orderId)=>{
-    try{
-        console.log("generate invoice api start")
-        const order = await Order.findById(orderId).populate("orderedItems.product").populate("userId").populate("address")
-        console.log("order : ",order)
+const generateInvoice = async (orderId) => {
+    try {
+        console.log("Generating invoice...");
+
+        const order = await Order.findById(orderId)
+        .populate({
+            path: "orderedItems",
+            populate: {
+                path: "product",
+                populate: {
+                    path: "brand"
+                }
+            }
+        })
+        .populate("userId")
+        .populate("address");
+
+        if (!order) {
+            throw new Error("Order not found");
+        }
 
         const orderedItems = order.orderedItems.map((item) => ({
             quantity: item.quantity,
-            description: `${item.product.brand} ${item.product.name}`,
-            price: item.totalPrice,
-            Total: order.orderTotal
-          }));
+            description: `${item.product.brand.name} ${item.product.name}`,
+            price: item.totalPrice
+        }));
 
-          console.log("orderesItems : ",orderedItems)
-        
-          var data = {
-            apiKey:process.env.EASYINVOICE_API_KEY,
+        const data = {
+            apiKey: process.env.EASYINVOICE_API_KEY,
             mode: "development",
             images: {
-              logo: "https://firebasestorage.googleapis.com/v0/b/lapshop-e3a21.appspot.com/o/Lapshop%20logo.png?alt=media&token=35295b10-88d1-4c59-a7f6-9c9e49d2758b",
+                logo: "https://firebasestorage.googleapis.com/v0/b/lapshop-e3a21.appspot.com/o/Lapshop%20logo.png?alt=media&token=35295b10-88d1-4c59-a7f6-9c9e49d2758b",
             },
             sender: {
-              company: "Lapshop",
-              address: "First street main road",
-              zip: "123456",
-              city: "Banglore",
-              country: "India",
+                company: "Lapshop",
+                address: "main Street",
+                zip: "12345",
+                city: "Banglore",
+                country: "India",
             },
             client: {
-              company: order.address.fullname,
-              address: order.address.name + " " +order.address.addressLine,
-              zip: order.address.pincode,
-              city: order.address.city,
-              country: order.address.country,
+                company: order.address.name,
+                address: `${order.address.addressLine} ${order.address.phone} ${order.address.district}`,
+                zip: order.address.pincode,
+                city: order.address.city,
+                country: order.address.country,
             },
             information: {
-              ID: order._id,
-              date: moment(order.date).format("YYYY-MM-DD HH:mm:ss"),
+                ID: order._id,
+                date: moment(order.date).format("YYYY-MM-DD HH:mm:ss"),
             },
             products: orderedItems,
-            bottomNotice:
-              "Your satisfaction is our priority. Thank you for choosing Lapshop.com",
+            bottomNotice: "Your satisfaction is our priority. Thank you for choosing us.",
             settings: {
-              currency: "INR",
+                currency: "INR",
             },
-          };
+        };
 
-        const result = await easyinvoice.createInvoice(data);
-        const folderPath = path.join(__dirname, "..", "public", "invoice");
-        const filePath = path.join(folderPath, `${order._id}.pdf`);
-        fs.mkdirSync(folderPath, { recursive: true });
-        fs.writeFileSync(filePath, result.pdf, "base64");
+        console.log("data : ",data)
 
-    order.invoice = filePath;
-    await order.save();
+        easyinvoice.createInvoice(data, function(result) {
+            console.log('PDF base64 string: ', result.pdf);
 
-    console.log(`Invoice saved at: ${filePath}`);
+            const folderPath = path.join(__dirname, "..", "public", "invoice");
+            const filePath = path.join(folderPath, `${order._id}.pdf`);
 
-    }catch(error){
-        console.log("invoice generate error")
-        console.log(error)
+            fs.mkdirSync(folderPath, { recursive: true });
+            fs.writeFileSync(filePath, result.pdf, "base64");
+
+            order.invoice = filePath;
+            order.save();
+            console.log(`Invoice saved at: ${filePath}`);
+        });
+
+    } catch (error) {
+        console.log("Error generating invoice:", error);
     }
-}
+};
 
 // To repayment the order if the payment is failed
 const repayment = async(req,res)=>{
@@ -522,6 +537,7 @@ const repaymentOrderConfirm = async(req,res)=>{
         const paymentMethod = req.body.paymentMethod
         const amount = req.body.totalAmount
         const orderId = req.body.orderId 
+        console.log("env : ",process.env.KEY_ID)
 
         if (paymentMethod === "razorpay" || paymentMethod === "wallet with razorpay") {
             console.log("i am creating instance from repayment");
@@ -533,7 +549,7 @@ const repaymentOrderConfirm = async(req,res)=>{
             receipt: "midhunkalarikkalp@gmail.com",
             };
             razorpayInstance.orders.create(options, (err, order) => {
-            if (!err) {
+                if (!err) {
                 res.status(200).send({
                 success: true,
                 message: "order created",

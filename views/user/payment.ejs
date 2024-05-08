@@ -405,6 +405,18 @@
         const subTotal = document.getElementById('subTotal').innerText;
         const coupon = cancelCouponInput.value ? cancelCouponInput.value : ""
 
+        if (paymentMethod === "cod" && subTotal > 1000) {
+        Swal.fire({
+            icon: 'info',
+            title: "NOT APPLICABLE",
+            text: "Orders above 1000 rs are not applicable for cash on delivery.",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+        return false;
+    }
+
         console.log("order confirmation start")
         console.log("payment Method :",paymentMethod)
         console.log("type of payment Method :",typeof paymentMethod)

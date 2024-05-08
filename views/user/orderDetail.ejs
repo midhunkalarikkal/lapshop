@@ -158,16 +158,20 @@
                                             </span>
                                             <br>
                                             <br>
-                                            <span class="heads">Payment status</span><br>
-                                            <% if (order[i].paymentStatus === false) { %>
-                                                <span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button></span>
+                                            <span class="heads">Payment status <%= order[i].paymentStatus %> <%= order[i].paymentMethod %></span><br>
+                                            <% if (order[i].paymentStatus === false && order[i].paymentMethod !== "cod") { %>
+                                                <span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button></span>            
                                             <% } else if (order[i].paymentStatus) { %>
                                                 <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span> <br>
-                                                <% if(order[i].status === "Cancelled" || order[i].status === "Return accepted"){ %>
-                                                    <% if(order[i].paymentMethod === "razorpay" || order[i].paymentMethod === "wallet" || order[i].paymentMethod === "wallet with razorpay"){ %>
-                                                        <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
-                                                    <% } %>
+                                            <% } else if(order[i].paymentStatus === false && order[i].paymentMethod === "cod") { %>
+                                                <span class="text-danger">Payment not completed </span> <br>
+                                            <% } %>
+                                            <% if (order[i].status === "Cancelled" || order[i].status === "Return accepted") { %>
+                                                <% if (["razorpay", "wallet", "wallet with razorpay"].includes(order[i].paymentMethod)) { %>
+                                                    <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
                                                 <% } %>
+                                            <% } else if (order[i].status === "Return accepted" && order[i].paymentMethod === "cod") { %>
+                                                <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
                                             <% } %>
                                         </div>
                                     </div>

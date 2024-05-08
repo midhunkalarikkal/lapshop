@@ -70,22 +70,28 @@
                     <table class="table mt-4 shadow">
                         <thead>
                             <tr>
-                                <th class="col-2">Order id</th>
+                                <th class="col-1">Order id</th>
+                                <th class="col-1">Date</th>
                                 <th class="col-2">Product</th>
                                 <th class="col-2">Details</th>
                                 <th class="col-2">Order status</th>
-                                <th class="col-3">Order total</th>
+                                <th class="col-2">Order total</th>
                                 <th class="col-2"></th>
                             </tr>
                         </thead>
                         <tbody>
                             <% for(let i = 0; i < order.length; i++){ %>
                                 <tr>
-                                    <td class="col-2">
+                                    <td class="col-1">
                                         <p class="mt-3">
                                             <span class="product-price "><%= order[i]._id.toString().slice(-6)  %></span>
-                                            </p>
-                                        </td>
+                                        </p>
+                                    </td>
+                                    <td class="col-1">
+                                        <p class="mt-3">
+                                            <span class="product-price "><%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
+                                        </p>
+                                    </td>
                                         <td class="col-2">
                                             <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
                                                 <a href="/productDetail/" style="cursor: pointer;">
@@ -120,19 +126,21 @@
                                                     ₹ <%= order[i].orderTotal %>
                                                 <% } %>
                                             </span></span>
-                                                <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" ){ %>
+                                                <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" && order[i].paymentMethod !== "cod" ){ %>
                                                 <br>
                                                 <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button>
                                                 <% } %>
                                             </p>
                                         </td>
-                                        <td class="col-2 buttons d-flex flex-column justify-content-center align-items-center">
-                                            <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
-                                            <% if(order[i].status === "Delivered"){ %>
-                                                <button class="btn btn-danger btn-sm mt-2" id="prod-cancel" onclick="returnOrder(this)" data-orderId="<%= order[i]._id %>">Return</button>
-                                            <% }else if(order[i].status === "Processing" || order[i].status === "Shipped"){ %>
-                                                <button class="btn btn-danger btn-sm mt-2" id="prod-cancel" onclick="cancelOrder(this)" data-orderId="<%= order[i]._id %>">Cancel</button>
-                                            <% } %>
+                                        <td class="col-2 buttons">
+                                            <div class="d-flex flex-column align-items-center">
+                                                <button class="btn btn-primary btn-sm mt-2" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
+                                                <% if(order[i].status === "Delivered"){ %>
+                                                    <button class="btn btn-danger btn-sm mt-2" id="prod-cancel" onclick="returnOrder(this)" data-orderId="<%= order[i]._id %>">Return</button>
+                                                <% }else if(order[i].status === "Processing" || order[i].status === "Shipped"){ %>
+                                                    <button class="btn btn-danger btn-sm mt-2" id="prod-cancel" onclick="cancelOrder(this)" data-orderId="<%= order[i]._id %>">Cancel</button>
+                                                <% } %>
+                                            </div>
                                         </td>
                                     </tr>
                             <% } %>
@@ -164,6 +172,7 @@
                                 </a>
                                 <% } %>
                                 <span class="product-price ">Order id : <%= order[i]._id.toString().slice(-6)  %></span><br>
+                                <span class="product-price ">Order date : <%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
                             </div>
                             <div class="product-detials col-7 d-flex flex-column align-items-center">
                                 <div class="product-text">
@@ -182,8 +191,7 @@
                                 <br>
                                 <span class="product-price heads">Order total : ₹ <span class="text-success"><%= order[i].orderTotal %></span></span>
                             </p>
-                            <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" ){ %>
-                                
+                            <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" && order[i].paymentMethod !== "cod"){ %>
                                 <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button>
                             <% } %>
                             <button class="btn btn-primary btn-sm" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
