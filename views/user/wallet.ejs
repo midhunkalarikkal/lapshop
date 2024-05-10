@@ -55,19 +55,20 @@
             .heads{
                 font-weight: 600;
             }
+
         </style>
     </head>
     <section class="view">
-        <!-- Table wishlist for mediuam and above screen start -->
-        <div class="cart-wrap mt-5">
+        
+        <div class="mt-5">
             <div class="container">
+                <div class="d-flex justify-content-between">
+                    <h3>Wallet</h3>
+                </div>
+                <hr>
                 <div class="row">
-                    <div class="">
-                        <h3>Your wallet and history</h3>
-                    </div>
-                    <hr class="mt-3">
-                    <% if(Array.isArray(wallet) && wallet.length > 0){ %>
-                        <div class="wallet d-md-flex justify-content-md-between mb-4">
+                    <div class="wallet d-md-flex justify-content-md-between mb-4">
+                        <% if(Array.isArray(wallet) && wallet.length > 0){ %>
                             <div class="wallet-info left col-12 col-md-4 p-3 shadow">
                                 <div class="user-info text-center mt-3">
                                     <h5><%= userDetails.userName %></h5>
@@ -94,9 +95,10 @@
                                     <h6 class="mx-3">₹ <%= totalDebitedAmount %></h6>
                                 </div>
                             </div>
+                            
                             <div class="wallet-history right col-12 col-md-7 shadow p-4 mt-4 mt-md-0">
                                 <div class="d-flex text-dark text-center">
-                                    <h6 class="col-2">Index</h6>
+                                    <h6 class="col-2">Id</h6>
                                     <h6 class="col-2">Type</h6>
                                     <h6 class="col-2">Amount</h6>
                                     <h6 class="col-2">Date</h6>
@@ -107,7 +109,7 @@
                                 <% wallet.forEach((data,index)=>{ %>
                                     <div class="row p-2">
                                         <div class="text-dark text-center d-flex p-2">
-                                            <h6 class="col-2"><%= index+1 %></h6>
+                                            <h6 class="col-2"><%= data._id.toString().slice(-6) %></h6>
                                             <% if(data.type === "credit"){ %>
                                                 <h6 class="col-2"><%= data.type %></h6>
                                                 <h6 class="col-2 text-success"><%= data.amount %></h6>
@@ -123,14 +125,13 @@
                                     </div>
                                 <% }) %>
                             </div>
-                        </div>
                             <% }else{ %>
-                        <div class="alert alert-info text-center mt-4" role="alert">No wallet for you.</div>
-                    <% } %>
+                                <div class="alert alert-info text-center mt-4" role="alert">No wallet for you.</div>
+                                <% } %>
+                            </div>
                 </div>
             </div>
         </div>
-        <!-- Table wishlist for mediuam and above screen start -->
 
     </section>
 

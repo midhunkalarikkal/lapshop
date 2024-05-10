@@ -5,7 +5,7 @@ const getUserWallet = async(req,res)=>{
     try{
         let userDetails = req.session.userNC
         const userId = req.session.user._id
-        const wallet = await Wallet.find({user : userId})
+        const wallet = await Wallet.find({user : userId}).sort({updatedAt : -1})
         let totalCreditedAmount = 0;
         let creditCount = 0
         let totalDebitedAmount = 0;

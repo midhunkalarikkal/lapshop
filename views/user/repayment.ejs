@@ -131,80 +131,87 @@
         <!-- main div start -->
         <div class="cart-wrap mt-5">
             <div class="container">
-                <% if(order && order !==""){ %>
-                <div class="d-flex justify-content-between">
-                    <h3>Complete your order payment</h3>
-                </div>
-                <hr>
-                <div class="row mb-3">
-                    <div class="product-card col-12 col-md-8">
-                        <div class="product-card-each mt-4 shadow d-flex">
-                            <div class="col-12 p-3">
-                                <h5>Your cart items</h5>
+                <% if(order && order !=="" ){ %>
+                    <div class="d-flex justify-content-between">
+                        <h3>Complete your order payment</h3>
+                    </div>
+                    <hr>
+                    <div class="row mb-3">
+                        <div class="product-card col-12 col-md-8">
+                            <div class="product-card-each mt-4 shadow d-flex">
+                                <div class="col-12 p-3">
+                                    <h5>Your cart items</h5>
+                                    <hr>
+                                    <% order.orderedItems.forEach((item , index)=> { %>
+                                        <div class="row mb-1">
+                                            <h6>Item <%= index+1 %>
+                                            </h6>
+                                            <p class="small">
+                                                <%= item.product.brand.name %> ,
+                                                    <%= item.product.name %> ,
+                                                        Quantity : <%= item.quantity %>
+                                                            <br>
+                                                            Price (according to quantity) : <%= item.totalPrice %>
+                                            </p>
+                                        </div>
+                                        <% }) %>
+                                            <hr>
+                                            <h5>Selected address</h5>
+                                            <hr>
+                                            <% if(order.address){ %>
+                                                <h6>
+                                                    <%= order.address.name %>
+                                                </h6>
+                                                <p>
+                                                    <input type="hidden" id="userAddressId"
+                                                        value="<%= order.address._id  %>">
+                                                    <%= order.address.addressLine %> ,
+                                                        <%= order.address.city %> , <br>
+                                                            <%= order.address.district %> ,
+                                                                <%= order.address.state %> ,
+                                                                    Pincode : <%= order.address.pincode %> ,
+                                                                        <%= order.address.country %> <br>
+                                                                            Phone : <%= order.address.phone %>
+                                                </p>
+                                                <input type="hidden" id="userAddress" value="<%= order.address  %>">
+                                                <% } %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="product-subtotal col-12 col-md-4">
+                            <div class="subtotal mt-4 shadow d-flex flex-column p-3">
+                                <div class="head text-center">
+                                    <h4 class="">Payment</h4>
+                                </div>
                                 <hr>
-                                <% order.orderedItems.forEach((item , index) => { %>
-                                    <div class="row mb-1">
-                                       <h6>Item <%= index+1 %></h6>
-                                        <p class="small">
-                                            <%= item.product.brand.name %> ,
-                                            <%= item.product.name %> ,
-                                            Quantity : <%= item.quantity %>
-                                            <br>
-                                            Price (according to quantity) : <%= item.totalPrice %>
-                                        </p>
+                                <div class="checkbox-payment">
+                                    <div class="razorpay">
+                                        <h6 class="text-center">Pyamnet method : <%= order.paymentMethod %>
+                                        </h6>
+                                        <input type="hidden" id="paymentMethod" value="<%= order.paymentMethod %>">
                                     </div>
-                                <% }) %>
-                                <hr>
-                                <h5>Selected address</h5>
-                                <hr>
-                                <% if(order.address){ %>
-                                <h6><%= order.address.name %></h6>
-                                <p>
-                                    <input type="hidden" id="userAddressId" value="<%= order.address._id  %>">
-                                    <%= order.address.addressLine %> ,
-                                    <%= order.address.city %> , <br>
-                                    <%= order.address.district %> , 
-                                    <%= order.address.state %> , 
-                                    Pincode : <%= order.address.pincode %> , 
-                                    <%= order.address.country %> <br>
-                                    Phone : <%= order.address.phone %> 
-                                </p>
-                                <input type="hidden" id="userAddress" value="<%= order.address  %>">
-                                <% } %>
-                                </div>               
-                            </div>
-                        </div>
-                    
-                    
-                    <div class="product-subtotal col-12 col-md-4">
-                        <div class="subtotal mt-4 shadow d-flex flex-column p-3">
-                            <div class="head text-center">
-                                <h4 class="">Payment</h4>
-                            </div>
-                            <hr>
-                            <div class="checkbox-payment">
-                                <div class="razorpay">
-                                    <h6 class="text-center">Pyamnet method : <%= order.paymentMethod %></h6>
-                                    <input type="hidden" id="paymentMethod" value="<%= order.paymentMethod %>">
                                 </div>
-                            </div>                            
-                            <div class="details">
+                                <div class="details">
+                                    <hr>
+                                    <div class="total d-flex justify-content-between">
+                                        <h5>Order total : </h5>
+                                        <h5>₹ <span id="subTotal">
+                                                <%= order.orderTotal %>
+                                            </span></h5>
+                                    </div>
+                                </div>
                                 <hr>
-                                <div class="total d-flex justify-content-between">
-                                    <h5>Order total : </h5> <h5>₹ <span id="subTotal"><%= order.orderTotal %></span></h5>
+                                <div class="button mt-3">
+                                    <p class="text-danger">Sorry, there is no refund policy available as of now.</p>
+                                    <input type="hidden" id="orderId" value="<%= order._id %>">
+                                    <button class="btn btn-warning w-100" id="goToPayment">Re pay</button>
                                 </div>
                             </div>
-                            <hr>
-                            <div class="button mt-3">
-                                <p class="text-danger">Sorry, there is no refund policy available as of now.</p>
-                                <input type="hidden" id="orderId" value="<%= order._id %>">
-                                <button class="btn btn-warning w-100" id="goToPayment">Re pay</button>
-                            </div>
                         </div>
-                    </div>  
-                </div>
-                <% }else{ %>
-                    <div class="alert alert-info text-center" role="alert">No order found.</div>
+                    </div>
+                    <% }else{ %>
+                        <div class="alert alert-info text-center" role="alert">No order found.</div>
                 <% } %>
             </div>
         </div>
@@ -218,7 +225,7 @@
                 <div class="col-12">
                     <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
                         <div class="d-flex flex-column align-items-center justify-content-center">
-                            <img src="/static/images/Bg/desktop/Lapshop logo.png" class="img-fluid w-25 h-25" style="">
+                            <img src="/static/images/Bg/desktop/Lapshop logo.png" class="img-fluid w-25 h-25">
                             <div class="text text-center">
                                 <h1>LapShop</h1>
                                 <h6>Discover Your Digital World with Us.</h6>
@@ -236,103 +243,101 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
-    document.getElementById('goToPayment').addEventListener("click",function(){
+        document.getElementById('goToPayment').addEventListener("click", function () {
 
-   
+            let paymentMethod = document.getElementById("paymentMethod").value;
+            let userAddressId = document.getElementById("userAddressId").value;
+            let subTotal = document.getElementById('subTotal').innerText;
+            let orderId = document.getElementById("orderId").value
 
-        let paymentMethod = document.getElementById("paymentMethod").value;
-        let userAddressId = document.getElementById("userAddressId").value;
-        let subTotal = document.getElementById('subTotal').innerText;
-        let orderId = document.getElementById("orderId").value
+            console.log("order confirmation start")
+            console.log("payment Method :", paymentMethod)
+            console.log("type of payment Method :", typeof paymentMethod)
+            console.log("user address id :", userAddressId)
+            console.log("type of user address id :", typeof userAddressId)
+            console.log("subtotal :", subTotal)
+            console.log("type of subtotal :", typeof subTotal)
+            console.log("order id :", orderId)
+            console.log("type of order id : ", typeof orderId)
+            console.log("order confirmation end")
 
-        console.log("order confirmation start")
-        console.log("payment Method :",paymentMethod)
-        console.log("type of payment Method :",typeof paymentMethod)
-        console.log("user address id :",userAddressId)
-        console.log("type of user address id :",typeof userAddressId)
-        console.log("subtotal :",subTotal)
-        console.log("type of subtotal :",typeof subTotal)
-        console.log("order id :",orderId)
-        console.log("type of order id : ",typeof orderId)
-        console.log("order confirmation end")
+            const data = {
+                paymentMethod: paymentMethod,
+                totalAmount: subTotal,
+                orderId: orderId
+            };
 
-        const data = {
-            paymentMethod: paymentMethod,
-            totalAmount: subTotal,
-            orderId : orderId
-        };
-
-        fetch('/rePaymentOrderConfirmation', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
+            fetch('/rePaymentOrderConfirmation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    const message = "Your account is blocked, Please contact us"
+                    const type = "danger"
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        console.log("data : ", data)
+                        if (paymentMethod === "razorpay") {
+                            var options = {
+                                key: "" + data.key_id + "",
+                                amount: "" + data.amount + "",
+                                currency: "INR",
+                                name: "LapShop",
+                                description: "Your laptop",
+                                image: `/static/images/Bg/desktop/Lapshop logo.png`,
+                                order_id: "" + data.order_id + "",
+                                handler: function (response) {
+                                    let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=true`;
+                                    window.location.href = redirectUrl;
+                                },
+                                prefill: {
+                                    name: "" + data.name + "",
+                                    email: "" + data.email + "",
+                                    contact: "9000090000",
+                                },
+                                notes: {
+                                    address: "Razorpay Corporate Office",
+                                },
+                                theme: {
+                                    color: "#ffc107",
+                                },
+                            };
+                            var rzp1 = new Razorpay(options);
+                            rzp1.on("payment.failed", function (response) {
+                                let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+                                window.location.href = redirectUrl;
+                            });
+                            rzp1.open();
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: "Internal server error",
+                                text: data.message,
+                                timer: 2000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
+                        }
+                    }
+                })
         })
-        .then(response => {
-            const contentType = response.headers.get('content-type');
-            const message = "Your account is blocked, Please contact us"
-            const type = "danger"
-            if (contentType && contentType.includes('application/json')) {
-                return response.json(); 
-            } else {
-                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-            }
-        })
-        .then(data => {
-            if (data.success) {
-                console.log("data : ",data)
-                if (paymentMethod === "razorpay") {
-                    var options = {
-                        key: "" + data.key_id + "",
-                        amount: "" + data.amount + "",
-                        currency: "INR",
-                        name: "LapShop",
-                        description: "Your laptop",
-                        image: `/static/images/Bg/desktop/Lapshop logo.png`,
-                        order_id: "" + data.order_id + "", 
-                        handler: function (response) {
-                            let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=true`;
-                            window.location.href = redirectUrl;
-                        },
-                        prefill: {
-                            name: "" + data.name + "", 
-                            email: "" + data.email + "",
-                            contact: "9000090000", 
-                            },
-                            notes: {
-                                address: "Razorpay Corporate Office",
-                            },
-                            theme: {
-                                color: "#ffc107",
-                            },
-                    };
-                    var rzp1 = new Razorpay(options);
-                    rzp1.on("payment.failed", function (response) {
-                        let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
-                        window.location.href = redirectUrl;
-                    });
-                    rzp1.open();
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: "Internal server error",
-                    text: data.message,
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
-            }
-        }
-        })
-    })
 
-    
-    
 
-        
 
-       
+
+
+
+
     </script>
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
@@ -341,7 +346,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-    </script>
+        </script>
 </body>
 
 </html>
