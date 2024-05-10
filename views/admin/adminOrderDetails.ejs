@@ -151,12 +151,23 @@
                                             </span>
                                             <br>
                                             <br>
-                                            <span class="heads">Payment status</span><br>
+                                            <span class="heads">Payment status <%= order[i].paymentStatus %></span><br>
                                             <% if(order[i].paymentStatus === false){ %>
                                                 <Span class="text-danger">Payment not completed.</Span>
                                             <% }else if(order[i].paymentStatus === true){ %>
-                                                <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
+                                                <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span><br>
                                             <% } %>
+
+                                            <% if(order[i].paymentStatus !== false){ %>
+                                                <% if (order[i].status === "Cancelled" || order[i].status === "Return accepted") { %>
+                                                    <% if (["razorpay", "wallet", "wallet with razorpay"].includes(order[i].paymentMethod)) { %>
+                                                        <span class="text-success">Order amount Credited to user wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
+                                                    <% } %>
+                                                <% } else if (order[i].status === "Return accepted" && order[i].paymentMethod === "cod") { %>
+                                                    <span class="text-success">Order amount Credited to user wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
+                                                <% } %>
+                                            <% } %>
+
                                         </div>
                                     </div>
                                     <div class="gap col-1">

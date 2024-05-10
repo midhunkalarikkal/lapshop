@@ -65,7 +65,6 @@
         </style>
     </head>
     <section class="view">
-        <!-- Table wishlist for mediuam and above screen start -->
         <div class="orderDetail-wrap mt-5">
             <div class="container">
                 <div class="row">
@@ -158,20 +157,27 @@
                                             </span>
                                             <br>
                                             <br>
-                                            <span class="heads">Payment status <%= order[i].paymentStatus %> <%= order[i].paymentMethod %></span><br>
-                                            <% if (order[i].paymentStatus === false && order[i].paymentMethod !== "cod") { %>
+                                            <span class="heads">Payment status</span><br>
+                                            <% if (order[i].paymentStatus === false && order[i].paymentMethod !== "cod" && order[i].status !== "Cancelled" && order[i].status !== "Request return" && order[i].status !== "Request rejected" && order[i].status !== "Request accepted" && order[i].status !== "Admin cancelled") { %>
                                                 <span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button></span>            
                                             <% } else if (order[i].paymentStatus) { %>
                                                 <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span> <br>
                                             <% } else if(order[i].paymentStatus === false && order[i].paymentMethod === "cod") { %>
                                                 <span class="text-danger">Payment not completed </span> <br>
+                                            <% } else if(order[i].paymentStatus === false){ %>
+                                                <% if(order[i].status === "Cancelled" || order[i].status === "Admin cancelled" || order[i].status === "Request return" || order[i].status === "Return accepted" || order[i].status === "Return rejected"){ %>
+                                                    <span class="text-danger">Payment not completed</span> <br>
+                                                <% } %>
                                             <% } %>
-                                            <% if (order[i].status === "Cancelled" || order[i].status === "Return accepted") { %>
-                                                <% if (["razorpay", "wallet", "wallet with razorpay"].includes(order[i].paymentMethod)) { %>
+
+                                            <% if(order[i].paymentStatus !== false){ %>
+                                                <% if (order[i].status === "Cancelled" || order[i].status === "Return accepted") { %>
+                                                    <% if (["razorpay", "wallet", "wallet with razorpay"].includes(order[i].paymentMethod)) { %>
+                                                        <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
+                                                    <% } %>
+                                                <% } else if (order[i].status === "Return accepted" && order[i].paymentMethod === "cod") { %>
                                                     <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
                                                 <% } %>
-                                            <% } else if (order[i].status === "Return accepted" && order[i].paymentMethod === "cod") { %>
-                                                <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
                                             <% } %>
                                         </div>
                                     </div>

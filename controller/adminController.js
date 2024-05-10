@@ -28,7 +28,7 @@ const postAdminlogin = async (req, res) => {
         console.log(req.body)
         const adminData = {
             email: "admin@gmail.com",
-            password: "admin123"
+            password: "Admin,./"
         };
         if (email == adminData.email && password == adminData.password) {
             req.session.adminData = adminData

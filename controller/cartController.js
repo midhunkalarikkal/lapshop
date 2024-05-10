@@ -38,7 +38,7 @@ const postProductToCartFromShop = async (req, res) => {
 
             if (existingItem) {
                 console.log("Product already exist in your cart")
-                return res.status(409).json({ message : "Already in your cart."})
+                return res.status(409).json({ added : false, message : "Already in your cart."})
             } else {
                 existingCart.items.push({
                     product: productId,
@@ -66,10 +66,15 @@ const postProductToCartFromShop = async (req, res) => {
             });
         }
         
-        await existingCart.save();
+        const updateCart = await existingCart.save();
         req.session.userNC.cartItemCount = existingCart.items.length
 
-        return res.status(200).json({ message: "Product added to your cart." });
+        if(updateCart){
+            return res.status(200).json({ added : true, message: "Product added to your cart." });
+        }else{
+            return res.status(400).json({ added : false, message: "Product adding to cart error." });
+        }
+
     } catch (error) {
         console.log(error.message);
         res.redirect('/errorPage')

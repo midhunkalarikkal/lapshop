@@ -187,100 +187,84 @@
                         <div class="container">
                             <!-- Shop Product Start -->
                             <div class="row pb-3" id="productCardRow">
-                                <% const currentPageProducts=productData.slice((currentPage - 1) * productsPerPage,
-                                    currentPage * productsPerPage); %>
-                                    <% currentPageProducts.forEach((product,index)=>{ %>
-                                        <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                            <div class="card product-item mb-4 product-card shadow">
-                                                <a href="/productDetail/<%= product._id %>" class="product-outline">
-                                                    <div
-                                                        class="card-header product-img position-relative overflow-hidden  p-0">
-                                                        <img class="img-fluid product-image w-100"
-                                                            src=" /static/images/ProductImages/<%= product.images[0] %>"
-                                                            alt="">
-                                                        <% if (wishlistProdId !="" ) { %>
-                                                            <% for(let i=0; i < wishlistProdId.length; i++){ %>
-                                                                <% if(wishlistProdId[i]==product._id.toString()){ %>
-                                                                    <a href="#" class="position-absolute"
-                                                                        style="top: 8px; right: 50px; z-index: 1;"
-                                                                        data-product-id="<%= product._id %>"
-                                                                        onclick="addToWishlist(this)">
-                                                                        <i class="fa-solid fa-heart wish-btn"></i>
-                                                                    </a>
-                                                                    <% } %>
-                                                                        <% } %>
-                                                                            <% } %>
-                                                                                <a href="#" class="position-absolute"
-                                                                                    style="top: 8px; right: 50px; z-index: 1;"
-                                                                                    data-product-id="<%= product._id %>"
-                                                                                    onclick="addToWishlist(this)">
-                                                                                    <i
-                                                                                        class="fa-regular fa-heart wish-btn"></i>
-                                                                                </a>
-
-                                                                                <div class="position-absolute"
-                                                                                    style="top: 5px; right: 5px; z-index: 1;">
-                                                                                    <span class="badge">New</span>
-                                                                                </div>
-                                                    </div>
-                                                    <div class="card-body">
-                                                        <h6 class="text-truncate product-name tet-center mb-3">
-                                                            <%= product.name %>
-                                                        </h6>
-                                                        <div class="d-flex align-items-end">
-                                                            <p>
-                                                                <span class="discount-percentage">-<%=
-                                                                        product.discountPercentage %>%</span>
-                                                                <span class="offer-price mx-2">₹<%= product.offerPrice
-                                                                        %></span>
-                                                                <span class="real-price small mx-2">₹<del
-                                                                        class="real-price">
-                                                                        <%= product.realPrice %>
-                                                                    </del></span>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <% if (cartProdId !="" ) { %>
-                                                    <% for(let i=0; i < cartProdId.length; i++){ %>
-                                                        <% if(cartProdId[i]==product._id.toString()){ %>
-                                                            <button class="card-footer d-flex justify-content-center">
-                                                                <a href="/cart" class="btn btn-sm p-0">
-                                                                    <i class="fas fa-shopping-cart"></i> Go to cart
+                                <% const currentPageProducts=productData.slice((currentPage - 1) * productsPerPage,currentPage * productsPerPage); %>
+                                <% currentPageProducts.forEach((product,index)=>{ %>
+                                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                        <div class="card product-item mb-4 product-card shadow">
+                                            <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                                <div class="card-header product-img position-relative overflow-hidden  p-0">
+                                                    <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
+                                                    <% if (wishlistProdId !="" ) { %>
+                                                        <% for(let i=0; i < wishlistProdId.length; i++){ %>
+                                                            <% if(wishlistProdId[i]==product._id.toString()){ %>
+                                                                <a href="#" class="position-absolute"
+                                                                    style="top: 8px; right: 50px; z-index: 1;"
+                                                                    data-product-id="<%= product._id %>"
+                                                                    onclick="addToWishlist(this)">
+                                                                    <i class="fa-solid fa-heart wish-btn"></i>
                                                                 </a>
-                                                            </button>
-                                                            <% break; %>
-                                                                <% } %>
-                                                                    <!-- If it's the last iteration and no match is found -->
-                                                                    <% if(i===cartProdId.length - 1){ %>
-                                                                        <button
-                                                                            class="card-footer d-flex justify-content-center"
-                                                                            data-prod-id="<%= product._id %>"
-                                                                            onclick="addToCart(this)">
-                                                                            <a href="" class="btn btn-sm p-0">
-                                                                                <i class="fas fa-shopping-cart"></i> Add
-                                                                                to cart
-                                                                            </a>
-                                                                        </button>
-                                                                        <% } %>
-                                                                            <% } %>
-                                                                                <% } else { %>
-                                                                                    <!-- Render "Add to cart" button if cartProdId is empty -->
-                                                                                    <button
-                                                                                        class="card-footer d-flex justify-content-center"
-                                                                                        data-prod-id="<%= product._id %>"
-                                                                                        onclick="addToCart(this)">
-                                                                                        <a href=""
-                                                                                            class="btn btn-sm p-0">
-                                                                                            <i
-                                                                                                class="fas fa-shopping-cart"></i>
-                                                                                            Add to cart
-                                                                                        </a>
-                                                                                    </button>
-                                                                                    <% } %>
-                                            </div>
+                                                            <% } %>
+                                                        <% } %>
+                                                    <% } %>
+                                                    <a href="#" class="position-absolute"
+                                                        style="top: 8px; right: 50px; z-index: 1;"
+                                                        data-product-id="<%= product._id %>"
+                                                        onclick="addToWishlist(this)">
+                                                        <i class="fa-regular fa-heart wish-btn"></i>
+                                                    </a>
+                                                    <div class="position-absolute" style="top: 5px; right: 5px; z-index: 1;">
+                                                        <span class="badge">New</span>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h6 class="text-truncate product-name tet-center mb-3">
+                                                        <%= product.name %>
+                                                    </h6>
+                                                    <div class="d-flex align-items-end">
+                                                        <p>
+                                                            <span class="discount-percentage">-<%= product.discountPercentage %>%</span>
+                                                            <span class="offer-price mx-2">₹<%= product.offerPrice %></span>
+                                                            <span class="real-price small mx-2">₹<del class="real-price"><%= product.realPrice %></del></span>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <% if (cartProdId !="" ) { %>
+                                                <% for(let i=0; i < cartProdId.length; i++){ %>
+                                                    <% if(cartProdId[i] == product._id.toString()){ %>
+                                                        <button class="card-footer d-flex justify-content-center">
+                                                            <a href="/cart" class="btn btn-sm p-0">
+                                                                <i class="fas fa-shopping-cart"></i> Go to cart
+                                                            </a>
+                                                        </button>
+                                                    <% break; %>
+                                                    <% } %>
+                                                    <!-- If it's the last iteration and no match is found -->
+                                                    <% if(i===cartProdId.length - 1){ %>
+                                                        <button
+                                                            class="card-footer d-flex justify-content-center"
+                                                            data-prod-id="<%= product._id %>"
+                                                            onclick="addToCart(this)">
+                                                            <a href="" class="btn btn-sm p-0">
+                                                                <i class="fas fa-shopping-cart"></i> Add to cart
+                                                            </a>
+                                                        </button>
+                                                    <% } %>
+                                                <% } %>
+                                            <% } else { %>
+                                            <!-- Render "Add to cart" button if cartProdId is empty -->
+                                                <button
+                                                    class="card-footer d-flex justify-content-center"
+                                                    data-prod-id="<%= product._id %>"
+                                                    onclick="addToCart(this)">
+                                                    <a href="" class="btn btn-sm p-0">
+                                                        <i class="fas fa-shopping-cart"></i> Add to cart
+                                                    </a>
+                                                </button>
+                                            <% } %>
                                         </div>
-                                        <% } ) %>
+                                    </div>
+                                <% } ) %>
                             </div>
                             <!-- Shop Product end -->
 
@@ -301,15 +285,13 @@
                                                     <%= i %>
                                                 </a>
                                             </li>
-                                            <% } %>
-                                                <li
-                                                    class="page-item mx-1 <%= currentPage === totalPages ? 'disabled' : '' %>">
-                                                    <a class="page-link" href="/shop?page=<%= currentPage + 1 %>"
-                                                        aria-label="Next">
-                                                        <span aria-hidden="true">&raquo;</span>
-                                                        <span class="sr-only">Next</span>
-                                                    </a>
-                                                </li>
+                                        <% } %>
+                                        <li class="page-item mx-1 <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                            <a class="page-link" href="/shop?page=<%= currentPage + 1 %>" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                                <span class="sr-only">Next</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>
@@ -319,7 +301,7 @@
                             <div class="col-12 pb-1">
                                 <nav aria-label="Page navigation">
                                     <ul class="pagination justify-content-center mb-3" id="pagination">
-
+                                        <!--  adding by dynamically -->
                                     </ul>
                                 </nav>
                             </div>
@@ -587,39 +569,37 @@
         function updatePaginationUI(totalPages) {
             console.log("Totalpages :", totalPages)
             console.log("currenntpage :", currentPage)
-            // hinding the shop page main pagination
+
             const paginationElement = document.querySelector('#pagination');
-            // Clearin the second pagination child elements of ui
+
             paginationElement.innerHTML = '';
 
-            // Create preious link for the second pagination
             let paginationHTML = `
-        <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-            <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span class="sr-only">Previous</span>
-            </a>
-        </li>
-    `;
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                </li>`;
 
             // Create page numbers for the second pagination
             for (let i = 1; i <= totalPages; i++) {
                 paginationHTML += `
-            <li class="page-item mx-1 ${currentPage === i ? 'active' : ''}">
-                <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
-            </li>
-        `;
+                    <li class="page-item mx-1 ${currentPage === i ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>
+                `;
             }
 
             // Creating hte next button for the second pagination
             paginationHTML += `
-        <li class="page-item mx-1 ${currentPage === totalPages ? 'disabled' : ''}">
-            <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span class="sr-only">Next</span>
-            </a>
-        </li>
-    `;
+                <li class="page-item mx-1 ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        <span class="sr-only">Next</span>
+                    </a>
+                </li>
+            `;
 
             paginationElement.innerHTML = paginationHTML;
         }
@@ -647,38 +627,35 @@
                 },
                 body: JSON.stringify(data)
             })
-                .then(response => {
-                    const contentType = response.headers.get('content-type');
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
-                    if (contentType && contentType.includes('application/json')) {
-                        return response.json(); 
-                    } else {
-                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;    
-                    }
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                const message = "Your account is blocked, Please contact us"
+                const type = "danger"
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json(); 
+                } else {
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;    
+                }
+            })
+            .then(data => {
+                console.log("data :", data)
+                var wishlistButton = document.querySelector(`[data-product-id="${productId}"] .fa-heart`);
+                if (data.added) {
+                    wishlistButton.classList.add('fa-solid');
+                    wishlistButton.classList.remove('fa-regular');
+                } else {
+                    wishlistButton.classList.remove('fa-solid');
+                    wishlistButton.classList.add('fa-regular');
+                }
+                Swal.fire({
+                    title: "Wishlist",
+                    html: `<i class="fa-solid fa-heart" style="color: #f01919;"></i> ${data.message}`,
+                    icon: "success",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 })
-                .then(data => {
-                    console.log("data :", data)
-                    var wishlistButton = document.querySelector(`[data-product-id="${productId}"] .fa-heart`);
-                    if (data.added) {
-                        wishlistButton.classList.add('fa-solid');
-                        wishlistButton.classList.remove('fa-regular');
-                    } else {
-                        wishlistButton.classList.remove('fa-solid');
-                        wishlistButton.classList.add('fa-regular');
-                    }
-                    Swal.fire({
-                        title: "Wishlist",
-                        html: `<i class="fa-solid fa-heart" style="color: #f01919;"></i> ${data.message}`,
-                        icon: "success",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    })
-                })
-                .catch(error => {
-                    console.error('There was a problem with the fetch operation:', error);
-                });
+            })
         }
 
         ////// Funciton to add a product to cart \\\\\\
@@ -693,19 +670,19 @@
                 },
                 body: JSON.stringify({ productId: productId })
             })
-                .then(response => {
-                    const contentType = response.headers.get('content-type');
-                    // const message = "Your account is blocked, Please contact us"
-                    // const type = "danger"
-                    if (contentType && contentType.includes('application/json')) {
-                        return response.json(); 
-                    } else {
-                        window.location.href = `/login`;
-                        // ?message=${encodeURIComponent(message)}&type=${type}
-                    }
-                })
-                .then(data => {
-                    console.log(data)
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                const message = "Your account is blocked, Please contact us"
+                const type = "danger"
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json(); 
+                } else {
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;    
+                }
+            })
+            .then(data => {
+                if(data.added){
+                    console.log("product added")
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -714,20 +691,21 @@
                         timerProgressBar: true,
                         showConfirmButton: false
                     }).then(() => {
-                        location.reload();
+                        setTimeout(() => {
+                            location.reload();
+                        },0);
                     });
-                })
-                .catch(error => {
-                    console.log("error :", error)
+                }else{
                     Swal.fire({
-                        title: "Error",
-                        text: error.message,
-                        icon: "error",
+                        title: "Info",
+                        text: data.message,
+                        icon: "info",
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
-                    });
-                });
+                    })
+                }
+            })
         }
 
 

@@ -190,10 +190,11 @@ const postLogin = async (req, res) => {
 const getLogin = async (req, res) => {
     try {
         if(!req.session.user || !req.session.user.isblocked){
-            let userDetails = ""
-            const message = req.query.message || '';
-            const type = req.query.type || '';
-            return res.render('user/login', {type , message, userDetails})
+            console.log("get login")
+            let userDetails = ''
+            const type = req.query.type || ""
+            const message = req.query.message || ""
+            return res.render('user/login',{type, message, userDetails})
         }else{
             res.redirect('/')
         }
@@ -232,21 +233,13 @@ const getHome = async (req, res) => {
         const coupon = await Coupon.find({ isBlocked : false})
         let validCoupons = coupon
         let newValidCoupons = []
-        console.log("coupon :",coupon)
-        console.log("coupon length :",coupon.length)
         let userDetails = req.session.userNC
-        console.log("userDetails from homepage :",userDetails)
         if (req.session.user) {
             const user = req.session.user;
-            console.log("session user :", user);
-            console.log("userId type :", typeof user._id);
         
             coupon.forEach((c, i) => {
-                console.log("coupon " + i);
                 const valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
                 if (!valid) {
-                    console.log("session user")
-                    console.log("valid coupons after user:",c)
                     newValidCoupons.push(c)
                 }
             });
@@ -387,20 +380,17 @@ const getUserShop = async(req,res)=>{
             const wishlist = await Wishlist.find({ userId : user._id})
             if(wishlist != ""){
                 wishlistProdId = wishlist[0].products.map(item => item.product);
-                console.log("wishlistProductId :",wishlistProdId)
             }
             const cart = await Cart.find({ userId : user._id }) 
             if(cart != ""){
                 cartProdId = cart[0].items.map(item => item.product)
-                console.log("cartProductId :",cartProdId)
             }
         }
 
         const page = parseInt(req.query.page) || 1;  
         const limit = 6; 
 
-        return res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId,
-            totalPages: Math.ceil(totalProducts / limit) })
+        return res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId, totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
         console.log(error.message)

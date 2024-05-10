@@ -35,7 +35,7 @@
                                                 <%= orders[i]._id.toString().slice(-6)  %>
                                             </td>
                                             <td>
-                                                <%= orders[i].orderDate  %>
+                                                <%= orders[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %>
                                             </td>
                                             <td>
                                                 <% for(let j = 0; j < orders[i].orderedItems.length; j++){ %>

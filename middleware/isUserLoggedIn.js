@@ -5,21 +5,20 @@ const isUserLoggedIn = async (req, res, next) => {
         if(req.session && req.session.user){
             User.findById({_id :req.session.user._id}).lean()
             .then((data)=>{
-                if(!data.isblocked){
+                if(data.isblocked == false){
+                    console.log("req.session.user",req.session.user)
                     console.log("user is not blocked")
                     next()
                 }else{
-                    console.log("user is blocked")
-                    // let userDetails = ""
-                    // return res.render('user/login',{message : "Your account is blocked, please contact us.", type : "danger", userDetails})
-                    res.redirect('/login')
-                    // const message = "Your account is blocked, please contact us";
-                    // const type = "danger";
-                    // return res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`)
+                    console.log("user blocked : ",data.isblocked)
+                    console.log("rendering login page")
+                    const message = "Your account is blocked, Please contact us"
+                    const type = "danger"
+                    res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`)
                 }
             })
         }else{
-            return res.redirect('/login')
+            res.redirect('/login')
         }
     } catch (error) {
         console.log(error.message);
@@ -30,6 +29,7 @@ const isUserLoggedIn = async (req, res, next) => {
 const isUserLogout = async(req,res,next)=>{
     try {
         if(req.session.user){
+            console.log("user session is not null")
             res.redirect('/')
         }else{
             next()
@@ -38,8 +38,6 @@ const isUserLogout = async(req,res,next)=>{
         console.log(error.message);
     }
 }
-
-
 
 module.exports = {
     isUserLoggedIn,
