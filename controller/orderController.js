@@ -232,11 +232,9 @@ const getOrders = async(req,res)=>{
         let order = await Order.find({ userId: userId }).populate({
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
-        });
-
-        const sortedOrders = order.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
+        }).sort({ orderDate: -1 });
         console.log("orders :",order)
-        return res.render('user/orders',{userDetails , order : sortedOrders})
+        return res.render('user/orders',{userDetails , order : order})
     }catch(error){
         console.log(error.message)
         return res.redirect('/errorPage')
@@ -306,10 +304,9 @@ const adminGetOrders = async(req,res)=>{
         const orders = await Order.find().populate({
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
-        })
-        const sortedOrders = orders.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
-        console.log("Orders :",sortedOrders)
-        return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders : sortedOrders})
+        }).sort({ orderDate: -1 });
+        console.log("orders : ",orders)
+        return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders : orders })
     }catch(error){
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
