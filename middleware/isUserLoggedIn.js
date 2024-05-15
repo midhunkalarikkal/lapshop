@@ -12,12 +12,12 @@ const isUserLoggedIn = async (req, res, next) => {
                 }else{
                     console.log("user blocked : ",data.isblocked)
                     console.log("rendering login page")
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
-                    res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`)
+                    req.session.destroy()
+                    res.redirect('/login')
                 }
             })
         }else{
+            console.log("no user in session and redirecting to login")
             res.redirect('/login')
         }
     } catch (error) {
