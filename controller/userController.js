@@ -228,7 +228,51 @@ const getHome = async (req, res) => {
         console.log("Home api start")
         const currentDate = new Date();
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
-        const bestOfferProducts = await Product.find({ discountPercentage: {$gte : 20 } , isBlocked : false})
+
+        const bestSellingProducts = await Order.aggregate([
+            { 
+                $match: { status: "Delivered" } // Filter orders by status
+            },
+            {
+                $unwind: "$orderedItems" // Split array into separate documents for each ordered item
+            },
+            {
+                $group: {
+                    _id: "$orderedItems.product", // Group by product
+                    totalOrdered: { $sum: "$orderedItems.quantity" } // Calculate total quantity ordered for each product
+                }
+            },
+            {
+                $sort: { totalOrdered: -1 } // Sort by total quantity ordered in descending order
+            },
+            {
+                $lookup: {
+                    from: "products", // Assuming your product collection is named "products"
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "product" // Store the matched product document in an array
+                }
+            },
+            {
+                $unwind: "$product" // Unwind the product array to get individual product documents
+            },
+            {
+                $addFields: {
+                    firstImage: { $arrayElemAt: ["$product.images", 0] } // Get the first image from the images array
+                }
+            },
+            {
+                $project: {
+                    _id: "$product._id",
+                    name: "$product.name",
+                    discount: "$product.discountPercentage",
+                    totalOrdered: "$totalOrdered",
+                    imagePath: { $concat: ["/static/images/ProductImages/", "$firstImage"] }
+                }
+            }
+        ])
+
+        console.log("bestSelingProducts : ",bestSellingProducts)
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
         let validCoupons = coupon
@@ -246,7 +290,7 @@ const getHome = async (req, res) => {
             validCoupons = newValidCoupons
         }
 
-        return res.render('user/home',{userDetails , homeCarousel , bestOfferProducts , category  , coupon : validCoupons })
+        return res.render('user/home',{userDetails , homeCarousel , bestSellingProducts , category  , coupon : validCoupons })
     } catch (error) {
         console.log(error)
         return res.redirect('/errorPage')

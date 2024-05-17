@@ -636,8 +636,7 @@
                 if (contentType && contentType.includes('application/json')) {
                     return response.json()
                 } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`; 
-                    window.history.pushState(null, '', window.location.href);   
+                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;  
                 }
             })
             .then(data => {

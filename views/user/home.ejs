@@ -91,18 +91,18 @@
     </section>
     
     <!-- Best offer products start -->
-    <% if(bestOfferProducts !="" ){ %>
+    <% if(bestSellingProducts !="" ){ %>
       <div class="parallaxone-para p-3 shadow">
         <h5 class="mt-2 MX-2 best-product-head">OUR BEST SELLING PRODUCTS</h5>
         <section class="" id="sectiontwo">
           <div class="col-12">
             <div class="scroll-container">
               <div class="d-flex overflow-auto p-3">
-                <% bestOfferProducts.forEach((product , index)=>{ %>
+                <% bestSellingProducts.forEach((product , index)=>{ %>
                   <a href="/productDetail/<%= product._id %>" class="product-outline">
                     <div class="box-two mx-2 text-center shadow" style="flex: 0 0 auto;">
                       <div class="img">
-                        <img src="/static/images/ProductImages/<%= product.images[0] %>" alt="No image">
+                        <img src="<%= product.imagePath %>" alt="No image">
                       </div>
                       <div class="name">
                         <h5>
@@ -110,7 +110,7 @@
                         </h5>
                       </div>
                       <div class="offer">
-                        <h6>Min <%= product.discountPercentage %> % off</h6>
+                        <h6>Min <%= product.discount %> % off</h6>
                       </div>
                     </div>
                   </a>
