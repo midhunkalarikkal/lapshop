@@ -75,82 +75,149 @@ const getDailyDeliveredOrders = async () => {
 
 // To return best selling products
 const bestSellingProducts = async (req, res) => {
-    const orders = await Order.find().populate("orderedItems.product");
-    const productCounts = {};
-
-    orders.forEach(order => {
-        order.orderedItems.forEach(item => {
-            const productName = item.product.name;
-            if (productName in productCounts) {
-                productCounts[productName]++;
-            } else {
-                productCounts[productName] = 1;
+    const result = await Order.aggregate([
+        { 
+            $match : {
+                status : "Delivered"
             }
-        });
-    });
+        },
+        {
+            $unwind: "$orderedItems"
+        },
+        {
+            $group: {
+                _id: "$orderedItems.product",
+                count: { $sum: "$orderedItems.quantity" }
+            }
+        },
+        {
+            $lookup: {
+                from: "products",
+                localField: "_id",
+                foreignField: "_id",
+                as: "product"
+            }
+        },
+        {
+            $unwind: "$product"
+        },
+        {
+            $project: {
+                _id: 0,
+                name: "$product.name",
+                count: 1
+            }
+        },
+        {
+            $sort: { 
+                count: -1 
+            }
+        }
+    ])
 
-    return productCounts;
+    return result 
 };
+
 
 // To return best selling categories
 const bestSellingCategories = async (req, res) => {
-    console.log("best selling categories start")
-    const orders = await Order.find()
-    .populate({
-        path: "orderedItems",
-        populate: {
-            path: "product",
-            populate: {
-                path: "category"
+    const result = await Order.aggregate([
+        { $match : 
+            {
+                status : "Delivered"
             }
-        }
-    });
-    console.log("orders : ",orders)
-    const categoryCounts = {};
-
-    orders.forEach(order => {
-        order.orderedItems.forEach(item => {
-            console.log("item : ",item)
-            const categoryName = item.product.category.name;
-            console.log("item product category : ",item.product.category.name)
-            if (categoryName in categoryCounts) {
-                categoryCounts[categoryName]++;
-            } else {
-                categoryCounts[categoryName] = 1;
+        },
+        {
+            $lookup: {
+              from: 'products',
+              localField: 'orderedItems.product',
+              foreignField: '_id',
+              as: 'products'
             }
-        });
-    });
+          },
+          {
+            $unwind: '$products'
+          },
+          {
+            $lookup: {
+              from: 'categories',
+              localField: 'products.category',
+              foreignField: '_id',
+              as: 'categories'
+            }
+          },
+          {
+            $unwind: '$categories'
+          },
+          {
+            $group: {
+              _id: '$categories.name',
+              count: { $sum: 1 }
+            }
+          },
+          {
+            $project : {
+                _id : 0,
+                category : "$_id",
+                count : "$count"
+            }
+          },
+          {
+            $sort: { count: -1 }
+          }
+    ])
 
-    return categoryCounts;
+    return result
 };
 
 // To return best selling brands
 const bestSellingBrands = async (req, res) => {
-    // const orders = await Order.find().populate("orderedItems.product.brand");
-    const orders = await Order.find()
-    .populate({
-        path: "orderedItems",
-        populate: {
-            path: "product",
-            populate: {
-                path: "brand"
+    const result = await Order.aggregate([
+        {
+            $match : {
+                status : "Delivered"
             }
-        }
-    });
-    const brandCounts = {};
-
-    orders.forEach(order => {
-        order.orderedItems.forEach(item => {
-            const brandName = item.product.brand.name;
-            if (brandName in brandCounts) {
-                brandCounts[brandName]++;
-            } else {
-                brandCounts[brandName] = 1;
+        },
+        {
+            $lookup: {
+              from: 'products',
+              localField: 'orderedItems.product',
+              foreignField: '_id',
+              as: 'products'
             }
-        });
-    });
-
-    return brandCounts;
+          },
+          {
+            $unwind: '$products'
+          },
+          {
+            $lookup: {
+              from: 'brands',
+              localField: 'products.brand',
+              foreignField: '_id',
+              as: 'brand'
+            }
+          },
+          {
+            $unwind: '$brand'
+          },
+          {
+            $group: {
+              _id: '$brand.name',
+              count: { $sum: 1 }
+            }
+          },
+          {
+            $project : {
+                _id : 0,
+                brand : "$_id",
+                count : "$count"
+            }
+          },
+          {
+            $sort: { count: -1 }
+          }
+    ])
+    return result 
 };
 
 // To get admin homepage
@@ -168,7 +235,7 @@ const getAdminHome = async (req, res) => {
         
         const orders = await Order.find()
 
-        const [dailyOrders, weeklyOrders, yearlyOrders, productCounts, categoryCounts, brandCounts] = await Promise.all([
+        const [dailyOrders, weeklyOrders, yearlyOrders , bsProds , bsCats , bsBrands] = await Promise.all([
             getDailyDeliveredOrders(),
             getWeeklyDeliveredOrders(),
             getYearlyDeliveredOrders(),
@@ -179,9 +246,9 @@ const getAdminHome = async (req, res) => {
         console.log("dailyOrders : ", dailyOrders);
         console.log("weeklyOrders : ",weeklyOrders);
         console.log("yearlyOrders : ",yearlyOrders)
-        console.log("best selling products : ",productCounts)
-        console.log("best selling categories : ",categoryCounts)
-        console.log("best selling brands : ",brandCounts)
+        console.log("best selling products : ", bsProds);
+        console.log("best selling categories : ",bsCats)
+        console.log("best selling brands : ", bsBrands)
         
         orders.forEach(order => {
             switch (order.paymentMethod) {
@@ -201,12 +268,12 @@ const getAdminHome = async (req, res) => {
                     break;
                 }
         });
+
         let topBoxData = { totalUsers : totalUsers , totalOrders : totalOrders , totalCategories : totalCategories , totalBrands : totalBrands , totalCoupons : totalCoupons}
         let paymentCount = {razorpayCount : razorpayCount , codCount : codCount , walletCount : walletCount , walletWithRazorpayCount : walletWithRazorpayCount}
         let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrders , yearlyOrders : yearlyOrders}
 
-
-        return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , productCounts , categoryCounts , brandCounts})
+        return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , bsProds , bsCats , bsBrands})
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')

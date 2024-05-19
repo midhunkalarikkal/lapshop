@@ -98,12 +98,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% Object.entries(productCounts).forEach(([productName, count]) => { %>
+                                <% bsProds.forEach(product => { %>
                                     <tr>
-                                        <td><%= productName %></td>
-                                        <td><%= count %></td>
+                                      <td><%= product.name %></td>
+                                      <td><%= product.count %></td>
                                     </tr>
-                                <% }); %>
+                                  <% }) %>
                             </tbody>
                         </table>
                     </div>
@@ -116,12 +116,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% Object.entries(categoryCounts).forEach(([categoryName, count]) => { %>
+                                <% bsCats.forEach(product => { %>
                                     <tr>
-                                        <td><%= categoryName %></td>
-                                        <td><%= count %></td>
+                                      <td><%= product.category %></td>
+                                      <td><%= product.count %></td>
                                     </tr>
-                                <% }); %>
+                                  <% }) %>
                             </tbody>
                         </table>
                     </div>
@@ -134,12 +134,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% Object.entries(brandCounts).forEach(([brandName, count]) => { %>
+                                <% bsBrands.forEach(product => { %>
                                     <tr>
-                                        <td><%= brandName %></td>
-                                        <td><%= count %></td>
+                                      <td><%= product.brand %></td>
+                                      <td><%= product.count %></td>
                                     </tr>
-                                <% }); %>
+                                  <% }) %>
                             </tbody>
                         </table>
                     </div>
