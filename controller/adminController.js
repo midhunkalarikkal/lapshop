@@ -57,24 +57,49 @@ const getDailyDeliveredOrders = async () => {
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
     return await Order.find({
-      status : "Cancelled",
+      status : "Delivered",
       orderDate: { $gte: oneWeekAgo },
     })
   };
 
 // To retun the monthly order data
-  const getYearlyDeliveredOrders = async () => {
+  const monthlyOrders = async () => {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
-    const pastYearOrders = await Order.find({
-        status: "Cancelled",
-        orderDate: { $gte: oneYearAgo }
-    });
-    return pastYearOrders;
+
+    const result = await Order.aggregate([
+        { $match: {
+            orderDate: { $gte: oneYearAgo },
+            status: "Delivered"
+          }
+        },
+        { $group: {
+            _id: {
+                year: { $year: "$orderDate" },
+                month: { $month: "$orderDate" }
+            },
+            count: { $sum: 1 }
+            }
+        },
+        {
+            $project : {
+                _id : 0,
+                month : "$_id.month",
+                count : 1
+            }
+        },
+        { $sort: {
+            "_id.year": -1,
+            "_id.month": -1
+            }
+        }
+    ]);
+
+    return result
 };
 
 // To return best selling products
-const bestSellingProducts = async (req, res) => {
+const bestSellingProducts = async () => {
     const result = await Order.aggregate([
         { 
             $match : {
@@ -120,7 +145,7 @@ const bestSellingProducts = async (req, res) => {
 
 
 // To return best selling categories
-const bestSellingCategories = async (req, res) => {
+const bestSellingCategories = async () => {
     const result = await Order.aggregate([
         { $match : 
             {
@@ -171,7 +196,7 @@ const bestSellingCategories = async (req, res) => {
 };
 
 // To return best selling brands
-const bestSellingBrands = async (req, res) => {
+const bestSellingBrands = async () => {
     const result = await Order.aggregate([
         {
             $match : {
@@ -235,17 +260,17 @@ const getAdminHome = async (req, res) => {
         
         const orders = await Order.find()
 
-        const [dailyOrders, weeklyOrders, yearlyOrders , bsProds , bsCats , bsBrands] = await Promise.all([
+        const [dailyOrders, weeklyOrders, monthlyOrdersData , bsProds , bsCats , bsBrands] = await Promise.all([
             getDailyDeliveredOrders(),
             getWeeklyDeliveredOrders(),
-            getYearlyDeliveredOrders(),
+            monthlyOrders(),
             bestSellingProducts(),
             bestSellingCategories(),
             bestSellingBrands()
         ]);
         console.log("dailyOrders : ", dailyOrders);
         console.log("weeklyOrders : ",weeklyOrders);
-        console.log("yearlyOrders : ",yearlyOrders)
+        console.log("monthlyOrders : ",monthlyOrdersData)
         console.log("best selling products : ", bsProds);
         console.log("best selling categories : ",bsCats)
         console.log("best selling brands : ", bsBrands)
@@ -271,7 +296,7 @@ const getAdminHome = async (req, res) => {
 
         let topBoxData = { totalUsers : totalUsers , totalOrders : totalOrders , totalCategories : totalCategories , totalBrands : totalBrands , totalCoupons : totalCoupons}
         let paymentCount = {razorpayCount : razorpayCount , codCount : codCount , walletCount : walletCount , walletWithRazorpayCount : walletWithRazorpayCount}
-        let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrders , yearlyOrders : yearlyOrders}
+        let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrders , monthlyOrders : monthlyOrdersData}
 
         return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , bsProds , bsCats , bsBrands})
     } catch (error) {

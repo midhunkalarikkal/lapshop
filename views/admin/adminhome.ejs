@@ -71,7 +71,7 @@
                 <div class="buttons">
                     <button class="btn btn-primary btn-sm" id="daily">Daily</button>
                     <button class="btn btn-primary btn-sm" id="weekly">Weekly</button>
-                    <button class="btn btn-primary btn-sm" id="yearly">Yearly</button>
+                    <button class="btn btn-primary btn-sm" id="monthly">Monthly</button>
                 </div>
                 <div class="d-md-flex justify-content-around">
                     <div class="col-md-8">
@@ -199,11 +199,11 @@
 
         const dailybtn = document.getElementById('daily')
         const weeklybtn = document.getElementById('weekly')
-        const yearlybtn = document.getElementById('yearly')
+        const monthlybtn = document.getElementById('monthly')
 
         console.log("daily : ",daily)
         console.log("weekly : ",weekly)
-        console.log("yearly : ",yearly)
+        console.log("monthly : ",monthly)
 
         ////// Weekly orders \\\\\\
         const weeklyData = <%- JSON.stringify( timedOrders.weeklyOrders )%>
@@ -258,19 +258,17 @@
         });
 
         ////// monthly orders \\\\\\
-        const yearlyData = <%- JSON.stringify(timedOrders.yearlyOrders )%>
+        const monthlyData = <%- JSON.stringify(timedOrders.monthlyOrders )%>
 
-        console.log("Yearly data : ", yearlyData);
+        console.log("Monthly data : ", monthlyData);
 
-        yearlybtn.addEventListener('click', function () {
+        monthlybtn.addEventListener('click', function () {
             const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             const monthlyCount = Array(12).fill(0);
 
-            yearlyData.forEach(order => {
-                const orderDate = new Date(order.orderDate);
-                const month = orderDate.getMonth();
-                console.log(`Order Date: ${orderDate.toDateString()}, Month: ${monthsOfYear[month]}`);
-                monthlyCount[month]++;
+            monthlyData.forEach(order => {
+                const month = order.month - 1;
+                monthlyCount[month] = order.count;
             });
 
             chartTwo.data.labels = monthsOfYear;
