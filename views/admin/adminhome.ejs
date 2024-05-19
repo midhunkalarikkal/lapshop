@@ -203,26 +203,6 @@
         console.log("weekly : ",weekly)
         console.log("monthly : ",monthly)
 
-        ////// Weekly orders \\\\\\
-        const weeklyData = <%- JSON.stringify(timedOrders.weeklyOrders)%>
-            console.log("weekly data : ", weeklyData)
-
-            weeklybtn.addEventListener("click", function () {
-                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                const weeklyCount = Array(7).fill(0);
-
-                weeklyData.forEach(order => {
-                    console.log("data : ", order)
-                    const day = order.dayOfWeek - 1 // Changed from 'daysOfWeek' to 'dayOfWeek'
-                    weeklyCount[day] = order.count;
-                });
-
-                chartTwo.data.labels = daysOfWeek;
-                chartTwo.data.datasets[0].data = weeklyCount;
-                chartTwo.update();
-        });
-
-
         ////// Daily orders \\\\\\
         window.addEventListener('DOMContentLoaded', (event) => {
             const dailyData = <%- JSON.stringify( timedOrders.dailyOrders )%>;
@@ -238,9 +218,8 @@
 
             const updateDailyChart = (dailyData) => {
                 dailyData.forEach(order => {
-                    const orderDate = new Date(order.orderDate);
-                    const hour = orderDate.getHours();
-                    ordersPerHour[hour]++;
+                    const hour = order.hour
+                    ordersPerHour[hour] = order.count
                 });
 
                 chartTwo.data.labels = hoursOfDay;
@@ -252,7 +231,26 @@
                 updateDailyChart(dailyData);
             });
 
-            updateDailyChart(dailyData); // Call it once to initialize the chart
+            updateDailyChart(dailyData);
+        });
+
+        ////// Weekly orders \\\\\\
+        const weeklyData = <%- JSON.stringify(timedOrders.weeklyOrders)%>
+            console.log("weekly data : ", weeklyData)
+
+            weeklybtn.addEventListener("click", function () {
+                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const weeklyCount = Array(7).fill(0);
+
+                weeklyData.forEach(order => {
+                    console.log("data : ", order)
+                    const day = order.dayOfWeek - 1
+                    weeklyCount[day] = order.count;
+                });
+
+                chartTwo.data.labels = daysOfWeek;
+                chartTwo.data.datasets[0].data = weeklyCount;
+                chartTwo.update();
         });
 
         ////// monthly orders \\\\\\

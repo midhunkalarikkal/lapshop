@@ -46,10 +46,42 @@ const postAdminlogin = async (req, res) => {
 const getDailyDeliveredOrders = async () => {
     const startOfDay = new Date();
     startOfDay.setHours(0, 0, 0, 0);
-    return await Order.find({
-      status : "Delivered",
-      orderDate: { $gte: startOfDay },
-    })
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const result = await Order.aggregate([
+        {
+        $match: {
+            status: "Delivered",
+            orderDate: {
+            $gte: startOfDay,
+            $lt: endOfDay,
+            },
+        },
+        },
+        {
+        $group: {
+            _id: {
+            $hour: {
+                date: "$orderDate",
+                timezone: "Asia/Kolkata",
+            },
+            },
+            count: { $sum: 1 },
+        },
+        },
+        { $sort: { _id: 1 } },
+        {
+            $project: {
+            _id: 0,
+            hour: "$_id",
+            count: 1,
+            },
+        },
+    ])
+    
+      return result;
   };
 
   // To return the weekly order data
@@ -288,7 +320,7 @@ const getAdminHome = async (req, res) => {
         
         const orders = await Order.find()
 
-        const [dailyOrders, weeklyOrdersData, monthlyOrdersData , bsProds , bsCats , bsBrands] = await Promise.all([
+        const [dailyOrdersData, weeklyOrdersData, monthlyOrdersData , bsProds , bsCats , bsBrands] = await Promise.all([
             getDailyDeliveredOrders(),
             getWeeklyDeliveredOrders(),
             getMonthlyDeliveredOrders(),
@@ -296,7 +328,7 @@ const getAdminHome = async (req, res) => {
             bestSellingCategories(),
             bestSellingBrands()
         ]);
-        console.log("dailyOrders : ", dailyOrders);
+        console.log("dailyOrders : ", dailyOrdersData);
         console.log("weeklyOrders : ",weeklyOrdersData);
         console.log("monthlyOrders : ",monthlyOrdersData)
         console.log("best selling products : ", bsProds);
@@ -324,7 +356,7 @@ const getAdminHome = async (req, res) => {
 
         let topBoxData = { totalUsers : totalUsers , totalOrders : totalOrders , totalCategories : totalCategories , totalBrands : totalBrands , totalCoupons : totalCoupons}
         let paymentCount = {razorpayCount : razorpayCount , codCount : codCount , walletCount : walletCount , walletWithRazorpayCount : walletWithRazorpayCount}
-        let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrdersData , monthlyOrders : monthlyOrdersData}
+        let timedOrders = {dailyOrders : dailyOrdersData , weeklyOrders : weeklyOrdersData , monthlyOrders : monthlyOrdersData}
 
         return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , bsProds , bsCats , bsBrands})
     } catch (error) {
