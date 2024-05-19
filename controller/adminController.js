@@ -56,14 +56,42 @@ const getDailyDeliveredOrders = async () => {
   const getWeeklyDeliveredOrders = async () => {
     const oneWeekAgo = new Date();
     oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-    return await Order.find({
-      status : "Delivered",
-      orderDate: { $gte: oneWeekAgo },
-    })
+  
+    const result = await Order.aggregate([
+        { $match: {
+            orderDate: { $gte: oneWeekAgo },
+            status: "Delivered"
+          }
+        },
+        { $addFields: {
+            dayOfWeek: { $dayOfWeek: "$orderDate" }
+          }
+        },
+        { $group: {
+            _id: {
+                dayOfWeek: "$dayOfWeek"
+            },
+            count: { $sum: 1 }
+            }
+        },
+        {
+            $project : {
+                _id : 0,
+                dayOfWeek : "$_id.dayOfWeek",
+                count : 1
+            }
+        },
+        { $sort: {
+            "dayOfWeek": 1
+            }
+        }
+      ]);
+  
+    return result;
   };
 
 // To retun the monthly order data
-  const monthlyOrders = async () => {
+  const getMonthlyDeliveredOrders = async () => {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
 
@@ -260,16 +288,16 @@ const getAdminHome = async (req, res) => {
         
         const orders = await Order.find()
 
-        const [dailyOrders, weeklyOrders, monthlyOrdersData , bsProds , bsCats , bsBrands] = await Promise.all([
+        const [dailyOrders, weeklyOrdersData, monthlyOrdersData , bsProds , bsCats , bsBrands] = await Promise.all([
             getDailyDeliveredOrders(),
             getWeeklyDeliveredOrders(),
-            monthlyOrders(),
+            getMonthlyDeliveredOrders(),
             bestSellingProducts(),
             bestSellingCategories(),
             bestSellingBrands()
         ]);
         console.log("dailyOrders : ", dailyOrders);
-        console.log("weeklyOrders : ",weeklyOrders);
+        console.log("weeklyOrders : ",weeklyOrdersData);
         console.log("monthlyOrders : ",monthlyOrdersData)
         console.log("best selling products : ", bsProds);
         console.log("best selling categories : ",bsCats)
@@ -296,7 +324,7 @@ const getAdminHome = async (req, res) => {
 
         let topBoxData = { totalUsers : totalUsers , totalOrders : totalOrders , totalCategories : totalCategories , totalBrands : totalBrands , totalCoupons : totalCoupons}
         let paymentCount = {razorpayCount : razorpayCount , codCount : codCount , walletCount : walletCount , walletWithRazorpayCount : walletWithRazorpayCount}
-        let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrders , monthlyOrders : monthlyOrdersData}
+        let timedOrders = {dailyOrders : dailyOrders , weeklyOrders : weeklyOrdersData , monthlyOrders : monthlyOrdersData}
 
         return res.render("admin/adminhome", { title: "LapShop Admin" , topBoxData , paymentCount , timedOrders , bsProds , bsCats , bsBrands})
     } catch (error) {

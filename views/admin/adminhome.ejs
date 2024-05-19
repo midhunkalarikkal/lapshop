@@ -195,8 +195,6 @@
             }
         });
 
-        console.log("chartOne.data.data : ", chartOne.data.datasets[0].data)
-
         const dailybtn = document.getElementById('daily')
         const weeklybtn = document.getElementById('weekly')
         const monthlybtn = document.getElementById('monthly')
@@ -206,24 +204,24 @@
         console.log("monthly : ",monthly)
 
         ////// Weekly orders \\\\\\
-        const weeklyData = <%- JSON.stringify( timedOrders.weeklyOrders )%>
-        console.log("weekly data : ",weeklyData )
+        const weeklyData = <%- JSON.stringify(timedOrders.weeklyOrders)%>
+            console.log("weekly data : ", weeklyData)
 
-        weeklybtn.addEventListener("click", function () {
-            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const weeklyCount = Array(7).fill(0);
+            weeklybtn.addEventListener("click", function () {
+                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+                const weeklyCount = Array(7).fill(0);
 
-            weeklyData.forEach(order => {
-                const orderDate = new Date(order.orderDate);
-                const day = orderDate.getDay();
-                console.log(`Order Date: ${orderDate.toDateString()}, Day of Week: ${daysOfWeek[day]}`);
-                weeklyCount[day]++;
-            });
+                weeklyData.forEach(order => {
+                    console.log("data : ", order)
+                    const day = order.dayOfWeek - 1 // Changed from 'daysOfWeek' to 'dayOfWeek'
+                    weeklyCount[day] = order.count;
+                });
 
-            chartTwo.data.labels = daysOfWeek;
-            chartTwo.data.datasets[0].data = weeklyCount;
-            chartTwo.update();
+                chartTwo.data.labels = daysOfWeek;
+                chartTwo.data.datasets[0].data = weeklyCount;
+                chartTwo.update();
         });
+
 
         ////// Daily orders \\\\\\
         window.addEventListener('DOMContentLoaded', (event) => {
