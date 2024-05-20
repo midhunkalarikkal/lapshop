@@ -139,6 +139,17 @@ const postRegisterOtp = async (req, res) => {
                 referalCode : referalCode
             })
 
+            const referedUser = await User.findOne({ referalCode : enteredReferal})
+            if(referedUser){
+                const walletOne = new Wallet({
+                    user: referedUser._id,
+                    type: "credit",
+                    amount: 300,
+                    updatedAt : new Date()
+                });
+                await walletOne.save();
+            }
+
             const userEmail = await User.findOne({email : enteredEmail})
             const userPhone = await User.findOne({phone : enteredPhone})
 
