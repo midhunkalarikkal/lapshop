@@ -425,14 +425,16 @@ const downloadInvoice = async(req,res)=>{
             await generateInvoice(orderId);
           }
 
-          fs.readFile(filePath, function (err, data) {
-            res.contentType("application/pdf");
-            res.send(data);
-          });
+        res.contentType("application/pdf");
+        res.sendFile(filePath, (err) => {
+            if (err) {
+                console.log("Error sending invoice:", err);
+                res.redirect('/errorPage');
+            }
+        });
       
     }catch(error){
         console.log("invoice download error")
-        console.log(error)
         return res.redirect('/errorPage')
     }
 }
@@ -497,19 +499,18 @@ const generateInvoice = async (orderId) => {
 
         console.log("data : ",data)
 
-        easyinvoice.createInvoice(data, function(result) {
-            console.log('PDF base64 string: ', result.pdf);
+        const result = await easyinvoice.createInvoice(data);
 
-            const folderPath = path.join(__dirname, "..", "public", "invoice");
-            const filePath = path.join(folderPath, `${order._id}.pdf`);
+        const folderPath = path.join(__dirname, "..", "public", "invoice");
+        const filePath = path.join(folderPath, `${order._id}.pdf`);
 
-            fs.mkdirSync(folderPath, { recursive: true });
-            fs.writeFileSync(filePath, result.pdf, "base64");
+        fs.mkdirSync(folderPath, { recursive: true });
+        fs.writeFileSync(filePath, result.pdf, "base64");
 
-            order.invoice = filePath;
-            order.save();
-            console.log(`Invoice saved at: ${filePath}`);
-        });
+        order.invoice = filePath;
+        await order.save();
+
+        console.log(`Invoice saved at: ${filePath}`);
 
     } catch (error) {
         console.log("Error generating invoice:", error);

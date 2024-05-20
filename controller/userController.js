@@ -257,34 +257,34 @@ const getHome = async (req, res) => {
 
         const bestSellingProducts = await Order.aggregate([
             { 
-                $match: { status: "Delivered" } // Filter orders by status
+                $match: { status: "Delivered" }
             },
             {
-                $unwind: "$orderedItems" // Split array into separate documents for each ordered item
+                $unwind: "$orderedItems"
             },
             {
                 $group: {
-                    _id: "$orderedItems.product", // Group by product
-                    totalOrdered: { $sum: "$orderedItems.quantity" } // Calculate total quantity ordered for each product
+                    _id: "$orderedItems.product",
+                    totalOrdered: { $sum: "$orderedItems.quantity" } 
                 }
             },
             {
-                $sort: { totalOrdered: -1 } // Sort by total quantity ordered in descending order
+                $sort: { totalOrdered: -1 } 
             },
             {
                 $lookup: {
-                    from: "products", // Assuming your product collection is named "products"
+                    from: "products", 
                     localField: "_id",
                     foreignField: "_id",
-                    as: "product" // Store the matched product document in an array
+                    as: "product" 
                 }
             },
             {
-                $unwind: "$product" // Unwind the product array to get individual product documents
+                $unwind: "$product" 
             },
             {
                 $addFields: {
-                    firstImage: { $arrayElemAt: ["$product.images", 0] } // Get the first image from the images array
+                    firstImage: { $arrayElemAt: ["$product.images", 0] }
                 }
             },
             {
