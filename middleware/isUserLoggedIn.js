@@ -14,6 +14,9 @@ const isUserLoggedIn = async (req, res, next) => {
                     console.log("rendering login page")
                     req.session.destroy()
                     res.redirect('/login')
+                    // const message = "Your account is checking, Please contact us"
+                    // const type = "danger"
+                    // res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`)
                 }
             })
         }else{
