@@ -1,74 +1,14 @@
 <!-- User navbar -->
 <%-include("../userpartials/Navbar.ejs")%>
-
-    <head>
-        <style>
-            /*======> Very small devices <======*/
-            @media (max-width: 576px) {
-                .product-text span {
-                    font-size: 12px;
-                }
-
-                .add-to-cart-btn {
-                    width: 5rem;
-                    font-size: 12px;
-                }
-
-                .delete-btn {
-                    font-size: 12px;
-                }
-            }
-
-            /*======> XS/SM devices <======*/
-            @media (min-width: 576px) and (max-width: 767px) {
-                .product-text span {
-                    font-size: 14px;
-                }
-            }
-
-            /*======> MD devices <======*/
-            @media (min-width: 768px) and (max-width: 991px) {
-                .product-img {
-                    width: 90%;
-                }
-            }
-
-            /*======> LG devices <======*/
-            @media (min-width: 992px) and (max-width: 1199px) {
-                .product-img {
-                    width: 60%;
-                }
-            }
-
-
-            /*======> XL devices <======*/
-            @media (min-width: 1200px) {
-                .product-img {
-                    width: 50%;
-                }
-            }
-
-            .font-semibold{
-                font-weight: 600;
-            }
-
-            .heads{
-                font-weight: 600;
-            }
-
-        </style>
-    </head>
     <section class="view">
         <div class="mt-5">
             <div class="container">
-                <div class="d-flex justify-content-between">
+                <div>
                     <h3>Your wallet</h3>
                 </div>
                 <hr>
                 <div class="row mb-3">
-
                     <% if(Array.isArray(wallet) && wallet.length > 0){ %>
-
                         <div class="col-12 col-md-4">
                             <div class="mt-4 shadow d-flex flex-column p-3">
                                 <div class="user-info text-center mt-3">
@@ -98,38 +38,52 @@
                             </div>
                         </div>
 
-                        <div class="col-md-8">
-                            <div class="mt-4 shadow p-4">
-                                <div class="d-flex text-dark text-center">
-                                    <h6 class="col-2">Id</h6>
-                                    <h6 class="col-2">Type</h6>
-                                    <h6 class="col-2">Amount</h6>
-                                    <h6 class="col-2">Date</h6>
-                                    <h6 class="col-2">Time</h6>
-                                    <h6 class="col-2">Verified</h6>
-                                </div>
-                                <hr>
-                                <% wallet.forEach((data,index)=>{ %>
-                                    <div class="row p-2">
-                                        <div class="text-dark text-center d-flex p-2">
-                                            <h6 class="col-2"><%= data._id.toString().slice(-6) %></h6>
-                                            <% if(data.type === "credit"){ %>
-                                                <h6 class="col-2"><%= data.type %></h6>
-                                                <h6 class="col-2 text-success"><%= data.amount %></h6>
+                        <div class="col-md-8 mt-4">
+                            <table class="table shadow table-striped">
+                                <thead>
+                                    <tr class="table-dark">
+                                        <th class="col-2">Id</th>
+                                        <th class="col-2">Type</th>
+                                        <th class="col-2">Amount</th>
+                                        <th class="col-2">Date</th>
+                                        <th class="col-2">Time</th>
+                                        <th class="col-2">Verified</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% wallet.forEach((data,index)=>{ %>
+                                        <tr>
+                                            <td>
+                                                <h6 class="col-2"><%= data._id.toString().slice(-6) %></h6>
+                                            </td>
+                                            <td>
+                                                <% if(data.type === "credit"){ %>
+                                                    <h6 class="col-2"><%= data.type %></h6>
                                                 <% }else{ %>
                                                     <h6 class="col-2 text-warning"><%= data.type %></h6>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if(data.type === "credit"){ %>
+                                                    <h6 class="col-2 text-success"><%= data.amount %></h6>
+                                                <% }else{ %>
                                                     <h6 class="col-2 text-danger"><%= data.amount %></h6>
-                                            <% } %>
-                                            <h6 class="col-2"><%= data.updatedAt.toLocaleDateString() %></h6>
-                                            <h6 class="col-2"><%= data.updatedAt.toLocaleTimeString() %></h6>
-                                            <h6 class="col-2"><i class="fa-solid fa-circle-check"></i></h6>
-                                        </div>
-                                        <hr>
-                                    </div>
-                                <% }) %>
-                            </div>   
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <h6 class="col-2"><%= data.updatedAt.toLocaleDateString() %></h6>
+                                            </td>
+                                            <td>
+                                                <h6 class="col-2"><%= data.updatedAt.toLocaleTimeString() %></h6>
+                                            </td>
+                                            <td>
+                                                <h6 class="col-2"><i class="fa-solid fa-circle-check"></i></h6>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table>   
                         </div>
-
                     <% }else{ %>
                     <div class="alert alert-info text-center mt-4" role="alert">No wallet for you.</div>
                     <% } %>
@@ -138,10 +92,13 @@
         </div>
     </section>
 
-    <!--  Script for sweet alert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-
+        ////// Script for the data table \\\\\\
+        $(document).ready(function(){
+            $("table").DataTable({
+                ordering : false
+            })
+        })
     </script>
 
     <!-- User footer -->
