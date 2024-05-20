@@ -59,17 +59,18 @@
         </style>
     </head>
     <section class="view">
-        
         <div class="mt-5">
             <div class="container">
                 <div class="d-flex justify-content-between">
-                    <h3>Wallet</h3>
+                    <h3>Your wallet</h3>
                 </div>
                 <hr>
-                <div class="row">
-                    <div class="wallet d-md-flex justify-content-md-between mb-4">
-                        <% if(Array.isArray(wallet) && wallet.length > 0){ %>
-                            <div class="wallet-info left col-12 col-md-4 p-3 shadow">
+                <div class="row mb-3">
+
+                    <% if(Array.isArray(wallet) && wallet.length > 0){ %>
+
+                        <div class="col-12 col-md-4">
+                            <div class="mt-4 shadow d-flex flex-column p-3">
                                 <div class="user-info text-center mt-3">
                                     <h5><%= userDetails.userName %></h5>
                                     <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check"></i></h6>
@@ -95,8 +96,10 @@
                                     <h6 class="mx-3">₹ <%= totalDebitedAmount %></h6>
                                 </div>
                             </div>
-                            
-                            <div class="wallet-history right col-12 col-md-7 shadow p-4 mt-4 mt-md-0">
+                        </div>
+
+                        <div class="col-md-8">
+                            <div class="mt-4 shadow p-4">
                                 <div class="d-flex text-dark text-center">
                                     <h6 class="col-2">Id</h6>
                                     <h6 class="col-2">Type</h6>
@@ -124,15 +127,15 @@
                                         <hr>
                                     </div>
                                 <% }) %>
-                            </div>
-                            <% }else{ %>
-                                <div class="alert alert-info text-center mt-4" role="alert">No wallet for you.</div>
-                                <% } %>
-                            </div>
+                            </div>   
+                        </div>
+
+                    <% }else{ %>
+                    <div class="alert alert-info text-center mt-4" role="alert">No wallet for you.</div>
+                    <% } %>
                 </div>
             </div>
         </div>
-
     </section>
 
     <!--  Script for sweet alert -->
