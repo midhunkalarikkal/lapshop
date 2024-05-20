@@ -64,7 +64,8 @@
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productName" class="form-label">Product name</label>
-                                    <input type="text" class="form-control" name="productName" id="productName" value="" required>
+                                    <input type="text" class="form-control" name="productName" id="productName" value="" required oninput="validateProductName()">
+                                    <span id="productNameError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productBrand" class="form-label">Product Brand</label>
@@ -88,19 +89,23 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDescription" class="form-label">Product description</label>
-                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="3" required></textarea>
+                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="3" required oninput="validateDesc()"></textarea>
+                                    <span id="productDescError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productColour" class="form-label">Product colour</label>
-                                    <input type="text" class="form-control" name="productColour" id="productColour" value="" required>
+                                    <input type="text" class="form-control" name="productColour" id="productColour" value="" required oninput="validateColor()">
+                                    <span id="productColorError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productStock" class="form-label">Product Stock</label>
-                                    <input type="number" class="form-control" min="1" name="productStock" id="productStock" value="" required>
+                                    <input type="number" class="form-control" min="1" name="productStock" id="productStock" value="" required oninput="validateStock()">
+                                    <span id="productStockError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productRealPrice" class="form-label">Product real price</label>
-                                    <input type="number" class="form-control" min="1000" name="productRealPrice" id="productRealPrice" value="" required>
+                                    <input type="number" class="form-control" min="1000" name="productRealPrice" id="productRealPrice" value="" required oninput="validateRealPrice()">
+                                    <span id="productRealPriceError" class="text-danger"></span>
                                 </div>
                                 <div class="mt-5 d-md-block d-none">
                                     <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
@@ -110,11 +115,13 @@
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productfferPrice" class="form-label">Product offer price</label>
-                                    <input type="number" class="form-control" min="1000" name="productOfferPrice" id="productOfferPrice" value="" required>
+                                    <input type="number" class="form-control" min="1000" name="productOfferPrice" id="productOfferPrice" value="" required oninput="validateOfferPrice()">
+                                    <span id="productOfferPriceError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
-                                    <input type="number" class="form-control" min="1" name="productDiscountPercentage" id="productDiscountPercentage" value="" required>
+                                    <input type="number" class="form-control" min="1" name="productDiscountPercentage" id="productDiscountPercentage" value="" required oninput="validateDiscount()">
+                                    <span id="productDiscountError" class="text-danger"></span>
                                 </div>
                                 <div class="my-5 col-md-10">
                                     <input type="file" id="file-input" name="productImages" accept="image/png, image/jpeg" onchange="preview()" multiple>
@@ -208,13 +215,186 @@
             fileInput.value = "";
         }
 
-
-        
-
        //Cancel button goBack function
        function goBack() {
         window.location.href = '/admin/products'
         }
+
+        ////// Validate product name \\\\\\
+        function validateProductName() {
+            const productNameInput = document.getElementById('productName');
+            const productName = productNameInput.value.trim();
+            const productNameError = document.getElementById('productNameError');
+
+            const productNamePattern = /^[a-zA-Z0-9]+$/;
+
+            if (productName === "") {
+                productNameInput.classList.remove('is-invalid');
+                productNameError.textContent = '';
+                return false;
+            }
+            if (productName.length < 5 || productName.length > 20) {
+                productNameInput.classList.add('is-invalid');
+                productNameError.textContent = 'Name must between 5 and 20 characters long';
+                return false;
+            }
+            if (!productNamePattern.test(productName)) {
+                productNameInput.classList.add('is-invalid');
+                productNameError.textContent = 'Name must contain only alphabets and digits.';
+                return false;
+            } else {
+                productNameInput.classList.remove('is-invalid');
+                productNameError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product description \\\\\\
+        function validateDesc() {
+            const productDescInput = document.getElementById('productDescription');
+            const productDesc = productDescInput.value.trim();
+            const productDescError = document.getElementById('productDescError');
+
+            const productDescPattern = /^[a-zA-Z0-9@_\-:,\/.%()]{20,200}$/;
+
+            if (productDesc === "") {
+                productDescInput.classList.remove('is-invalid');
+                productDescError.textContent = '';
+                return false;
+            }
+            if (productDesc.length < 20 || productDesc.length > 200) {
+                productDescInput.classList.add('is-invalid');
+                productDescError.textContent = 'Description must between 20 and 200 characters long';
+                return false;
+            }
+            if (!productDescPattern.test(productDesc)) {
+                productDescInput.classList.add('is-invalid');
+                productDescError.textContent = 'Name must contain only alphabets, digits and @_\-:,\/.%() characters.';
+                return false;
+            } else {
+                productDescInput.classList.remove('is-invalid');
+                productDescError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product color \\\\\\
+        function validateColor() {
+            const productColorInput = document.getElementById('productColour');
+            const productColor = productColorInput.value.trim();
+            const productColorError = document.getElementById('productColorError');
+
+            const productColorPattern = /^[a-zA-Z]{3,15}$/;
+
+            if (productColor === "") {
+                productColorInput.classList.remove('is-invalid');
+                productColorError.textContent = '';
+                return false;
+            }
+            if (productColor.length < 3 || productColor.length > 15) {
+                productColorInput.classList.add('is-invalid');
+                productColorError.textContent = 'Name must between 3 and 15 characters long';
+                return false;
+            }
+            if (!productColorPattern.test(productColor)) {
+                productColorInput.classList.add('is-invalid');
+                productColorError.textContent = 'Name must contain only alphabets.';
+                return false;
+            } else {
+                productColorInput.classList.remove('is-invalid');
+                productColorError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product stock \\\\\\
+        function validateStock() {
+            const productStockInput = document.getElementById('productStock');
+            const productStock = productStockInput.value.trim();
+            const productStockError = document.getElementById('productStockError');
+
+            if (productStock === "") {
+                productStockInput.classList.remove('is-invalid');
+                productStockError.textContent = '';
+                return false;
+            }
+            if (productStock < 1 || productStock > 10000) {
+                productStockInput.classList.add('is-invalid');
+                productStockError.textContent = 'Stock must between 1 and 10000.';
+                return false;
+            } else {
+                productStockInput.classList.remove('is-invalid');
+                productStockError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product real price \\\\\\
+        function validateRealPrice() {
+            const productRealPriceInput = document.getElementById('productRealPrice');
+            const productRealPrice = productRealPriceInput.value.trim();
+            const productRealPriceError = document.getElementById('productRealPriceError');
+
+            if (productRealPrice === "") {
+                productRealPriceInput.classList.remove('is-invalid');
+                productRealPriceError.textContent = '';
+                return false;
+            }
+            if (productRealPrice < 500 || productRealPrice > 200000) {
+                productRealPriceInput.classList.add('is-invalid');
+                productRealPriceError.textContent = 'Real price must between 500 and 200000.';
+                return false;
+            } else {
+                productRealPriceInput.classList.remove('is-invalid');
+                productRealPriceError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product offer price \\\\\\
+        function validateOfferPrice() {
+            const productOfferPriceInput = document.getElementById('productOfferPrice');
+            const productOfferPrice = productOfferPriceInput.value.trim();
+            const productOfferPriceError = document.getElementById('productOfferPriceError');
+
+            if (productOfferPrice === "") {
+                productOfferPriceInput.classList.remove('is-invalid');
+                productOfferPriceError.textContent = '';
+                return false;
+            }
+            if (productOfferPrice < 400 || productOfferPrice > 200000) {
+                productOfferPriceInput.classList.add('is-invalid');
+                productOfferPriceError.textContent = 'Offer price must between 400 and 200000.';
+                return false;
+            } else {
+                productOfferPriceInput.classList.remove('is-invalid');
+                productOfferPriceError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product discount percentage \\\\\\
+        function validateDiscount() {
+            const productDiscountInput = document.getElementById('productDiscountPercentage');
+            const productDiscount = productDiscountInput.value.trim();
+            const productDiscountError = document.getElementById('productDiscountError');
+
+            if (productDiscount === "") {
+                productDiscountInput.classList.remove('is-invalid');
+                productDiscountError.textContent = '';
+                return false;
+            }
+            if (productDiscount < 1 || productDiscount >= 100) {
+                productDiscountInput.classList.add('is-invalid');
+                productDiscountError.textContent = 'Discount percentage must between 1 and 99.';
+                return false;
+            } else {
+                productDiscountInput.classList.remove('is-invalid');
+                productDiscountError.textContent = '';
+                return true;
+            }
+        }
+
     </script>
 
 <!-- Admin foter -->
