@@ -628,10 +628,8 @@
                 body: JSON.stringify(data)
             })
             .then(response => {
-                console.log("type of response : ",typeof response)
-                console.log("response : ",response)
                 const contentType = response.headers.get('content-type');
-                const message = "Your account is checking, Please contact us"
+                const message = "Your account is blocked, Please contact us"
                 const type = "danger"
                 if (contentType && contentType.includes('application/json')) {
                     return response.json()
