@@ -252,8 +252,12 @@ const getLogout = async(req,res)=>{
 const getHome = async (req, res) => {
     try {
         console.log("Home api start")
-        const currentDate = new Date();
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
+        const category = await Category.find({isBlocked : false})
+        const coupon = await Coupon.find({ isBlocked : false})
+        const brands = await Brand.find({ isBlocked : false})
+
+        console.log("brands : ",brands)
 
         const bestSellingProducts = await Order.aggregate([
             { 
@@ -298,9 +302,7 @@ const getHome = async (req, res) => {
             }
         ])
 
-        console.log("bestSelingProducts : ",bestSellingProducts)
-        const category = await Category.find({isBlocked : false})
-        const coupon = await Coupon.find({ isBlocked : false})
+        
         let validCoupons = coupon
         let newValidCoupons = []
         let userDetails = req.session.userNC
@@ -316,7 +318,7 @@ const getHome = async (req, res) => {
             validCoupons = newValidCoupons
         }
 
-        return res.render('user/home',{userDetails , homeCarousel , bestSellingProducts , category  , coupon : validCoupons })
+        return res.render('user/home',{userDetails , homeCarousel , bestSellingProducts , category  , coupon : validCoupons , brands})
     } catch (error) {
         console.log(error)
         return res.redirect('/errorPage')
