@@ -121,7 +121,7 @@
                                     <label for="file-input" class="file-label bg-primary">
                                         <i class="fas fa-upload"></i> &nbsp; Select images
                                     </label>
-                                    <p id="num-of-files" class="num-of-files">No Files Chosen</p>
+                                    <div id="num-of-files" class="text-center">No files chosen</div>
                                     <div id="images"></div>
                                 </div>
                             </div>
@@ -162,46 +162,54 @@
     
 
     <!-- Script for the viewing of selected image -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+
         // To display the selected image in the preview
         let fileInput = document.getElementById('file-input');
         let imageContainer = document.getElementById('images');
         let numOfFiles = document.getElementById('num-of-files');
         let maxImages = 5;
+        let selectedFilesArray = [];
 
+        function preview() {
+            let newFiles = Array.from(fileInput.files);
 
-        function preview(){
-            imageContainer.innerHTML = "";
-            let selectedFiles = fileInput.files;
-
-            if (selectedFiles.length > maxImages) {
+            if (selectedFilesArray.length + newFiles.length > maxImages) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',
                     text: `You can only select up to ${maxImages} images.`,
                 });
                 fileInput.value = "";
-                numOfFiles.textContent = "No files chosen";
                 return;
             }
 
-            numOfFiles.textContent = `${fileInput.files.length} Files selected`;
+            selectedFilesArray = selectedFilesArray.concat(newFiles);
 
-            for(i of fileInput.files){
+            numOfFiles.textContent = `${selectedFilesArray.length} Files selected`;
+
+            imageContainer.innerHTML = "";
+            selectedFilesArray.forEach(file => {
                 let reader = new FileReader();
                 let figure = document.createElement("figure");
                 let figCap = document.createElement("figcaption");
-                figCap.innerText = i.name;
+                figCap.innerText = file.name;
                 figure.appendChild(figCap);
-                reader.onload=()=>{
+                reader.onload = () => {
                     let img = document.createElement("img");
-                    img.setAttribute("src",reader.result);
-                    figure.insertBefore(img,figCap);
-                }
+                    img.setAttribute("src", reader.result);
+                    figure.insertBefore(img, figCap);
+                };
                 imageContainer.appendChild(figure);
-                reader.readAsDataURL(i);
-            }
+                reader.readAsDataURL(file);
+            });
+
+            fileInput.value = "";
         }
+
+
+        
 
        //Cancel button goBack function
        function goBack() {
