@@ -185,6 +185,16 @@
         </div>
     </section>
 
+    <div id="monthlyjsonData" class="d-none">
+        <%= JSON.stringify(timedOrders.monthlyOrders) %>
+    </div>
+    <div id="weeklyjsonData" class="d-none">
+        <%= JSON.stringify(timedOrders.weeklyOrders) %>
+    </div>
+    <div id="dailyjsonData" class="d-none">
+        <%= JSON.stringify(timedOrders.dailyOrders) %>
+    </div>
+
     <!-- Script start -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
@@ -221,7 +231,6 @@
         });
 
         ////// Chart two \\\\\\
-
         const ctxtwo = document.getElementById('myCharttwo');
 
         const chartTwo = new Chart(ctxtwo, {
@@ -247,14 +256,11 @@
         const weeklybtn = document.getElementById('weekly')
         const monthlybtn = document.getElementById('monthly')
 
-        console.log("daily : ",daily)
-        console.log("weekly : ",weekly)
-        console.log("monthly : ",monthly)
-
-        ////// Daily orders \\\\\\
+        ////// Daily orders for chart two \\\\\\
         window.addEventListener('DOMContentLoaded', (event) => {
-            const dailyData = <%- JSON.stringify( timedOrders.dailyOrders )%>;
-            console.log("Daily data : ",dailyData);
+
+            const dailyJsonDataElement = document.getElementById("dailyjsonData");
+            const dailyData = JSON.parse(dailyJsonDataElement.innerText);
 
             const hoursOfDay = Array.from({ length: 24 }, (_, i) => {
                 const hour = i === 0 ? 12 : (i <= 12 ? i : i - 12);
@@ -282,27 +288,28 @@
             updateDailyChart(dailyData);
         });
 
-        ////// Weekly orders \\\\\\
-        const weeklyData = <%- JSON.stringify(timedOrders.weeklyOrders)%>
-            console.log("weekly data : ", weeklyData)
+        ////// Weekly orders for chart two \\\\\\
+        const weeklyJsonDataElement = document.getElementById("weeklyjsonData");
+        const weeklyData = JSON.parse(weeklyJsonDataElement.innerText);
 
-            weeklybtn.addEventListener("click", function () {
-                const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-                const weeklyCount = Array(7).fill(0);
+        weeklybtn.addEventListener("click", function () {
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const weeklyCount = Array(7).fill(0);
 
-                weeklyData.forEach(order => {
-                    console.log("data : ", order)
-                    const day = order.dayOfWeek - 1
-                    weeklyCount[day] = order.count;
-                });
-
-                chartTwo.data.labels = daysOfWeek;
-                chartTwo.data.datasets[0].data = weeklyCount;
-                chartTwo.update();
+            weeklyData.forEach(order => {
+                console.log("data : ", order)
+                const day = order.dayOfWeek - 1
+                weeklyCount[day] = order.count;
+            });
+               
+            chartTwo.data.labels = daysOfWeek;
+            chartTwo.data.datasets[0].data = weeklyCount;
+            chartTwo.update();
         });
 
-        ////// monthly orders \\\\\\
-        const monthlyData = <%- JSON.stringify(timedOrders.monthlyOrders )%>
+        ////// monthly orders for chart two \\\\\\
+        const monthlyJsonDataElement = document.getElementById("monthlyjsonData");
+        const monthlyData = JSON.parse(monthlyJsonDataElement.innerText);
 
         console.log("Monthly data : ", monthlyData);
 
