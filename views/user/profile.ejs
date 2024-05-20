@@ -71,6 +71,14 @@
                                         </div>
                                         <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                             <div class="col-4 d-flex justify-content-end">
+                                                <i class="fas fa-wallet"></i>
+                                            </div>
+                                            <div class="col-8 d-flex justify-content-start">
+                                                <a href="/wallet" class="mx-2">Your wallet</a>
+                                            </div>
+                                        </div>
+                                        <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
+                                            <div class="col-4 d-flex justify-content-end">
                                                 <i class="fas fa-boxes-stacked"></i>
                                             </div>
                                             <div class="col-8 d-flex justify-content-start">
@@ -112,6 +120,12 @@
                                             <div class="col-12 d-flex">
                                                 <p class="col-4 fw-semibold">Joined on</p>
                                                 <p class="text-muted col-8"> <%= formattedDate %> </p>
+                                            </div>
+                                            <hr>
+                                            <div class="col-12 d-flex">
+                                                <p class="col-4 fw-semibold">Referal code</p>
+                                                <p class="text-muted col-4" id="referralCode"><%= userData.referalCode %></p>
+                                                <p onclick="copyReferal()" style="cursor: pointer;"><i class="fa-solid fa-copy" style="color: black;"></i> <span id="referalCopyBtn">COPY REFERAL</span></p>
                                             </div>
                                             <hr>
                                         </div>
@@ -165,67 +179,75 @@
                                                     </div>
                                                     <hr>
                                                 <% }) %>
-                                                <!-- For the lower screens extra btns start -->
-                                                <div class="col-md-4 p-3 gradient-custom text-center text-white d-flex flex-column align-items-center d-block d-md-none">
-                                                    <div class="extra-btns d-flex flex-column my-auto" style="width: 75%;">
-                                                        <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
-                                                            <% if(userData.profileimage ) { %>
-                                                                <div class="col-4 d-flex justify-content-end">
-                                                                    <i class="fas fa-upload"></i>
-                                                                </div>
-                                                                <div class="col-8 d-flex justify-content-start">
-                                                                    <a href="#" class="mx-2"  data-bs-toggle="modal" data-bs-target="#profileImageModal">Update image</a>
-                                                                </div>
-                                                                <% }else{ %>
-                                                                <div class="col-4 d-flex justify-content-end">
-                                                                    <i class="fas fa-upload"></i>
-                                                                </div>
-                                                                <div class="col-8 d-flex justify-content-start">
-                                                                    <a href="#" class="mx-2" data-bs-toggle="modal" data-bs-target="#profileImageModal">Upload image</a>
-                                                                </div>
-                                                                <% } %>
-                                                            </div>
-                                                        <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
-                                                            <div class="col-4 d-flex justify-content-end">
-                                                                <i class="fas fa-lock"></i>
-                                                            </div>
-                                                            <div class="col-8 d-flex justify-content-start">
-                                                                <a href="#" class="mx-2">Change password</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
-                                                            <div class="col-4 d-flex justify-content-end">
-                                                                <i class="fas fa-cart-shopping"></i>
-                                                            </div>
-                                                            <div class="col-8 d-flex justify-content-start">
-                                                                <a href="/cart" class="mx-2">Your cart</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
-                                                            <div class="col-4 d-flex justify-content-end">
-                                                                <i class="fas fa-heart"></i>
-                                                            </div>
-                                                            <div class="col-8 d-flex justify-content-start">
-                                                                <a href="/wishlist" class="mx-2">Your wishlist</a>
-                                                            </div>
-                                                        </div>
-                                                        <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
-                                                            <div class="col-4 d-flex justify-content-end">
-                                                                <i class="fas fa-boxes-stacked"></i>
-                                                            </div>
-                                                            <div class="col-8 d-flex justify-content-start">
-                                                                <a href="/orders" class="mx-2">Your orders</a>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <!-- For the lower screens extra btns end -->
                                             <% }else{ %>
                                                 <p class="text-muted">No addresses found.</p>
-                                                <% } %>
-                                            </div>
+                                            <% } %>
+                                        </div>
                                         <!-- User address row end -->
                                     </div>
+                                     <!-- For the lower screens extra btns start -->
+                                     <div class="col-md-4 p-3 gradient-custom text-center text-white d-flex flex-column align-items-center d-block d-md-none">
+                                        <div class="extra-btns d-flex flex-column my-auto" style="width: 75%;">
+                                            <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
+                                                <% if(userData.profileimage ) { %>
+                                                    <div class="col-4 d-flex justify-content-end">
+                                                        <i class="fas fa-upload"></i>
+                                                    </div>
+                                                    <div class="col-8 d-flex justify-content-start">
+                                                        <a href="#" class="mx-2"  data-bs-toggle="modal" data-bs-target="#profileImageModal">Update image</a>
+                                                    </div>
+                                                    <% }else{ %>
+                                                    <div class="col-4 d-flex justify-content-end">
+                                                        <i class="fas fa-upload"></i>
+                                                    </div>
+                                                    <div class="col-8 d-flex justify-content-start">
+                                                        <a href="#" class="mx-2" data-bs-toggle="modal" data-bs-target="#profileImageModal">Upload image</a>
+                                                    </div>
+                                                    <% } %>
+                                                </div>
+                                            <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
+                                                <div class="col-4 d-flex justify-content-end">
+                                                    <i class="fas fa-lock"></i>
+                                                </div>
+                                                <div class="col-8 d-flex justify-content-start">
+                                                    <a href="#" class="mx-2">Change password</a>
+                                                </div>
+                                            </div>
+                                            <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
+                                                <div class="col-4 d-flex justify-content-end">
+                                                    <i class="fas fa-cart-shopping"></i>
+                                                </div>
+                                                <div class="col-8 d-flex justify-content-start">
+                                                    <a href="/cart" class="mx-2">Your cart</a>
+                                                </div>
+                                            </div>
+                                            <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
+                                                <div class="col-4 d-flex justify-content-end">
+                                                    <i class="fas fa-heart"></i>
+                                                </div>
+                                                <div class="col-8 d-flex justify-content-start">
+                                                    <a href="/wishlist" class="mx-2">Your wishlist</a>
+                                                </div>
+                                            </div>
+                                            <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
+                                                <div class="col-4 d-flex justify-content-end">
+                                                    <i class="fas fa-wallet"></i>
+                                                </div>
+                                                <div class="col-8 d-flex justify-content-start">
+                                                    <a href="/wallet" class="mx-2">Your wallet</a>
+                                                </div>
+                                            </div>
+                                            <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
+                                                <div class="col-4 d-flex justify-content-end">
+                                                    <i class="fas fa-boxes-stacked"></i>
+                                                </div>
+                                                <div class="col-8 d-flex justify-content-start">
+                                                    <a href="/orders" class="mx-2">Your orders</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- For the lower screens extra btns end -->
                                 </div>
                              <% }else{ %>
                                 <div class="alert alert-info text-center" role="alert">No Userdata found in the database.</div>
@@ -389,6 +411,27 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+
+        ////// To copy the referal code \\\\\\
+        function copyReferal() {
+            const referralCodeElement = document.getElementById('referralCode');
+            const btn = document.getElementById('referalCopyBtn')
+            const referralCode = referralCodeElement.textContent;
+            navigator.clipboard.writeText(referralCode)
+            .then(() => {
+                console.log("Referral code copied successfully:", referralCode);
+                btn.innerHTML = "COPIED";
+                setTimeout(function () {
+                    btn.innerHTML = "COPY REFERRAL";
+                }, 3000);
+            })
+            .catch((error) => {
+                console.error("Failed to copy referral code:", error);
+                
+                alert("Failed to copy referral code. Please try again.");
+            });
+        }
+
 
         ////// To update the user information \\\\\\
         document.getElementById('saveUserInfo').addEventListener('click', function () {
