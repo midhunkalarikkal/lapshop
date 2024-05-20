@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
         type : String,
         requird : true
     },
+    referalCode : {
+        type : String,
+        required :  true
+    },
     created : {
         type : Date,
         requird : true,

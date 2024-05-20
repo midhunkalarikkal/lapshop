@@ -91,9 +91,8 @@
             }
             setTimeout(hideAlert, 3000);
 
-            ////// For showing the password
             var alertElement = document.getElementById('myAlert');
-
+            
             if (alertElement) {
                 function hideAlert() {
                     alertElement.style.transition = "opacity 1s";
@@ -104,7 +103,18 @@
                 }
                 setTimeout(hideAlert, 3000);
             }
-
+            
+            ////// For showing the password
+            function showpassword() {
+            var checkbox = document.getElementById("showPasswordCheckbox");
+            var passwordInput = document.getElementById("password");
+            
+            if (checkbox.checked) {
+                passwordInput.type = "text";
+            } else {
+                passwordInput.type = "password";
+            }
+        }
         </script>
 
         <!-- User footer -->

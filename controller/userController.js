@@ -11,6 +11,7 @@ const Wishlist = require('../models/wishlistModel')
 const Cart = require('../models/cartModel')
 const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
+const Wallet = require('../models/walletModel')
 const nodemailer = require('nodemailer')
 const crypto = require("crypto")
 const path = require('path')
@@ -22,8 +23,17 @@ let enteredFullname;
 let enteredEmail;
 let enteredPhone;
 let enteredPassword;
+let enteredReferal
 let cartItemCount;
 
+//Generate referal code
+const generateReferralCode = (fullname, phone) =>{
+    let name = fullname.replace(/\s/g, '');
+    let firstNameThree = name.substring(0, 4);
+    let phoneLastFour = phone.substring(phone.length - 4);
+    let referralCode = firstNameThree + phoneLastFour;
+    return referralCode;
+}
 
 //Generating otp function
 const generateOtp = () => {
@@ -87,6 +97,7 @@ const postRegister = async (req, res) => {
         enteredEmail = req.body.email;
         enteredPhone = req.body.phone;
         enteredPassword = req.body.password;
+        enteredReferal = req.body.referalCode
 
         const userEmail =  await User.findOne({email:enteredEmail}); 
 
@@ -116,12 +127,16 @@ const postRegisterOtp = async (req, res) => {
         const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         
         if(concatenatedOTP === saveOtp){
+            console.log("otp is okkkkkkkkkkkkkkkkkk")
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
+            const referalCode = await generateReferralCode(enteredFullname , enteredPhone)
+
             const user = new User({
                 fullname : enteredFullname,
                 email : enteredEmail,
                 phone : enteredPhone,
-                password : hashpassword
+                password : hashpassword,
+                referalCode : referalCode
             })
 
             const userEmail = await User.findOne({email : enteredEmail})

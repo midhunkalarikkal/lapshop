@@ -107,6 +107,12 @@ font-family: 'Saira Semi Condensed', sans-serif;
     font-size: 13px;
 }
 
+#referal-input{
+  border: 1px solid #50c878;
+  background-color: #282828;
+  color: var(--secondary-color);
+}
+
 .input-field .input:focus,
 .input-field .input:valid {
     border-bottom: 1px solid var(--primary-color);

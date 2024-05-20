@@ -4,6 +4,9 @@
     <head>
         <!-- User register page css -->
         <link rel='stylesheet' href='/static/css/user_register.css' type="text/css" />
+        <style>
+            
+        </style>
     </head>
 
     <div id="screen-size"></div>
@@ -46,6 +49,11 @@
                             <label for="showPasswordCheckbox" class="text-light mx-1">Show password</label>
                         </div>
                     </div>
+                    <div class="referal p-2 d-flex justify-content-around">
+                        <button class="btn btn-dark btn-sm" onclick="showRefIn(event)" style="color: #50c878;">Referal</button>
+                        <input type="text" class="d-none" id="referal-input" name="referalCode">
+                    </div>
+                                        
                     <div class="input-field">
                         <p class="paragraph text-light small">To verify your email we will send you a OTP to your email.
                         </p>
@@ -72,6 +80,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <!-- Validation script for the form -->
     <script>
+
+        ////// For the referal input \\\\\\
+        function showRefIn(e){
+            e.preventDefault()
+            document.getElementById('referal-input').classList.remove("d-none")
+        }
+
         ////// To validate the email \\\\\\
         function validateEmail() {
             var emailInput = document.getElementById("email");
@@ -124,7 +139,7 @@
         function validateFullName() {
             var fullnameInput = document.getElementById("fullname");
             var fullname = fullnameInput.value;
-            var fullnameRegex = /^[A-Za-z ]{1,40}$/;
+            var fullnameRegex = /^[A-Za-z ]{5,40}$/;
             if (!fullname) {
                 fullnameInput.classList.remove("invalid-input");
                 document.getElementById('fullnameError').innerText = "";
@@ -133,7 +148,7 @@
             } 
             if (!fullnameRegex.test(fullname)) {
                 fullnameInput.classList.add("invalid-input");
-                document.getElementById('fullnameError').innerText = "Invalid name.";
+                document.getElementById('fullnameError').innerText = "Must be 5 to 40 characters long.";
                 document.getElementById('fullname-input').classList.add('mb-3');
                 return false;
             } else {
