@@ -158,7 +158,7 @@
                     <input class="border mx-1" id="salesDateRange" type="text" name="salesDateRange" value=""/>
                 </div>
                 <div id="ifNoData"></div>
-                <table id="example" class="display table table-striped" style="width:100%; ">
+                <table id="salesTable" class="display table table-striped" style="width:100%; ">
                     <thead>
                       <tr>
                         <th>Customer</th>
@@ -173,9 +173,9 @@
                     </tbody>
                   </table>
                   <div class="table-btns mt-3 d-none" id="table-btns">
-                      <button type="button" class="btn btn-sm btn-info"
+                      <button type="button" class="btn btn-sm btn-primary text-light"
                       onclick="return ExportToExcel()"><i class="bi bi-file-earmark-spreadsheet-fill"></i> Export to Excel</i> </button>
-                      <button type="button" class="btn btn-sm btn-info"
+                      <button type="button" class="btn btn-sm btn-primary text-light"
                       onclick="return printTable()"><i class="bi bi-printer"></i> Print</i> </button>
                     </div>
                 </div>
@@ -195,16 +195,17 @@
         <%= JSON.stringify(timedOrders.dailyOrders) %>
     </div>
 
-    <!-- Script start -->
+    <!-- Script for the chart js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Script for the export to excel -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
 
-
+    <!-- Script for the data range picker -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-
 
     <script>
 
@@ -311,8 +312,6 @@
         const monthlyJsonDataElement = document.getElementById("monthlyjsonData");
         const monthlyData = JSON.parse(monthlyJsonDataElement.innerText);
 
-        console.log("Monthly data : ", monthlyData);
-
         monthlybtn.addEventListener('click', function () {
             const monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
             const monthlyCount = Array(12).fill(0);
@@ -350,7 +349,7 @@
                 .then(response => response.json())
                 .then(data => {
 
-                $('#example').DataTable().destroy();
+                $('#salesTable').DataTable().destroy();
 
                 const tableBody = document.getElementById('orderTableBody');
                 tableBody.innerHTML = '';
@@ -373,7 +372,7 @@
                     tableBtns.classList.remove("d-none")
                 });
 
-                $('#example').DataTable();
+                $('#salesTable').DataTable();
                 });
             }
 
@@ -383,7 +382,7 @@
                 .then(response => response.json())
                 .then(data => {
 
-                $('#example').DataTable().destroy();
+                $('#salesTable').DataTable().destroy();
                     const tableBody = document.getElementById('orderTableBody');
                     tableBody.innerHTML = '';
                 
@@ -404,7 +403,7 @@
                         const tableBtns = document.getElementById('table-btns')
                         tableBtns.classList.remove("d-none")
                     });
-                $('#example').DataTable();
+                $('#salesTable').DataTable();
             });
         }
 
@@ -433,36 +432,35 @@
 
             return dl ?
                 XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-                XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+                XLSX.writeFile(wb, fn || ('sales_report.' + (type || 'xlsx')));
             }
 
+            ////// print the table data in pdf format \\\\\\
             function printTable() {
-            var table = document.getElementById("salesTable");
-            var newWin = window.open('', 'Print-Window');
-            newWin.document.open();
+                var table = document.getElementById("salesTable");
+                var newWin = window.open('', 'Print-Window');
+                newWin.document.open();
 
-            newWin.document.write('<html><head><title>Print Table</title>');
-            newWin.document.write('<style>table { border-collapse: collapse; } table, th, td { border: 1px solid black; padding: 8px; }</style>');
-            newWin.document.write('</head><body>');
+                newWin.document.write('<html><head><title>Print Table</title>');
+                newWin.document.write('<style>table { border-collapse: collapse; } table, th, td { border: 1px solid black; padding: 8px; }</style>');
+                newWin.document.write('</head><body>');
 
-            newWin.document.write('<table>');
+                newWin.document.write('<table>');
 
-            for (var i = 0; i < table.rows.length; i++) {
-                newWin.document.write('<tr>');
-                for (var j = 0; j < table.rows[i].cells.length; j++) {
-                newWin.document.write('<td>' + table.rows[i].cells[j].innerHTML + '</td>');
+                for (var i = 0; i < table.rows.length; i++) {
+                    newWin.document.write('<tr>');
+                    for (var j = 0; j < table.rows[i].cells.length; j++) {
+                    newWin.document.write('<td>' + table.rows[i].cells[j].innerHTML + '</td>');
+                    }
+                    newWin.document.write('</tr>');
                 }
-                newWin.document.write('</tr>');
+                newWin.document.write('</table>');
+                newWin.document.write('</body></html>');
+
+                newWin.document.close();
+                setTimeout(function () { newWin.print(); }, 10);
             }
-            newWin.document.write('</table>');
-            newWin.document.write('</body></html>');
 
-            newWin.document.close();
-            setTimeout(function () { newWin.print(); }, 10);
-        }
-
-
-        
     </script>
     <!-- Script end -->
     <%-include("../adminpartials/admin_footer.ejs")%>
