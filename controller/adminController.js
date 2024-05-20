@@ -365,6 +365,87 @@ const getAdminHome = async (req, res) => {
     }
 }
 
+const getDailyData = async () => {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+    return await Order.find({
+      status : "Delivered",
+      statusDate : { $gte: startOfDay },
+    }).populate("userId");
+  };
+  
+  const getWeeklyData = async () => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    return await Order.find({
+        status : "Delivered",
+        statusDate : { $gte: oneWeekAgo },
+    }).populate("userId");
+  };
+  
+  const getMonthlyData = async () => {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getMonth() - 12);
+    return await Order.find({
+        status : "Delivered",
+        statusDate : { $gte: oneYearAgo },
+    }).populate("userId");
+  };
+
+  const getYearlyData = async () => {
+    const oneYearAgo = new Date();
+    oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+    return await Order.find({
+        status : "Delivered",
+        statusDate : { $gte: oneYearAgo },
+    }).populate("userId");
+  };
+
+// To send the sales report
+const salesReport = async (req, res, next) => {
+    try {
+      let salesData;
+  
+      if (req.query.startDate && req.query.endDate) {
+        const startDate = new Date(req.query.startDate);
+        startDate.setHours(0, 0, 0, 0);
+        const endDate = new Date(req.query.endDate);
+        endDate.setHours(23, 59, 59, 999);
+  
+        salesData = await Order.find({
+            status : "Delivered",
+            statusDate : { $gte: startDate, $lte: endDate },
+        }).populate("userId");
+      } else {
+        if(req.query.timePeriod){
+            console.log("req.query.timePeriod : ",req.query.timePeriod)
+        }
+        switch (req.query.timePeriod) {
+          case "daily":
+            salesData = await getDailyData();
+            break;
+          case "weekly":
+            salesData = await getWeeklyData();
+            break;
+          case "monthly":
+            salesData = await getMonthlyData();
+            break;
+        case "yearly":
+            salesData = await getYearlyData();
+            break;
+          default:
+            break;
+        }
+      }
+  
+      res.json({ salesData });
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  };
+  
+
 // To logout from admin page
 const getAdminLogout = async (req, res) => {
     try {
@@ -1076,5 +1157,6 @@ module.exports = {
     postAdminAdCarousel,
     adminBlockAdCarousel,
     adminDeleteAdCarousel,
-    adminErrorPage
+    adminErrorPage,
+    salesReport
 }

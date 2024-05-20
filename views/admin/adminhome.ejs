@@ -12,7 +12,7 @@
             <div class="first-box shadow d-sm-flex flex-wrap p-4 justify-content-between">
                 <div class="col-sm-6 col-lg-2 mb-4">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
-                        <i class="fa fa-users fa-3x"></i>
+                        <i class="fa fa-users fa-2x"></i>
                         <div class="ms-3">
                             <p class="mb-2">Total Users</p>
                             <h4 class="mb-0">
@@ -23,7 +23,7 @@
                 </div>
                 <div class="col-sm-6 col-lg-2 mb-4">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
-                        <i class="fa fa-box-open fa-3x"></i>
+                        <i class="fa fa-box-open fa-2x"></i>
                         <div class="ms-3">
                             <p class="mb-2">Total Orders</p>
                             <h4 class="mb-0">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-sm-6 col-lg-2 mb-4">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
-                        <i class="fa fa-filter fa-3x"></i>
+                        <i class="fa fa-filter fa-2x"></i>
                         <div class="ms-3">
                             <p class="mb-2">Total category</p>
                             <h4 class="mb-0">
@@ -45,7 +45,7 @@
                 </div>
                 <div class="col-sm-6 col-md-6 col-lg-2 mb-4">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
-                        <i class="fa fa-copyright fa-3x"></i>
+                        <i class="fa fa-copyright fa-2x"></i>
                         <div class="ms-3">
                             <p class="mb-2">Total brands</p>
                             <h4 class="mb-0">
@@ -56,7 +56,7 @@
                 </div>
                 <div class="col-sm-6 col-lg-2 mb-4">
                     <div class="bg-light rounded d-flex align-items-center justify-content-between p-4 shadow">
-                        <i class="fa fa-clipboard fa-3x"></i>
+                        <i class="fa fa-clipboard fa-2x"></i>
                         <div class="ms-3">
                             <p class="mb-2">Total coupons</p>
                             <h4 class="mb-0">
@@ -66,6 +66,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="second mt-3 shadow p-5">
                 <h4>Orders statistics</h4>
                 <div class="buttons">
@@ -86,7 +87,8 @@
                     </div>
                 </div>
             </div>
-            <div class="third mt-3 shadow p-5">
+
+            <div class="third mt-3 shadow p-3">
                 <h4>Best selling</h4>
                 <div class="d-flex justify-content-around">
                     <div id="productList">
@@ -145,14 +147,58 @@
                     </div>
                 </div>
             </div>
+
+            <div class="four shadow p-3 mt-3">
+                <h4 class="mb-2">Sales report</h4>
+                <div class="mb-4 mt-3 d-flex justify-content-end">
+                    <button class="btn btn-sm btn-primary" id="daily" onclick="updateSalesReport('daily')">Daily</button>
+                    <button class="btn btn-sm btn-primary mx-1" id="Weekly" onclick="updateSalesReport('weekly')">Weekly</button>
+                    <button class="btn btn-sm btn-primary mx-1" id="Monthly" onclick="updateSalesReport('monthly')">Monthly</button>
+                    <button class="btn btn-sm btn-primary mx-1" id="Yearly" onclick="updateSalesReport('yearly')">Yearly</button>
+                    <input class="border mx-1" id="salesDateRange" type="text" name="salesDateRange" value=""/>
+                </div>
+                <div id="ifNoData"></div>
+                <table id="example" class="display table table-striped" style="width:100%; ">
+                    <thead>
+                      <tr>
+                        <th>Customer</th>
+                        <th>Order ID</th>
+                        <th>Ordered Date</th>
+                        <th>Delivered On</th>
+                        <th>Payment Type</th>
+                        <th>Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                    </tbody>
+                  </table>
+                  <div class="table-btns mt-3 d-none" id="table-btns">
+                      <button type="button" class="btn btn-sm btn-info"
+                      onclick="return ExportToExcel()"><i class="bi bi-file-earmark-spreadsheet-fill"></i> Export to Excel</i> </button>
+                      <button type="button" class="btn btn-sm btn-info"
+                      onclick="return printTable()"><i class="bi bi-printer"></i> Print</i> </button>
+                    </div>
+                </div>
+              </div>
+            </div>
+
         </div>
     </section>
 
     <!-- Script start -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
+
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+
     <script>
+
+        ////// Chart one \\\\\\
         const ctx = document.getElementById('myChart');
 
         const chartOne = new Chart(ctx, {
@@ -173,6 +219,8 @@
                 }
             }
         });
+
+        ////// Chart two \\\\\\
 
         const ctxtwo = document.getElementById('myCharttwo');
 
@@ -272,8 +320,142 @@
             chartTwo.update();
         });
 
-        
+        ////// document load sales data \\\\\\
+        $(document).ready(function() {
+            updateSalesReport("daily");
+        });
 
+        ////// Set date for sales report \\\\\\
+        $('#salesDateRange').daterangepicker({
+            minSpan: {
+            days: 7
+            },
+            maxSpan: {
+            days: 31
+            }
+        }, function(start, end, label) {
+            updateSalesReportByDate(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
+        });
+
+        ////// update sales report \\\\\\
+        function updateSalesReport(timePeriod) {
+            fetch(`/admin/salesReport?timePeriod=${timePeriod}`)
+                .then(response => response.json())
+                .then(data => {
+
+                $('#example').DataTable().destroy();
+
+                const tableBody = document.getElementById('orderTableBody');
+                tableBody.innerHTML = '';
+
+                data.salesData.forEach(order => {
+                    const row = document.createElement('tr');
+
+                    row.innerHTML = `
+                        <td>${order.userId.fullname}</td>
+                        <td>${order._id.slice(-6)}</td>
+                        <td>${moment(order.orderDate).format('DD-MM-YYYY HH:mm')}</td>
+                        <td>${moment(order.statusDate).format('DD-MM-YYYY HH:mm')}</td>
+
+                        <td>${order.paymentMethod}</td>
+                        <td>₹ ${order.orderTotal}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                    const tableBtns = document.getElementById('table-btns')
+                    tableBtns.classList.remove("d-none")
+                });
+
+                $('#example').DataTable();
+                });
+            }
+
+        ////// update Sales report by date \\\\\\
+        function updateSalesReportByDate(startDate, endDate) {
+            fetch(`/admin/salesReport?startDate=${startDate}&endDate=${endDate}`)
+                .then(response => response.json())
+                .then(data => {
+
+                $('#example').DataTable().destroy();
+                    const tableBody = document.getElementById('orderTableBody');
+                    tableBody.innerHTML = '';
+                
+                    data.salesData.forEach(order => {
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                        <td>${order.userId.fullname}</td>
+                        <td>${order._id.slice(-6)}</td>
+                        <td>${moment(order.orderDate).format('DD-MM-YYYY HH:mm')}</td>
+                        <td>${moment(order.statusDate).format('DD-MM-YYYY HH:mm')}</td>
+                        
+                        <td>${order.paymentMethod}</td>
+                        <td>₹ ${order.orderTotal}</td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                        const tableBtns = document.getElementById('table-btns')
+                        tableBtns.classList.remove("d-none")
+                    });
+                $('#example').DataTable();
+            });
+        }
+
+        
+        ////// Sales report excel \\\\\\
+        function ExportToExcel(type, fn, dl) {
+            var elt = document.getElementById("salesTable");
+            var ws = XLSX.utils.table_to_sheet(elt);
+            
+            // Set column widths
+            ws["!cols"] = [];
+            var colCount = elt.rows[0].cells.length;
+            for (var i = 0; i < colCount; i++) {
+                ws["!cols"].push({ wpx: 100 });
+            }
+            
+            // Set row heights
+            ws["!rows"] = [];
+            var rowCount = elt.rows.length;
+            for (var i = 0; i < rowCount; i++) {
+                ws["!rows"].push({ hpt: 20 });
+            }
+            
+            var wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+
+            return dl ?
+                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
+                XLSX.writeFile(wb, fn || ('MySheetName.' + (type || 'xlsx')));
+            }
+
+            function printTable() {
+            var table = document.getElementById("salesTable");
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open();
+
+            newWin.document.write('<html><head><title>Print Table</title>');
+            newWin.document.write('<style>table { border-collapse: collapse; } table, th, td { border: 1px solid black; padding: 8px; }</style>');
+            newWin.document.write('</head><body>');
+
+            newWin.document.write('<table>');
+
+            for (var i = 0; i < table.rows.length; i++) {
+                newWin.document.write('<tr>');
+                for (var j = 0; j < table.rows[i].cells.length; j++) {
+                newWin.document.write('<td>' + table.rows[i].cells[j].innerHTML + '</td>');
+                }
+                newWin.document.write('</tr>');
+            }
+            newWin.document.write('</table>');
+            newWin.document.write('</body></html>');
+
+            newWin.document.close();
+            setTimeout(function () { newWin.print(); }, 10);
+        }
+
+
+        
     </script>
     <!-- Script end -->
     <%-include("../adminpartials/admin_footer.ejs")%>

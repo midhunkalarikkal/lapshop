@@ -70,6 +70,8 @@ adminRouter.post('/cancelOrder',adminAuth.isAdminLoggedIn,orderController.adminC
 adminRouter.post('/returnAccept',adminAuth.isAdminLoggedIn,orderController.adminAcceptReturn)
 adminRouter.post('/returnReject',adminAuth.isAdminLoggedIn,orderController.adminRejectReturn)
 
+adminRouter.get('/salesReport',adminAuth.isAdminLoggedIn,adminController.salesReport)
+
 adminRouter.get('/adminErrorPage',adminAuth.isAdminLoggedIn,adminController.adminErrorPage)
 
 module.exports = adminRouter
