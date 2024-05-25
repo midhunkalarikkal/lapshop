@@ -624,20 +624,34 @@ const getAdminAddProduct = async(req,res)=>{
 // To post the add product form data to database
 const postAdminAddProduct = async(req,res)=>{
     try{
+
+        console.log("Admin add product api start")
+        console.log("req.body : ",req.body)
         
         const { productName , productBrand , productColour , productStock , 
             productRealPrice , productOfferPrice , productDiscountPercentage , 
             productCategory , productDescription} = req.body
+
+            console.log("productName:", productName);
+            console.log("productBrand:", productBrand);
+            console.log("productCategory:", productCategory);
+            console.log("productDescription:", productDescription);
+            console.log("productColour:", productColour);
+            console.log("productStock:", productStock);
+            console.log("productRalPrice:", productRealPrice);
+            console.log("productOfferPrice:", productOfferPrice);
+            console.log("productDiscountPercentage:", productDiscountPercentage);
+            console.log("productImages", req.files);
             
         const existingProduct = await Product.findOne({ name : productName , description : productDescription , colour : productColour})
-        const productImages = req.files.map((file) => file.filename)
+        // const productImages = req.files.map((file) => file.filename)
                 
-        const categories = await Category.find()
+        // const categories = await Category.find()
 
-        const brands = await Brand.find()
+        // const brands = await Brand.find()
            
         if(existingProduct){
-            for (const imageName of productImages) {
+            for (const imageName of req.files) {
                 const imagePath = path.join(__dirname, "../public/images/ProductImages", imageName);
                 try {
                     await fs.promises.unlink(imagePath);
@@ -645,7 +659,8 @@ const postAdminAddProduct = async(req,res)=>{
                     console.error("Error deleting image:", error);
                 }
             }
-            return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories , brands})
+            return res.status(400).json({ success : false , message : "Product already exist"})
+            // return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories , brands})
         }else{
             const newProduct = new Product({
                 name: productName,
@@ -657,15 +672,16 @@ const postAdminAddProduct = async(req,res)=>{
                 realPrice: productRealPrice,
                 offerPrice: productOfferPrice,
                 discountPercentage: productDiscountPercentage,
-                images: productImages
+                images: req.files.map(file => file.filename)
             })
 
-            const productData = await newProduct.save()
-            return res.render('admin/adminAddProduct',{title : "LapShop Admin", productAdded : true , productExists : false , error : false , categories , brands})
+            await newProduct.save()
+            return res.status(200).json({ success : true , message : "Product Added successfully."})
+            // return res.render('admin/adminAddProduct',{title : "LapShop Admin", productAdded : true , productExists : false , error : false , categories , brands})
         }
-            
-        }catch(error){
-            console.log("Error",error)
+        
+    }catch(error){
+        console.log("Error",error)
             return res.redirect('/admin/adminErrorPage')
     }
 }
@@ -674,6 +690,8 @@ const postAdminAddProduct = async(req,res)=>{
 const adminBlockProduct = async(req,res)=>{
     try {
         let product = await Product.findById({ _id : req.params.productId })
+        const productId = req.params.productId;
+
         if (!product) {
             return res.status(404).json({ success: false, message: "Product not found" })
         } else {

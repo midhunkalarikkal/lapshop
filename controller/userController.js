@@ -475,7 +475,7 @@ const getUserShop = async(req,res)=>{
 const getCatProduct = async(req,res)=>{
     try{
         let productData
-        let prodId =[]
+        let prodId = []
         let cartProdId = []
 
         if(!req.session.user){

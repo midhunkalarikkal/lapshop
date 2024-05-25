@@ -4,6 +4,20 @@
 <head>
     <!-- Css for the admin data edit form -->
     <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
+
+    <!-- Ensure jQuery is loaded -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Ensure Bootstrap is loaded -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
+
+    <!-- Edit start -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
+    />
+    <!-- Edit end -->
+
     <!-- Custom css -->
     <style>
         input[type="file"]{
@@ -44,10 +58,72 @@
         img{
             width: 100%;
         }
+
         figcaption{
             text-align: center;
             font-size: 13px;
             margin-top: 3px;
+        }
+     
+
+        /* Edit start */
+        .wrapper {
+        background-color: #ffffff;
+        padding: 2em 3em;
+        border-radius: 0.5em;
+        }
+
+        .container-cropper .image-container,
+        .container-cropper .preview-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        input[type="file"] {
+        display: none;
+        }
+
+        .cropper-label {
+        display: block;
+        position: relative;
+        font-size: 16px;
+        text-align: center;
+        width: 250px;
+        padding: 10px 0;
+        border-radius: 0.3em;
+        margin: 16px auto;
+        cursor: pointer;
+        }
+
+        img {
+        display: block;
+        max-width: 100%;
+        }
+
+        .image-container {
+        width: 60%;
+        margin: 0 auto;
+        }
+
+        .btns {
+        display: flex;
+        justify-content: center;
+        gap: 1em;
+        margin-top: 1em;
+        }
+
+        .btns button {
+        font-size: 1em;
+        }
+
+        .btns a {
+        border: 2px solid #025bee;
+        background-color: #025bee;
+        color: #ffffff;
+        text-decoration: none;
+        padding: 1em;
+        font-size: 1em;
+        border-radius: 0.3em;
         }
 
     </style>
@@ -57,7 +133,9 @@
     <section class="view">
         <div class="container d-flex align-items-center justify-content-center">
             <div class="main col-12 col-lg-10 m-3 mt-5">
-                <form action="/admin/addProduct" method="POST" enctype="multipart/form-data">
+                <!-- /admin/addProduct -->
+                <!-- method="POST" enctype="multipart/form-data" -->
+                <form action="" enctype="multipart/form-data">
                     <div class="p-5">
                         <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new product</h4>
                         <div class="input-box d-md-flex">
@@ -69,7 +147,8 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productBrand" class="form-label">Product Brand</label>
-                                    <select class="form-select" name="productBrand" id="productBrand" required>    
+                                    <select class="form-select" name="productBrand" id="productBrand" required>
+                                        <option value="" selected disabled>Select Brand</option>    
                                         <% brands.forEach(brand => { %>
                                             <option value="<%= brand._id %>">
                                                 <%= brand.name%>
@@ -79,7 +158,8 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productCategory" class="form-label">Product category</label>
-                                    <select class="form-select" name="productCategory" id="productCategory" required>    
+                                    <select class="form-select" name="productCategory" id="productCategory" required> 
+                                        <option value="" selected disabled>Select Category</option>   
                                         <% categories.forEach(category => { %>
                                             <option value="<%= category._id %>">
                                                 <%= category.name%>
@@ -89,9 +169,12 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDescription" class="form-label">Product description</label>
-                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="3" required oninput="validateDesc()"></textarea>
+                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="5" required oninput="validateDesc()" style="resize: vertical;"   ></textarea>
                                     <span id="productDescError" class="text-danger"></span>
                                 </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productColour" class="form-label">Product colour</label>
                                     <input type="text" class="form-control" name="productColour" id="productColour" value="" required oninput="validateColor()">
@@ -107,12 +190,6 @@
                                     <input type="number" class="form-control" min="1000" name="productRealPrice" id="productRealPrice" value="" required oninput="validateRealPrice()">
                                     <span id="productRealPriceError" class="text-danger"></span>
                                 </div>
-                                <div class="mt-5 d-md-block d-none">
-                                    <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Add Product</button>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productfferPrice" class="form-label">Product offer price</label>
                                     <input type="number" class="form-control" min="1000" name="productOfferPrice" id="productOfferPrice" value="" required oninput="validateOfferPrice()">
@@ -123,101 +200,253 @@
                                     <input type="number" class="form-control" min="1" name="productDiscountPercentage" id="productDiscountPercentage" value="" required oninput="validateDiscount()">
                                     <span id="productDiscountError" class="text-danger"></span>
                                 </div>
-                                <div class="my-5 col-md-10">
-                                    <input type="file" id="file-input" name="productImages" accept="image/png, image/jpeg" onchange="preview()" multiple>
-                                    <label for="file-input" class="file-label bg-primary">
-                                        <i class="fas fa-upload"></i> &nbsp; Select images
-                                    </label>
-                                    <div id="num-of-files" class="text-center">No files chosen</div>
-                                    <div id="images"></div>
-                                </div>
                             </div>
-                            <div class="mt-4 d-block d-md-none">
-                                <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Add Product</button>
-                            </div>  
                         </div>
+
+                        <div>
+                            <div class="wrapper shadow mt-5">
+                                <div class="container container-cropper d-flex flex-column flex-md-row justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="image-container">
+                                            <img id="image" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="preview-container d-flex align-center justify-content-center mt-2 mt-md-0">
+                                            <img id="preview-image" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <input type="file" id="file" accept="image/*" />
+                                <label class="cropper-label bg-info" for="file">Choose A Photo</label>
+                                <div class="options-cropper d-none d-flex flex-column flex-md-row">
+                                    <div class="inputs d-flex col-12 col-md-6">
+                                        <input class="form-control"
+                                        type="number"
+                                        id="height-input"
+                                        placeholder="Enter Height"
+                                        max="780"
+                                        />
+                                        <input class="form-control"
+                                        type="number"
+                                        id="width-input"
+                                        placeholder="Enter Width"
+                                        max="780"
+                                        />
+                                    </div>
+                                    <div class="buttons gap-1 col-12 col-md-6 mt-2 d-flex justify-content-center">
+                                        <button class="aspect-ratio-button btn btn-secondary">16:9</button>
+                                        <button class="aspect-ratio-button btn btn-secondary">4:3</button>
+                                        <button class="aspect-ratio-button btn btn-secondary">1:1</button>
+                                        <button class="aspect-ratio-button btn btn-secondary">2:3</button>
+                                        <button class="aspect-ratio-button btn btn-secondary">Free</button>
+                                    </div>
+                                </div>
+                                <div class="btns">
+                                  <button id="preview" class="btn btn-primary btn-sm">Preview</button>
+                                  <button id="select" class="btn btn-primary btn-sm">Select</button>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="my-5">
+                            <div id="images"></div>
+                        </div>
+                        <div class="mt-4 p-3">
+                            <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                            <button class="btn btn-primary" onclick="addProduct(event)">Add Product</button>
+                        </div>  
+
                     </div>
                 </form>
             </div>  
         </div>
     </section>
 
-    <% if (productAdded) { %>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Product added successfully!',
-                showConfirmButton: false,
-                timer: 1500
-            }).then(() => {
-                window.location.href = '/admin/adminAddProduct';
-            });
-        </script>
-    <% } else if (productExists) { %>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            Swal.fire("Error", "Product already exists!", "error");
-        </script>
-    <% } else if (error) { %>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-        <script>
-            Swal.fire("Error", "<%= error %>", "error");
-        </script>
-    <% } %>
-    
-
-    <!-- Script for the viewing of selected image -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>    
     <script>
 
-        // To display the selected image in the preview
-        let fileInput = document.getElementById('file-input');
-        let imageContainer = document.getElementById('images');
-        let numOfFiles = document.getElementById('num-of-files');
-        let maxImages = 5;
-        let selectedFilesArray = [];
+        ////// For the croping and saving the images \\\\\\
+        let imageArray = []
+        let fileInput = document.getElementById("file");
+        let image = document.getElementById("image");
+        let selectButton = document.getElementById("select");
+        let aspectRatio = document.querySelectorAll(".aspect-ratio-button");
+        const previewButton = document.getElementById("preview");
+        const previewImage = document.getElementById("preview-image");
+        const options = document.querySelector(".options-cropper");
+        const widthInput = document.getElementById("width-input");
+        const heightInput = document.getElementById("height-input");
+        let imageContainer = document.getElementById("images")
+        let cropper = "";
+        let fileName = "";
+        let imgSrc;
 
-        function preview() {
-            let newFiles = Array.from(fileInput.files);
+        fileInput.onchange = () => {
+            previewImage.src = "";
+            heightInput.value = 0;
+            widthInput.value = 0;
+            selectButton.classList.add("d-none");
 
-            if (selectedFilesArray.length + newFiles.length > maxImages) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: `You can only select up to ${maxImages} images.`,
+            let reader = new FileReader();
+            reader.readAsDataURL(fileInput.files[0]);
+
+            reader.onload = () => {
+                image.setAttribute("src", reader.result);
+                if (cropper) {
+                cropper.destroy();
+                }
+                cropper = new Cropper(image);
+                options.classList.remove("d-none");
+                previewButton.classList.remove("d-none");
+            };
+            fileName = fileInput.files[0].name.split(".")[0];
+            };
+
+            //Set aspect ration
+            aspectRatio.forEach((element) => {
+                element.addEventListener("click", () => {
+                    if (element.innerText == "Free") {
+                    cropper.setAspectRatio(NaN);
+                    } else {
+                    cropper.setAspectRatio(eval(element.innerText.replace(":", "/")));
+                    }
                 });
-                fileInput.value = "";
-                return;
-            }
-
-            selectedFilesArray = selectedFilesArray.concat(newFiles);
-
-            numOfFiles.textContent = `${selectedFilesArray.length} Files selected`;
-
-            imageContainer.innerHTML = "";
-            selectedFilesArray.forEach(file => {
-                let reader = new FileReader();
-                let figure = document.createElement("figure");
-                let figCap = document.createElement("figcaption");
-                figCap.innerText = file.name;
-                figure.appendChild(figCap);
-                reader.onload = () => {
-                    let img = document.createElement("img");
-                    img.setAttribute("src", reader.result);
-                    figure.insertBefore(img, figCap);
-                };
-                imageContainer.appendChild(figure);
-                reader.readAsDataURL(file);
             });
 
-            fileInput.value = "";
+            heightInput.addEventListener("input", () => {
+                const { height } = cropper.getImageData();
+                if (parseInt(heightInput.value) > Math.round(height)) {
+                    heightInput.value = Math.round(height);
+                }
+
+                let newHeight = parseInt(heightInput.value);
+                cropper.setCropBoxData({ height: newHeight });
+            });
+
+            widthInput.addEventListener("input", () => {
+                const { width } = cropper.getImageData();
+                if (parseInt(widthInput.value) > Math.round(width)) {
+                    widthInput.value = Math.round(width);
+                }
+
+                let newWidth = parseInt(widthInput.value);
+                cropper.setCropBoxData({ width: newWidth });
+            });
+
+            previewButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                selectButton.classList.remove("d-none");
+                imgSrc = cropper.getCroppedCanvas({}).toDataURL();
+
+                previewImage.src = imgSrc;
+
+                selectButton.setAttribute("href", imgSrc);
+            });
+
+            selectButton.addEventListener("click",function(event){
+                event.preventDefault()
+                imageArray.push(imgSrc)
+                let figure = document.createElement("figure");
+                let img = document.createElement("img");
+                img.setAttribute("src",imgSrc);
+                figure.appendChild(img);       
+                imageContainer.appendChild(figure);
+            })
+
+            window.onload = () => {
+            selectButton.classList.add("d-none");
+            options.classList.add("d-none");
+            previewButton.classList.add("d-none");
+        };
+
+        ////// fetch to send the form data \\\\\\
+        function addProduct(e){
+            e.preventDefault()
+           
+            const productName = document.getElementById("productName").value
+            const productBrand = document.getElementById("productBrand").value
+            const productCategory = document.getElementById("productCategory").value
+            const productDescription = document.getElementById("productDescription").value
+            const productColour = document.getElementById("productColour").value
+            const productStock = document.getElementById("productStock").value
+            const productRealPrice = document.getElementById("productRealPrice").value
+            const productOfferPrice = document.getElementById("productOfferPrice").value
+            const productDiscountPercentage = document.getElementById("productDiscountPercentage").value
+            const productImages = document.getElementById("file-input").value
+            console.log("productName:", productName);
+            console.log("productBrand:", productBrand);
+            console.log("productCategory:", productCategory);
+            console.log("productDescription:", productDescription);
+            console.log("productColour:", productColour);
+            console.log("productStock:", productStock);
+            console.log("productRalPrice:", productRealPrice);
+            console.log("productOfferPrice:", productOfferPrice);
+            console.log("productDiscountPercentage:", productDiscountPercentage);
+            console.log("ImageArray", imageArray);
+
+            const formData = new FormData()
+            formData.append("productName",productName)            
+            formData.append("productBrand",productBrand)            
+            formData.append("productCategory",productCategory)            
+            formData.append("productDescription",productDescription)            
+            formData.append("productColour",productColour)            
+            formData.append("productStock",productStock)            
+            formData.append("productRealPrice",productRealPrice)            
+            formData.append("productOfferPrice",productOfferPrice)            
+            formData.append("productDiscountPercentage",productDiscountPercentage)
+
+            imageArray.forEach((imageDataUrl, index) => {
+                let byteString = atob(imageDataUrl.split(',')[1]);
+                let mimeString = imageDataUrl.split(',')[0].split(':')[1].split(';')[0];
+                let ab = new ArrayBuffer(byteString.length);
+                let ia = new Uint8Array(ab);
+                for (let i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+                let blob = new Blob([ab], {type: mimeString});
+                formData.append(`productImages`, blob, `image${index}.png`);
+            });
+
+            console.log("Formdata : ",formData)
+            
+            fetch("/admin/addProduct", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: data.message,
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(()=>{
+                        window.location.href = "/admin/products"
+                    })
+                } else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: data.message,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'An error occurred while adding the product.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+                });
+                console.error('Error:', error);
+            });
         }
 
-       //Cancel button goBack function
-       function goBack() {
-        window.location.href = '/admin/products'
+       ////// Cancel button goBack function \\\\\\
+        function goBack() {
+            window.location.href = '/admin/products'
         }
 
         ////// Validate product name \\\\\\
@@ -226,23 +455,25 @@
             const productName = productNameInput.value.trim();
             const productNameError = document.getElementById('productNameError');
 
-            const productNamePattern = /^[a-zA-Z0-9]+$/;
+            const productNamePattern = /^[a-zA-Z0-9\s]+$/;
 
             if (productName === "") {
-                productNameInput.classList.remove('is-invalid');
                 productNameError.textContent = '';
+                productNameInput.classList.remove('is-invalid');
                 return false;
             }
+
             if (productName.length < 5 || productName.length > 20) {
                 productNameInput.classList.add('is-invalid');
-                productNameError.textContent = 'Name must between 5 and 20 characters long';
+                productNameError.textContent = 'Name must be between 5 and 20 characters long.';
                 return false;
             }
+
             if (!productNamePattern.test(productName)) {
                 productNameInput.classList.add('is-invalid');
-                productNameError.textContent = 'Name must contain only alphabets and digits.';
+                productNameError.textContent = 'Name must contain only alphabets, digits, and spaces.';
                 return false;
-            } else {
+            } else { 
                 productNameInput.classList.remove('is-invalid');
                 productNameError.textContent = '';
                 return true;
@@ -255,7 +486,7 @@
             const productDesc = productDescInput.value.trim();
             const productDescError = document.getElementById('productDescError');
 
-            const productDescPattern = /^[a-zA-Z0-9@_\-:,\/.%()]{20,200}$/;
+            const productDescPattern = /^[a-zA-Z0-9@_\-:,\/.%() ]{20,200}$/;
 
             if (productDesc === "") {
                 productDescInput.classList.remove('is-invalid');
@@ -284,7 +515,7 @@
             const productColor = productColorInput.value.trim();
             const productColorError = document.getElementById('productColorError');
 
-            const productColorPattern = /^[a-zA-Z]{3,15}$/;
+            const productColorPattern = /^[a-zA-Z\s]{3,15}$/;
 
             if (productColor === "") {
                 productColorInput.classList.remove('is-invalid');
@@ -395,6 +626,45 @@
             }
         }
 
+        // To display the selected image in the preview
+        // let fileInput = document.getElementById('file-input');
+        // let imageContainer = document.getElementById('images');
+        // let numOfFiles = document.getElementById('num-of-files');
+        // let maxImages = 5;
+
+        // function preview(){
+        //     imageContainer.innerHTML = "";
+        //     let selectedFiles = fileInput.files;
+
+        //     if (selectedFiles.length > maxImages) {
+        //         Swal.fire({
+        //             icon: 'error',
+        //             title: 'Oops...',
+        //             text: `You can only select up to ${maxImages} images.`,
+        //         });
+        //         fileInput.value = "";
+        //         numOfFiles.textContent = "No files chosen";
+        //         return;
+        //     }
+
+        //     numOfFiles.textContent = `${fileInput.files.length} Files selected`;
+
+        //     for(i of fileInput.files){
+        //         let reader = new FileReader();
+        //         let figure = document.createElement("figure");
+        //         let figCap = document.createElement("figcaption");
+        //         figCap.innerText = i.name;
+        //         figure.appendChild(figCap);
+        //         reader.onload=()=>{
+        //             let img = document.createElement("img");
+        //             img.setAttribute("src",reader.result);
+        //             figure.insertBefore(img,figCap);
+        //         }
+        //         imageContainer.appendChild(figure);
+        //         reader.readAsDataURL(i);
+        //     }
+        // }
+        
     </script>
 
 <!-- Admin foter -->
