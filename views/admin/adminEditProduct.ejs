@@ -4,13 +4,9 @@
 <head>
     <!-- Css for the admin data edit form -->
     <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
-    <!-- Edit start -->
+    <!-- cropper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
-    />
-    <!-- Edit end -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
     <style>
         .thumbnail {
             position: relative;
@@ -140,7 +136,7 @@
             margin: 0 auto;
         }
 
-        .btns {
+        .btns{
             display: flex;
             justify-content: center;
             gap: 1em;
@@ -175,7 +171,8 @@
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productName" class="form-label">Product name</label>
-                                    <input type="text" class="form-control" name="productName" id="productName" value="<%= product.name %>" required>
+                                    <input type="text" class="form-control" name="productName" id="productName" value="<%= product.name %>" required oninput="validateProductName()">
+                                    <span id="productNameError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productBrand" class="form-label">Product brand</label>
@@ -199,30 +196,36 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDescription" class="form-label">Product description</label>
-                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="5"  required style="resize : vertical"><%= product.description %></textarea>
+                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="5"  required oninput="validateDesc()" style="resize : vertical"><%= product.description %></textarea>
+                                    <span id="productDescError" class="text-danger"></span>
                                 </div>
                             </div>
                         
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productColour" class="form-label">Product colour</label>
-                                    <input type="text" class="form-control" name="productColour" id="productColour" value="<%= product.colour %>" required>
+                                    <input type="text" class="form-control" name="productColour" id="productColour" value="<%= product.colour %>" required oninput="validateColor()">
+                                    <span id="productColorError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productStock" class="form-label">Product Stock</label>
-                                    <input type="number" class="form-control" name="productStock" id="productStock" value="<%= product.noOfStock %>" required>
+                                    <input type="number" class="form-control" name="productStock" id="productStock" value="<%= product.noOfStock %>" required oninput="validateStock()">
+                                    <span id="productStockError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productRealPrice" class="form-label">Product real price</label>
-                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="<%= product.realPrice %>" required>
+                                    <input type="number" class="form-control" name="productRealPrice" id="productRealPrice" value="<%= product.realPrice %>" required oninput="validateRealPrice()">
+                                    <span id="productRealPriceError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productfferPrice" class="form-label">Product offer price</label>
-                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="<%= product.offerPrice %>" required>
+                                    <input type="number" class="form-control" name="productOfferPrice" id="productOfferPrice" value="<%= product.offerPrice %>" required oninput="validateOfferPrice()">
+                                    <span id="productOfferPriceError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDiscountPercentage" class="form-label">Product discount percentage</label>
-                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="<%= product.discountPercentage %>" required>
+                                    <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="<%= product.discountPercentage %>" required oninput="validateDiscount()">
+                                    <span id="productDiscountError" class="text-danger"></span>
                                 </div>
                             </div>
                         </div>
@@ -486,6 +489,16 @@
                 return false;
             }
 
+            if (!validateProductName() || !validateDesc() || !validateColor() || !validateStock() || !validateRealPrice() || !validateOfferPrice() || !validateDiscount()) {
+            Swal.fire({
+                title: 'Validation Error',
+                text: 'Please ensure all fields are filled out correctly.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
+
             const productName = document.getElementById("productName").value
             const productBrand = document.getElementById("productBrand").value
             const productCategory = document.getElementById("productCategory").value
@@ -546,10 +559,10 @@
         }
 
 
-       ////// Cancel button goBack function \\\\\\
-       function goBack(event) {
-        event.preventDefault();
-        window.location.href = '/admin/products'
+        ////// Cancel button goBack function \\\\\\
+        function goBack(event) {
+            event.preventDefault();
+            window.location.href = '/admin/products'
         }
 
         ////// For the deletion of the existing images in databse \\\\\\
@@ -582,6 +595,183 @@
                     });
                 }
             })
+        }
+
+        ////// Validate product name \\\\\\
+        function validateProductName() {
+            const productNameInput = document.getElementById('productName');
+            const productName = productNameInput.value.trim();
+            const productNameError = document.getElementById('productNameError');
+
+            const productNamePattern = /^[a-zA-Z0-9\s]+$/;
+
+            if (productName === "") {
+                productNameError.textContent = '';
+                productNameInput.classList.remove('is-invalid');
+                return false;
+            }
+
+            if (productName.length < 5 || productName.length > 20) {
+                productNameInput.classList.add('is-invalid');
+                productNameError.textContent = 'Name must be between 5 and 20 characters long.';
+                return false;
+            }
+
+            if (!productNamePattern.test(productName)) {
+                productNameInput.classList.add('is-invalid');
+                productNameError.textContent = 'Name must contain only alphabets, digits, and spaces.';
+                return false;
+            } else { 
+                productNameInput.classList.remove('is-invalid');
+                productNameError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product description \\\\\\
+        function validateDesc() {
+            const productDescInput = document.getElementById('productDescription');
+            const productDesc = productDescInput.value.trim();
+            const productDescError = document.getElementById('productDescError');
+
+            const productDescPattern = /^[a-zA-Z0-9@_\-:,\/.%() ]{20,200}$/;
+
+            if (productDesc === "") {
+                productDescInput.classList.remove('is-invalid');
+                productDescError.textContent = '';
+                return false;
+            }
+            if (productDesc.length < 20 || productDesc.length > 200) {
+                productDescInput.classList.add('is-invalid');
+                productDescError.textContent = 'Description must between 20 and 200 characters long';
+                return false;
+            }
+            if (!productDescPattern.test(productDesc)) {
+                productDescInput.classList.add('is-invalid');
+                productDescError.textContent = 'Name must contain only alphabets, digits and @_\-:,\/.%() characters.';
+                return false;
+            } else {
+                productDescInput.classList.remove('is-invalid');
+                productDescError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product color \\\\\\
+        function validateColor() {
+            const productColorInput = document.getElementById('productColour');
+            const productColor = productColorInput.value.trim();
+            const productColorError = document.getElementById('productColorError');
+
+            const productColorPattern = /^[a-zA-Z\s]{3,15}$/;
+
+            if (productColor === "") {
+                productColorInput.classList.remove('is-invalid');
+                productColorError.textContent = '';
+                return false;
+            }
+            if (productColor.length < 3 || productColor.length > 15) {
+                productColorInput.classList.add('is-invalid');
+                productColorError.textContent = 'Name must between 3 and 15 characters long';
+                return false;
+            }
+            if (!productColorPattern.test(productColor)) {
+                productColorInput.classList.add('is-invalid');
+                productColorError.textContent = 'Name must contain only alphabets.';
+                return false;
+            } else {
+                productColorInput.classList.remove('is-invalid');
+                productColorError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product stock \\\\\\
+        function validateStock() {
+            const productStockInput = document.getElementById('productStock');
+            const productStock = productStockInput.value.trim();
+            const productStockError = document.getElementById('productStockError');
+
+            if (productStock === "") {
+                productStockInput.classList.remove('is-invalid');
+                productStockError.textContent = '';
+                return false;
+            }
+            if (productStock < 1 || productStock > 10000) {
+                productStockInput.classList.add('is-invalid');
+                productStockError.textContent = 'Stock must between 1 and 10000.';
+                return false;
+            } else {
+                productStockInput.classList.remove('is-invalid');
+                productStockError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product real price \\\\\\
+        function validateRealPrice() {
+            const productRealPriceInput = document.getElementById('productRealPrice');
+            const productRealPrice = productRealPriceInput.value.trim();
+            const productRealPriceError = document.getElementById('productRealPriceError');
+
+            if (productRealPrice === "") {
+                productRealPriceInput.classList.remove('is-invalid');
+                productRealPriceError.textContent = '';
+                return false;
+            }
+            if (productRealPrice < 500 || productRealPrice > 200000) {
+                productRealPriceInput.classList.add('is-invalid');
+                productRealPriceError.textContent = 'Real price must between 500 and 200000.';
+                return false;
+            } else {
+                productRealPriceInput.classList.remove('is-invalid');
+                productRealPriceError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product offer price \\\\\\
+        function validateOfferPrice() {
+            const productOfferPriceInput = document.getElementById('productOfferPrice');
+            const productOfferPrice = productOfferPriceInput.value.trim();
+            const productOfferPriceError = document.getElementById('productOfferPriceError');
+
+            if (productOfferPrice === "") {
+                productOfferPriceInput.classList.remove('is-invalid');
+                productOfferPriceError.textContent = '';
+                return false;
+            }
+            if (productOfferPrice < 400 || productOfferPrice > 200000) {
+                productOfferPriceInput.classList.add('is-invalid');
+                productOfferPriceError.textContent = 'Offer price must between 400 and 200000.';
+                return false;
+            } else {
+                productOfferPriceInput.classList.remove('is-invalid');
+                productOfferPriceError.textContent = '';
+                return true;
+            }
+        }
+
+        ////// Validate product discount percentage \\\\\\
+        function validateDiscount() {
+            const productDiscountInput = document.getElementById('productDiscountPercentage');
+            const productDiscount = productDiscountInput.value.trim();
+            const productDiscountError = document.getElementById('productDiscountError');
+
+            if (productDiscount === "") {
+                productDiscountInput.classList.remove('is-invalid');
+                productDiscountError.textContent = '';
+                return false;
+            }
+            if (productDiscount < 1 || productDiscount >= 100) {
+                productDiscountInput.classList.add('is-invalid');
+                productDiscountError.textContent = 'Discount percentage must between 1 and 99.';
+                return false;
+            } else {
+                productDiscountInput.classList.remove('is-invalid');
+                productDiscountError.textContent = '';
+                return true;
+            }
         }
 
     </script>

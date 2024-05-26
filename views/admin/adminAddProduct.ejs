@@ -4,21 +4,16 @@
 <head>
     <!-- Css for the admin data edit form -->
     <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
-
     <!-- Ensure jQuery is loaded -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- Ensure Bootstrap is loaded -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
 
-    <!-- Edit start -->
+    <!-- cropper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css"
-    />
-    <!-- Edit end -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
 
-    <!-- Custom css -->
     <style>
         .file-label{
             display: block;
@@ -402,6 +397,16 @@
         ////// fetch to send the form data \\\\\\
         function addProduct(e){
             e.preventDefault()
+
+            if (!validateProductName() || !validateDesc() || !validateColor() || !validateStock() || !validateRealPrice() || !validateOfferPrice() || !validateDiscount()) {
+            Swal.fire({
+                title: 'Validation Error',
+                text: 'Please ensure all fields are filled out correctly.',
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
+            return false;
+        }
            
             const productName = document.getElementById("productName").value
             const productBrand = document.getElementById("productBrand").value
