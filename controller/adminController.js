@@ -624,31 +624,15 @@ const getAdminAddProduct = async(req,res)=>{
 // To post the add product form data to database
 const postAdminAddProduct = async(req,res)=>{
     try{
-
-        console.log("Admin add product api start")
+        console.log("admin add product api start")
         console.log("req.body : ",req.body)
+        console.log("req.files : ",req.files)
         
         const { productName , productBrand , productColour , productStock , 
             productRealPrice , productOfferPrice , productDiscountPercentage , 
             productCategory , productDescription} = req.body
-
-            console.log("productName:", productName);
-            console.log("productBrand:", productBrand);
-            console.log("productCategory:", productCategory);
-            console.log("productDescription:", productDescription);
-            console.log("productColour:", productColour);
-            console.log("productStock:", productStock);
-            console.log("productRalPrice:", productRealPrice);
-            console.log("productOfferPrice:", productOfferPrice);
-            console.log("productDiscountPercentage:", productDiscountPercentage);
-            console.log("productImages", req.files);
             
         const existingProduct = await Product.findOne({ name : productName , description : productDescription , colour : productColour})
-        // const productImages = req.files.map((file) => file.filename)
-                
-        // const categories = await Category.find()
-
-        // const brands = await Brand.find()
            
         if(existingProduct){
             for (const imageName of req.files) {
@@ -660,7 +644,6 @@ const postAdminAddProduct = async(req,res)=>{
                 }
             }
             return res.status(400).json({ success : false , message : "Product already exist"})
-            // return res.render('admin/adminAddProduct', {title : "LapShop Admin", productExists : true , productAdded : false , error : false , categories , brands})
         }else{
             const newProduct = new Product({
                 name: productName,
@@ -677,12 +660,10 @@ const postAdminAddProduct = async(req,res)=>{
 
             await newProduct.save()
             return res.status(200).json({ success : true , message : "Product Added successfully."})
-            // return res.render('admin/adminAddProduct',{title : "LapShop Admin", productAdded : true , productExists : false , error : false , categories , brands})
         }
         
     }catch(error){
-        console.log("Error",error)
-            return res.redirect('/admin/adminErrorPage')
+        return res.redirect('/admin/adminErrorPage')
     }
 }
 
@@ -748,10 +729,10 @@ const adminDeleteProductImage = async(req,res)=>{
             try {
                 await fs.promises.unlink(imagePath);
             } catch (error) {
-                console.error("Error deleting image:", error);
+                return res.status(400).json({ success : false , message : "Image deletion error."})
             }
             await product.save()
-            res.json({ message: 'Image deleted successfully' });
+            return res.status(200).json({ success : true , message : "Image deleted successfully."})
         }
     }catch(error){
         console.log(error.message)
@@ -762,11 +743,14 @@ const adminDeleteProductImage = async(req,res)=>{
 // To Update a specific product from edit product page
 const adminUpdateProduct = async(req,res)=>{
     try{
-        
+        console.log("Admin update product api start")
+        console.log("req.body : ",req.body)
+        console.log("req.files : ",req.files)
+
             const product = await Product.findById(req.params.productId)
 
             if(!product){
-                return res.status(400).json({message : "Product not found"})
+                return res.status(400).json({ success : false ,  message : "Product not found"})
             }
 
             const { productName , productBrand , productColour , productStock , 
@@ -791,7 +775,7 @@ const adminUpdateProduct = async(req,res)=>{
                 }
 
                 await product.save()
-                return res.redirect('/admin/Products?success=Product updated successfully');
+                return res.status(200).json({ success : true , message : "Product updated successfully."})
         
     }catch(error){
         console.log(error.message)

@@ -20,10 +20,6 @@
 
     <!-- Custom css -->
     <style>
-        input[type="file"]{
-            display: none;
-        }
-
         .file-label{
             display: block;
             position: relative;
@@ -60,37 +56,29 @@
             width: 100%;
         }
 
-        figcaption{
-            text-align: center;
-            font-size: 13px;
-            margin-top: 3px;
-        }
-
         .delete-btn {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                background: rgba(255, 0, 0, 0.7);
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 30px;
-                height: 30px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                font-size: 18px;
-                z-index: 1;
-            }
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 1;
+        }
                 
-
-        /* Edit start */
         .wrapper {
-        background-color: #ffffff;
-        padding: 2em 3em;
-        border-radius: 0.5em;
+            background-color: #ffffff;
+            padding: 2em 3em;
+            border-radius: 0.5em;
         }
 
         .container-cropper .image-container,
@@ -100,50 +88,50 @@
         }
 
         input[type="file"] {
-        display: none;
+            display: none;
         }
 
         .cropper-label {
-        display: block;
-        position: relative;
-        font-size: 16px;
-        text-align: center;
-        width: 250px;
-        padding: 10px 0;
-        border-radius: 0.3em;
-        margin: 16px auto;
-        cursor: pointer;
+            display: block;
+            position: relative;
+            font-size: 16px;
+            text-align: center;
+            width: 250px;
+            padding: 10px 0;
+            border-radius: 0.3em;
+            margin: 16px auto;
+            cursor: pointer;
         }
 
         img {
-        display: block;
-        max-width: 100%;
+            display: block;
+            max-width: 100%;
         }
 
         .image-container {
-        width: 60%;
-        margin: 0 auto;
+            width: 60%;
+            margin: 0 auto;
         }
 
         .btns {
-        display: flex;
-        justify-content: center;
-        gap: 1em;
-        margin-top: 1em;
+            display: flex;
+            justify-content: center;
+            gap: 1em;
+            margin-top: 1em;
         }
 
         .btns button {
-        font-size: 1em;
+            font-size: 1em;
         }
 
         .btns a {
-        border: 2px solid #025bee;
-        background-color: #025bee;
-        color: #ffffff;
-        text-decoration: none;
-        padding: 1em;
-        font-size: 1em;
-        border-radius: 0.3em;
+            border: 2px solid #025bee;
+            background-color: #025bee;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 1em;
+            font-size: 1em;
+            border-radius: 0.3em;
         }
 
     </style>
@@ -153,9 +141,7 @@
     <section class="view">
         <div class="container d-flex align-items-center justify-content-center">
             <div class="main col-12 col-lg-10 m-3 mt-5">
-                <!-- /admin/addProduct -->
-                <!-- method="POST" enctype="multipart/form-data" -->
-                <form action="" enctype="multipart/form-data">
+                <form enctype="multipart/form-data">
                     <div class="p-5">
                         <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new product</h4>
                         <div class="input-box d-md-flex">
@@ -267,7 +253,7 @@
                                   <button id="preview" class="btn btn-primary btn-sm">Preview</button>
                                   <button id="select" class="btn btn-primary btn-sm">Select</button>
                                 </div>
-                              </div>
+                            </div>
                         </div>
                         <div class="my-5">
                             <div id="images"></div>
