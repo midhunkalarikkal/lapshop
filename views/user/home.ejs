@@ -22,7 +22,7 @@
         <% if(homeCarousel !="" ){ %>
           <% homeCarousel.forEach((hc, index)=> { %>
             <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-              <img src="/static/images/HomeCarousels/<%= hc.image %>" class="d-block w-100" alt="...">
+              <img src="/static/images/HomeCarousels/<%= hc.image %>" class="d-block w-100">
               <div class="carousel-caption">
                 <div class="tagline">
                   <h4>
@@ -39,23 +39,17 @@
                 </div>
               </div>
             </div>
-            <% }); %>
-              <% } else { %>
-                <div class="carousel-item active">
-                  <img src="/static/images/HomeCarousels/Ad wall 3.jpg" class="d-block w-100" alt="...">
-                  <div class="carousel-caption d-none d-md-block">
-                    <div class="tagline">
-                      <h4>Empowering Your Digital Journey Daily.</h4>
-                    </div>
-                    <div class="desc--btn">
-                      <div class="desc">
-                        <h6>Experience peak performance with our cutting-edge laptop technology solutions.</h6>
-                      </div>
-                      <button class="shop-btn" id="shop-btn">Shop Now</button>
-                    </div>
-                  </div>
-                </div>
-                <% } %>
+          <% }); %>
+        <% } else { %>
+          <div class="carousel-item active">
+            <img src="/static/images/HomeCarousels/Ad wall 3.jpg" class="d-block w-100">
+            <div class="carousel-caption d-none d-md-block">
+              <div class="tagline">
+                <h4>Empowering Your Digital Journey Daily.</h4>
+              </div>
+            </div>
+          </div>
+        <% } %>
       </div>
       <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
         data-bs-slide="prev">
@@ -100,10 +94,10 @@
     <!-- Brands end -->
 
     <!-- Category start -->
+    <% if(category){ %>
     <section class="parallax-one p-3 shadow">
       <div class="container">
         <div class="row p-3">
-          <% if(category){ %>
             <% category.forEach((cat,index)=>{ %>
               <div class="col-md-6 col-lg-3">
                 <div class="card m-3 border-0 shadow">
@@ -117,10 +111,10 @@
               </div>
             </div>
             <% }) %>
-          <% } %>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <% } %>
     <!-- Category end -->
     
     <!-- Best offer products start -->
