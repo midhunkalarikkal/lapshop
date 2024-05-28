@@ -28,17 +28,28 @@
                                             <span id="codeError" class="text-danger"></span>
                                     </div>
                                     <div class="mb-3 col-lg-10">
-                                        <label for="couponStartDate" class="form-label">Coupon start date (current date
-                                            <%= coupon.startDate.toLocaleDateString() %>)
-                                        </label>
+                                        <%
+                                        const startDate = new Date(coupon.startDate);
+                                        const inputStartDay = String(startDate.getDate()).padStart(2, '0');
+                                        const inputStartMonth = String(startDate.getMonth() + 1).padStart(2, '0');
+                                        const inputStartYear = startDate.getFullYear();
+                                        const formattedInputStartDate = `${inputStartYear}-${inputStartMonth}-${inputStartDay}`;
+                                        %>
+                                        <label for="couponStartDate" class="form-label">Coupon start date</label>
                                         <input type="date" class="form-control" name="couponStartDate"
-                                            id="couponStartDate" value="">
+                                            id="couponStartDate" value="<%= formattedInputStartDate %>">
                                     </div>
                                     <div class="mb-3 col-lg-10">
-                                        <label for="couponEndDate" class="form-label">Coupon end date (current date <%=
-                                                coupon.endDate.toLocaleDateString() %>)</label>
+                                        <%
+                                        const endDate = new Date(coupon.endDate);
+                                        const inputEndDay = String(endDate.getDate()).padStart(2, '0');
+                                        const inputEndMonth = String(endDate.getMonth() + 1).padStart(2, '0');
+                                        const inputEndYear = endDate.getFullYear();
+                                        const formattedInputEndDate = `${inputEndYear}-${inputEndMonth}-${inputEndDay}`;
+                                        %>
+                                        <label for="couponEndDate" class="form-label">Coupon end date</label>
                                         <input type="date" class="form-control" name="couponEndDate" id="couponEndDate"
-                                            value="">
+                                            value="<%= formattedInputEndDate %>">
                                     </div>
                                     <div class="mb-3 col-lg-10">
                                         <label for="couponMinAmount" class="form-label">Minimum order amount</label>
