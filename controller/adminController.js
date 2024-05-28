@@ -467,7 +467,7 @@ const getAdminLogout = async (req, res) => {
 const getAdminUsers = async (req, res) => {
     try {
         const userData = await User.find();
-        return res.render('admin/adminUserslist', { title: "LapShop Admin",  users: userData })
+        return res.render('admin/adminUsersList', { title: "LapShop Admin",  users: userData })
     } catch (error) {
         console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
