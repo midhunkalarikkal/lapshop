@@ -909,6 +909,7 @@ const getPaymentPage = async(req,res)=>{
 }
 
 // To get the order confirm page
+//orcerconfirmation file name c changed
 const getPaymentSuccess = async(req,res)=>{
     try{
         let userDetails = req.session.userNC
@@ -941,7 +942,7 @@ const getPaymentSuccess = async(req,res)=>{
             orderedDate : orderedDate,
             expectedDelivery : expectedDelivery
         }
-        return res.render('user/orderConfirmation',{userDetails , data})
+        return res.render('user/orderconfirmation',{userDetails , data})
     }catch(error){
         console.log(error.message)
         return res.redirect('/errorPage')
