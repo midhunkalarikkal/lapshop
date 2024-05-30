@@ -375,3 +375,28 @@
 .box-two .name {
     color: var(--third-color);
 }
+
+/*======> second div <======*/
+#second{
+    background-size: 600%;   
+    background-repeat: no-repeat;
+    background-position: center;
+    display: none;
+}
+
+/*======> second div lens <======*/
+#lens{
+    width: 100px;
+    height: 100px;
+    background: rgba(0,0,0,.4);
+    position: absolute;
+    border: 3px solid black;
+    transform:  translateY(-50% , -50%);
+    pointer-events: none;
+    display: none;
+}
+
+/*======> product image <======*/
+.product-image .first { 
+    position: relative; 
+}

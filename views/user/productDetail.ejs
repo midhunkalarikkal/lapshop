@@ -1,38 +1,12 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
         <!-- Custom css -->
         <link rel="stylesheet" href="/static/css/product_Detail.css">
-
-        <style>
-            #second{
-                background-size: 600%;   
-                background-repeat: no-repeat;
-                background-position: center;
-                display: none;
-            }
-
-            #lens{
-                width: 100px;
-                height: 100px;
-                background: rgba(0,0,0,.4);
-                position: absolute;
-                border: 3px solid black;
-                transform:  translateY(-50% , -50%);
-                pointer-events: none;
-                display: none;
-            }
-
-            .product-image .first { 
-                position: relative; 
-            }
-        </style>
-        
     </head>
 
     <section class="view">
-        <!-- Shop Detail Start -->
         <div class="container-fluid mt-5 d-flex flex-row justify-content-center ">
             <% if(productData !="" ){ %>
                 <div class="container mt-5 row d-flex justify-content-center">
@@ -68,8 +42,6 @@
 
                     <div class="col-5 shadow" id="second">
                     </div>
-
-                    
 
                     <div class="col-md-5 d-flex flex-column mt-4 mt-md-0" id="product-detail">
                         <h3 class="font-weight-semi-bold product-name">
