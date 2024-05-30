@@ -402,9 +402,8 @@
     </div>
     <!-- User change password Modal end -->
 
-    <!-- Script to post the user information data -->
+    <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     <script>
 
         ////// To copy the referal code \\\\\\
@@ -424,9 +423,9 @@
                     icon: 'info',
                     title: 'Copy Failed',
                     text: 'Failed to copy the code. Please try again.',
-                    timer: 3000, // Optional: Automatically close after 3 seconds
-                    timerProgressBar: true, // Optional: Show a progress bar
-                    showConfirmButton: false // Optional: Hide the confirm button
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             });
         }
@@ -458,18 +457,21 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message || 'User updated successfully'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#informationModal').modal('hide');
-                            location.reload();
-                        }
+                        text: data.message || 'User updated successfully',
+                        showConfirmButton: true,
+                        confirmButtonText: "Ok"
+                    }).then(() => {
+                        $('#informationModal').modal('hide');
+                        location.reload();
                     });
                 }).catch(error => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: error.message || 'Failed to update user information'
+                        text: error.message || 'Failed to update user information',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 });
         });
@@ -500,7 +502,10 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Please select an image'
+                    text: 'Please select an image',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false            
                 });
                 return;
             }
@@ -523,18 +528,21 @@
                 Swal.fire({
                     icon: 'success',
                     title: 'Success!',
-                    text: 'Profile image uploaded successfully'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#profileImageModal').modal('hide');
-                        location.reload();
-                    }
+                    text: 'Profile image uploaded successfully',
+                    showConfirmButton: true,
+                    confirmButtonText : "Ok"
+                }).then(() => {
+                    $('#profileImageModal').modal('hide');
+                    location.reload();
                 });
             }).catch(error => {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: error.message || 'Failed to upload profile image'
+                    text: error.message || 'Failed to upload profile image',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             });
         });
@@ -566,17 +574,22 @@
                             }
                         }).then(data => {
                             Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
-                            text: data.message || 'Address deleted successfully.'
+                                icon: 'success',
+                                title: 'Success!',
+                                text: data.message || 'Address deleted successfully.',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
                             }).then(() => {
                                 location.reload();
                             });
                         }).catch(error => {
                             Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: error.message || 'Failed to delete address'
+                                icon: 'error',
+                                title: 'Error!',
+                                text: error.message || 'Failed to delete address',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
                             });
                         });
                     }
@@ -658,14 +671,20 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'Failed to send OTP'
+                        text: 'Failed to send OTP',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Internal server error.'
+                    text: 'Internal server error.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             }
         });
@@ -699,7 +718,10 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: error.message || 'Invalid otp'
+                    text: error.message || 'Invalid otp',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             });
         });
@@ -716,7 +738,10 @@
                 Swal.fire({
                     icon: 'info',
                     title: 'Password!',
-                    text: 'Password is not matching.'
+                    text: 'Password is not matching.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
                 return;
             }
@@ -740,7 +765,10 @@
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Password',
-                                    text: 'Password changed successfully.'
+                                    text: 'Password changed successfully.',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
                                 }).then(() => {
                                     $('#passModal').modal('hide');
                                 });
@@ -748,7 +776,10 @@
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Failed!',
-                                    text: 'Password updation failed, try again.'
+                                    text: 'Password updation failed, try again.',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
                                 });
                             }
                         } else {
@@ -759,7 +790,10 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Internal server error.'
+                    text: 'Internal server error.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             }
         });
