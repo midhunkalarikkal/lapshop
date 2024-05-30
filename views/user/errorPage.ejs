@@ -6,55 +6,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LapShop</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!--Bootstrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <!--Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
-    <style>
-        /*======> Very small devices <======*/
-        @media (max-width: 576px) {
-      
-        }
-
-        /*======> XS/SM devices <======*/
-        @media (min-width: 576px) and (max-width: 767px) {
-
-        }
-
-        /*======> MD devices <======*/
-        @media (min-width: 768px) and (max-width: 991px) {
-   
-        }
-
-        /*======> LG devices <======*/
-        @media (min-width: 992px) and (max-width: 1199px) {
-
-        }
-
-
-        /*======> XL devices <======*/
-        @media (min-width: 1200px) {
-
-        }
-
-      
-    </style>
+    
 </head>
 
 <body>
 
     <div id="screen-size"></div>
 
-    <!-- Navbar One-->
     <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
         <div class="container">
-
-            <!-- Navbar Logo -->
             <div class="logo col-2">
                 <a href="" class="navbar-brand">
                     <span class="fw-bold fs-3">LapShop</span>
@@ -62,10 +34,8 @@
             </div>
         </div>
     </nav>
-    <!-- Navbar end -->
 
     <section class="view">
-        <!-- main div start -->
             <div class="error-wrap mt-5">
                 <div class="container d-flex align-item-center justify-content-center">
                     <div class="col-10 shadow mt-5 d-flex align-item-center justify-content-center flex-column">
@@ -84,10 +54,9 @@
                     </div>
                 </div>
             </div>
-        <!-- main div end -->
     </section>
 
-    <!-- Modal start -->
+
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -110,9 +79,7 @@
             </div>
         </div>
     </div>
-    <!-- Modal end -->
 
-    <!-- footer start -->
     <footer class="text-light" id="footer">
         <div class="container-fluid">
             <div class="row p-5 d-flex justify-content-center">
@@ -127,16 +94,18 @@
             </div>
         </div>
     </footer>
-    <!-- footer end -->
 
+    <!-- Bootstrap script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-        </script>   
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    </script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-        </script>
+    </script>
+
     <script>
+        ////// To go to shop page \\\\\\
         document.getElementById('shop').addEventListener("click",function(event){
             event.preventDefault()
             window.location.href = '/shop'
