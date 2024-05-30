@@ -1,13 +1,11 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
-        <!-- User home css file -->
+        <!-- custom css for user profile -->
         <link rel='stylesheet' href='/static/css/profile.css' type="text/css" />
     </head>
 
-
-    <!-- User home banner -->
     <section class="view">
         <div class="container mt-3 py-3 h-100">
             <div class="row d-flex justify-content-center">
@@ -89,7 +87,6 @@
                                 </div>
                                 <div class="col-md-8">
                                     <div class="card-body p-4">
-                                        <!-- User information row start -->
                                         <div class="row pt-1">
                                             <div class="col-12 d-flex align-items-center">
                                                 <div class="edit-btn col-4">
@@ -129,8 +126,7 @@
                                             </div>
                                             <hr>
                                         </div>
-                                        <!-- User information row end -->
-                                        <!-- User address row start -->
+                                        
                                         <div class="row pt-1 address.container">
                                             <div class="col-12 d-flex align-items-center">
                                                 <div class="edit-btn col-4">
@@ -183,10 +179,9 @@
                                                 <p class="text-muted">No addresses found.</p>
                                             <% } %>
                                         </div>
-                                        <!-- User address row end -->
                                     </div>
-                                     <!-- For the lower screens extra btns start -->
-                                     <div class="col-md-4 p-3 gradient-custom text-center text-white d-flex flex-column align-items-center d-block d-md-none">
+                                    
+                                    <div class="col-md-4 p-3 gradient-custom text-center text-white d-flex flex-column align-items-center d-block d-md-none">
                                         <div class="extra-btns d-flex flex-column my-auto" style="width: 75%;">
                                             <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                 <% if(userData.profileimage ) { %>
@@ -196,14 +191,14 @@
                                                     <div class="col-8 d-flex justify-content-start">
                                                         <a href="#" class="mx-2"  data-bs-toggle="modal" data-bs-target="#profileImageModal">Update image</a>
                                                     </div>
-                                                    <% }else{ %>
+                                                <% }else{ %>
                                                     <div class="col-4 d-flex justify-content-end">
                                                         <i class="fas fa-upload"></i>
                                                     </div>
                                                     <div class="col-8 d-flex justify-content-start">
                                                         <a href="#" class="mx-2" data-bs-toggle="modal" data-bs-target="#profileImageModal">Upload image</a>
                                                     </div>
-                                                    <% } %>
+                                                <% } %>
                                                 </div>
                                             <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                 <div class="col-4 d-flex justify-content-end">
@@ -247,9 +242,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- For the lower screens extra btns end -->
+
                                 </div>
-                             <% }else{ %>
+                            <% }else{ %>
                                 <div class="alert alert-info text-center" role="alert">No Userdata found in the database.</div>
                             <% } %>
                         </div>
@@ -419,16 +414,20 @@
             const referralCode = referralCodeElement.textContent;
             navigator.clipboard.writeText(referralCode)
             .then(() => {
-                console.log("Referral code copied successfully:", referralCode);
                 btn.innerHTML = "COPIED";
                 setTimeout(function () {
                     btn.innerHTML = "COPY REFERRAL";
                 }, 3000);
             })
             .catch((error) => {
-                console.error("Failed to copy referral code:", error);
-                
-                alert("Failed to copy referral code. Please try again.");
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Copy Failed',
+                    text: 'Failed to copy the code. Please try again.',
+                    timer: 3000, // Optional: Automatically close after 3 seconds
+                    timerProgressBar: true, // Optional: Show a progress bar
+                    showConfirmButton: false // Optional: Hide the confirm button
+                });
             });
         }
 
@@ -441,8 +440,6 @@
                 userId: document.getElementById('userId').value
             };
 
-            console.log(formData);
-
             fetch('/updateUserInfo', {
                 method: 'POST',
                 headers: {
@@ -452,12 +449,10 @@
             })
                 .then(response => {
                     const contentType = response.headers.get('content-type');
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
                     if (contentType && contentType.includes('application/json')) {
                         return response.json(); 
                     } else {
-                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                        window.location.href = `/login`;
                     }
                 }).then(data => {
                     Swal.fire({
@@ -514,19 +509,15 @@
             formData.append('profileImg', userProfileImageInput);
             formData.append('userId', userId);
 
-            console.log(formData)
-
             fetch('/uploadProfileImage', {
                 method: 'POST',
                 body: formData
             }).then(response => {
                 const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
                 if (contentType && contentType.includes('application/json')) {
                     return response.json(); 
                 } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                    window.location.href = `/login`;
                 }
             }).then(data => {
                 Swal.fire({
@@ -553,7 +544,6 @@
         document.querySelectorAll('.delete-address-btn').forEach(button => {
             button.addEventListener('click', function () {
                 const addressId = this.dataset.adid;
-                console.log(addressId)
 
                 Swal.fire({
                     icon: 'warning',
@@ -569,12 +559,10 @@
                             method: 'DELETE'
                         }).then(response => {
                             const contentType = response.headers.get('content-type');
-                            const message = "Your account is blocked, Please contact us"
-                            const type = "danger"
                             if (contentType && contentType.includes('application/json')) {
                                 return response.json(); 
                             } else {
-                                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                                window.location.href = `/login`;
                             }
                         }).then(data => {
                             Swal.fire({
@@ -596,176 +584,185 @@
             });
         });
 
-         // To add a new address
+         ////// To add a new address \\\\\\
          document.getElementById('add-address').addEventListener('click', function () {
             const userId = this.dataset.userid;
-            console.log(userId)
             window.location.href = `/addAddress/${userId}`; 
         });    
         
 
-        // To edit a specific address
+        ////// To edit a specific address \\\\\\
         document.querySelectorAll('.edit-address-btn').forEach(button => {
             button.addEventListener('click', function () {
             const addressId = this.dataset.adid;
-            console.log(addressId)
             window.location.href = `/editAddress/${addressId}`; 
             });
         });
 
-        //To send otp to email for changing password
+        ////// To send otp to email for changing password \\\\
         document.getElementById('sendOtp').addEventListener('click', async function (event) {
-        event.preventDefault();
+            event.preventDefault();
 
-        const email = document.getElementById('email').value;
-        const userId = document.getElementById('userId').value;
-        const userEmail = document.getElementById('userEmail').value;
+            const email = document.getElementById('email').value;
+            const userId = document.getElementById('userId').value;
+            const userEmail = document.getElementById('userEmail').value;
 
-        const formData = {
-            email: email
-        };
-        console.log(formData)
-        
-        if(email !== userEmail){
-            Swal.fire("Error!", "Email is not registered", "error");
-            return;
-        }
+            const formData = {
+                email: email
+            };
+            
+            if(email !== userEmail){
+                Swal.fire("Error!", "Email is not registered", "error");
+                return;
+            }
 
-        try {
-            const response = await fetch('/sendOtpForPass', {
+            try {
+                const response = await fetch('/sendOtpForPass', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                if (response.ok) {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        Swal.fire("Success!", "OTP sent successfully", "success");
+                        document.getElementById("submitOtp").disabled = false;
+                        document.getElementById("sendOtp").disabled = true; 
+
+                        let timeLeft = 30;
+                        const timerElement = document.getElementById('timer');
+                        const timerInterval = setInterval(() => {
+                            const minutes = Math.floor(timeLeft / 60);
+                            const seconds = timeLeft % 60;
+                            timerElement.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                            timeLeft--;
+                            if(timeLeft < 10){
+                                timerElement.style.color = "red"
+                            }
+
+                            if (timeLeft < 0) {
+                                clearInterval(timerInterval);
+                                document.getElementById("sendOtp").disabled = false;
+                                document.getElementById("submitOtp").disabled = true;
+                                document.getElementById("sendOtp").innerText = "Resend OTP";
+                                timerElement.innerText = "00:00";
+                                timerElement.style.color = "black"
+                            }
+                        }, 1000);
+                    } else {
+                        window.location.href = `/login`;
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'Failed to send OTP'
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Internal server error.'
+                });
+            }
+        });
+
+        ////// For submiting otp \\\\\\
+        document.getElementById('submitOtp').addEventListener('click', function () {
+            const formData = {
+                otp: document.getElementById('passotp').value,
+            };
+
+            fetch('/submitOtp', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(formData)
-            });
-            if (response.ok) {
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    Swal.fire("Success!", "OTP sent successfully", "success");
-                    document.getElementById("submitOtp").disabled = false;
-                    document.getElementById("sendOtp").disabled = true; 
-
-                    let timeLeft = 30;
-                    const timerElement = document.getElementById('timer');
-                    const timerInterval = setInterval(() => {
-                        const minutes = Math.floor(timeLeft / 60);
-                        const seconds = timeLeft % 60;
-                        timerElement.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                        timeLeft--;
-                        if(timeLeft < 10){
-                            timerElement.style.color = "red"
-                        }
-
-                        if (timeLeft < 0) {
-                            clearInterval(timerInterval);
-                            document.getElementById("sendOtp").disabled = false;
-                            document.getElementById("submitOtp").disabled = true;
-                            document.getElementById("sendOtp").innerText = "Resend OTP";
-                            timerElement.innerText = "00:00";
-                            timerElement.style.color = "black"
-                        }
-                    }, 1000);
-                } else {
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                }
-            } else {
-                Swal.fire("Error!", "Failed to send OTP", "error");
-            }
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    });
-
-    // For submiting otp
-    document.getElementById('submitOtp').addEventListener('click', function () {
-    const formData = {
-        otp: document.getElementById('passotp').value,
-    };
-
-    console.log(formData)
-
-    fetch('/submitOtp', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-    })
-    .then(response => {
-        if (contentType && contentType.includes('application/json')) {
-            if (response.ok) {
-                $('#verifyModal').modal('hide');
-                $('#passModal').modal('show');
-            } else {
-                throw new Error('Incorrect OTP');
-            }
-        } else {
-            const message = "Your account is blocked, Please contact us"
-            const type = "danger"
-            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-        }
-    })
-    .catch(error => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: error.message || 'Invalid otp'
-        });
-    });
-});
-
-// For submiting the new password
-document.getElementById('submitPass').addEventListener('click', async function (event) {
-    event.preventDefault();
-
-    const newPass = document.getElementById('newPass').value;
-    const confirmPass = document.getElementById('confirmPass').value;
-    const userId = document.getElementById('userId').value;
-
-    // Check if the passwords match
-    if (newPass !== confirmPass) {
-        Swal.fire("Error!", "Passwords do not match", "error");
-        return;
-    }
-
-    const formData = {
-        newPass: newPass,
-        userId: userId
-    };
-    console.log(formData)
-
-    try {
-        const response = await fetch('/updatePassword', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => {
+            })
+            .then(response => {
                 if (contentType && contentType.includes('application/json')) {
                     if (response.ok) {
-                        Swal.fire("Success!", "Password updated successfully", "success").then(() => {
-                            $('#passModal').modal('hide');
-                        });
+                        $('#verifyModal').modal('hide');
+                        $('#passModal').modal('show');
                     } else {
-                        Swal.fire("Error!", "Failed to update password", "error");
+                        throw new Error('Incorrect OTP');
                     }
                 } else {
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-            }
-        })
-    } catch (error) {
-        console.error('Error:', error);
-        Swal.fire("Error!", "An error occurred while processing your request", "error");
-    }
-});
+                    window.location.href = `/login`;
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: error.message || 'Invalid otp'
+                });
+            });
+        });
 
+        ////// For submiting the new password \\\\\\
+        document.getElementById('submitPass').addEventListener('click', async function (event) {
+            event.preventDefault();
+
+            const newPass = document.getElementById('newPass').value;
+            const confirmPass = document.getElementById('confirmPass').value;
+            const userId = document.getElementById('userId').value;
+
+            if (newPass !== confirmPass) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Password!',
+                    text: 'Password is not matching.'
+                });
+                return;
+            }
+
+            const formData = {
+                newPass: newPass,
+                userId: userId
+            };
+
+            try {
+                const response = await fetch('/updatePassword', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                })
+                .then(response => {
+                        if (contentType && contentType.includes('application/json')) {
+                            if (response.ok) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Password',
+                                    text: 'Password changed successfully.'
+                                }).then(() => {
+                                    $('#passModal').modal('hide');
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Failed!',
+                                    text: 'Password updation failed, try again.'
+                                });
+                            }
+                        } else {
+                            window.location.href = `/login`;
+                    }
+                })
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Internal server error.'
+                });
+            }
+        });
 
     </script>
 
