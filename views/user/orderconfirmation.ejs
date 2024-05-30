@@ -1,11 +1,7 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
-    <head>
-        
-    </head>
     <section class="view">
-        <!-- Edit -->
         <div class="cart-wrap mt-5">
             <div class="container">
                 <div class="row d-flex justify-content-center">
@@ -47,13 +43,13 @@
                                 </div>
                                 <div class="right col-md-6 d-flex align-item-center justify-content-center">
                                     <lord-icon
-                                    src="https://cdn.lordicon.com/hsrrkevt.json"
-                                    trigger="loop"
-                                    state="loop-cycle"
-                                    style="width:250px;height:250px">
-                                </lord-icon>
+                                        src="https://cdn.lordicon.com/hsrrkevt.json"
+                                        trigger="loop"
+                                        state="loop-cycle"
+                                        style="width:250px;height:250px">
+                                    </lord-icon>
+                                </div>
                             </div>
-                        </div>
                             <div class="buttons d-flex mt-3">
                                 <button onclick="goToShop()" class="btn btn-success" id="shopping">Continue shopping</button>
                                 <button onclick="goToOrder()" class="btn btn-success mx-3" id="orders">Review orders</button>
@@ -63,19 +59,22 @@
                 </div>
             </div>
         </div>
-        <!-- Edit -->
     </section>
+
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script>
-        // Function to go to orders
+
+        ////// Function to go to orders \\\\\\
         function goToOrder(){
             window.location.href = '/orders'
         }
 
-        // Function to go to shop
+        ////// Function to go to shop \\\\\\
         function goToShop(){
             window.location.href = "/shop"
         }
+
     </script>
+
     <!-- User footer -->
     <%-include("../userpartials/footer.ejs")%>
