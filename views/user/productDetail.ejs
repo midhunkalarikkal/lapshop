@@ -2,7 +2,7 @@
 <%-include("../userpartials/navbar.ejs")%>
 
     <head>
-        <!-- Custom css -->
+        <!-- Custom css for product detail page -->
         <link rel="stylesheet" href="/static/css/product_Detail.css">
     </head>
 
@@ -46,7 +46,7 @@
                     <div class="col-md-5 d-flex flex-column mt-4 mt-md-0" id="product-detail">
                         <h3 class="font-weight-semi-bold product-name">
                             <%= productData.brand.name %>
-                                <%= productData.name %>
+                            <%= productData.name %>
                         </h3>
                         <h6 class="product-desc col-lg-10">
                             <%= productData.description %>
@@ -54,7 +54,7 @@
                         <div class="d-flex align-items-end my-lg-auto">
                             <h5 class="discount-perc">
                                 -<%= productData.discountPercentage %>%
-                                    <span class="off small">Off</span>
+                                <span class="off small">Off</span>
                             </h5>
                             <h4 class="offer-price mx-3">
                                 ₹<%= productData.offerPrice %>
@@ -91,42 +91,46 @@
                             <% if (cartProdId !="" ) { %>
                                 <% for(let i=0; i < cartProdId.length; i++){ %>
                                     <% if(cartProdId[i] == productData._id.toString()){ %>
-                                        <button class="btn goToCart-btn px-3 shadow d-none d-lg-block" id="goToCart" onclick="toGetCart(event)"><i
-                                                class="fa fa-shopping-cart mr-1"></i> Go to cart</button>
+                                        <button class="btn goToCart-btn px-3 shadow d-none d-lg-block" 
+                                            id="goToCart" onclick="toGetCart(event)">
+                                            <i class="fa fa-shopping-cart mr-1"></i> Go to cart
+                                        </button>
                                         <button class="btn goToCart-btn px-3 btn-sm shadow d-block d-lg-none" id="goToCart"
-                                            data-prod-id="<%= productData._id %>" onclick="toGetCart(event)"><i
-                                                class="fa fa-shopping-cart mr-1"></i> Go to cart</button>
+                                            data-prod-id="<%= productData._id %>" onclick="toGetCart(event)">
+                                            <i class="fa fa-shopping-cart mr-1"></i> Go to cart
+                                        </button>
                                         <% break; %>
                                     <% } %>
                                     <!-- If it's the last iteration and no match is found -->
                                     <% if(i===cartProdId.length - 1){ %>
                                         <button class="btn addtocart-btn px-3 shadow d-none d-lg-block"
                                             data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
-                                                class="fa fa-shopping-cart mr-1"></i> Add to cart</button>
+                                            class="fa fa-shopping-cart mr-1"></i> Add to cart
+                                        </button>
                                         <button class="btn addtocart-btn px-3 btn-sm shadow d-block d-lg-none"
                                             data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
-                                                class="fa fa-shopping-cart mr-1"></i> Add to cart</button>
+                                            class="fa fa-shopping-cart mr-1"></i> Add to cart
+                                        </button>
                                     <% } %>
                                 <% } %>
                             <% } else { %>
                                 <button class="btn addtocart-btn px-3 shadow d-none d-lg-block"
-                                        data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
-                                            class="fa fa-shopping-cart mr-1"></i> Add to cart</button>
+                                    data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
+                                    class="fa fa-shopping-cart mr-1"></i> Add to cart
+                                </button>
                                 <button class="btn addtocart-btn px-3 btn-sm shadow d-block d-lg-none"
-                                        data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
-                                        class="fa fa-shopping-cart mr-1"></i> Add to cart</button>
+                                    data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
+                                    class="fa fa-shopping-cart mr-1"></i> Add to cart
+                                </button>
                             <% } %>
                         </div>
                     </div>
                 </div>
-                <% }else{ %>
-                    <h3 class="text-center bg-warning">No Product found</h3>
+            <% }else{ %>
+                <h3 class="text-center bg-warning">No Product found</h3>
             <% } %>
         </div>
-        <!-- Shop Detail End -->
 
-
-        <!-- Products Start -->
         <div class="container-fluid py-5 mt-5">
             <div class="text-center mb-4">
                 <h2 class="section-title px-5"><span class="px-2">Same category products</span></h2>
@@ -162,187 +166,175 @@
                 </div>
             </section>
         </div>
-        <!-- Products End -->
+    </section>
 
-        <!-- JQuery cdn -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- Script for sweet alert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
 
-        ////// To get the cart page \\\\\\
-        function toGetCart(event){
-            window.location.href = "/cart"
-        }
+            ////// To get the cart page \\\\\\
+            function toGetCart(event){
+                window.location.href = "/cart"
+            }
 
-         ////// Funciton to add product to cart \\\\\\
-         function addToCart(element) {
-            const productId = element.getAttribute('data-prod-id');
+            ////// Funciton to add product to cart \\\\\\
+            function addToCart(element) {
+                const productId = element.getAttribute('data-prod-id');
 
-            fetch('/addProductToCartFromShop', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ productId: productId })
-            })
-            .then(response => {
-                const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json(); 
-                } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                }
-            })
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: "Success",
-                        text: data.message,
-                        icon: "success",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(data =>{
-                        location.reload()
-                    })
-                } else if (data.status === 409) {
-                    Swal.fire({
-                        title: "Info",
-                        text: data.message,
-                        icon: "info",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    })
-                } else {
+                fetch('/addProductToCartFromShop', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ productId: productId })
+                })
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json(); 
+                    } else {
+                        window.location.href = `/login`;
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Success",
+                            text: data.message,
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(data =>{
+                            location.reload()
+                        })
+                    } else if (data.status === 409) {
+                        Swal.fire({
+                            title: "Info",
+                            text: data.message,
+                            icon: "info",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: data.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.log("error :", error)
                     Swal.fire({
                         title: "Error",
-                        text: data.message,
+                        text: "Internal server error.",
                         icon: "error",
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
                     });
-                }
-            })
-            .catch(error => {
-                console.log("error :", error)
-                Swal.fire({
-                    title: "Error",
-                    text: "Internal server error.",
-                    icon: "error",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
                 });
-            });
-        }
-
-        ////// function to show the selected image \\\\\\
-        var selectedImage;
-        function changeimage(element) {
-            var index = parseInt(element.getAttribute("data-index"));
-
-            document.querySelectorAll('.carousel-item').forEach(item => {
-                item.classList.remove('active');
-            });
-
-            var carouselItem = document.getElementById(`carousel-item-${index}`);
-            if (carouselItem) { 
-                var imgElement = carouselItem.querySelector('img');
-                selectedImage = imgElement.getAttribute('src');
-                carouselItem.classList.add('active');
             }
-            console.log("Selected image 1 :",selectedImage)
-            customChange()
-        }
-        
-        ////// for showing image in zoom div \\\\\\
-        document.addEventListener('DOMContentLoaded', function() {
-            var targetImage = document.querySelector("#target-image");
-            
-            var second = document.getElementById("second")
-            if (targetImage) {
-                second.style.backgroundImage = `url(${targetImage.src})` 
-            } else {
-                console.error("Element with id target-image not found in the document.");
-            }
-        });
 
-        ////// Function to show the selected image in zoom div \\\\\\
-        function customChange() {
-            var targetImage = document.querySelector("#target-image");
-            var second = document.getElementById("second")
-            second.style.backgroundImage = ""
-            console.log("Selected image 2 :",selectedImage)
-            
-            if (selectedImage) {
-                second.style.backgroundImage = `url(${selectedImage})` 
-            } else {
-                console.error("Element with id target-image not found in the document.");
-            }
-        }
+            ////// function to show the selected image \\\\\\
+            var selectedImage;
+            function changeimage(element) {
+                var index = parseInt(element.getAttribute("data-index"));
 
-        ////// function to handle the zoom functionality of th image \\\\\\
-        var lens = document.querySelectorAll("#lens")
-        var first = document.querySelectorAll(".first")
-        var second = document.getElementById("second")
-        var productDetail = document.getElementById("product-detail")
-        var carouselButtonOne = document.getElementById("carousel-btnOne")
-        var carouselButtonTwo = document.getElementById("carousel-btnTwo")
-        
-        for(let i = 0; i < first.length ; i++){
-        
-        first[i].addEventListener("mousemove",function(e){
+                document.querySelectorAll('.carousel-item').forEach(item => {
+                    item.classList.remove('active');
+                });
+
+                var carouselItem = document.getElementById(`carousel-item-${index}`);
+                if (carouselItem) { 
+                    var imgElement = carouselItem.querySelector('img');
+                    selectedImage = imgElement.getAttribute('src');
+                    carouselItem.classList.add('active');
+                }
+                customChange()
+            }
             
-            var x = e.clientX - e.target.getBoundingClientRect().left;
-            var y = e.clientY - e.target.getBoundingClientRect().top;
-            
-            var lensWidth = lens[i].offsetWidth;
-            var lensHeight = lens[i].offsetHeight;
-            var lensX = x - lensWidth / 2;
-            var lensY = y - lensHeight / 2.3;
-            
-            lens[i].style.left = lensX + "px";
-            lens[i].style.top = lensY + "px";
-            
-            var imageX = (x / e.target.offsetWidth) * 100;
-            var imageY = (y / e.target.offsetHeight) * 100;
-            
-            second.style.backgroundPosition = `${imageX}% ${imageY}%`;
-            
-            lens[i].style.cursor = "none";
-            document.body.style.cursor = "block";
-            
-        })
-        
-        
-            first[i].addEventListener("mouseenter", function() {
-                if(window.innerWidth > 991) {
-                    carouselButtonOne.style.display = "none"
-                    carouselButtonTwo.style.display = "none"
-                    second.style.display = "block"
-                    lens[i].style.display = "block";
-                    productDetail.classList.add("d-none")
+            ////// for showing image in zoom div \\\\\\
+            document.addEventListener('DOMContentLoaded', function() {
+                var targetImage = document.querySelector("#target-image");
+                
+                var second = document.getElementById("second")
+                if (targetImage) {
+                    second.style.backgroundImage = `url(${targetImage.src})` 
                 }
             });
-        
-            first[i].addEventListener("mouseleave", function() {
-                carouselButtonOne.style.display = "block"
-                carouselButtonTwo.style.display = "block"
-                second.style.display = "none"
-                lens[i].style.display = "none";
-                productDetail.classList.remove("d-none")
-            });
-        }
+
+            ////// Function to show the selected image in zoom div \\\\\\
+            function customChange() {
+                var targetImage = document.querySelector("#target-image");
+                var second = document.getElementById("second")
+                second.style.backgroundImage = ""
+                
+                if (selectedImage) {
+                    second.style.backgroundImage = `url(${selectedImage})` 
+                }
+            }
+
+            ////// function to handle the zoom functionality of th image \\\\\\
+            var lens = document.querySelectorAll("#lens")
+            var first = document.querySelectorAll(".first")
+            var second = document.getElementById("second")
+            var productDetail = document.getElementById("product-detail")
+            var carouselButtonOne = document.getElementById("carousel-btnOne")
+            var carouselButtonTwo = document.getElementById("carousel-btnTwo")
+            
+            for(let i = 0; i < first.length ; i++){
+            
+                first[i].addEventListener("mousemove",function(e){
+                    
+                    var x = e.clientX - e.target.getBoundingClientRect().left;
+                    var y = e.clientY - e.target.getBoundingClientRect().top;
+                    
+                    var lensWidth = lens[i].offsetWidth;
+                    var lensHeight = lens[i].offsetHeight;
+                    var lensX = x - lensWidth / 2;
+                    var lensY = y - lensHeight / 2.3;
+                    
+                    lens[i].style.left = lensX + "px";
+                    lens[i].style.top = lensY + "px";
+                    
+                    var imageX = (x / e.target.offsetWidth) * 100;
+                    var imageY = (y / e.target.offsetHeight) * 100;
+                    
+                    second.style.backgroundPosition = `${imageX}% ${imageY}%`;
+                    
+                    lens[i].style.cursor = "none";
+                    document.body.style.cursor = "block";
+                    
+                })
+                
+                first[i].addEventListener("mouseenter", function() {
+                    if(window.innerWidth > 991) {
+                        carouselButtonOne.style.display = "none"
+                        carouselButtonTwo.style.display = "none"
+                        second.style.display = "block"
+                        lens[i].style.display = "block";
+                        productDetail.classList.add("d-none")
+                    }
+                });
+                
+                first[i].addEventListener("mouseleave", function() {
+                    carouselButtonOne.style.display = "block"
+                    carouselButtonTwo.style.display = "block"
+                    second.style.display = "none"
+                    lens[i].style.display = "none";
+                    productDetail.classList.remove("d-none")
+                });
+            }
 
         </script>
-
-    </section>
 
     <!-- User footer -->
     <%-include("../userpartials/footer.ejs")%>
