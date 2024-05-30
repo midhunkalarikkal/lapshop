@@ -1,97 +1,11 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
-        <style>
-            /*======> Very small devices <======*/
-            @media (max-width: 576px) {
-                .product-img {
-                    width: 100%;
-                }
-
-                .product-text span {
-                    font-size: 12px;
-                }
-
-                .add-to-cart-btn {
-                    width: 5rem;
-                    font-size: 12px;
-                }
-
-                .delete-btn {
-                    font-size: 12px;
-                }
-            }
-
-            /*======> XS/SM devices <======*/
-            @media (min-width: 576px) and (max-width: 767px) {
-                .product-img {
-                    width: 100%;
-                }
-
-                .product-text span {
-                    font-size: 14px;
-                }
-            }
-
-            /*======> MD devices <======*/
-            @media (min-width: 768px) and (max-width: 991px) {
-                .product-img {
-                    width: 60%;
-                }
-            }
-
-            /*======> LG devices <======*/
-            @media (min-width: 992px) and (max-width: 1199px) {
-                .product-img {
-                    width: 80%;
-                }
-            }
-
-
-            /*======> XL devices <======*/
-            @media (min-width: 1200px) {
-                .product-img {
-                    width: 80%;
-                }
-            }
-
-            .quantity-input {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 120px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                overflow: hidden;
-            }
-
-            .quantity-btn {
-                width: 30px;
-                height: 30px;
-                font-size: 18px;
-                text-align: center;
-                cursor: pointer;
-                background-color: #f8f9fa;
-                border: none;
-                outline: none;
-            }
-
-            .quantity-value {
-                width: 50px;
-                height: 30px;
-                text-align: center;
-                border: none;
-                outline: none;
-            }
-
-            .product-card-each , .subtotal {
-                border-radius: 10px;
-            }
-        </style>
+        <!-- Css for the cart page -->
+        <link rel="stylesheet" href='/static/css/cart.css' type="text/css">
     </head>
     <section class="view">
-        <!-- Edit -->
         <div class="cart-wrap mt-5">
             <div class="container">
                 <div class="d-flex justify-content-between">
@@ -101,7 +15,7 @@
                 <div class="row mb-3">
                     <% if(cartItems && cartItems.length !==0){ %>
                         <div class="product-card col-md-8">
-                        <% cartItems.forEach((product,index)=>{ %>
+                            <% cartItems.forEach((product,index)=>{ %>
                                 <div class="product-card-each mt-4 shadow d-flex">
                                     <div class="col-4 d-flex align-items-center justify-content-center">
                                         <a href="/productDetail/" style="cursor: pointer;">
@@ -133,19 +47,24 @@
                                                 <span class="product-stock">In stock</span>
                                             <% } %>
                                             <br>
-                                            <span>Item added to your cart on 
-                                                <span class="item-added-date">
-                                                    <%= product.addedAt.toDateString() %>
-                                                </span>
-                                            </span>
+                                            <span>Item added to your cart on <span class="item-added-date"></span><%= product.addedAt.toDateString() %></span></span> 
                                         </p>
                                         <div class="buttons mb-3 d-flex">
                                             <div class="quantity-input">
-                                                <button class="quantity-btn" data-product-id="<%= product.product._id %>" onclick="decreaseQuantity(this)">-</button>
-                                                <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
-                                                <button class="quantity-btn" data-product-id="<%= product.product._id %>" onclick="increaseQuantity(this)">+</button>
+                                                <button class="quantity-btn"
+                                                    data-product-id="<%= product.product._id %>"
+                                                    onclick="decreaseQuantity(this)">-</button>
+                                                <input type="text" class="quantity-value"
+                                                    value="<%= product.quantity %>" readonly>
+                                                <button class="quantity-btn"
+                                                    data-product-id="<%= product.product._id %>"
+                                                    onclick="increaseQuantity(this)">+</button>
                                             </div>
-                                            <button class="btn btn-danger btn-sm mx-2" data-product-id="<%= product.product._id %>" onclick="deleteProduct(this)"><i class="fa fa-trash"></i></button>
+                                            <button class="btn btn-danger btn-sm mx-2"
+                                                data-product-id="<%= product.product._id %>"
+                                                onclick="deleteProduct(this)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
@@ -155,12 +74,15 @@
                             <div class="product-subtotal col-12 col-md-4">
                                 <div class="subtotal mt-4 shadow d-flex flex-column p-3">
                                     <div class="head text-center">
-                                        <p class="text-success">Part of your order qualifies for FREE Delivery.Choose FREE Delivery option at checkout.</p>      
+                                        <p class="text-success">
+                                            Part of your order qualifies for FREE Delivery.Choose
+                                            FREE Delivery option at checkout.
+                                        </p>
                                     </div>
                                     <div class="details">
-                                        <h6>No of items : <span><%= cart[0].items.length %></span></h6>
-                                        <h6>You will save in this purchace : <span class="purchace-discount"> ₹ <%= cart[0].totalCartDiscountPrice.toFixed(2) %></span></h6>      
-                                        <h5>Subtotal : <span class="subtotal"> ₹ <%= cart[0].totalCartPrice %></span></h5>             
+                                        <h6>No of items : <span><%= cart[0].items.length %></span></h6>            
+                                        <h6>You will save in this purchace : <span class="purchace-discount"> ₹ <%= cart[0].totalCartDiscountPrice.toFixed(2) %></span></h6>           
+                                        <h5>Subtotal : <span class="subtotal"> ₹ <%= cart[0].totalCartPrice %></span></h5>   
                                     </div>
                                     <div class="button mt-3">
                                         <button onclick="goToCheckout(event)" class="btn btn-warning w-100">Proceed to Buy</button>
@@ -174,11 +96,11 @@
                 </div>
             </div>
         </div>
-        <!-- Edit -->
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+
         ////// Function to delete a product from cart \\\\\\
         function deleteProduct(delbtn) {
             console.log("del")
@@ -192,49 +114,47 @@
                 },
                 body: JSON.stringify({ productId: productId })
             })
-            .then(response => {
-                const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json(); 
-                } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                }
-            })
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: "Success",
-                        text: data.message,
-                        icon: "success",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    })
-                } else {
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        window.location.href = `/login`;
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Success",
+                            text: data.message,
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: data.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
                     Swal.fire({
                         title: "Error",
-                        text: data.message,
+                        text: "Internal server error.",
                         icon: "error",
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
                     });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    title: "Error",
-                    text: "Internal server error.",
-                    icon: "error",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
                 });
-            });
         }
 
         ////// Function for the product quantity increment \\\\\\
@@ -246,7 +166,7 @@
 
             const productId = element.getAttribute("data-product-id");
             console.log("productId :", productId)
-            
+
             fetch('/incrementCartProduct', {
                 method: 'POST',
                 headers: {
@@ -254,60 +174,58 @@
                 },
                 body: JSON.stringify({ productId: productId })
             })
-            .then(response => {
-                const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json(); 
-                } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                }
-            })
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: "Success",
-                        text: data.message,
-                        icon: "success",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    })
-                } else if(data.status === 409) {
-                    Swal.fire({
-                        title: "Info",
-                        text: data.message,
-                        icon: "info",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    })
-                } else {
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        window.location.href = `/login`;
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Success",
+                            text: data.message,
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        })
+                    } else if (data.status === 409) {
+                        Swal.fire({
+                            title: "Info",
+                            text: data.message,
+                            icon: "info",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: data.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
                     Swal.fire({
                         title: "Error",
-                        text: data.message,
+                        text: "Internal server error.",
                         icon: "error",
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
                     });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    title: "Error",
-                    text: "Internal server error.",
-                    icon: "error",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
                 });
-            });
         }
 
         ////// Function for the product quantity decrement \\\\\\
@@ -316,23 +234,22 @@
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
 
-            if(value === 1){
+            if (value === 1) {
                 Swal.fire({
-                        title: "Info",
-                        text: "Please keep minimun quantity.",
-                        icon: "info",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    })
+                    title: "Info",
+                    text: "Please keep minimun quantity.",
+                    icon: "info",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                })
                 return false
             }
 
             input.value = value - 1;
 
             const productId = element.getAttribute("data-product-id");
-            console.log("productId :", productId)
-            
+
             fetch('/decrementCartProduct', {
                 method: 'POST',
                 headers: {
@@ -340,56 +257,55 @@
                 },
                 body: JSON.stringify({ productId: productId })
             })
-            .then(response => {
-                const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json(); 
-                } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                }
-            })
-            .then(data => {
-                if (data.success) {
-                    Swal.fire({
-                        title: "Success",
-                        text: data.message,
-                        icon: "success",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        location.reload();
-                    })
-                } else {
+                .then(response => {
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    } else {
+                        window.location.href = `/login`;
+                    }
+                })
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Success",
+                            text: data.message,
+                            icon: "success",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        Swal.fire({
+                            title: "Error",
+                            text: data.message,
+                            icon: "error",
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
+                })
+                .catch(error => {
                     Swal.fire({
                         title: "Error",
-                        text: data.message,
+                        text: "Internal server error.",
                         icon: "error",
                         timer: 2000,
                         timerProgressBar: true,
                         showConfirmButton: false
                     });
-                }
-            })
-            .catch(error => {
-                Swal.fire({
-                    title: "Error",
-                    text: "Internal server error.",
-                    icon: "error",
-                    timer: 2000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
                 });
-            });
         }
 
         ////// Function to go to checkout \\\\\\
-        function goToCheckout(event){
+        function goToCheckout(event) {
             event.preventDefault()
             window.location.href = "/checkout"
         }
+
     </script>
 
     <!-- User footer -->
