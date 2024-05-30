@@ -119,6 +119,13 @@ font-family: 'Saira Semi Condensed', sans-serif;
   text-decoration: none;
   color: var(--secondary-color);
 }
+
+.input-field .input-error {
+  position: absolute;
+  bottom: -5px;
+  font-size: 14px;
+  color: #f82b50;
+}
 /*======> Class input end <======*/
 
 /*======> Class input end <======*/
