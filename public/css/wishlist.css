@@ -1,0 +1,45 @@
+ /*======> Very small devices <======*/
+ @media (max-width: 576px) {
+    .product-text span {
+        font-size: 12px;
+    }
+
+    .add-to-cart-btn {
+        width: 5rem;
+        font-size: 12px;
+    }
+
+    .delete-btn {
+        font-size: 12px;
+
+    }
+}
+
+/*======> XS/SM devices <======*/
+@media (min-width: 576px) and (max-width: 767px) {
+    .product-text span {
+        font-size: 14px;
+    }
+}
+
+/*======> MD devices <======*/
+@media (min-width: 768px) and (max-width: 991px) {
+    .product-img {
+        width: 70%;
+    }
+}
+
+/*======> LG devices <======*/
+@media (min-width: 992px) and (max-width: 1199px) {
+    .product-img {
+        width: 55%;
+    }
+}
+
+
+/*======> XL devices <======*/
+@media (min-width: 1200px) {
+    .product-img {
+        width: 40%;
+    }
+}

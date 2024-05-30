@@ -1,54 +1,9 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
-        <style>
-            /*======> Very small devices <======*/
-            @media (max-width: 576px) {
-                .product-text span {
-                    font-size: 12px;
-                }
-
-                .add-to-cart-btn {
-                    width: 5rem;
-                    font-size: 12px;
-                }
-
-                .delete-btn {
-                    font-size: 12px;
-
-                }
-            }
-
-            /*======> XS/SM devices <======*/
-            @media (min-width: 576px) and (max-width: 767px) {
-                .product-text span {
-                    font-size: 14px;
-                }
-            }
-
-            /*======> MD devices <======*/
-            @media (min-width: 768px) and (max-width: 991px) {
-                .product-img {
-                    width: 70%;
-                }
-            }
-
-            /*======> LG devices <======*/
-            @media (min-width: 992px) and (max-width: 1199px) {
-                .product-img {
-                    width: 55%;
-                }
-            }
-
-
-            /*======> XL devices <======*/
-            @media (min-width: 1200px) {
-                .product-img {
-                    width: 40%;
-                }
-            }
-        </style>
+        <!-- custom css for wishlist page -->
+        <link rel="stylesheet" href="/static/css/wishlist.css" type="text/css">
     </head>
     <section class="view">
         <!-- Table wishlist for mediuam and above screen start -->
@@ -75,12 +30,12 @@
                                     <tr>
                                         <td class="col-3">
                                             <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
-                                                <img src="/static/images/ProductImages/<%= product.images[0] %>" alt=""
-                                                    class=" product-img">
+                                                <img src="/static/images/ProductImages/<%= product.images[0] %>" class=" product-img">
                                             </a>
                                         </td>
                                         <td class="col-3">
-                                            <p class="mt-2"><span class="product-brand">
+                                            <p class="mt-2">
+                                                <span class="product-brand">
                                                     <%= product.brand.name %>
                                                 </span>
                                                 <br>
@@ -89,39 +44,41 @@
                                                 </span>
                                                 <br>
                                                 <% for(let i=0; i < wishlistProducts.length; i++){ %>
-                                                    <% if(product._id.toString()===wishlistProducts[i].product.toString()){
-                                                        %>
-                                                        <span>Item added on <span class="item-added-date">
-                                                                <%= wishlistProducts[i].addedAt.toDateString() %>
-                                                            </span></span>
-                                                        <% } %>
-                                                            <% } %>
+                                                    <% if(product._id.toString()===wishlistProducts[i].product.toString()){ %>
+                                                        <span>Item added on <span class="item-added-date"><%= wishlistProducts[i].addedAt.toDateString() %></span></span>
+                                                    <% } %>
+                                                <% } %>
                                             </p>
                                         </td>
                                         <% if(product.noOfStock < 5){ %>
                                             <td class="col-2 inStock">
-                                                <p class="mt-4 text-danger">Hurry Up! ONly <%= product.noOfStock %> left
-                                                        in stock.</p>
+                                                <p class="mt-4 text-danger">Hurry Up! ONly <%= product.noOfStock %> left in stock.</p>
                                             </td>
-                                            <% }else{ %>
-                                                <td class="col-2 inStock">
-                                                    <p class="mt-4">In stock</p>
-                                                </td>
-                                                <% } %>
-                                                    <td class="col-2"><button class="btn btn-primary btn-sm mt-4"
-                                                            data-prod-id="<%= product._id %>"
-                                                            onclick="addToCart(this)">Add to cart</button></td>
-                                                    <td class="col-2"><button class="btn btn-danger btn-sm mt-4"
-                                                            data-prod-id="<%= product._id %>"
-                                                            onclick="deleteProduct(this)"><i
-                                                                class="fa fa-trash"></i></button></td>
+                                        <% }else{ %>
+                                            <td class="col-2 inStock">
+                                                <p class="mt-4">In stock</p>
+                                            </td>
+                                        <% } %>
+                                        <td class="col-2">
+                                            <button class="btn btn-primary btn-sm mt-4"
+                                                data-prod-id="<%= product._id %>"
+                                                onclick="addToCart(this)">Add to cart
+                                            </button>
+                                        </td>
+                                        <td class="col-2">
+                                            <button class="btn btn-danger btn-sm mt-4"
+                                                data-prod-id="<%= product._id %>"
+                                                onclick="deleteProduct(this)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
                                     </tr>
-                                    <% }) %>
+                                <% }) %>
                             </tbody>
                         </table>
-                        <% }else{ %>
-                            <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.</div>
-                            <% } %>
+                    <% }else{ %>
+                        <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.</div>
+                    <% } %>
                 </div>
             </div>
         </div>
@@ -141,8 +98,7 @@
                         <div class="mt-4 d-flex align-items-center justify-content-around p-3 bg-light shadow">
                             <div class="image col-4">
                                 <a href="/productDetail/<%= product._id %>" style="cursor: pointer;">
-                                    <img src="/static/images/ProductImages/<%= product.images[0] %>" alt=""
-                                        class="img-fluid">
+                                    <img src="/static/images/ProductImages/<%= product.images[0] %>" class="img-fluid">
                                 </a>
                             </div>
                             <div class="product-detials col-7 d-flex flex-column align-items-center">
@@ -155,19 +111,15 @@
                                             <%= product.name %>
                                         </span><br>
                                         <% if(product.noOfStock < 5){ %>
-                                            <span class="mt-2 mb-2 text-danger">Hurry Up! ONly <%= product.noOfStock %>
-                                                    left in stock.</span><br>
-                                            <% }else{ %>
-                                                <span>In stock</span><br>
-                                                <% } %>
-                                                    <% for(let i=0; i < wishlistProducts.length; i++){ %>
-                                                        <% if(product._id.toString()===wishlistProducts[i].product.toString()){
-                                                            %>
-                                                            <span>Item added on <span class="item-added-date">
-                                                                    <%= wishlistProducts[i].addedAt.toDateString() %>
-                                                                </span></span>
-                                                            <% } %>
-                                                                <% } %>
+                                            <span class="mt-2 mb-2 text-danger">Hurry Up! ONly <%= product.noOfStock %> left in stock.</span><br>
+                                        <% }else{ %>
+                                            <span>In stock</span><br>
+                                        <% } %>
+                                        <% for(let i=0; i < wishlistProducts.length; i++){ %>
+                                            <% if(product._id.toString()===wishlistProducts[i].product.toString()){ %>
+                                                <span>Item added on <span class="item-added-date"><%= wishlistProducts[i].addedAt.toDateString() %></span></span>
+                                            <% } %>
+                                        <% } %>
                                     </p>
                                 </div>
                                 <div class="buttons">
@@ -178,14 +130,12 @@
                                 </div>
                             </div>
                         </div>
-                        <% }) %>
-                            <% }else{ %>
-                                <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.
-                                </div>
-                                <% } %>
+                    <% }) %>
+                <% }else{ %>
+                    <div class="alert alert-info text-center mt-4" role="alert">Your wishlist is empty.</div>
+                <% } %>
             </div>
         </div>
-
         <!-- Table for the small screens end -->
     </section>
 
@@ -196,9 +146,7 @@
         ////// Function to delete a product from wishlist \\\\\\
         function deleteProduct(delbtn) {
             const productId = delbtn.getAttribute("data-prod-id");
-            console.log("productId :", productId);
-
-            console.log("data :", productId);
+            
             fetch('/deleteProductFromWishlist', {
                 method: 'POST',
                 headers: {
@@ -208,12 +156,10 @@
             })
             .then(response => {
                 const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
                 if (contentType && contentType.includes('application/json')) {
                     return response.json(); 
                 } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                    window.location.href = `/login`;
                 }
             })
             .then(data => {
@@ -260,12 +206,10 @@
             })
             .then(response => {
                 const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
                 if (contentType && contentType.includes('application/json')) {
                     return response.json(); 
                 } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                    window.location.href = `/login`;
                 }
             })
             .then(data => {
