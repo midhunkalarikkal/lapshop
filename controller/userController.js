@@ -354,10 +354,13 @@ const resendOtp = async(req,res)=>{
         const otp = generateOtp()
         saveOtp = otp;
         sendOtpMail(enteredEmail,otp);
+        
         function clearSaveOtp() {
             saveOtp = ""; 
         }
         setTimeout(clearSaveOtp, 30000);
+
+        res.status(200).send('OTP resent successfully');
     }catch(error){
         console.log(error.message)
         return res.redirect('/errorPage')

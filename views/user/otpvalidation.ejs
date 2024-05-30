@@ -1,5 +1,5 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
 <head>
     <!-- User otp page css -->
@@ -50,6 +50,7 @@
 </section>
 
 <script>
+
     ////// Attach input event listener to each input field \\\\\\
     const otpInputs = document.querySelectorAll('.input');
     otpInputs.forEach((input, index) => {
@@ -147,8 +148,20 @@ function sendotp(){
     })
     .then(response => {
         if (response.ok) {
+            Swal.fire({
+                icon: 'success',
+                title: 'OTP Sent',
+                text: 'Your OTP has been resent successfully!',
+                confirmButtonText: 'OK'
+            });
             console.log('OTP resent successfully');
         } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Failed to resend OTP',
+                confirmButtonText: 'OK'
+            });
             console.error('Failed to resend OTP');
         }
     })
