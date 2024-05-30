@@ -460,9 +460,11 @@
                         text: data.message || 'User updated successfully',
                         showConfirmButton: true,
                         confirmButtonText: "Ok"
-                    }).then(() => {
-                        $('#informationModal').modal('hide');
-                        location.reload();
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            $('#informationModal').modal('hide');
+                            location.reload();
+                        }
                     });
                 }).catch(error => {
                     Swal.fire({
@@ -531,9 +533,11 @@
                     text: 'Profile image uploaded successfully',
                     showConfirmButton: true,
                     confirmButtonText : "Ok"
-                }).then(() => {
-                    $('#profileImageModal').modal('hide');
-                    location.reload();
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#profileImageModal').modal('hide');
+                        location.reload();
+                    }
                 });
             }).catch(error => {
                 Swal.fire({
@@ -579,8 +583,10 @@
                                 text: data.message || 'Address deleted successfully.',
                                 showConfirmButton: true,
                                 confirmButtonText: 'OK'
-                            }).then(() => {
-                                location.reload();
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    location.reload();
+                                }
                             });
                         }).catch(error => {
                             Swal.fire({
@@ -625,7 +631,14 @@
             };
             
             if(email !== userEmail){
-                Swal.fire("Error!", "Email is not registered", "error");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Eamil!',
+                    text: 'Entered email is not registered.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
                 return;
             }
 
@@ -766,11 +779,12 @@
                                     icon: 'success',
                                     title: 'Password',
                                     text: 'Password changed successfully.',
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false
-                                }).then(() => {
-                                    $('#passModal').modal('hide');
+                                    showConfirmButton: true,
+                                    confirmButtonText: "Ok"
+                                }).then((result) => {
+                                    if(result.isConfirmed){
+                                        $('#passModal').modal('hide');
+                                    }
                                 });
                             } else {
                                 Swal.fire({

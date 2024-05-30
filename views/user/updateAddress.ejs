@@ -1,5 +1,5 @@
 <!-- Admin navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
         <!-- Css for the admin data edit form -->
@@ -82,14 +82,14 @@
                                             changes</button>
                                     </div>
                                 </div>
-                                <% } %>
+                            <% } %>
                         </div>
                     </form>
                 </div>
             </div>
         </section>
 
-
+        <!-- script for the sweet alert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
         <script>
             
@@ -278,8 +278,6 @@
                 }
             }
 
-
-
             ////// To submit the form \\\\\\
             function validateForm() {
                 const isValidName = validateName();
@@ -318,30 +316,43 @@
 
                         const contentType = response.headers.get('content-type');
                         let data;
-                        const message = "Your account is blocked, Please contact us"
-                        const type = "danger"
                         if (contentType && contentType.includes('application/json')) {
                             data = await response.json();
                         } else {
-                            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                            window.location.href = `/login`;
                         }
 
                         if (response.ok) {
-                            Swal.fire("Success!",
-                                data.message,
-                                "success"
-                            ).then(() => {
-                                window.location.href = '/userProfile';
+                            swal.fire({
+                                icon: 'success',
+                                title: 'OTP Sent',
+                                text: 'Your OTP has been resent successfully!',
+                                showConfirmButton: true,
+                                confirmButtonText: "Ok"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    window.location.href = '/userProfile';
+                                }
                             });
                         } else {
-                            Swal.fire("Error!",
-                                data.message, "error"
-                            );
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'Failed to update user address.',
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
                         }
                 } else {
-                    Swal.fire("Error!",
-                        "Please fix the errors in the form.", "error"
-                    );
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: "Internal server error",
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
                 }
             });
 
@@ -350,6 +361,7 @@
                 console.log("Cancel button called")
                 window.location.href = '/userProfile'
             }
+            
         </script>
 
         <!-- Admin footer -->
