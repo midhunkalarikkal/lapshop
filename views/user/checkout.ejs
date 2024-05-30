@@ -6,129 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LapShop</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!--Bootstrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <!--Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
-    <style>
-        /*======> Very small devices <======*/
-        @media (max-width: 576px) {
-            .product-img {
-                width: 100%;
-            }
-
-            .product-text span {
-                font-size: 12px;
-            }
-
-            .add-to-cart-btn {
-                width: 5rem;
-                font-size: 12px;
-            }
-
-            .delete-btn {
-                font-size: 12px;
-            }
-        }
-
-        /*======> XS/SM devices <======*/
-        @media (min-width: 576px) and (max-width: 767px) {
-            .product-img {
-                width: 100%;
-            }
-
-            .product-text span {
-                font-size: 14px;
-            }
-        }
-
-        /*======> MD devices <======*/
-        @media (min-width: 768px) and (max-width: 991px) {
-            .product-img {
-                width: 60%;
-            }
-        }
-
-        /*======> LG devices <======*/
-        @media (min-width: 992px) and (max-width: 1199px) {
-            .product-img {
-                width: 80%;
-            }
-        }
-
-
-        /*======> XL devices <======*/
-        @media (min-width: 1200px) {
-            .product-img {
-                width: 80%;
-            }
-        }
-
-        .quantity-input {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 120px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .quantity-btn {
-            width: 30px;
-            height: 30px;
-            font-size: 18px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #f8f9fa;
-            border: none;
-            outline: none;
-        }
-
-        .quantity-value {
-            width: 50px;
-            height: 30px;
-            text-align: center;
-            border: none;
-            outline: none;
-        }
-
-        .product-card-each,
-        .subtotal {
-            border-radius: 10px;
-        }
-    </style>
 </head>
 
 <body>
 
     <div id="screen-size"></div>
 
-    <!-- Navbar One-->
     <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
         <div class="container">
-
-            <!-- Navbar Logo -->
             <div class="logo col-2">
                 <a href="" class="navbar-brand">
                     <span class="fw-bold fs-3">LapShop</span>
                 </a>
             </div>
-
             <div class="col-10 d-flex align-items-center justify-content-center">
                 <h3 class="text-light fs-3 mt-2">Checkout</h3>
             </div>
         </div>
     </nav>
-    <!-- Navbar end -->
 
     <section class="view">
-        <!-- Edit -->
         <div class="cart-wrap mt-5">
             <div class="container">
                 <div class="d-flex justify-content-between">
@@ -136,83 +45,93 @@
                 </div>
                 <hr>
                 <div class="row mb-3">
+
                     <div class="product-card col-md-8">
                         <div class="product-card-each mt-4 shadow d-flex">
                             <div class="col-12 p-3">
                                 <p class="fw-semibold">Selected address will be used to bill and ship product</p>
-                                <% if (!userAddress || userAddress.length === 0) { %>
+                                <% if (!userAddress || userAddress.length===0) { %>
                                     <p class="text-danger">You haven't added any address yet</p>
                                 <% } else { %>
-                                    <% userAddress.forEach((address, index) => { %>
+                                    <% userAddress.forEach((address, index)=> { %>
                                         <div class="row mb-1">
                                             <div class="d-flex">
                                                 <input type="radio" name="selectedAddress" value="<%= address._id %>" id="address<%= address._id  %>" />
-                                                <h6 class="mx-2 mt-2"><%= address.name %></h6>
-                                                <button class="btn btn-primary btn-sm border-0 text-primary" id="edit-address" data-adId="<%= address._id %>" style="background-color: #00000000;"><i class="fa-regular fa-pen-to-square text-primary"></i> Edit</button>
+                                                <h6 class="mx-2 mt-2">
+                                                    <%= address.name %>
+                                                </h6>
+                                                <button class="btn btn-primary btn-sm border-0 text-primary"
+                                                    id="edit-address" data-adId="<%= address._id %>"
+                                                    style="background-color: #00000000;">
+                                                    <i class="fa-regular fa-pen-to-square text-primary"></i>
+                                                    Edit
+                                                </button>
                                             </div>
                                             <div class="col-12 address text-muted">
                                                 <p>
                                                     <%= address.addressLine %>,
-                                                    <span>Phone:</span> <%= address.phone %>,
+                                                    <span>Phone : </span><%= address.phone %>,
                                                     <%= address.city %>, <br>
                                                     <%= address.district %>,
                                                     <%= address.state %>,
-                                                    <span>Pincode:</span> <%= address.pincode %>,
+                                                    <span>Pincode : </span><%= address.pincode %>,
                                                     <%= address.country %> <br>
                                                 </p>
                                             </div>
                                         </div>
                                     <% }); %>
                                 <% } %>
-                                    <div class="address-btn">
-                                        <button class="mx-3 border-0 text-primary"  
-                                            style="background-color: #f1f1f100;" 
-                                            id="add-address">
-                                            <i class="fa-solid fa-plus text-primary"></i>
-                                            Add new address
-                                        </button>
-                                    </div>
-                                    <div class="extra-btns my-3">
-                                        <button class="btn btn-primary btn-sm" onclick="goToShop(event)">Continue shopping</button>
-                                        <button class="btn btn-primary btn-sm" onclick="goToCart(event)">Review cart</button>
-                                    </div>
+                                <div class="address-btn">
+                                    <button class="mx-3 border-0 text-primary"
+                                        style="background-color: #f1f1f100;" id="add-address">
+                                        <i class="fa-solid fa-plus text-primary"></i>
+                                        Add new address
+                                    </button>
+                                </div>
+                                <div class="extra-btns my-3">
+                                    <button class="btn btn-primary btn-sm"
+                                        onclick="goToShop(event)">
+                                        Continue shopping
+                                    </button>
+                                    <button class="btn btn-primary btn-sm"
+                                        onclick="goToCart(event)">
+                                        Review cart
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    
-                    <% if(userCart !== ""){ %>
-                    <div class="product-subtotal col-12 col-md-4">
-                        <div class="subtotal mt-4 shadow d-flex flex-column p-3">
-                            <div class="head text-center">
-                                <h4 class="">Order summary</h4>
-                                <p class="text-success">Part of your order qualifies for FREE Delivery.Choose FREE
-                                    Delivery option at checkout.</p>
-                            </div>
-                            <hr>
-                            <div class="details">
-                                <h6>No of items : <span><%= userCart[0].items.length %></span></h6>
-                                <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
-                            </div>
-                            <div class="button mt-3">
-                                <button class="btn btn-warning w-100" id="goToPayment">Proceed to Payment</button>
+                    </div>
+
+                    <% if(userCart !=="" ){ %>
+                        <div class="product-subtotal col-12 col-md-4">
+                            <div class="subtotal mt-4 shadow d-flex flex-column p-3">
+                                <div class="head text-center">
+                                    <h4 class="">Order summary</h4>
+                                    <p class="text-success">Part of your our website lauching all deliveries are free now.</p>
+                                </div>
+                                <hr>
+                                <div class="details">
+                                    <h6>No of items : <span><%= userCart[0].items.length %></span></h6>
+                                    <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
+                                </div>
+                                <div class="button mt-3">
+                                    <button class="btn btn-warning w-100" id="goToPayment">Proceed to Payment</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     <% } %>
                 </div>
             </div>
         </div>
-        <!-- Edit -->
     </section>
 
-    <!-- footer start -->
     <footer class="text-light" id="footer">
         <div class="container-fluid">
             <div class="row p-5 d-flex justify-content-center">
                 <div class="col-12">
                     <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
                         <div class="d-flex flex-column align-items-center justify-content-center">
-                            <img src="/static/images/Bg/desktop/Lapshop logo.png" class="img-fluid w-25 h-25" style="">
+                            <img src="/static/images/Bg/desktop/Lapshop logo.png" class="img-fluid w-25 h-25">
                             <div class="text text-center">
                                 <h1>LapShop</h1>
                                 <h6>Discover Your Digital World with Us.</h6>
@@ -223,58 +142,57 @@
             </div>
         </div>
     </footer>
-    <!-- footer end -->
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
 
         ////// To add a new address \\\\\\
         document.getElementById('add-address').addEventListener('click', function () {
-            window.location.href = `/addAddressFromCheckout`; 
+            window.location.href = `/addAddressFromCheckout`;
         });
 
         ////// To go to edit address page \\\\\\
-        document.getElementById('edit-address').addEventListener("click",function(){
+        document.getElementById('edit-address').addEventListener("click", function () {
             const addressId = this.dataset.adid;
-            console.log("Addres id :",addressId)
-            window.location.href = `/editAddressFromCheckout/${addressId}`; 
+            console.log("Addres id :", addressId)
+            window.location.href = `/editAddressFromCheckout/${addressId}`;
         })
 
-        // To go to payment
-        document.getElementById('goToPayment').addEventListener('click' , async  function(event){
+        ////// To go to payment \\\\\\
+        document.getElementById('goToPayment').addEventListener('click', async function (event) {
             event.preventDefault()
-            // Get the selected address ID
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked')
             if (!selectedAddress) {
 
-            Swal.fire({
-                icon: 'info',
-                title: 'Address not selected',
-                text: 'Please select an address',
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-            return;
-        }
-         const selectedAddressId = selectedAddress.value;
-            console.log("Selected address :",selectedAddressId)
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Address not selected',
+                    text: 'Please select an address',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+                return;
+            }
+            const selectedAddressId = selectedAddress.value;
+            console.log("Selected address :", selectedAddressId)
             const url = `/payment/${selectedAddressId}`;
             window.location.href = url;
         })
-        
+
         ////// Go to shop \\\\\\
-        function goToShop(event){
+        function goToShop(event) {
             event.preventDefault()
             window.location.href = '/shop'
         }
 
         ////// Go To Cart \\\\\\
-        function goToCart(event){
+        function goToCart(event) {
             event.preventDefault()
             window.location.href = '/cart'
         }
     </script>
+
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
@@ -283,6 +201,7 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
+
 </body>
 
 </html>
