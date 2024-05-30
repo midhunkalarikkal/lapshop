@@ -6,129 +6,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LapShop</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!--Bootstrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <!--Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
+
     <style>
-        /*======> Very small devices <======*/
-        @media (max-width: 576px) {
-            .product-img {
-                width: 100%;
-            }
-
-            .product-text span {
-                font-size: 12px;
-            }
-
-            .add-to-cart-btn {
-                width: 5rem;
-                font-size: 12px;
-            }
-
-            .delete-btn {
-                font-size: 12px;
-            }
-        }
-
-        /*======> XS/SM devices <======*/
-        @media (min-width: 576px) and (max-width: 767px) {
-            .product-img {
-                width: 100%;
-            }
-
-            .product-text span {
-                font-size: 14px;
-            }
-        }
-
-        /*======> MD devices <======*/
-        @media (min-width: 768px) and (max-width: 991px) {
-            .product-img {
-                width: 60%;
-            }
-        }
-
-        /*======> LG devices <======*/
-        @media (min-width: 992px) and (max-width: 1199px) {
-            .product-img {
-                width: 80%;
-            }
-        }
-
-
-        /*======> XL devices <======*/
-        @media (min-width: 1200px) {
-            .product-img {
-                width: 80%;
-            }
-        }
-
-        .quantity-input {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            width: 120px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-
-        .quantity-btn {
-            width: 30px;
-            height: 30px;
-            font-size: 18px;
-            text-align: center;
-            cursor: pointer;
-            background-color: #f8f9fa;
-            border: none;
-            outline: none;
-        }
-
-        .quantity-value {
-            width: 50px;
-            height: 30px;
-            text-align: center;
-            border: none;
-            outline: none;
-        }
-
         .product-card-each,
         .subtotal {
             border-radius: 10px;
         }
     </style>
+
 </head>
 
 <body>
 
     <div id="screen-size"></div>
 
-    <!-- Navbar One-->
     <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
         <div class="container">
-
-            <!-- Navbar Logo -->
             <div class="logo col-2">
                 <a href="" class="navbar-brand">
                     <span class="fw-bold fs-3">LapShop</span>
                 </a>
             </div>
-
             <div class="col-10 d-flex align-items-center justify-content-center">
                 <h3 class="text-light fs-3 mt-2">Payment</h3>
             </div>
         </div>
     </nav>
-    <!-- Navbar end -->
 
     <section class="view">
-        <!-- main div start -->
         <div class="cart-wrap mt-5">
             <div class="container">
                 <div class="d-flex justify-content-between">
@@ -136,6 +53,7 @@
                 </div>
                 <hr>
                 <div class="row mb-3">
+
                     <div class="product-card col-12 col-md-8">
                         <div class="product-card-each mt-4 shadow d-flex">
                             <div class="col-12 p-3">
@@ -157,17 +75,17 @@
                                 <h5>Selected address</h5>
                                 <hr>
                                 <% if(userAddress){ %>
-                                <h6><%= userAddress[0].name %></h6>
-                                <p>
-                                    <%= userAddress[0].addressLine %> ,
-                                    <%= userAddress[0].city %> , <br>
-                                    <%= userAddress[0].district %> , 
-                                    <%= userAddress[0].state %> , 
-                                    Pincode : <%= userAddress[0].pincode %> , 
-                                    <%= userAddress[0].country %> <br>
-                                    Phone : <%= userAddress[0].phone %> 
-                                </p>
-                                <input type="hidden" id="userAddress" value="<%= userAddress[0]._id  %>">
+                                    <h6><%= userAddress[0].name %></h6>
+                                    <p>
+                                        <%= userAddress[0].addressLine %> ,
+                                        <%= userAddress[0].city %> , <br>
+                                        <%= userAddress[0].district %> , 
+                                        <%= userAddress[0].state %> , 
+                                        Pincode : <%= userAddress[0].pincode %> , 
+                                        <%= userAddress[0].country %> <br>
+                                        Phone : <%= userAddress[0].phone %> 
+                                    </p>
+                                    <input type="hidden" id="userAddress" value="<%= userAddress[0]._id  %>">
                                 <% } %>
                                 <hr>
                                 <% if(coupon && coupon.length > 0){ %>
@@ -186,9 +104,9 @@
                                         <input type="text" id="cancelCouponId" hidden>                                    
                                     </div>
                                 <% } %>
-                                </div>               
-                            </div>
+                            </div>               
                         </div>
+                    </div>
                     
                     
                     <div class="product-subtotal col-12 col-md-4">
@@ -237,14 +155,12 @@
                             </div>
                         </div>
                     </div>
-                    
+    
                 </div>
             </div>
         </div>
-        <!-- main div end -->
     </section>
 
-    <!-- footer start -->
     <footer class="text-light" id="footer">
         <div class="container-fluid">
             <div class="row p-5 d-flex justify-content-center">
@@ -262,23 +178,22 @@
             </div>
         </div>
     </footer>
-    <!-- footer end -->
 
-
+    <!-- script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- script for razorpay -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
-        let coupon = document.getElementById("coupon") ? document.getElementById("coupon") : ""
-        let couponApplied = document.getElementById("coupon-applied") ? document.getElementById("coupon-applied") : ""
-        let couponAmount = document.getElementById("coupon-amount") ? document.getElementById("coupon-amount") : ""
+        let coupon = document.getElementById("coupon") || ""
+        let couponApplied = document.getElementById("coupon-applied") || ""
+        let couponAmount = document.getElementById("coupon-amount") || ""
         let subTotal = document.getElementById('subTotal')
-        let cancelCouponInput = document.getElementById("cancelCouponId") ? document.getElementById("cancelCouponId") : ""
+        let cancelCouponInput = document.getElementById("cancelCouponId") || ""
         
         ////// To appy coupon \\\\\\
         function submitCoupon(){
             const userCouponCode = document.getElementById("userCouponCode").value
-            console.log("userCouponCode :",userCouponCode)
 
             fetch('/applyCoupon',{
                 method: 'POST',
@@ -289,12 +204,10 @@
             })
             .then(response => {
                 const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
                 if (contentType && contentType.includes('application/json')) {
                     return response.json(); 
                 } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                    window.location.href = `/login`;
                 }
             }).then(data => {
                 if(data.success){
@@ -332,7 +245,6 @@
         ////// To cancel coupon \\\\\\
         function cancelCoupon(){
             const userCancelCouponCode = document.getElementById("cancelCouponId").value
-            console.log("userCancelCouponCode :",userCancelCouponCode)
 
             fetch('/cancelCoupon',{
                 method: 'POST',
@@ -343,15 +255,12 @@
             })
             .then(response => {
                 const contentType = response.headers.get('content-type');
-                const message = "Your account is blocked, Please contact us"
-                const type = "danger"
                 if (contentType && contentType.includes('application/json')) {
                     return response.json(); 
                 } else {
-                    window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                    window.location.href = `/login`;
                 }
             }).then(data => {
-                console.log(data)
                 if(data.success){
                     Swal.fire({
                         title: "Success",
@@ -361,7 +270,6 @@
                         timerProgressBar: true,
                         showConfirmButton: false
                     })
-                    console.log("cartTotal :",data.cartTotal)
                     coupon.classList.remove("d-none")
                     couponApplied.classList.add("d-none")
                     subTotal.innerText = ""
@@ -406,34 +314,22 @@
         const coupon = cancelCouponInput.value ? cancelCouponInput.value : ""
 
         if (paymentMethod === "cod" && subTotal > 1000) {
-        Swal.fire({
-            icon: 'info',
-            title: "NOT APPLICABLE",
-            text: "Orders above 1000 rs are not applicable for cash on delivery.",
-            timer: 2000,
-            timerProgressBar: true,
-            showConfirmButton: false
-        });
-        return false;
-    }
-
-        console.log("order confirmation start")
-        console.log("payment Method :",paymentMethod)
-        console.log("type of payment Method :",typeof paymentMethod)
-        console.log("user address id :",userAddressId)
-        console.log("type of user address id :",typeof userAddressId)
-        console.log("subtotal :",subTotal)
-        console.log("type of subtotal :",typeof subTotal)
-        console.log("coupon :",coupon)
-        console.log("type of coupon :",typeof coupon)
-        console.log("order confirmation end")
+            Swal.fire({
+                icon: 'info',
+                title: "NOT APPLICABLE",
+                text: "Orders above 1000 rs are not applicable for cash on delivery.",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return false;
+        }
 
         const data = {
             paymentMethod: paymentMethod,
             totalAmount: subTotal
         };
 
-        console.log("data :",data)
 
         fetch('/orderConfirmation', {
             method: 'POST',
@@ -444,12 +340,10 @@
         })
         .then(response => {
             const contentType = response.headers.get('content-type');
-            const message = "Your account is blocked, Please contact us"
-            const type = "danger"
             if (contentType && contentType.includes('application/json')) {
                 return response.json(); 
             } else {
-                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                window.location.href = `/login`;
             }
         })
         .then(data => {
@@ -489,11 +383,8 @@
                     let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=false&coupon=${coupon}`;
                     window.location.href = redirectUrl;
                 } else if (paymentMethod === "wallet"){
-                    
-                    console.log("payment method wallet data : ",data)
                     const walletBalance = data.walletBalance
                     if(data.paymentAmount <= walletBalance){
-                        console.log("wallet deduction ok.")
                         Swal.fire({
                             html: `
                                 <div class="text-center">
@@ -520,8 +411,6 @@
                             })
                             return false;
                         }
-                        console.log("wallet deduction not ok. need to use razorpay also.")
-                        console.log("wallet + online razorpay deduction ok.")
                         swal.fire({
                             title: "Not enough wallet balance.",
                             text: "Are you sure want to place this order with wallet with Online payment ?",
@@ -529,7 +418,7 @@
                             confirmButtonText: "Yes",
                             confirmButton: true,
                         }).then((result) => {
-                            if (result.isConfirmed) { // Check if user clicked "Yes"
+                            if (result.isConfirmed) {
                                 Swal.fire({
                                     html: `
                                         <div class="text-center">
@@ -543,7 +432,6 @@
                                     confirmButton: true
                                 }).then((result) => {
                                     if (result.isConfirmed) {
-
                                         paymentMethod = "wallet with razorpay"
 
                                         const wwrdata = {
@@ -560,17 +448,14 @@
                                         })
                                         .then(response => {
                                             const contentType = response.headers.get('content-type');
-                                            const message = "Your account is blocked, Please contact us"
-                                            const type = "danger"
                                             if (contentType && contentType.includes('application/json')) {
                                                 return response.json(); 
                                             } else {
-                                                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                                                window.location.href = `/login`;
                                             }
                                         })
                                         .then(data => {
                                             if(data.success){
-                                                console.log("data : ",data)
                                                 var options = {
                                                     key: "" + data.key_id + "",
                                                     amount: "" + data.amount + "",
@@ -630,21 +515,20 @@
                     showConfirmButton: false
                 });
             }
-          })
+        })
     }
 
-        
-
-       
     </script>
+
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-        </script>
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
+
 </body>
 
 </html>
