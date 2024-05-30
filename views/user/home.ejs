@@ -1,5 +1,5 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
   <head>
     <!-- User home css file -->
@@ -7,16 +7,12 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:wght@300&display=swap"
-      rel="stylesheet">
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-    
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
   </head>
 
   <section class="view mt-4 wrapper">
 
-    <!-- Home carousel start -->
     <div id="carouselExampleAutoplaying" class="carousel slide mt-4" data-bs-ride="carousel">
       <div class="carousel-inner">
         <% if(homeCarousel !="" ){ %>
@@ -62,9 +58,7 @@
         <span class="visually-hidden">Next</span>
       </button>
     </div>
-    <!-- Home carousel end -->
 
-    <!-- Brands start -->
     <% if(brands !="" ){ %>
     <div class="parallax-brands p-3 shadow">
       <h5 class="mt-2 MX-2 best-product-head">OUR TRUSTED BRANDS</h5>
@@ -91,9 +85,6 @@
     </div>
     <% } %>
     
-    <!-- Brands end -->
-
-    <!-- Category start -->
     <% if(category){ %>
     <section class="parallax-one p-3 shadow">
       <div class="container">
@@ -115,9 +106,7 @@
         </div>
       </section>
       <% } %>
-    <!-- Category end -->
     
-    <!-- Best offer products start -->
     <% if(bestSellingProducts !="" ){ %>
       <div class="parallaxone-para p-3 shadow">
         <h5 class="mt-2 MX-2 best-product-head">OUR BEST SELLING PRODUCTS</h5>
@@ -148,9 +137,7 @@
         </section>
       </div>
       <% } %>
-      <!-- Best offer products end -->
 
-      <!-- Coupon start -->
       <% if(coupon && coupon.length > 0){ %>
         <section class="parallax-two p-5">
           <div class="row d-flex justify-content-around">
@@ -181,12 +168,12 @@
           </div>
         </section>
       <% } %>
-      <!-- Coupon end -->
 
   </section>
   
 
   <script>
+
     ////// To go to shop page \\\\\\
     document.getElementById('shop-btn').addEventListener("click", function () {
       window.location.href = "/shop"

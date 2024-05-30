@@ -1,20 +1,13 @@
     <!-- User navbar -->
-    <%-include("../userpartials/Navbar.ejs")%>
+    <%-include("../userpartials/navbar.ejs")%>
 
         <head>
             <!-- User login page css -->
             <link rel='stylesheet' href='/static/css/user_login_register.css' type="text/css" />
-            <style>
-                .input-field .input-error {
-                    position: absolute;
-                    bottom: -5px; 
-                    font-size: 14px;
-                    color: #f82b50;
-                }
-            </style>
         </head>
 
         <div id="screen-size"></div>
+
         <section class="view">
             <div class="container input-box">
                 <div class="form-box col-12 col-md-6 col-lg-4">
@@ -56,6 +49,7 @@
         </section>
 
         <script>
+            
             ////// To validate the email \\\\\\
             function validateEmail() {
                 var emailInput = document.getElementById("email");
