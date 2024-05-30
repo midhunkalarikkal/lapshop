@@ -1,12 +1,9 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
         <!-- User register page css -->
         <link rel='stylesheet' href='/static/css/user_register.css' type="text/css" />
-        <style>
-            
-        </style>
     </head>
 
     <div id="screen-size"></div>
@@ -71,14 +68,13 @@
                                 <%= message %>
                             </strong>
                         </div>
-                        <% } %>
+                    <% } %>
                 </div>
             </div>
         </div>
     </section>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <!-- Validation script for the form -->
     <script>
 
         ////// For the referal input \\\\\\
@@ -250,7 +246,6 @@
                 confirmPasswordInput.type = "password";
             }
         }
-
 
     </script>
 
