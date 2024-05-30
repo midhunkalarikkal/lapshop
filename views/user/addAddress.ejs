@@ -1,86 +1,79 @@
 <!-- Admin navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
         <!-- Css for the admin data edit form -->
         <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
     </head>
-
-    <body>
         <section class="view">
             <div class="container d-flex align-items-center justify-content-center">
                 <div class="main col-12 col-lg-10 m-3 mt-5">
                     <form action="/saveNewAddress/<%= userId %>" method="POST">
                         <div class="p-5">
                             <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new address</h4>
-                                <div class="input-box d-md-flex">
-                                    <div class="col-12 col-md-6">
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Name" class="form-label">Name</label>
-                                            <input type="text" class="form-control" name="name" id="name"
-                                                required oninput="validateName()">
-                                            <span id="nameError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="AddressLine" class="form-label">Address line</label>
-                                            <textarea class="form-control" name="addressLine" id="addressLine" rows="1"
-                                                required
-                                                oninput="validateAddressLine()"></textarea>
-                                            <span id="addressLineError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Phone" class="form-label">Phone</label>
-                                            <input type="text" class="form-control" name="phone" id="phone"
-                                                 required
-                                                 oninput="validatePhone()">
-                                            <span id="phoneError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="City" class="form-label">City</label>
-                                            <input type="text" class="form-control" name="city" id="city"
-                                                 required oninput="validateCity()">
-                                            <span id="cityError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mt-5 d-md-block d-none">
-                                            <button type="button" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                            <button type="submit" id="submitButton" class="btn btn-primary">Save
-                                            </button>
-                                        </div>
+                            <div class="input-box d-md-flex">
+                                <div class="col-12 col-md-6">
+                                    <div class="mb-3 col-md-10">
+                                        <label for="Name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" id="name" required
+                                            oninput="validateName()">
+                                        <span id="nameError" class="text-danger"></span>
                                     </div>
-                                    <div class="col-12 col-md-6">
-                                        <div class="mb-3 col-md-10">
-                                            <label for="District" class="form-label">District</label>
-                                            <input type="text" class="form-control" name="district" id="district"
-                                                required
-                                                oninput="validateDistrict()">
-                                            <span id="districtError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="State" class="form-label">State</label>
-                                            <input type="text" class="form-control" name="state" id="state"
-                                                 required
-                                                 oninput="validateState()">
-                                            <span id="stateError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Pincode" class="form-label">Pincode</label>
-                                            <input type="text" class="form-control" name="pincode" id="pincode"
-                                                 required
-                                                 oninput="validatePincode()">
-                                            <span id="pincodeError" class="text-danger"></span>
-                                        </div>
-                                        <div class="mb-3 col-md-10">
-                                            <label for="Country" class="form-label">Country</label>
-                                            <input type="text" class="form-control" name="country" id="country" value="India"
-                                             required readonly>
-                                        </div>
+                                    <div class="mb-3 col-md-10">
+                                        <label for="AddressLine" class="form-label">Address line</label>
+                                        <textarea class="form-control" name="addressLine" id="addressLine" rows="1"
+                                            required oninput="validateAddressLine()"></textarea>
+                                        <span id="addressLineError" class="text-danger"></span>
                                     </div>
-                                    <div class="mt-4 d-block d-md-none">
+                                    <div class="mb-3 col-md-10">
+                                        <label for="Phone" class="form-label">Phone</label>
+                                        <input type="text" class="form-control" name="phone" id="phone" required
+                                            oninput="validatePhone()">
+                                        <span id="phoneError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3 col-md-10">
+                                        <label for="City" class="form-label">City</label>
+                                        <input type="text" class="form-control" name="city" id="city" required
+                                            oninput="validateCity()">
+                                        <span id="cityError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mt-5 d-md-block d-none">
                                         <button type="button" class="btn btn-warning" onclick="goBack()">Cancel</button>
                                         <button type="submit" id="submitButton" class="btn btn-primary">Save
-                                            </button>
+                                        </button>
                                     </div>
                                 </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="mb-3 col-md-10">
+                                        <label for="District" class="form-label">District</label>
+                                        <input type="text" class="form-control" name="district" id="district" required
+                                            oninput="validateDistrict()">
+                                        <span id="districtError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3 col-md-10">
+                                        <label for="State" class="form-label">State</label>
+                                        <input type="text" class="form-control" name="state" id="state" required
+                                            oninput="validateState()">
+                                        <span id="stateError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3 col-md-10">
+                                        <label for="Pincode" class="form-label">Pincode</label>
+                                        <input type="text" class="form-control" name="pincode" id="pincode" required
+                                            oninput="validatePincode()">
+                                        <span id="pincodeError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3 col-md-10">
+                                        <label for="Country" class="form-label">Country</label>
+                                        <input type="text" class="form-control" name="country" id="country"
+                                            value="India" required readonly>
+                                    </div>
+                                </div>
+                                <div class="mt-4 d-block d-md-none">
+                                    <button type="button" class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                    <button type="submit" id="submitButton" class="btn btn-primary">Save
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -305,36 +298,34 @@
                         pincode: document.getElementById('pincode').value,
                         country: document.getElementById('country').value
                     };
-                        const response = await fetch(form.action, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(formData)
+                    const response = await fetch(form.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const contentType = response.headers.get('content-type');
+                    let data;
+                    if (contentType && contentType.includes('application/json')) {
+                        data = await response.json();
+                    } else {
+                        window.location.href = `/login`;
+                    }
+
+                    if (response.ok) {
+                        Swal.fire("Success!",
+                            data.message,
+                            "success"
+                        ).then(() => {
+                            window.location.href = '/userProfile';
                         });
-
-                        const contentType = response.headers.get('content-type');
-                        let data;
-                        const message = "Your account is blocked, Please contact us"
-                        const type = "danger"
-                        if (contentType && contentType.includes('application/json')) {
-                            data = await response.json();
-                        } else {
-                            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                        }
-
-                        if (response.ok) {
-                            Swal.fire("Success!",
-                                data.message,
-                                "success"
-                            ).then(() => {
-                                window.location.href = '/userProfile';
-                            });
-                        } else {
-                            Swal.fire("Error!",
-                                data.message, "error"
-                            );
-                        }
+                    } else {
+                        Swal.fire("Error!",
+                            data.message, "error"
+                        );
+                    }
                 } else {
                     Swal.fire("Error!",
                         "Please fix the errors in the form.", "error"
@@ -348,4 +339,4 @@
         </script>
 
         <!-- Admin footer -->
-        <%-include("../userpartials/footer.ejs")%>
+        <%-include(".. /userpartials/footer.ejs")%>
