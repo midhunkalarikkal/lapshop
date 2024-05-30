@@ -717,7 +717,7 @@ const postOtpForChangePass = async (req, res) => {
     }
 };
 
-//To pot the otp from forgot password for verifying
+//To psot the otp from forgot password for verifying
 const checkOtpForChangePass = async(req,res)=>{
     try{
         const enteredOtp = req.body.otp
@@ -912,7 +912,6 @@ const getPaymentPage = async(req,res)=>{
 }
 
 // To get the order confirm page
-//orcerconfirmation file name c changed
 const getPaymentSuccess = async(req,res)=>{
     try{
         let userDetails = req.session.userNC
@@ -945,7 +944,7 @@ const getPaymentSuccess = async(req,res)=>{
             orderedDate : orderedDate,
             expectedDelivery : expectedDelivery
         }
-        return res.render('user/orderconfirmation',{userDetails , data})
+        return res.render('user/orderConfirmation',{userDetails , data})
     }catch(error){
         console.log(error.message)
         return res.redirect('/errorPage')
