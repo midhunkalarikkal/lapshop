@@ -1,0 +1,43 @@
+ /*======> Very small devices <======*/
+ @media (max-width: 576px) {
+    .product-img {
+        width: 90%;
+    }
+}
+
+/*======> XS/SM devices <======*/
+@media (min-width: 576px) and (max-width: 767px) {
+    .product-img {
+        width: 90%;
+    }
+}
+
+/*======> MD devices <======*/
+@media (min-width: 768px) and (max-width: 991px) {
+    .product-img {
+        width: 90%;
+    }
+}
+
+/*======> LG devices <======*/
+@media (min-width: 992px) and (max-width: 1199px) {
+    .product-img {
+        width: 70%;
+    }
+}
+
+
+/*======> XL devices <======*/
+@media (min-width: 1200px) {
+    .product-img {
+        width: 80%;
+    }
+}
+
+.font-semibold{
+    font-weight: 600;
+}
+
+.heads{
+    font-weight: 500;
+}
