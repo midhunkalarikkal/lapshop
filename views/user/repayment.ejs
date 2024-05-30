@@ -6,14 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LapShop</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!--Bootstrap-->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <!--Font Awesome-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+        
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
     <style>
         /*======> Very small devices <======*/
@@ -238,8 +241,9 @@
     </footer>
     <!-- footer end -->
 
-
+    <!-- script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <!-- script for razorpay -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
@@ -249,17 +253,6 @@
             let userAddressId = document.getElementById("userAddressId").value;
             let subTotal = document.getElementById('subTotal').innerText;
             let orderId = document.getElementById("orderId").value
-
-            console.log("order confirmation start")
-            console.log("payment Method :", paymentMethod)
-            console.log("type of payment Method :", typeof paymentMethod)
-            console.log("user address id :", userAddressId)
-            console.log("type of user address id :", typeof userAddressId)
-            console.log("subtotal :", subTotal)
-            console.log("type of subtotal :", typeof subTotal)
-            console.log("order id :", orderId)
-            console.log("type of order id : ", typeof orderId)
-            console.log("order confirmation end")
 
             const data = {
                 paymentMethod: paymentMethod,
@@ -274,79 +267,71 @@
                 },
                 body: JSON.stringify(data)
             })
-                .then(response => {
-                    const contentType = response.headers.get('content-type');
-                    const message = "Your account is blocked, Please contact us"
-                    const type = "danger"
-                    if (contentType && contentType.includes('application/json')) {
-                        return response.json();
-                    } else {
-                        window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                    }
-                })
-                .then(data => {
-                    if (data.success) {
-                        console.log("data : ", data)
-                        if (paymentMethod === "razorpay") {
-                            var options = {
-                                key: "" + data.key_id + "",
-                                amount: "" + data.amount + "",
-                                currency: "INR",
-                                name: "LapShop",
-                                description: "Your laptop",
-                                image: `/static/images/Bg/desktop/Lapshop logo.png`,
-                                order_id: "" + data.order_id + "",
-                                handler: function (response) {
-                                    let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=true`;
-                                    window.location.href = redirectUrl;
-                                },
-                                prefill: {
-                                    name: "" + data.name + "",
-                                    email: "" + data.email + "",
-                                    contact: "9000090000",
-                                },
-                                notes: {
-                                    address: "Razorpay Corporate Office",
-                                },
-                                theme: {
-                                    color: "#ffc107",
-                                },
-                            };
-                            var rzp1 = new Razorpay(options);
-                            rzp1.on("payment.failed", function (response) {
-                                let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+            .then(response => {
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                } else {
+                    window.location.href = `/login`;
+                }
+            })
+            .then(data => {
+                if (data.success) {
+                    if (paymentMethod === "razorpay") {
+                        var options = {
+                            key: "" + data.key_id + "",
+                            amount: "" + data.amount + "",
+                            currency: "INR",
+                            name: "LapShop",
+                            description: "Your laptop",
+                            image: `/static/images/Bg/desktop/Lapshop logo.png`,
+                            order_id: "" + data.order_id + "",
+                            handler: function (response) {
+                                let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=true`;
                                 window.location.href = redirectUrl;
-                            });
-                            rzp1.open();
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: "Internal server error",
-                                text: data.message,
-                                timer: 2000,
-                                timerProgressBar: true,
-                                showConfirmButton: false
-                            });
-                        }
+                            },
+                            prefill: {
+                                name: "" + data.name + "",
+                                email: "" + data.email + "",
+                                contact: "9000090000",
+                            },
+                            notes: {
+                                address: "Razorpay Corporate Office",
+                            },
+                            theme: {
+                                color: "#ffc107",
+                            },
+                        };
+                        var rzp1 = new Razorpay(options);
+                        rzp1.on("payment.failed", function (response) {
+                            let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+                            window.location.href = redirectUrl;
+                        });
+                        rzp1.open();
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: "Internal server error",
+                            text: data.message,
+                            timer: 2000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                     }
-                })
+                }
+            })
         })
 
-
-
-
-
-
-
     </script>
+
     <!--Bootstrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-        </script>
+    </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-        </script>
+    </script>
 </body>
 
 </html>
