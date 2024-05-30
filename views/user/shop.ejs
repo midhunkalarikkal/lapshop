@@ -1,13 +1,9 @@
 <!-- User navbar -->
-<%-include("../userpartials/Navbar.ejs")%>
+<%-include("../userpartials/navbar.ejs")%>
 
     <head>
-        <!-- Custom css -->
+        <!-- Custom css for shop page -->
         <link rel="stylesheet" href="/static/css/shop.css">
-        <style>
-
-
-        </style>
     </head>
 
     <section class="view">
@@ -19,8 +15,7 @@
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Filters and sorters</a>
                         <ul class="dropdown-menu">
                             <% if(category && category.length>0 ){ %>
-                                <li><a class="dropdown-item" href="#">Filter by category <i
-                                            class="fa-solid fa-angles-down"></i> </a>
+                                <li><a class="dropdown-item" href="#">Filter by category <i class="fa-solid fa-angles-down"></i> </a>
                                     <ul class="submenu dropdown-menu">
                                         <% for(let i=0; i < category.length; i++){ %>
                                             <li>
@@ -126,7 +121,7 @@
                 <!-- Shop Sidebar Start -->
                 <div class="col-md-2 d-none d-md-block">
                     <h5 class="font-weight-semi-bold mb-4">Apply filters</h5>
-                    <!-- Category Start -->
+
                     <% if(category && category.length>0 ){ %>
                         <div class="border-bottom mb-4 pb-4">
                             <h6 class="font-weight-semi-bold mb-4">Filter by Category</h6>
@@ -138,9 +133,7 @@
                             <% } %>
                         </div>
                     <% } %>
-                    <!-- Category End -->
-
-                    <!-- Brand Start -->
+                    
                     <% if(brand && brand.length>0 ){ %>
                         <div class="border-bottom mb-4 pb-4">
                             <h6 class="font-weight-semi-bold mb-4">Filter by Brand</h6>
@@ -154,9 +147,7 @@
                             </form>
                         </div>
                     <% } %>
-                    <!-- Brand End -->
-
-                    <!-- Sorting Start -->
+                    
                     <div class="border-bottom mb-4 pb-4">
                         <h6 class="font-weight-semi-bold mb-4">Sort products</h6>
                         <form>
@@ -178,148 +169,146 @@
                             </div>
                         </form>
                     </div>
-                    <!-- Sorting End -->
                 </div>
                 <!-- Shop Sidebar End -->
 
                 <% const productsPerPage=6; %>
-                    <div class="col-md-10">
-                        <div class="container">
-                            <!-- Shop Product Start -->
-                            <div class="row pb-3" id="productCardRow">
-                                <% const currentPageProducts = productData.slice((currentPage - 1) * productsPerPage,currentPage * productsPerPage); %>
-                                <% currentPageProducts.forEach((product,index)=>{ %>
-                                    <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
-                                        <div class="card product-item mb-4 product-card shadow">
-                                            <a href="/productDetail/<%= product._id %>" class="product-outline">
-                                                <div class="card-header product-img position-relative overflow-hidden  p-0">
-                                                    <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
-                                                    <% if (wishlistProdId !="" ) { %>
-                                                        <% for(let i=0; i < wishlistProdId.length; i++){ %>
-                                                            <% if(wishlistProdId[i]==product._id.toString()){ %>
-                                                                <a href="#" class="position-absolute"
-                                                                    style="top: 8px; right: 50px; z-index: 1;"
-                                                                    data-product-id="<%= product._id %>"
-                                                                    onclick="addToWishlist(this)">
-                                                                    <i class="fa-solid fa-heart wish-btn"></i>
-                                                                </a>
-                                                            <% } %>
+                <div class="col-md-10">
+                    <div class="container">
+                        <!-- shop product start -->
+                        <div class="row pb-3" id="productCardRow">
+                            <% const currentPageProducts = productData.slice((currentPage - 1) * productsPerPage,currentPage * productsPerPage); %>
+                            <% currentPageProducts.forEach((product,index)=>{ %>
+                                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                                    <div class="card product-item mb-4 product-card shadow">
+                                        <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                            <div class="card-header product-img position-relative overflow-hidden  p-0">
+                                                <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
+                                                <% if (wishlistProdId !="" ) { %>
+                                                    <% for(let i=0; i < wishlistProdId.length; i++){ %>
+                                                        <% if(wishlistProdId[i]==product._id.toString()){ %>
+                                                            <a href="#" class="position-absolute"
+                                                                style="top: 8px; right: 50px; z-index: 1;"
+                                                                data-product-id="<%= product._id %>"
+                                                                onclick="addToWishlist(this)">
+                                                                <i class="fa-solid fa-heart wish-btn"></i>
+                                                            </a>
                                                         <% } %>
                                                     <% } %>
-                                                    <a href="#" class="position-absolute"
-                                                        style="top: 8px; right: 50px; z-index: 1;"
-                                                        data-product-id="<%= product._id %>"
-                                                        onclick="addToWishlist(this)">
-                                                        <i class="fa-regular fa-heart wish-btn"></i>
-                                                    </a>
-                                                    <div class="position-absolute" style="top: 5px; right: 5px; z-index: 1;">
-                                                        <span class="badge">New</span>
-                                                    </div>
-                                                </div>
-                                                <div class="card-body">
-                                                    <h6 class="text-truncate product-name tet-center mb-3">
-                                                        <%= product.name %>
-                                                    </h6>
-                                                    <div class="d-flex align-items-end">
-                                                        <p>
-                                                            <span class="discount-percentage">-<%= product.discountPercentage %>%</span>
-                                                            <span class="offer-price mx-2">₹<%= product.offerPrice %></span>
-                                                            <span class="real-price small mx-2">₹<del class="real-price"><%= product.realPrice %></del></span>
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </a>
-                                            <% if (cartProdId !="" ) { %>
-                                                <% for(let i=0; i < cartProdId.length; i++){ %>
-                                                    <% if(cartProdId[i] == product._id.toString()){ %>
-                                                        <button class="card-footer d-flex justify-content-center">
-                                                            <a href="/cart" class="btn btn-sm p-0">
-                                                                <i class="fas fa-shopping-cart"></i> Go to cart
-                                                            </a>
-                                                        </button>
-                                                    <% break; %>
-                                                    <% } %>
-                                                    <!-- If it's the last iteration and no match is found -->
-                                                    <% if(i===cartProdId.length - 1){ %>
-                                                        <button
-                                                            class="card-footer d-flex justify-content-center"
-                                                            data-prod-id="<%= product._id %>"
-                                                            onclick="addToCart(this)">
-                                                            <a href="" class="btn btn-sm p-0">
-                                                                <i class="fas fa-shopping-cart"></i> Add to cart
-                                                            </a>
-                                                        </button>
-                                                    <% } %>
                                                 <% } %>
-                                            <% } else { %>
-                                            <!-- Render "Add to cart" button if cartProdId is empty -->
-                                                <button
-                                                    class="card-footer d-flex justify-content-center"
-                                                    data-prod-id="<%= product._id %>"
-                                                    onclick="addToCart(this)">
-                                                    <a href="" class="btn btn-sm p-0">
-                                                        <i class="fas fa-shopping-cart"></i> Add to cart
-                                                    </a>
-                                                </button>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                <% } ) %>
-                            </div>
-                            <!-- Shop Product end -->
-
-                            <!--  Pagination for the shop page start , This will hidden in the filtering and sorting page -->
-                            <div class="col-12 pb-1" id="shopPagination">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-center mb-3">
-                                        <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                                            <a class="page-link" href="/shop?page=<%= currentPage - 1 %>"
-                                                aria-label="Previous">
-                                                <span aria-hidden="true">&laquo;</span>
-                                                <span class="sr-only">Previous</span>
-                                            </a>
-                                        </li>
-                                        <% for(let i=1; i<=totalPages; i++) { %>
-                                            <li class="page-item mx-1 <%= currentPage === i ? 'active' : '' %>">
-                                                <a class="page-link" href="/shop?page=<%= i %>">
-                                                    <%= i %>
+                                                <a href="#" class="position-absolute"
+                                                    style="top: 8px; right: 50px; z-index: 1;"
+                                                    data-product-id="<%= product._id %>"
+                                                    onclick="addToWishlist(this)">
+                                                    <i class="fa-regular fa-heart wish-btn"></i>
                                                 </a>
-                                            </li>
+                                                <div class="position-absolute" style="top: 5px; right: 5px; z-index: 1;">
+                                                    <span class="badge">New</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                <h6 class="text-truncate product-name tet-center mb-3">
+                                                    <%= product.name %>
+                                                </h6>
+                                                <div class="d-flex align-items-end">
+                                                    <p>
+                                                        <span class="discount-percentage">-<%= product.discountPercentage %>%</span>
+                                                        <span class="offer-price mx-2">₹<%= product.offerPrice %></span>
+                                                        <span class="real-price small mx-2">₹<del class="real-price"><%= product.realPrice %></del></span>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <% if (cartProdId !="" ) { %>
+                                            <% for(let i=0; i < cartProdId.length; i++){ %>
+                                                <% if(cartProdId[i] == product._id.toString()){ %>
+                                                    <button class="card-footer d-flex justify-content-center">
+                                                        <a href="/cart" class="btn btn-sm p-0">
+                                                            <i class="fas fa-shopping-cart"></i> Go to cart
+                                                        </a>
+                                                    </button>
+                                                <% break; %>
+                                                <% } %>
+                                                <!-- If it's the last iteration and no match is found -->
+                                                <% if(i===cartProdId.length - 1){ %>
+                                                    <button
+                                                        class="card-footer d-flex justify-content-center"
+                                                        data-prod-id="<%= product._id %>"
+                                                        onclick="addToCart(this)">
+                                                        <a href="" class="btn btn-sm p-0">
+                                                            <i class="fas fa-shopping-cart"></i> Add to cart
+                                                        </a>
+                                                    </button>
+                                                <% } %>
+                                            <% } %>
+                                        <% } else { %>
+                                        <!-- Render "Add to cart" button if cartProdId is empty -->
+                                            <button
+                                                class="card-footer d-flex justify-content-center"
+                                                data-prod-id="<%= product._id %>"
+                                                onclick="addToCart(this)">
+                                                <a href="" class="btn btn-sm p-0">
+                                                    <i class="fas fa-shopping-cart"></i> Add to cart
+                                                </a>
+                                            </button>
                                         <% } %>
-                                        <li class="page-item mx-1 <%= currentPage === totalPages ? 'disabled' : '' %>">
-                                            <a class="page-link" href="/shop?page=<%= currentPage + 1 %>" aria-label="Next">
-                                                <span aria-hidden="true">&raquo;</span>
-                                                <span class="sr-only">Next</span>
+                                    </div>
+                                </div>
+                            <% } ) %>
+                        </div>
+                        <!-- Shop Product end -->
+
+                        <!--  Pagination for the shop page start , This will hidden in the filtering and sorting page -->
+                        <div class="col-12 pb-1" id="shopPagination">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mb-3">
+                                    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                                        <a class="page-link" href="/shop?page=<%= currentPage - 1 %>" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    <% for(let i=1; i<=totalPages; i++) { %>
+                                        <li class="page-item mx-1 <%= currentPage === i ? 'active' : '' %>">
+                                            <a class="page-link" href="/shop?page=<%= i %>">
+                                                <%= i %>
                                             </a>
                                         </li>
-                                    </ul>
-                                </nav>
-                            </div>
-                            <!--  Pagination for the shop page end -->
-
-                            <!--  Pagination for the filtering and sorting start -->
-                            <div class="col-12 pb-1">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination justify-content-center mb-3" id="pagination">
-                                        <!--  adding by dynamically -->
-                                    </ul>
-                                </nav>
-                            </div>
-                            <!--  Pagination for the filtering and sorting end -->
-
+                                    <% } %>
+                                    <li class="page-item mx-1 <%= currentPage === totalPages ? 'disabled' : '' %>">
+                                        <a class="page-link" href="/shop?page=<%= currentPage + 1 %>" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
+                        <!--  Pagination for the shop page end -->
+
+                        <!--  Pagination for the filtering and sorting start -->
+                        <div class="col-12 pb-1">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center mb-3" id="pagination">
+                                    <!--  adding by dynamically -->
+                                </ul>
+                            </nav>
+                        </div>
+                        <!--  Pagination for the filtering and sorting end -->
                     </div>
-                    <!-- Shop Product End -->
+                </div>
             </div>
         </div>
         <!-- Shop End -->
     </section>
 
-
+    <!-- script for jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
     <script>
+
         ////// Function to add id's of the category checkbox \\\\\\
         let selectedCategories = new Set();
         let selectedBrands = new Set();
@@ -338,7 +327,7 @@
             });
         });
 
-        ////// Function select and deselect the radio button and triggering the fetch \\\\\\
+        ////// function to select and deselect the radio button and triggering the fetch \\\\\\
         $(document).ready(function () {
             $('input[type="radio"]').click(function () {
                 const selectedSortCriteria = $(this).attr('id');
@@ -355,8 +344,7 @@
                     sortCriteria = null;
                 }
 
-                // Update radio button selection
-                $('input[type="radio"]').prop('checked', false); // Deselect all
+                $('input[type="radio"]').prop('checked', false);
                 $(this).prop('checked', true);
 
                 updateProductList();
@@ -387,7 +375,6 @@
 
         ////// Function to fetch the categorized and brandwise products and show it dynamically \\\\\\
         function updateProductList() {
-            console.log("current page :", currentPage)
             document.getElementById("shopPagination").style.display = "none";
             fetch('/shopCategoryId', {
                 method: 'POST',
@@ -396,137 +383,142 @@
                 },
                 body: JSON.stringify({ categories: [...selectedCategories], brands: [...selectedBrands], sortCriteria, currentPage, inputValue })
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    let productData = data.productData
-                    let totalPages = data.totalPages
-                    let prodId = data.prodId
-                    let cartProdId = data.cartProdId
-                    console.log("productData : ", productData)
-                    console.log("totalPages : ", totalPages)
-                    console.log("prodId : ", prodId)
-                    updatePaginationUI(totalPages);
+            .then(response => response.json())
+            .then(data => {
+                let productData = data.productData
+                let totalPages = data.totalPages
+                let prodId = data.prodId
+                let cartProdId = data.cartProdId
+                updatePaginationUI(totalPages);
 
-                    ////// Emptying the child elements of the productCardRow div \\\\\\
-                    $("#productCardRow").empty()
+                ////// Emptying the child elements of the productCardRow div \\\\\\
+                $("#productCardRow").empty()
 
-                    productData.forEach((product) => {
-                        const productDiv = $(
-                            `<div class='col-lg-4 col-md-6 col-sm-6 pb-1'>
-                                <div class='card product-item mb-4 product-card shadow'>
-                                    <a href='/productDetail/${product._id}' class='product-outline'>
-                                        <div class='card-header product-img position-relative overflow-hidden  p-0'>
-                                            <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
+                productData.forEach((product) => {
+                    const productDiv = $(
+                        `<div class='col-lg-4 col-md-6 col-sm-6 pb-1'>
+                            <div class='card product-item mb-4 product-card shadow'>
+                                <a href='/productDetail/${product._id}' class='product-outline'>
+                                    <div class='card-header product-img position-relative overflow-hidden  p-0'>
+                                        <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
 
-                                            <div class='position-absolute' style='top: 5px; right: 5px; z-index: 1;'>
-                                                <span class='badge'>New</span>
-                                            </div>
+                                        <div class='position-absolute' style='top: 5px; right: 5px; z-index: 1;'>
+                                            <span class='badge'>New</span>
                                         </div>
-                                        <div class='card-body'>
-                                            <h6 class='text-truncate product-name text-center mb-3'>${product.name}</h6>
-                                            <div class='d-flex align-items-end'>
-                                                <h6 class='offer-price text-danger'>₹${product.discountPercentage}%</h6>
-                                                <h6 class='offer-price mx-2'>₹${product.offerPrice}</h6>
-                                                <h6 class='real-price small mx-3'>₹<del class='real-price'>${product.realPrice}</del></h6>
-                                            </div>
+                                    </div>
+                                    <div class='card-body'>
+                                        <h6 class='text-truncate product-name text-center mb-3'>${product.name}</h6>
+                                        <div class='d-flex align-items-end'>
+                                            <h6 class='offer-price text-danger'>₹${product.discountPercentage}%</h6>
+                                            <h6 class='offer-price mx-2'>₹${product.offerPrice}</h6>
+                                            <h6 class='real-price small mx-3'>₹<del class='real-price'>${product.realPrice}</del></h6>
                                         </div>
-                                    </a>
-                                    
-                                </div>
-                            </div>`
-                        );
-
-                        ////// Dynamically adding the wishlist button to the product \\\\\\
-                        const productCardHeader = productDiv.find('.card-header.product-img');
-                        if (prodId != "") {
-                            for (let i = 0; i < prodId.length; i++) {
-                                if (prodId[i] == product._id.toString()) {
-                                    const wishlistButton = $(`
-                                            <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
-                                                <i class="fa-solid fa-heart wish-btn"></i> 
-                                            </a>
-                                        `);
-                                    productCardHeader.append(wishlistButton);
-                                }
-                            }
-                        }
-                        const defaultWishlistButton = $(`
-                                <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
-                                    <i class="fa-regular fa-heart wish-btn"></i> 
+                                    </div>
                                 </a>
-                            `);
-                        productCardHeader.append(defaultWishlistButton);
+                                
+                            </div>
+                        </div>`
+                    );
 
-                        // Dynamically adding the add to cart / go to cart button to the product \\\\\\
-                        const productCardFooter = productDiv.find('.card.product-item');
-                        let defaultAddToCartButton = $(`
-                                    <button class="card-footer d-flex justify-content-center"
-                                            data-prod-id="${product._id}"
-                                            onclick="addToCart(this)">
-                                        <a href="#" class="btn btn-sm p-0">
-                                            <i class="fas fa-shopping-cart"></i> Add to cart
-                                        </a>
-                                    </button>
+                    ////// Dynamically adding the wishlist button to the product \\\\\\
+                    const productCardHeader = productDiv.find('.card-header.product-img');
+                    if (prodId != "") {
+                        for (let i = 0; i < prodId.length; i++) {
+                            if (prodId[i] == product._id.toString()) {
+                                const wishlistButton = $(`
+                                    <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
+                                        <i class="fa-solid fa-heart wish-btn"></i> 
+                                    </a>
                                 `);
-
-                        if (cartProdId != "") {
-                            let isInCart = false;
-                            for (let i = 0; i < cartProdId.length; i++) {
-                                if (cartProdId[i] == product._id.toString()) {
-                                    isInCart = true;
-                                    break;
-                                }
-                            }
-
-                            if (isInCart) {
-                                // If product is in cart, create the go to cart button
-                                const goToCartButton = $(`
-                                    <button class="card-footer d-flex justify-content-center">
-                                        <a href="/cart" class="btn btn-sm p-0">
-                                            <i class="fas fa-shopping-cart"></i> Go to cart
-                                        </a>
-                                    </button>
-                                `);
-                                defaultAddToCartButton = goToCartButton
-                                productCardFooter.append(defaultAddToCartButton);
-                            } else {
-                                // If product is not in cart, create the add to cart button
-                                const addToCartButton = $(`
-                                    <button class="card-footer d-flex justify-content-center"
-                                            data-prod-id="${product._id}"
-                                            onclick="addToCart(this)">
-                                        <a href="#" class="btn btn-sm p-0">
-                                            <i class="fas fa-shopping-cart"></i> Add to cart
-                                        </a>
-                                    </button>
-                                `);
-                                defaultAddToCartButton = addToCartButton
-                                productCardFooter.append(defaultAddToCartButton);
+                                productCardHeader.append(wishlistButton);
                             }
                         }
+                    }
+
+                    const defaultWishlistButton = $(`
+                        <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
+                            <i class="fa-regular fa-heart wish-btn"></i> 
+                        </a>
+                    `);
+                    productCardHeader.append(defaultWishlistButton);
+
+                    ////// Dynamically adding the add to cart / go to cart button to the product \\\\\\
+                    const productCardFooter = productDiv.find('.card.product-item');
+                    let defaultAddToCartButton = $(`
+                        <button class="card-footer d-flex justify-content-center"
+                            data-prod-id="${product._id}"
+                            onclick="addToCart(this)">
+                            <a href="#" class="btn btn-sm p-0">
+                                <i class="fas fa-shopping-cart"></i> Add to cart
+                            </a>
+                        </button>
+                    `);
+
+                    if (cartProdId != "") {
+                        let isInCart = false;
+                        for (let i = 0; i < cartProdId.length; i++) {
+                            if (cartProdId[i] == product._id.toString()) {
+                                isInCart = true;
+                                break;
+                            }
+                        }
+
+                        if (isInCart) {
+                            ////// If product is in cart, create the go to cart button \\\\\\
+                            const goToCartButton = $(`
+                                <button class="card-footer d-flex justify-content-center">
+                                    <a href="/cart" class="btn btn-sm p-0">
+                                        <i class="fas fa-shopping-cart"></i> Go to cart
+                                    </a>
+                                </button>
+                            `);
+                            defaultAddToCartButton = goToCartButton
+                            productCardFooter.append(defaultAddToCartButton);
+                        } else {
+                            ////// If product is not in cart, create the add to cart button \\\\\\
+                            const addToCartButton = $(`
+                                <button class="card-footer d-flex justify-content-center"
+                                    data-prod-id="${product._id}"
+                                    onclick="addToCart(this)">
+                                    <a href="#" class="btn btn-sm p-0">
+                                        <i class="fas fa-shopping-cart"></i> Add to cart
+                                    </a>
+                                </button>
+                            `);
+                            defaultAddToCartButton = addToCartButton
+                            productCardFooter.append(defaultAddToCartButton);
+                        }
+                    }
                        
 
-                        ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
-                        $("#productCardRow").append(productDiv)
-                    });
-                    ////// if the productData's length is 0 in response , then redirecting to shop page \\\\\\
-                    if (productData.length == 0) {
-                        Swal.fire({
-                            title: "No Products Found",
-                            text: "No products were found for the selected filters.",
-                            icon: "info",
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        }).then(() => {
-                            window.location.href = '/shop'
-                        })
-                    }
-                })
-                .catch(error => {
-                    console.error('Error fetching products:', error);
+                    ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
+                    $("#productCardRow").append(productDiv)
                 });
+
+                ////// if the productData's length is 0 in response , then redirecting to shop page \\\\\\
+                if (productData.length == 0) {
+                    Swal.fire({
+                        title: "No Products Found",
+                        text: "No products were found for the selected filters.",
+                        icon: "info",
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }).then(() => {
+                        window.location.href = '/shop'
+                    })
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Internal server error',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            });
         }
 
         ////////// Script to the dropdownmenu in the small devices for the filter and sort \\\\\\
@@ -558,7 +550,6 @@
                             } else {
                                 nextEl.style.display = 'block';
                             }
-
                         }
                     });
                 })
@@ -567,13 +558,8 @@
 
         ////// Function to update pagination UI \\\\\\
         function updatePaginationUI(totalPages) {
-            console.log("Totalpages :", totalPages)
-            console.log("currenntpage :", currentPage)
-
             const paginationElement = document.querySelector('#pagination');
-
             paginationElement.innerHTML = '';
-
             let paginationHTML = `
                 <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
                     <a class="page-link" href="#" onclick="changePage(${currentPage - 1})" aria-label="Previous">
@@ -582,7 +568,7 @@
                     </a>
                 </li>`;
 
-            // Create page numbers for the second pagination
+            ////// Create page numbers for the second pagination \\\\\\
             for (let i = 1; i <= totalPages; i++) {
                 paginationHTML += `
                     <li class="page-item mx-1 ${currentPage === i ? 'active' : ''}">
@@ -591,7 +577,7 @@
                 `;
             }
 
-            // Creating hte next button for the second pagination
+            ////// Creating hte next button for the second pagination \\\\\\
             paginationHTML += `
                 <li class="page-item mx-1 ${currentPage === totalPages ? 'disabled' : ''}">
                     <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
@@ -618,8 +604,6 @@
                 productId: productId
             };
 
-            console.log("Data :", data)
-
             fetch('/addToWishlist', {
                 method: 'POST',
                 headers: {
@@ -636,7 +620,6 @@
                 }
             })
             .then(data => {
-                console.log("data :", data)
                 var wishlistButton = document.querySelector(`[data-product-id="${productId}"] .fa-heart`);
                 if (data.added) {
                     wishlistButton.classList.add('fa-solid');
@@ -659,7 +642,6 @@
         ////// Funciton to add a product to cart \\\\\\
         function addToCart(element) {
             const productId = element.getAttribute('data-prod-id');
-            console.log('Product ID:', productId);
 
             fetch('/addProductToCartFromShop', {
                 method: 'POST',
@@ -678,7 +660,6 @@
             })
             .then(data => {
                 if(data.added){
-                    console.log("product added")
                     Swal.fire({
                         title: "Success",
                         text: data.message,
@@ -703,7 +684,6 @@
                 }
             })
         }
-
 
     </script>
 
