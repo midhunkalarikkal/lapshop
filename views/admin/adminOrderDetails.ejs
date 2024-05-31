@@ -1,71 +1,11 @@
 <!-- User navbar -->
 <%-include("../adminpartials/admin_navbar.ejs")%>
 
-    <head>
-        <style>
-            /*======> Very small devices <======*/
-            @media (max-width: 576px) {
-                .product-text span {
-                    font-size: 12px;
-                }
-
-                .add-to-cart-btn {
-                    width: 5rem;
-                    font-size: 12px;
-                }
-
-                .delete-btn {
-                    font-size: 12px;
-                }
-
-                .product-img {
-                    width: 90%;
-                }
-            }
-
-            /*======> XS/SM devices <======*/
-            @media (min-width: 576px) and (max-width: 767px) {
-                .product-text span {
-                    font-size: 14px;
-                }
-                .product-img {
-                    width: 90%;
-                }
-            }
-
-            /*======> MD devices <======*/
-            @media (min-width: 768px) and (max-width: 991px) {
-                .product-img {
-                    width: 90%;
-                }
-            }
-
-            /*======> LG devices <======*/
-            @media (min-width: 992px) and (max-width: 1199px) {
-                .product-img {
-                    width: 70%;
-                }
-            }
-
-
-            /*======> XL devices <======*/
-            @media (min-width: 1200px) {
-                .product-img {
-                    width: 80%;
-                }
-            }
-
-            .font-semibold{
-                font-weight: 600;
-            }
-
-            .heads{
-                font-weight: 500;
-            }
-        </style>
-    </head>
+<head>
+    <!-- custom css for order detail page -->
+    <link rel="stylesheet" href="/static/css/order_detail.css" type="text/css">
+</head>
     <section class="view">
-        <!-- Table wishlist for mediuam and above screen start -->
         <div class="orderDetail-wrap mt-5">
             <div class="container">
                 <div class="row">
@@ -129,8 +69,8 @@
                                                 <span class="product-name"><span class="heads">Black : </span><%= order[i].orderedItems[j].product.colour %></span>
                                                 <span class="product-name"><span class="heads">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
                                                 <span class="product-name"><span class="heads">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
+                                            </div>
                                         </div>
-                                    </div>
                                     <% } %>
                                 </div>
                                 <div class="order-paymentandAddress d-md-flex">
@@ -167,7 +107,6 @@
                                                     <span class="text-success">Order amount Credited to user wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
                                                 <% } %>
                                             <% } %>
-
                                         </div>
                                     </div>
                                     <div class="gap col-1">
@@ -225,12 +164,13 @@
                 <% } %>
             </div>
         </div>
-        
     </section>
 
     <!--  Script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+        
+        ////// function to go back to order list \\\\\\
         document.getElementById('backToOrder').addEventListener("click",function(){
             window.location.href = '/admin/orders'
         })
