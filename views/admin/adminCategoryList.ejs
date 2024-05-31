@@ -1,111 +1,109 @@
 <!-- Admin header -->
 <%-include("../adminpartials/admin_navbar.ejs")%>
+
 <section class="view">
-<div class="container mt-5">
-    <!-- Heading and category adding button start -->
-    <div class="row">
-        <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
-            <h1>Categories</h1>
-            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new category</button>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
+                <h1>Categories</h1>
+                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new category</button>
+            </div>
+            <hr>
         </div>
-        <hr>
-    </div>
-    <!-- Heading and category adding button end -->
-    <!-- Table row start -->
-    <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
-        <div class="table-responsive col-md-10">
-            <% if(category !="" ){ %>
-                <table class="table text-center table-striped my-4 p-1">
-                    <thead>
-                        <tr class="table-dark">
-                            <th class="text-center text-light">Nos</th>
-                            <th class="text-center text-light">Image</th>
-                            <th class="text-center text-light">Name</th>
-                            <th class="text-center text-light">Description</th>
-                            <th class="text-center text-light">Controls</th>
-                            <th class="text-center text-light">Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% category.forEach((row,index)=> { %>
-                            <tr class="align-middle">
-                                <td>
-                                    <%= index+1 %>
-                                </td>
-                                <td>
-                                    <img src=" /static/images/CategoryImages/<%= row.image %> " width="50" class="img-thumbnal"/>
-                                </td>
-                                <td>
-                                    <%= row.name %>
-                                </td>
-                                <td>
-                                    <%= row.desc %>
-                                </td>
-                                <td>
-                                    <input type="radio" class="category-switch" data-category-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isBlocked) { %>checked<% } %>>
-                                    <label for="block_<%= row._id %>" class="text-danger">Block</label>
-                                    <input type="radio" class="category-switch" data-category-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isBlocked) { %>checked<% } %>>
-                                    <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
-                                </td>
-                                <td>
-                                    <a href="/admin/categoryEdit/<%= row._id %>" class="text-success edit-category"><i class="fas fa-edit fa-lg mx-1"></i></a>
-                                </td>
+        <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
+            <div class="table-responsive col-md-10">
+                <% if(category !="" ){ %>
+                    <table class="table text-center table-striped my-4 p-1">
+                        <thead>
+                            <tr class="table-dark">
+                                <th class="text-center text-light">Nos</th>
+                                <th class="text-center text-light">Image</th>
+                                <th class="text-center text-light">Name</th>
+                                <th class="text-center text-light">Description</th>
+                                <th class="text-center text-light">Controls</th>
+                                <th class="text-center text-light">Edit</th>
                             </tr>
-                        <% }); %>
-                    </tbody>
-                </table>
-            <% } else {%>
-                <div class="alert alert-info text-center" role="alert">No categories found in the database.</div>
-            <% } %>
-        </div>
-    </div> 
-    <!-- Table row end -->
-</div>
+                        </thead>
+                        <tbody>
+                            <% category.forEach((row,index)=> { %>
+                                <tr class="align-middle">
+                                    <td>
+                                        <%= index+1 %>
+                                    </td>
+                                    <td>
+                                        <img src=" /static/images/CategoryImages/<%= row.image %> " width="50" class="img-thumbnal"/>
+                                    </td>
+                                    <td>
+                                        <%= row.name %>
+                                    </td>
+                                    <td>
+                                        <%= row.desc %>
+                                    </td>
+                                    <td>
+                                        <input type="radio" class="category-switch" data-category-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isBlocked) { %>checked<% } %>>
+                                        <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                        <input type="radio" class="category-switch" data-category-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isBlocked) { %>checked<% } %>>
+                                        <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/categoryEdit/<%= row._id %>" class="text-success edit-category"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                <% } else {%>
+                    <div class="alert alert-info text-center" role="alert">No categories found in the database.</div>
+                <% } %>
+            </div>
+        </div> 
+    </div>
 </section>       
 
-    <!-- Modal start -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="categoryName" class="form-label">Category Name</label>
-                            <input type="text" class="form-control" id="categoryName" name="categoryName">
-                        </div>
-                        <div class="mb-3">
-                            <label for="categoryDescription" class="form-label">Category Description</label>
-                            <input type="text" class="form-control" id="categoryDescription" name="categoryDescription">
-                        </div>
-                        <div class="mb-3">
-                            <label for="CategoryImg" class="form-label mx-2">Select image</label>
-                             <input type="file" name="image" id="categoryImg" class="form-control form-control-md">
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" id="save" class="btn btn-primary">Save</button>
-                </div>
+<!-- Modal start -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add New Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="categoryName" class="form-label">Category Name</label>
+                        <input type="text" class="form-control" id="categoryName" name="categoryName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoryDescription" class="form-label">Category Description</label>
+                        <input type="text" class="form-control" id="categoryDescription" name="categoryDescription">
+                    </div>
+                    <div class="mb-3">
+                        <label for="CategoryImg" class="form-label mx-2">Select image</label>
+                         <input type="file" name="image" id="categoryImg" class="form-control form-control-md">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" id="save" class="btn btn-primary">Save</button>
             </div>
         </div>
     </div>
-    <!-- Modal end -->
+</div>
+<!-- Modal end -->
 
+    <!-- Script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Script for category adding, category blocking -->
     <script>
+
         ////// To add new category through fetch \\\\\
         document.getElementById("save").addEventListener("click", async function () {
             const categoryName = document.getElementById("categoryName").value;
             const categoryDesc = document.getElementById("categoryDescription").value;
             const categoryImg = document.getElementById("categoryImg").files[0];
 
-            const formData = new FormData(); // Create a FormData object
+            const formData = new FormData();
             formData.append('categoryName', categoryName);
             formData.append('categoryDesc', categoryDesc);
             formData.append('categoryImg', categoryImg);
@@ -113,7 +111,7 @@
             try {
                 const response = await fetch("/admin/addCategory", {
                     method: "POST",
-                    body: formData // Pass the FormData object directly as the body
+                    body: formData
                 });
 
                 if (response.ok) {
@@ -121,7 +119,9 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message
+                        text: data.message,
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
                     }).then(() => {
                         $('#exampleModal').modal('hide');
                     });
@@ -130,27 +130,39 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.message
+                        text: errorData.message,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }else if (response.status === 409) {
                     const errorData = await response.json();
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.message
+                        text: errorData.message,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'An unexpected error occurred. Please try again.'
+                        text: 'An unexpected error occurred. Please try again.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Network error. Please try again.'
+                    text: 'Network error. Please try again.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             }
         });
@@ -161,7 +173,6 @@
                 var categoryId = this.dataset.categoryId;
                 var blockStatus = this.value;
                 
-                // Confirm the action with a modal dialog
                 Swal.fire({
                     title: 'Confirmation',
                     text: 'Are you sure you want to change the block status?',
@@ -172,7 +183,6 @@
                     confirmButtonText: 'Yes'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Send a POST request to the server
                         fetch(`/admin/blockCategory${categoryId}`, {
                             method: 'POST',
                             headers: {
@@ -181,7 +191,6 @@
                             body: JSON.stringify({ blockStatus: blockStatus })
                         })
                         .then(response => {
-                            // Check if the response is successful
                             if (response.ok) {
                                 return response.json();
                             } else {
@@ -189,30 +198,32 @@
                             }
                         })
                         .then(data => {
-                            // Handle the response data
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success!',
-                                text: 'Category block status has been updated.'
+                                text: 'Category block status has been updated.',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
                             });
                         })
                         .catch(error => {
-                            // Handle errors
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: error.message
+                                text: error.message,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
                             });
                         });
                     } else {
-                        // Action cancelled
                         location.reload();
                     }
                 });
             });
         });
 
-        //Script for the data table
+        ////// Script for the data table \\\\\\
         $(document).ready(function(){
             $("table").DataTable({
                 order : [0, 'desc']
