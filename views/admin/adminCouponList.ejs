@@ -3,7 +3,6 @@
 
     <section class="view">
         <div class="container mt-5">
-            <!-- Heading and coupon adding button start -->
             <div class="row">
                 <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
                     <h1>Coupons</h1>
@@ -12,7 +11,6 @@
                 </div>
                 <hr>
             </div>
-            <!-- Heading and coupon adding button end -->
             <div class="row">
                 <div class="col-md-10 offset-md-1">
                     <div class="table-responsive ">
@@ -73,10 +71,9 @@
                                         <% }) %>
                                 </tbody>
                             </table>
-                            <% } else { %>
-                                <div class="alert alert-info text-center" role="alert">No Coupons found in the database.
-                                </div>
-                                <% } %>
+                        <% } else { %>
+                            <div class="alert alert-info text-center" role="alert">No Coupons found in the database.</div>
+                        <% } %>
                     </div>
                 </div>
             </div>
@@ -139,6 +136,7 @@
     </div>
     <!-- Modal end -->
 
+    <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 
@@ -277,8 +275,6 @@
                     return false;
             }
 
-            console.log(couponBody)
-
             try {
                 const response = await fetch("/admin/AddNewCoupon", {
                     method: "POST",
@@ -294,7 +290,9 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message
+                        text: data.message,
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
                     }).then(() => {
                         location.reload();
                     });
@@ -303,20 +301,29 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.error
+                        text: errorData.error,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'An unexpected error occurred. Please try again.'
+                        text: 'An unexpected error occurred. Please try again.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Network error. Please try again.'
+                    text: 'Network error. Please try again.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             }
         });
@@ -325,7 +332,6 @@
         document.querySelectorAll('.edit-coupon-btn').forEach(button => {
             button.addEventListener('click', function () {
                 const couponId = this.dataset.cpid;
-                console.log(couponId)
                 window.location.href = `/admin/couponEdit/${couponId}`;
             });
         });
@@ -334,7 +340,6 @@
         document.querySelectorAll('.coupon-switch').forEach(function (couponSwitch) {
             couponSwitch.addEventListener('change', function () {
                 var couponId = this.dataset.cpid;
-                console.log("couponId :",couponId)
                 var blockStatus = this.value;
 
                 Swal.fire({
@@ -365,14 +370,19 @@
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success!',
-                                    text: 'Coupon block status has been updated.'
+                                    text: 'Coupon block status has been updated.',
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'OK'
                                 });
                             })
                             .catch(error => {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error!',
-                                    text: error.message
+                                    text: error.message,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
                                 });
                             });
                     } else {
@@ -382,15 +392,13 @@
             });
         });
 
-
-
-
         ////// Script for the data table \\\\\\
         $(document).ready(function () {
             $("table").DataTable({
                 order: [0, 'desc']
             })
         })
+        
     </script>
 
     <!-- Admin footer -->
