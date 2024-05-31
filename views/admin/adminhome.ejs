@@ -1,12 +1,6 @@
+<!-- Admin header -->
 <%-include("../adminpartials/admin_navbar.ejs")%>
 
-    <head>
-        <style>
-            .fa {
-                color: #50c878;
-            }
-        </style>
-    </head>
     <section class="view">
         <div class="container p-3 mt-5">
             <div class="first-box shadow d-sm-flex flex-wrap p-4 justify-content-between">
@@ -105,7 +99,7 @@
                                       <td><%= product.name %></td>
                                       <td><%= product.count %></td>
                                     </tr>
-                                  <% }) %>
+                                <% }) %>
                             </tbody>
                         </table>
                     </div>
@@ -123,7 +117,7 @@
                                       <td><%= product.category %></td>
                                       <td><%= product.count %></td>
                                     </tr>
-                                  <% }) %>
+                                <% }) %>
                             </tbody>
                         </table>
                     </div>
@@ -141,7 +135,7 @@
                                       <td><%= product.brand %></td>
                                       <td><%= product.count %></td>
                                     </tr>
-                                  <% }) %>
+                                <% }) %>
                             </tbody>
                         </table>
                     </div>
@@ -413,14 +407,14 @@
             var elt = document.getElementById("salesTable");
             var ws = XLSX.utils.table_to_sheet(elt);
             
-            // Set column widths
+            ////// Set column widths \\\\\\
             ws["!cols"] = [];
             var colCount = elt.rows[0].cells.length;
             for (var i = 0; i < colCount; i++) {
                 ws["!cols"].push({ wpx: 100 });
             }
             
-            // Set row heights
+            ////// Set row heights \\\\\\
             ws["!rows"] = [];
             var rowCount = elt.rows.length;
             for (var i = 0; i < rowCount; i++) {
@@ -462,5 +456,6 @@
             }
 
     </script>
-    <!-- Script end -->
+
+    <!-- Admin footer -->
     <%-include("../adminpartials/admin_footer.ejs")%>
