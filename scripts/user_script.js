@@ -8,7 +8,6 @@ function hideAlert() {
     }, 1000);
 }
 setTimeout(hideAlert, 3000);
-////////// User registration page alert box handling end//////////
 
 ////////// User registration page password mismatching indicator start//////////
 function checkPasswordMatch() {
@@ -24,7 +23,6 @@ function checkPasswordMatch() {
         return true;
     }
 }
-////////// User registration page password mismatching indicator end//////////
 
 ////////// User registration page and login page email validation checking indicator start//////////
 function validateEmail() {
@@ -39,7 +37,6 @@ function validateEmail() {
         return true;
     }
 }
-////////// User registration page email validation checking indicator end//////////
 
 ////////// User registration page mobile number validation indicator start//////////
 document.getElementById("phone").addEventListener("blur", validatePhoneNumber);
@@ -56,8 +53,6 @@ function validatePhoneNumber() {
         return true;
     }
 }
-////////// User registration page mobile number validation indicator end//////////
-
 
 ////////// User registration page form submit after validation start//////////
 document.getElementById("registrationForm").addEventListener("submit", function (event) {
@@ -86,5 +81,4 @@ document.getElementById("registrationForm").addEventListener("submit", function 
     }
 });
 
-////////// User registration page form submit after validation end//////////
 
