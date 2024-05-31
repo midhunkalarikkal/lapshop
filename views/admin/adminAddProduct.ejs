@@ -3,133 +3,17 @@
 
 <head>
     <!-- Css for the admin data edit form -->
-    <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
-    <!-- Ensure jQuery is loaded -->
+    <link rel="stylesheet" href='/static/css/admin_add_product.css' type="text/css">
+
+    <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <!-- Ensure Bootstrap is loaded -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropper/2.3.4/cropper.min.css">
 
     <!-- cropper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
-
-    <style>
-        .file-label{
-            display: block;
-            position: relative;
-            color: white;
-            font-size: 18px;
-            text-align: center;
-            padding: 12px 0;
-            margin: auto;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .num-of-files{
-            text-align: center;
-            margin: 20px 0 30px 0;
-        }
-
-        #images{
-            position: relative;
-            margin: auto;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        figure{
-            position: relative;
-            width: 25%;
-        }
-        
-        img{
-            width: 100%;
-        }
-
-        .delete-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 0, 0, 0.7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            z-index: 1;
-        }
-                
-        .wrapper {
-            background-color: #ffffff;
-            padding: 2em 3em;
-            border-radius: 0.5em;
-        }
-
-        .container-cropper .image-container,
-        .container-cropper .preview-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        .cropper-label {
-            display: block;
-            position: relative;
-            font-size: 16px;
-            text-align: center;
-            width: 250px;
-            padding: 10px 0;
-            border-radius: 0.3em;
-            margin: 16px auto;
-            cursor: pointer;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-        }
-
-        .image-container {
-            width: 60%;
-            margin: 0 auto;
-        }
-
-        .btns {
-            display: flex;
-            justify-content: center;
-            gap: 1em;
-            margin-top: 1em;
-        }
-
-        .btns button {
-            font-size: 1em;
-        }
-
-        .btns a {
-            border: 2px solid #025bee;
-            background-color: #025bee;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 1em;
-            font-size: 1em;
-            border-radius: 0.3em;
-        }
-
-    </style>
 </head>
 
 <body>
@@ -154,7 +38,7 @@
                                             <option value="<%= brand._id %>">
                                                 <%= brand.name%>
                                             </option>
-                                           <% }) %> 
+                                        <% }) %> 
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-10">
@@ -165,7 +49,7 @@
                                             <option value="<%= category._id %>">
                                                 <%= category.name%>
                                             </option>
-                                           <% }) %> 
+                                        <% }) %> 
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-10">
@@ -403,6 +287,7 @@
                 title: 'Validation Error',
                 text: 'Please ensure all fields are filled out correctly.',
                 icon: 'error',
+                showConfirmButton: true,
                 confirmButtonText: 'OK'
             });
             return false;
@@ -452,6 +337,7 @@
                         title: 'Success!',
                         text: data.message,
                         icon: 'success',
+                        showConfirmButton: true,
                         confirmButtonText: 'OK'
                     }).then(()=>{
                         window.location.href = "/admin/products"
@@ -461,7 +347,9 @@
                         title: 'Error!',
                         text: data.message,
                         icon: 'error',
-                        confirmButtonText: 'OK'
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             })
@@ -470,9 +358,10 @@
                     title: 'Error!',
                     text: 'An error occurred while adding the product.',
                     icon: 'error',
-                    confirmButtonText: 'OK'
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
-                console.error('Error:', error);
             });
         }
 
