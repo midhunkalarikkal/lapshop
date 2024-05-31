@@ -237,14 +237,53 @@ p,
 
 /*======> XL devices <======*/
 @media (min-width: 1200px) {
-
+    
     #screen-size::before {
         content: "Extra Large (xl)";
     }
-
+    
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
     }
+    
+}
 
+/*======> side box in admin panel <======*/
+.side-menu{
+    height: 100vh;
+    width: 20%;
+    left: -20%;
+    top: 0;
+    position: fixed;
+    transition: 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    z-index: 1;
+    background: #00bf8f;
+    background: -webkit-linear-gradient(to right, #001510, #00bf8f);
+    background: linear-gradient(to right, #001510, #00bf8f);
+}
+
+.side-menu.open {
+    left: 0;
+}
+
+.sidebar-btn{
+    border-bottom: 1px solid #2b2c2b;
+    height: 6vh;
+}
+
+.sidebar-btn:hover{
+    background-color: #2b2c2b;
+}
+
+.isidebaropen , .isidebarclose{
+    background-color: #2b2c2b00;
+}
+
+#side-menu-open , #side-menu-close-btn{
+    background-color: #2b2c2b00;
+    border: 0;
 }
