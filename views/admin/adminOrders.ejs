@@ -3,7 +3,6 @@
 
 <section class="view">
     <div class="container mt-5 ">
-        <!-- Heading start -->
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
                 <div class="head d-flex justify-content-between align-items-center">
@@ -12,78 +11,76 @@
                 <hr>
             </div>
         </div>
-        <!-- Heading end -->
-        <!-- Table row start -->
         <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
             <div class="table-responsive col-lg-10">
-                    <% if(orders && orders !== "" && Array.isArray(orders)){ %>
-                        <table class="table text-center table-striped my-5 p-1">
-                                <thead>
-                                    <tr class="table-dark">
-                                        <th class="text-center text-light">OrderId</th>
-                                        <th class="text-center text-light">Date</th>
-                                        <th class="text-center text-light">Items</th>
-                                        <th class="text-center text-light">Order status</th>
-                                        <th class="text-center text-light">Order total</th>
-                                        <th class="text-center text-light"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% for(let i = 0; i < orders.length; i++){ %>
-                                        <tr class="align-middle">
-                                            <td>
-                                                <%= orders[i]._id.toString().slice(-6)  %>
-                                            </td>
-                                            <td>
-                                                <%= orders[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %>
-                                            </td>
-                                            <td>
-                                                <% for(let j = 0; j < orders[i].orderedItems.length; j++){ %>
-                                                    <%= orders[i].orderedItems[j].product.brand.name %>
-                                                    <%= orders[i].orderedItems[j].product.name %> ,<br>
-                                                <% } %>
-                                            </td>
-                                            <td>
-                                                <% if(orders[i].status === "Delivered" || orders[i].status === "Cancelled" || orders[i].status === "Admin cancelled" || orders[i].status === "Request return" || orders[i].status === "Return accepted" || orders[i].status === "Return rejected"){ %>
-                                                    <% if(orders[i].status === "Cancelled" || orders[i].status === "Admin cancelled"){ %>
-                                                        <span class="text-danger"><%= orders[i].status %></span>   
-                                                    <% }else if(orders[i].status === "Request return"){ %>
-                                                        <div class="d-flex align-items-center">
-                                                            <span class=""><%= orders[i].status %></span>
-                                                            <button class="btn" id="order-returnAccept" onclick="returnAccept(this)" data-orderId="<%= orders[i]._id %>"><i class="fa-solid fa-check text-sucess"></i></button>
-                                                            <button class="btn" id="order-returnReject" onclick="returnReject(this)" data-orderId="<%= orders[i]._id %>"><i class="fa-solid fa-xmark text-danger"></i></button>      
-                                                        </div>
-                                                    <% }else{ %>
-                                                        <span class=""><%= orders[i].status %></span>
-                                                    <% } %>
-                                                <% }else{ %>
-                                                    <select class="form-select w-75" id="orderStatus_<%= orders[i]._id %>" onchange="updateOrderStatus('<%= orders[i]._id %>')">
-                                                        <option value="Processing" <% if (orders[i].status === 'Processing') { %> selected <% } %>>Processing</option>
-                                                        <option value="Shipped" <% if (orders[i].status === 'Shipped') { %> selected <% } %>>Shipped</option>
-                                                        <option value="Delivered" <% if (orders[i].status === 'Delivered') { %> selected <% } %>>Delivered</option>
-                                                    </select>
-                                                <% } %>
-                                            </td>
-                                            <td>
-                                                <% if(orders[i].walletDebitedAmount && orders[i].walletDeitedAmount !== 0){ %>
-                                                    ₹ <%= orders[i].orderTotal + orders[i].walletDebitedAmount %>
-                                                <% }else{ %>
-                                                    ₹ <%= orders[i].orderTotal %>
-                                                <% } %>
-                                            </td>
-                                            <td class="">
-                                                <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= orders[i]._id %>">Details</button>
-                                                <% if(orders[i].status !== "Delivered" && orders[i].status !== "Cancelled" && orders[i].status !== "Admin cancelled" && orders[i].status !== "Request return"){ %>
-                                                    <button class="btn btn-danger btn-sm mt-3" id="prod-detail" onclick="cancelOrder(this)" data-orderId="<%= orders[i]._id %>">Cancel</button>
-                                                <% } %>
-                                            </td>
-                                        </tr>
+                <% if(orders && orders !== "" && Array.isArray(orders)){ %>
+                    <table class="table text-center table-striped my-5 p-1">
+                        <thead>
+                            <tr class="table-dark">
+                                <th class="text-center text-light">OrderId</th>
+                                <th class="text-center text-light">Date</th>
+                                <th class="text-center text-light">Items</th>
+                                <th class="text-center text-light">Order status</th>
+                                <th class="text-center text-light">Order total</th>
+                                <th class="text-center text-light"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% for(let i = 0; i < orders.length; i++){ %>
+                                <tr class="align-middle">
+                                    <td>
+                                        <%= orders[i]._id.toString().slice(-6)  %>
+                                    </td>
+                                    <td>
+                                        <%= orders[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                    </td>
+                                    <td>
+                                        <% for(let j = 0; j < orders[i].orderedItems.length; j++){ %>
+                                            <%= orders[i].orderedItems[j].product.brand.name %>
+                                            <%= orders[i].orderedItems[j].product.name %> ,<br>
                                         <% } %>
-                                </tbody>
-                            </table>
-                            <% }else{ %>
-                            <div class="alert alert-info text-center" role="alert">No Orders found in the database.</div>
-                     <% } %>
+                                    </td>
+                                    <td>
+                                        <% if(orders[i].status === "Delivered" || orders[i].status === "Cancelled" || orders[i].status === "Admin cancelled" || orders[i].status === "Request return" || orders[i].status === "Return accepted" || orders[i].status === "Return rejected"){ %>
+                                            <% if(orders[i].status === "Cancelled" || orders[i].status === "Admin cancelled"){ %>
+                                                <span class="text-danger"><%= orders[i].status %></span>   
+                                            <% }else if(orders[i].status === "Request return"){ %>
+                                                <div class="d-flex align-items-center">
+                                                    <span class=""><%= orders[i].status %></span>
+                                                    <button class="btn" id="order-returnAccept" onclick="returnAccept(this)" data-orderId="<%= orders[i]._id %>"><i class="fa-solid fa-check text-sucess"></i></button>
+                                                    <button class="btn" id="order-returnReject" onclick="returnReject(this)" data-orderId="<%= orders[i]._id %>"><i class="fa-solid fa-xmark text-danger"></i></button>      
+                                                </div>
+                                            <% }else{ %>
+                                                <span class=""><%= orders[i].status %></span>
+                                            <% } %>
+                                        <% }else{ %>
+                                            <select class="form-select w-75" id="orderStatus_<%= orders[i]._id %>" onchange="updateOrderStatus('<%= orders[i]._id %>')">
+                                                <option value="Processing" <% if (orders[i].status === 'Processing') { %> selected <% } %>>Processing</option>
+                                                <option value="Shipped" <% if (orders[i].status === 'Shipped') { %> selected <% } %>>Shipped</option>
+                                                <option value="Delivered" <% if (orders[i].status === 'Delivered') { %> selected <% } %>>Delivered</option>
+                                            </select>
+                                        <% } %>
+                                    </td>
+                                    <td>
+                                        <% if(orders[i].walletDebitedAmount && orders[i].walletDeitedAmount !== 0){ %>
+                                            ₹ <%= orders[i].orderTotal + orders[i].walletDebitedAmount %>
+                                        <% }else{ %>
+                                            ₹ <%= orders[i].orderTotal %>
+                                        <% } %>
+                                    </td>
+                                    <td class="">
+                                        <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= orders[i]._id %>">Details</button>
+                                        <% if(orders[i].status !== "Delivered" && orders[i].status !== "Cancelled" && orders[i].status !== "Admin cancelled" && orders[i].status !== "Request return"){ %>
+                                            <button class="btn btn-danger btn-sm mt-3" id="prod-detail" onclick="cancelOrder(this)" data-orderId="<%= orders[i]._id %>">Cancel</button>
+                                        <% } %>
+                                    </td>
+                                </tr>
+                            <% } %>
+                        </tbody>
+                    </table>
+                <% }else{ %>
+                    <div class="alert alert-info text-center" role="alert">No Orders found in the database.</div>
+                <% } %>
             </div>
         </div>
     </div>
@@ -96,7 +93,6 @@
      ////// To cancel a order \\\\\\
      function cancelOrder(button){
             const orderId = button.getAttribute("data-orderId")
-            console.log("orderId :",orderId)
 
             Swal.fire({
                 title: 'Are you sure want to cancel this order?',
@@ -115,21 +111,16 @@
                         body: JSON.stringify({ orderId })
                     })
                     .then(response => {
-                        const contentType = response.headers.get('content-type');
-                        const message = "Your account is blocked, Please contact us";
-                        const type = "danger";
-                        if (contentType && contentType.includes('application/json')) {
-                            return response.json(); 
-                        } else {
-                            window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
-                        }
+                        return response.json(); 
                     })
                     .then(data => {
                         if (data.success) {
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success!',
-                                text: data.message
+                                text: data.message,
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
                             }).then(()=>{
                                 location.reload()
                             })
@@ -137,7 +128,10 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: data.message
+                                text: data.message,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
                             });
                         }
                     })
@@ -146,7 +140,10 @@
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
-                            text: 'An error occurred. Please try again later.'
+                            text: 'An error occurred. Please try again later.',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
                         });
                     });
                 }
@@ -156,7 +153,6 @@
     // Script for redirecting to order detailed page
     function goToOrderDetail(button) {
         const orderId = button.getAttribute('data-orderId');
-        console.log("orderId :", orderId);
         window.location.href = `adminOrderDetail/${orderId}`;
     }
 
@@ -165,10 +161,6 @@
         const selectElement = document.getElementById(`orderStatus_${orderId}`);
         const selectedStatus = selectElement.value;
 
-        console.log("orderId :", orderId);
-        console.log("selectedStatus :", selectedStatus);
-
-        // Make a fetch request to send the selected data to the server
         fetch('/admin/updateOrderStatus', {
             method: 'POST',
             headers: {
@@ -177,48 +169,47 @@
             body: JSON.stringify({ orderId, selectedStatus })
         })
         .then(response => {
-            const contentType = response.headers.get('content-type');
-            const message = "Your account is blocked, Please contact us"
-            const type = "danger"
-            if (contentType && contentType.includes('application/json')) {
-                return response.json(); 
+            return response.json(); 
+        })
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK'
+                }).then(()=>{
+                    location.reload()
+                })
             } else {
-                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
             }
-    })
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: data.message
-            }).then(()=>{
-                location.reload()
-            })
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: data.message
+        })
+        .catch(error => {
+            console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred. Please try again later.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
             });
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred. Please try again later.'
-            });
-        });
-    }
 
     ////// To accept a return request from user \\\\\\
     function returnAccept(button) {
         console.log("return accept button clicked")
         const orderId = button.getAttribute("data-orderId")
-
-        console.log("orderId :", orderId);
 
         fetch('/admin/returnAccept', {
             method: 'POST',
@@ -228,48 +219,46 @@
             body: JSON.stringify({ orderId})
         })
         .then(response => {
-            const contentType = response.headers.get('content-type');
-            const message = "Your account is blocked, Please contact us"
-            const type = "danger"
-            if (contentType && contentType.includes('application/json')) {
-                return response.json(); 
+            return response.json(); 
+        })
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK'
+                }).then(()=>{
+                    location.reload()
+                })
             } else {
-                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
             }
-    })
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: data.message
-            }).then(()=>{
-                location.reload()
-            })
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: data.message
+        })
+        .catch(error => {
+            console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred. Please try again later.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
             });
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred. Please try again later.'
-            });
-        });
-    }
 
      ////// To reject a return request from user \\\\\\
      function returnReject(button) {
-        console.log("return accept button clicked")
         const orderId = button.getAttribute("data-orderId")
-
-        console.log("orderId :", orderId);
 
         fetch('/admin/returnReject', {
             method: 'POST',
@@ -279,41 +268,42 @@
             body: JSON.stringify({ orderId})
         })
         .then(response => {
-            const contentType = response.headers.get('content-type');
-            const message = "Your account is blocked, Please contact us"
-            const type = "danger"
-            if (contentType && contentType.includes('application/json')) {
-                return response.json(); 
+            return response.json(); 
+        })
+        .then(data => {
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                    showConfirmButton: true,
+                    confirmButtonText: 'OK'
+                }).then(()=>{
+                    location.reload()
+                })
             } else {
-                window.location.href = `/login?message=${encodeURIComponent(message)}&type=${type}`;
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
             }
-    })
-    .then(data => {
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: data.message
-            }).then(()=>{
-                location.reload()
-            })
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: data.message
+        })
+        .catch(error => {
+            console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An error occurred. Please try again later.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
             });
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: 'An error occurred. Please try again later.'
-            });
-        });
-    }
 
     ////// Script for the data table \\\\\\
     $(document).ready(function(){
@@ -321,8 +311,8 @@
             ordering : false
         })
     })
+
     </script>
-    
     
     <!-- Admin footer -->
     <%-include("../adminpartials/admin_footer.ejs")%>
