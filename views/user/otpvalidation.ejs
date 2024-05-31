@@ -152,21 +152,30 @@ function sendotp(){
                 icon: 'success',
                 title: 'OTP Sent',
                 text: 'Your OTP has been resent successfully!',
-                confirmButtonText: 'OK'
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
-            console.log('OTP resent successfully');
         } else {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
                 text: 'Failed to resend OTP',
-                confirmButtonText: 'OK'
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
-            console.error('Failed to resend OTP');
         }
     })
     .catch(error => {
-        console.error('Error:', error);
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An error occurred while resending OTP',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
     });
 }
 </script>
