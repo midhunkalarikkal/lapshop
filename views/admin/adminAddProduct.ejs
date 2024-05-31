@@ -325,6 +325,18 @@
                 let blob = new Blob([ab], {type: mimeString});
                 formData.append(`productImages`, blob, `image${index}.png`);
             });
+
+            if(imageArray.length < 5){
+                swal.fire({
+                    icon: "info",
+                    title: "Image count",
+                    text: "Please select 5 images.",
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                })
+            return false
+            }
             
             fetch("/admin/addProduct", {
                 method: "POST",
@@ -407,8 +419,6 @@
             const productDesc = productDescInput.value.trim();
             const productDescError = document.getElementById('productDescError');
 
-            const productDescPattern = /^[a-zA-Z0-9@_\-:,\/.%() ]{20,200}$/;
-
             if (productDesc === "") {
                 productDescInput.classList.remove('is-invalid');
                 productDescError.textContent = '';
@@ -417,11 +427,6 @@
             if (productDesc.length < 20 || productDesc.length > 200) {
                 productDescInput.classList.add('is-invalid');
                 productDescError.textContent = 'Description must between 20 and 200 characters long';
-                return false;
-            }
-            if (!productDescPattern.test(productDesc)) {
-                productDescInput.classList.add('is-invalid');
-                productDescError.textContent = 'Name must contain only alphabets, digits and @_\-:,\/.%() characters.';
                 return false;
             } else {
                 productDescInput.classList.remove('is-invalid');
