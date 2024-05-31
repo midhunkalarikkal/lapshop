@@ -3,17 +3,15 @@
 
     <section class="view">
         <div class="container mt-5">
-            <!-- Heading and category adding button start -->
             <div class="row">
                 <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
                     <h1>Advertisement Carousel</h1>
                     <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">Add new carousel</button>
+                        data-bs-target="#exampleModal">Add new carousel
+                    </button>
                 </div>
                 <hr>
             </div>
-            <!-- Heading and category adding button end -->
-            <!-- Table row start -->
             <div class="row d-flex flex-row align-items-center justify-content-center mt-4">
                 <div class="table-responsive col-md-10">
                     <% if(adCarousel !="" ){%>
@@ -51,20 +49,19 @@
                                         </td>
                                         <td>
                                             <a href="#" onclick="deleteHc('<%= row._id %>')"
-                                                class="text-danger delete-homeCarousel"><i
-                                                    class="fas fa-trash fa-lg mx-1"></i></a>
+                                                class="text-danger delete-homeCarousel">
+                                                <i class="fas fa-trash fa-lg mx-1"></i>
+                                            </a>
                                         </td>
                                     </tr>
-                                    <% }) %>
+                                <% }) %>
                             </tbody>
                         </table>
-                        <% } else {%>
-                            <div class="alert alert-info text-center" role="alert">No home carousels found in the
-                                database.</div>
-                            <% } %>
+                    <% } else {%>
+                        <div class="alert alert-info text-center" role="alert">No home carousels found in the database.</div>
+                    <% } %>
                 </div>
             </div>
-            <!-- Table row end -->
         </div>
     </section>
 
@@ -98,9 +95,10 @@
     </div>
     <!-- Modal end -->
 
+    <!-- Script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Script for home carousel adding and blocking -->
     <script>
+
         ////// To add new home carousel through fetch \\\\\
         document.getElementById("save").addEventListener("click", async function () {
             const adCarouselName = document.getElementById("adCarouselName").value;
@@ -120,31 +118,44 @@
                 if (response.ok) {
                     const data = await response.json();
                     Swal.fire({
-                        icon: 'success',
+                        icon: 'uccess',
                         title: 'Success!',
-                        text: data.message
-                    }).then(() => {
-                        location.reload();
+                        text: data.message,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
                     });
                 } else if (response.status === 400) {
                     const errorData = await response.json();
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.error
+                        text: errorData.error,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'An unexpected error occurred. Please try again.'
+                        text: 'An unexpected error occurred. Please try again.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Network error. Please try again.'
+                    text: 'Network error. Please try again.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             }
         });
@@ -154,7 +165,6 @@
             adCarouselSwitch.addEventListener('change', function () {
                 var adCarouselId = this.dataset.adcId;
                 var blockStatus = this.value
-                console.log(adCarouselId, blockStatus)
 
                 Swal.fire({
                     title: 'Confirmation',
@@ -183,16 +193,23 @@
                                 Swal.fire({
                                     icon: 'success',
                                     title: 'Success!',
-                                    text: data.message
-                                }).then(() => {
-                                    location.reload();
+                                    text: data.message,
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'Ok'
+                                }).then((result) => {
+                                    if(result.isConfirmed){
+                                        location.reload();
+                                    }
                                 });
                             })
                             .catch(error => {
                                 Swal.fire({
                                     icon: 'error',
                                     title: 'Error!',
-                                    text: error.message
+                                    text: error.message,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
                                 });
                             });
                     } else {
@@ -217,35 +234,41 @@
                     fetch(`/admin/adCarouselDelete/${adCarouselId}`, {
                         method: 'DELETE'
                     })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Failed to delete home carousel');
-                            }
-                            return response.json();
-                        })
-                        .then(data =>{
-                            Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success!',
-                                    text: data.message
-                                }).then(() => {
-                                    location.reload();
-                                });
-                            })
-                        .catch(error => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: error.message
-                            });
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to delete home carousel');
+                        }
+                        return response.json();
+                    })
+                    .then(data =>{
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.message,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(() => {
+                            location.reload();
                         });
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: error.message,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    });
                 }else {
-                        location.reload();
-                    }
+                    location.reload();
+                }
             });
         }
 
-        //Script for the data table
+        ////// Script for the data table \\\\\\
         $(document).ready(function () {
             $("table").DataTable({
                 order: [0, 'desc']
