@@ -1,13 +1,11 @@
+<!-- Admin header -->
 <%-include("../adminpartials/admin_navbar.ejs")%>
 <body>
 
     <div id="screen-size"></div>
 
-    <!-- Navbar One-->
     <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
         <div class="container">
-
-            <!-- Navbar Logo -->
             <div class="logo col-2">
                 <a href="" class="navbar-brand">
                     <span class="fw-bold fs-3">LapShop</span>
@@ -15,44 +13,40 @@
             </div>
         </div>
     </nav>
-    <!-- Navbar end -->
 
     <section class="view">
-        <!-- main div start -->
-            <div class="error-wrap mt-5">
-                <div class="container d-flex align-item-center justify-content-center">
-                    <div class="col-10 shadow mt-5 d-flex align-item-center justify-content-center flex-column">
-                        <div class="img d-flex align-items-center justify-content-center">
-                            <img src="/static/images/Bg/desktop/server_Error.png" class="img-thumbnail" style="width: 20%; height: 70%;">
-                        </div>
-                        <h1 class="text-danger text-center">Oh Noooo!</h1>
-                        <h5 class="text-center text-danger">Something went wrong. We're sorry, there seems to be an error. Please try again later.</h5>
-                        <h6 class="text-center text-danger mt-4">Will fix soon.</h6>
-                        <div class="button text-center mb-4">
-                            <button class="btn btn-primary" onclick="goToHome()" id="shop">Back to dashboard</button>
-                        </div>
+        <div class="error-wrap mt-5">
+            <div class="container d-flex align-item-center justify-content-center">
+                <div class="col-10 shadow mt-5 d-flex align-item-center justify-content-center flex-column">
+                    <div class="img d-flex align-items-center justify-content-center">
+                        <img src="/static/images/Bg/desktop/server_Error.png" class="img-thumbnail" style="width: 20%; height: 70%;">
+                    </div>
+                    <h1 class="text-danger text-center">Oh Noooo!</h1>
+                    <h5 class="text-center text-danger">Something went wrong. We're sorry, there seems to be an error. Please try again later.</h5>
+                    <h6 class="text-center text-danger mt-4">Will fix soon.</h6>
+                    <div class="button text-center mb-4">
+                        <button class="btn btn-primary" onclick="goToHome()" id="shop">Back to dashboard</button>
                     </div>
                 </div>
             </div>
-        <!-- main div end -->
+        </div>
     </section>
 
-    <!-- footer start -->
-    <%-include("../adminpartials/admin_footer.ejs")%>
-    <!-- footer end -->
-
+    
     <script>
+        ////// function to go to home page \\\\\\
         function goToHome(){
-            console.log("hi")
             window.location.href = '/admin/home'
         }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-        </script>   
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+    </script>   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
    
+   <!-- Admin footer -->
+   <%-include("../adminpartials/admin_footer.ejs")%>
