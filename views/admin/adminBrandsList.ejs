@@ -1,62 +1,59 @@
 <!-- Admin header -->
 <%-include("../adminpartials/admin_navbar.ejs")%>
+
 <section class="view">
-<div class="container mt-5">
-    <!-- Heading and category adding button start -->
-    <div class="row">
-        <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
-            <h1>Brands</h1>
-            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new brand</button>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
+                <h1>Brands</h1>
+                <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Add new brand</button>
+            </div>
+            <hr>
         </div>
-        <hr>
-    </div>
-    <!-- Heading and category adding button end -->
-    <!-- Table row start -->
-    <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
-        <div class="table-responsive col-md-10">
-            <% if(brand !="" ){ %>
-                <table class="table text-center table-striped my-4 p-1">
-                    <thead>
-                        <tr class="table-dark">
-                            <th class="text-center text-light">Nos</th>
-                            <th class="text-center text-light">Image</th>
-                            <th class="text-center text-light">Name</th>
-                            <th class="text-center text-light">Controls</th>
-                            <th class="text-center text-light">Edit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% brand.forEach((row,index)=> { %>
-                        <tr class="align-middle">
-                                <td>
-                                    <%= index + 1 %>
-                                </td>
-                                <td>
-                                    <img src="/static/images/BrandImages/<%= row.image %>" width="50" class="img-thumbnal"/>
-                                </td>
-                                <td>
-                                    <%= row.name %>
-                                </td>
-                                <td>
-                                    <input type="radio" class="brand-switch" data-brand-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isBlocked) { %>checked<% } %>>
-                                    <label for="block_<%= row._id %>" class="text-danger">Block</label>
-                                    <input type="radio" class="brand-switch" data-brand-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isBlocked) { %>checked<% } %>>
-                                    <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
-                                </td>
-                                <td>
-                                    <a href="/admin/brandEdit/<%= row._id %>" class="text-success edit-homeCarousel"><i class="fas fa-edit fa-lg mx-1"></i></a>
-                                </td>
+        <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
+            <div class="table-responsive col-md-10">
+                <% if(brand !="" ){ %>
+                    <table class="table text-center table-striped my-4 p-1">
+                        <thead>
+                            <tr class="table-dark">
+                                <th class="text-center text-light">Nos</th>
+                                <th class="text-center text-light">Image</th>
+                                <th class="text-center text-light">Name</th>
+                                <th class="text-center text-light">Controls</th>
+                                <th class="text-center text-light">Edit</th>
                             </tr>
-                        <% } ) %>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <% brand.forEach((row,index)=> { %>
+                            <tr class="align-middle">
+                                    <td>
+                                        <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                        <img src="/static/images/BrandImages/<%= row.image %>" width="50" class="img-thumbnal"/>
+                                    </td>
+                                    <td>
+                                        <%= row.name %>
+                                    </td>
+                                    <td>
+                                        <input type="radio" class="brand-switch" data-brand-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isBlocked) { %>checked<% } %>>
+                                        <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                        <input type="radio" class="brand-switch" data-brand-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isBlocked) { %>checked<% } %>>
+                                        <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
+                                    </td>
+                                    <td>
+                                        <a href="/admin/brandEdit/<%= row._id %>" class="text-success edit-homeCarousel"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    </td>
+                                </tr>
+                            <% } ) %>
+                        </tbody>
+                    </table>
                 <% } else {%>
-                <div class="alert alert-info text-center" role="alert">No brands found in the database.</div>
-            <% } %>
-        </div>
-    </div> 
-    <!-- Table row end -->
-</div>
+                    <div class="alert alert-info text-center" role="alert">No brands found in the database.</div>
+                <% } %>
+            </div>
+        </div> 
+    </div>
 </section>       
 
     <!-- Modal start -->
@@ -88,14 +85,14 @@
     </div>
     <!-- Modal end -->
 
+    <!-- Script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- Script for category adding, category blocking -->
     <script>
+
         ////// To add new Brnad through fetch \\\\\
         document.getElementById("save").addEventListener("click", async function () {
             const brandName = document.getElementById("brandName").value;
             const brandImg = document.getElementById("brandImg").files[0];
-            console.log(brandName,brandImg)
 
             const formData = new FormData();
             formData.append('brandName', brandName);
@@ -113,7 +110,9 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message
+                        text: data.message,
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
                     }).then(() => {
                         location.reload();
                     });
@@ -122,27 +121,39 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.message
+                        text: errorData.message,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }else if (response.status === 409) {
                     const errorData = await response.json();
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: errorData.message
+                        text: errorData.message,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'An unexpected error occurred. Please try again.'
+                        text: 'An unexpected error occurred. Please try again.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Network error. Please try again.'
+                    text: 'Network error. Please try again.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
                 });
             }
         });
@@ -152,7 +163,6 @@
             brandSwitch.addEventListener('change', function () {
             var brandId = this.dataset.brandId;
             var blockStatus = this.value
-            console.log(brandId)
 
             Swal.fire({
                 title: 'Confirmation',
@@ -182,7 +192,9 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success!',
-                                text: 'Brand block status has been updated.'
+                                text: 'Brand block status has been updated.',
+                                showConfirmButton: true,
+                                confirmButtonText: 'OK'
                             }).then(() => {
                         location.reload();
                     });
@@ -191,7 +203,10 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: error.message
+                                text: error.message,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
                             });
                         });
                     } else {
@@ -201,10 +216,7 @@
             });
         });
 
-
-        
-
-        //Script for the data table
+        ////// Script for the data table \\\\\\
         $(document).ready(function(){
             $("table").DataTable({
                 order : [0, 'desc']
