@@ -2,11 +2,7 @@
 <%-include("../adminpartials/admin_navbar.ejs")%>
 
 <section class="view">
-    <!-- <div class="side-bar col-2 bg-success">
-       
-    </div> -->
     <div class="container mt-5 ">
-        <!-- Heading and category adding button start -->
         <div class="row">
             <div class="col-lg-10 offset-lg-1">
                 <div class="head d-flex justify-content-between align-items-center">
@@ -16,65 +12,64 @@
                 <hr>
             </div>
         </div>
-        <!-- Heading and category adding button end -->
-        <!-- Table row start -->
+        
         <div class="row d-flex flex-row align-items-center justify-content-center">
             <div class="table-responsive col-lg-10">
-                    <% if(productData != ""){  %>
-                        <table class="table text-center table-striped my-5 p-1">
-                                <thead>
-                                    <tr class="table-dark">
-                                        <th class="text-center text-light">ID</th>
-                                        <th class="text-center text-light">Name</th>
-                                        <th class="text-center text-light">Brand</th>
-                                        <th class="text-center text-light">Category</th>
-                                        <th class="text-center text-light">Real Price</th>
-                                        <th class="text-center text-light">Off Price</th>
-                                        <th class="text-center text-light">Stock</th>
-                                        <th class="text-center text-light">Controls</th>
-                                        <th class="text-center text-light">Edit</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% productData.forEach((product,index)=> {%>
-                                        <tr class="align-middle">
-                                            <td>
-                                                <%= index+1 %>
-                                            </td>
-                                            <td>
-                                                <%= product.name%>
-                                            </td>
-                                            <td>
-                                                <%= product.brand.name %>
-                                            </td>
-                                            <td>
-                                                <%= product.category.name %>
-                                            </td>
-                                            <td>
-                                                <%= product.realPrice %>
-                                            </td>
-                                            <td>
-                                                <%= product.offerPrice %>
-                                            </td>
-                                            <td>
-                                                <%= product.noOfStock %>
-                                            </td>
-                                            <td>
-                                                <input type="radio" class="prod-switch" data-product-id="<%= product._id %>" id="block_<%= product._id %>" name="block<%= product._id %>" value="block" <% if(product.isBlocked) { %>checked<% } %>>
-                                                <label for="block_<%= product._id %>" class="text-danger">Block</label>
-                                                <input type="radio" class="prod-switch" data-product-id="<%= product._id %>" id="unblock_<%= product._id %>" name="block<%= product._id %>" value="unblock" <% if(!product.isBlocked) { %>checked<% } %>>
-                                                <label for="unblock_<%= product._id %>" class="text-success">Unblock</label>                
-                                            </td>
-                                            <td>
-                                                <a href="/admin/editProduct<%= product._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
-                                            </td>
-                                        </tr>
-                                    <% }) %>
-                                </tbody>
-                            </table>
-                            <% } else {%>
-                                <div class="alert alert-info text-center" role="alert">No Products found in the database.</div>
-                     <% } %>
+                <% if(productData != ""){  %>
+                    <table class="table text-center table-striped my-5 p-1">
+                        <thead>
+                            <tr class="table-dark">
+                                <th class="text-center text-light">ID</th>
+                                <th class="text-center text-light">Name</th>
+                                <th class="text-center text-light">Brand</th>
+                                <th class="text-center text-light">Category</th>
+                                <th class="text-center text-light">Real Price</th>
+                                <th class="text-center text-light">Off Price</th>
+                                <th class="text-center text-light">Stock</th>
+                                <th class="text-center text-light">Controls</th>
+                                <th class="text-center text-light">Edit</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% productData.forEach((product,index)=> {%>
+                                <tr class="align-middle">
+                                    <td>
+                                        <%= index+1 %>
+                                    </td>
+                                    <td>
+                                        <%= product.name%>
+                                    </td>
+                                    <td>
+                                        <%= product.brand.name %>
+                                    </td>
+                                    <td>
+                                        <%= product.category.name %>
+                                    </td>
+                                    <td>
+                                        <%= product.realPrice %>
+                                    </td>
+                                    <td>
+                                        <%= product.offerPrice %>
+                                    </td>
+                                    <td>
+                                        <%= product.noOfStock %>
+                                    </td>
+                                    <td>
+                                        <input type="radio" class="prod-switch" data-product-id="<%= product._id %>" id="block_<%= product._id %>" name="block<%= product._id %>" value="block" <% if(product.isBlocked) { %>checked<% } %>>
+                                        <label for="block_<%= product._id %>" class="text-danger">Block</label>
+                                        <input type="radio" class="prod-switch" data-product-id="<%= product._id %>" id="unblock_<%= product._id %>" name="block<%= product._id %>" value="unblock" <% if(!product.isBlocked) { %>checked<% } %>>
+                                        <label for="unblock_<%= product._id %>" class="text-success">Unblock</label>                
+                                    </td>
+                                    <td>
+                                        <a href="/admin/editProduct<%= product._id %>" class="text-success"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                    </td>
+                                </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                <% } else {%>
+                    <div class="alert alert-info text-center" role="alert">No Products found in the database.</div>
+                <% } %>
             </div>
         </div>
     </div>
@@ -82,14 +77,14 @@
 
 <!-- Script for the sweet alert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Script for block and unblock the user -->
 <script>
-        document.querySelectorAll('.prod-switch').forEach(function(userSwitch) {
+
+    ////// function to block or unblock product \\\\\\
+    document.querySelectorAll('.prod-switch').forEach(function(userSwitch) {
         userSwitch.addEventListener('change', function () {
             var productId = this.dataset.productId;
             var blockStatus = this.value;
 
-            // Confirm the action with a modal dialog
             Swal.fire({
                 title: 'Confirmation',
                 text: 'Are you sure you want to change the block status?',
@@ -100,7 +95,6 @@
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Send a POST request to the server
                     fetch(`/admin/blockProduct${productId}`, {
                         method: 'POST',
                         headers: {
@@ -109,7 +103,6 @@
                         body: JSON.stringify({ blockStatus: blockStatus })
                     })
                     .then(response => {
-                        // Check if the response is successful
                         if (response.ok) {
                             return response.json();
                         } else {
@@ -117,57 +110,58 @@
                         }
                     })
                     .then(data => {
-                        // Handle the response data
                         Swal.fire({
                             icon: 'success',
                             title: 'Success!',
-                            text: 'Product block status has been updated.'
-                        });
+                            text: 'Product block status has been updated.',
+                            showConfirmButton: true,
+                            confirmButtonText: "Ok"
+                        })
                     })
                     .catch(error => {
-                        // Handle errors
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
-                            text: error.message
+                            text: error.message,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
                         });
                     });
                 } else {
-                    // Action cancelled
                     location.reload();
                 }
             });
         });
     });
 
-         // Redirection of add product button
-        var addButton = document.getElementById('addProduct');
-            addButton.addEventListener('click', function() {
-            window.location.href = 'adminAddProduct';
+    ////// Redirection of add product button \\\\\\
+    var addButton = document.getElementById('addProduct');
+        addButton.addEventListener('click', function() {
+        window.location.href = 'adminAddProduct';
+    });
+
+    ////// Check if the URL contains a success message \\\\\\
+    const urlParams = new URLSearchParams(window.location.search);
+    const successMessage = urlParams.get('success');
+
+    ////// If a success message is present, show it using SweetAlert \\\\\\
+    if (successMessage) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: successMessage,
         });
-
-        // Check if the URL contains a success message
-        const urlParams = new URLSearchParams(window.location.search);
-        const successMessage = urlParams.get('success');
-        console.log('Success message:', successMessage);
-
-        // If a success message is present, show it using SweetAlert
-        if (successMessage) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: successMessage,
-            });
-        }
+    }
         
-        //Script for the data table
-        $(document).ready(function(){
-            $("table").DataTable({
-                order : [0, 'desc']
-            })
+    ////// Script for the data table \\\\\\
+    $(document).ready(function(){
+        $("table").DataTable({
+            order : [0, 'desc']
         })
+    })
+
     </script>
-    
     
     <!-- Admin footer -->
     <%-include("../adminpartials/admin_footer.ejs")%>
