@@ -30,100 +30,100 @@
     <div id="screen-size"></div>
 
     <div id="page-container">
-    <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
-        <div class="container">
-            <div class="logo col-lg-1 d-none d-lg-block">
-                <button id="side-menu-open" class="hamburger-all"><i class="fa-solid fa-bars isidebaropen fa-2x"></i></button>
-                <button id="side-menu-close-btn" class="d-none"><i class="fa-solid fa-xmark isidebarclose fa-2x"></i></button>
-            </div>
-            <div class="logo col-lg-3">
-                <a href="" class="navbar-brand mx-2">
-                    <span class="fw-bold fs-3">LapShop</span>
-                </a>
-            </div>
-            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="input-group mt-4 collapse" id="navmenu">
-            </div>
+        <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
+            <div class="container">
+                <div class="logo col-lg-1 d-none d-lg-block">
+                    <button id="side-menu-open" class="hamburger-all"><i class="fa-solid fa-bars isidebaropen fa-2x"></i></button>
+                    <button id="side-menu-close-btn" class="d-none"><i class="fa-solid fa-xmark isidebarclose fa-2x"></i></button>
+                </div>
+                <div class="logo col-lg-3">
+                    <a href="" class="navbar-brand mx-2">
+                        <span class="fw-bold fs-3">LapShop</span>
+                    </a>
+                </div>
+                <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="input-group mt-4 collapse" id="navmenu">
+                </div>
 
-            
-            <div class="facaac col-lg-6 d-lg-none">
-                <div class="collapse navbar-collapse d-lg-flex align-items-center justify-content-center" id="navmenu">
-                    <ul class="navbar-nav">
-                        <li class="nav-item ">
-                            <a href="/admin/home" class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="/admin/products" class="nav-link">Products</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/users" class="nav-link">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/orders" class="nav-link">Orders</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="/admin/brands" class="nav-link">Brands</a>
-                        </li>
-                        <li class="nav-item ">
-                            <a href="/admin/category" class="nav-link">Category</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/coupons" class="nav-link">Coupons</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/homeCarousel" class="nav-link">Home Carousel</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/admin/adCarousel" class="nav-link">Ad-carousel</a>
-                        </li>
-                        <li class="nav-item d-block d-lg-none">
-                            <a href="/admin/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                        </li>
-                    </ul>
+                
+                <div class="facaac col-lg-6 d-lg-none">
+                    <div class="collapse navbar-collapse d-lg-flex align-items-center justify-content-center" id="navmenu">
+                        <ul class="navbar-nav">
+                            <li class="nav-item ">
+                                <a href="/admin/home" class="nav-link">Home</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="/admin/products" class="nav-link">Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/users" class="nav-link">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/orders" class="nav-link">Orders</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="/admin/brands" class="nav-link">Brands</a>
+                            </li>
+                            <li class="nav-item ">
+                                <a href="/admin/category" class="nav-link">Category</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/coupons" class="nav-link">Coupons</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/homeCarousel" class="nav-link">Home Carousel</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/admin/adCarousel" class="nav-link">Ad-carousel</a>
+                            </li>
+                            <li class="nav-item d-block d-lg-none">
+                                <a href="/admin/logout" class="nav-link"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="logout col-lg-2 d-none d-lg-block collapse navbar-collapse">
+                    <a href="/admin/logout" class="navbar-brand ms-auto">
+                        <span class="fw-small fs-5"><i class="fa-solid fa-right-from-bracket"></i> Logout</span>
+                    </a>
                 </div>
             </div>
-            
-            <div class="logout col-lg-2 d-none d-lg-block collapse navbar-collapse">
-                <a href="/admin/logout" class="navbar-brand ms-auto">
-                    <span class="fw-small fs-5"><i class="fa-solid fa-right-from-bracket"></i> Logout</span>
+        </nav>
+    
+        <div id="side-menu" class="side-menu mt-5">
+            <div class="side-menu-box mt-2">
+                <a href="/admin/home">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-house mx-2" style="color: #60e67b;"></i>Home</button>
+                </a>
+                <a href="/admin/products">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-laptop mx-2" style="color: #60e67b;"></i>Products</button>
+                </a>
+                <a href="/admin/users">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-users mx-2" style="color: #60e67b;"></i>Users</button>
+                </a>
+                <a href="/admin/orders">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-box-open mx-2" style="color: #60e67b;"></i>Orders</button>
+                </a>
+                <a href="/admin/brands">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-copyright mx-2" style="color: #60e67b;"></i>Brands</button>
+                </a>
+                <a href="/admin/category">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-filter mx-2" style="color: #60e67b;"></i>Category</button>
+                </a>
+                <a href="/admin/coupons">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-clipboard-check mx-2" style="color: #60e67b;"></i>Coupons</button>
+                </a>
+                <a href="/admin/homeCarousel">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-image mx-2" style="color: #60e67b;"></i>Home Carousel</button>
+                </a>
+                <a href="/admin/adCarousel">
+                    <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-image mx-2" style="color: #60e67b;"></i>Ad-carousel</button>
                 </a>
             </div>
         </div>
-    </nav>
-    
-    <div id="side-menu" class="side-menu mt-5">
-        <div class="side-menu-box mt-2">
-            <a href="/admin/home">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-house mx-2" style="color: #60e67b;"></i>Home</button>
-            </a>
-            <a href="/admin/products">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-laptop mx-2" style="color: #60e67b;"></i>Products</button>
-            </a>
-            <a href="/admin/users">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-users mx-2" style="color: #60e67b;"></i>Users</button>
-            </a>
-            <a href="/admin/orders">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-box-open mx-2" style="color: #60e67b;"></i>Orders</button>
-            </a>
-            <a href="/admin/brands">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-copyright mx-2" style="color: #60e67b;"></i>Brands</button>
-            </a>
-            <a href="/admin/category">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-filter mx-2" style="color: #60e67b;"></i>Category</button>
-            </a>
-            <a href="/admin/coupons">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-clipboard-check mx-2" style="color: #60e67b;"></i>Coupons</button>
-            </a>
-            <a href="/admin/homeCarousel">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-image mx-2" style="color: #60e67b;"></i>Home Carousel</button>
-            </a>
-            <a href="/admin/adCarousel">
-                <button class="btn text-light w-100 rounded-0 sidebar-btn shadow"><i class="fa-solid fa-image mx-2" style="color: #60e67b;"></i>Ad-carousel</button>
-            </a>
-        </div>
-    </div>
     
     <script>
         const openmenubtn = document.getElementById("side-menu-open");
