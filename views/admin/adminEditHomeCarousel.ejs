@@ -53,9 +53,11 @@
         </div>
     </section>
 
+    <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        // <!-- Script for the viewing of selected image -->
+
+        ////// function to display the image \\\\\\
         function displayImage() {
            const input = document.getElementById('categoryImage');
            const file = input.files[0];
@@ -72,10 +74,11 @@
            }
        }
 
-       //Cancel button goBack function
-       function goBack() {
-        window.location.href = '/admin/homeCarousel'
+       ////// Cancel button goBack function \\\\\\
+        function goBack() {
+            window.location.href = '/admin/homeCarousel'
         }
+        
     </script>
 
 <!-- Admin footer -->
