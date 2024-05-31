@@ -3,161 +3,11 @@
 
 <head>
     <!-- Css for the admin data edit form -->
-    <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
+    <link rel="stylesheet" href='/static/css/admin_edit_product.css' type="text/css">
+
     <!-- cropper js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" />
-    <style>
-        .thumbnail {
-            position: relative;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 4px;
-            right: 6px;
-            transform: translate(50%, -50%);
-            padding: 0;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            font-size: 25px;
-            color: #ff1616;
-            z-index: 1; 
-        }
-
-        .close-btn-background {
-            position: absolute;
-            top: 7px;
-            right: 6.5px;
-            transform: translate(50%, -50%);
-            width: 13px;
-            height: 13px;
-            background-color: rgba(194, 194, 194, 0.82);
-            z-index: 0; 
-        }
-
-        .file-label{
-            display: block;
-            position: relative;
-            color: white;
-            font-size: 18px;
-            text-align: center;
-            padding: 12px 0;
-            margin: auto;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        .num-of-files{
-            text-align: center;
-            margin: 20px 0 30px 0;
-        }
-
-        #images{
-            position: relative;
-            margin: auto;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-evenly;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        figure{
-            position: relative;
-            width: 25%;
-        }
-        
-        img{
-            width: 100%;
-        }
-
-        figcaption{
-            text-align: center;
-            font-size: 13px;
-            margin-top: 3px;
-        }
-
-        .delete-btn {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 0, 0, 0.7);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 18px;
-            z-index: 1;
-        }
-
-        .wrapper {
-            background-color: #ffffff;
-            padding: 2em 3em;
-            border-radius: 0.5em;
-        }
-
-        .container-cropper .image-container,
-        .container-cropper .preview-container {
-            width: 100%;
-            height: 100%;
-        }
-
-        input[type="file"] {
-            display: none;
-        }
-
-        .cropper-label {
-            display: block;
-            position: relative;
-            font-size: 16px;
-            text-align: center;
-            width: 250px;
-            padding: 10px 0;
-            border-radius: 0.3em;
-            margin: 16px auto;
-            cursor: pointer;
-        }
-
-        img {
-            display: block;
-            max-width: 100%;
-        }
-
-        .image-container {
-            width: 60%;
-            margin: 0 auto;
-        }
-
-        .btns{
-            display: flex;
-            justify-content: center;
-            gap: 1em;
-            margin-top: 1em;
-        }
-
-        .btns button {
-            font-size: 1em;
-        }
-
-        .btns a {
-            border: 2px solid #025bee;
-            background-color: #025bee;
-            color: #ffffff;
-            text-decoration: none;
-            padding: 1em;
-            font-size: 1em;
-            border-radius: 0.3em;
-        }
-  
-    </style>
 </head>
 
 <body>
@@ -181,7 +31,7 @@
                                             <option value="<%= brand._id %>" <%= brand._id.toString() === product.brand.toString() ? 'selected' : "" %>>
                                                 <%= brand.name %>
                                             </option>
-                                           <% }) %> 
+                                        <% }) %> 
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-10">
@@ -191,7 +41,7 @@
                                             <option value="<%= category._id %>" <%= category._id.toString() === product.category.toString() ? 'selected' : "" %>>
                                                 <%= category.name %>
                                             </option>
-                                           <% }) %> 
+                                        <% }) %> 
                                     </select>
                                 </div>
                                 <div class="mb-3 col-md-10">
@@ -249,16 +99,16 @@
                                 <div class="options-cropper d-none d-flex flex-column flex-md-row">
                                     <div class="inputs d-flex col-12 col-md-6">
                                         <input class="form-control"
-                                        type="number"
-                                        id="height-input"
-                                        placeholder="Enter Height"
-                                        max="780"
+                                            type="number"
+                                            id="height-input"
+                                            placeholder="Enter Height"
+                                            max="780"
                                         />
                                         <input class="form-control"
-                                        type="number"
-                                        id="width-input"
-                                        placeholder="Enter Width"
-                                        max="780"
+                                            type="number"
+                                            id="width-input"
+                                            placeholder="Enter Width"
+                                            max="780"
                                         />
                                     </div>
                                     <div class="buttons gap-1 col-12 col-md-6 mt-2 d-flex justify-content-center">
@@ -284,16 +134,16 @@
                             <h6>Existing Images</h6>
                             <div class="row d-flex flex-row" style="justify-content: space-evenly; flex-wrap: wrap;">
                                 <% for (let i = 0; i < product.images.length; i++) { %>
-                                <div class="col-4" id="image<%= i + 1 %>">
-                                    <div class="thumbnail col-6">
-                                        <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>','<%= product._id %>','<%= product.images[i]%>',event)">&times;</button>
-                                        <div class="close-btn-background"></div>
-                                        <img class="img-fluid" id="image<%= i + 1 %>" src="/static/images/ProductImages/<%= product.images[i] %>" alt="">
-                                        <div class="caption">
-                                            <h6 id="image<%= i + 1 %>">Image <%= i+1 %></h6>
+                                    <div class="col-4" id="image<%= i + 1 %>">
+                                        <div class="thumbnail col-6">
+                                            <button class="close-btn" onclick="deleteImage('image<%= i + 1 %>','<%= product._id %>','<%= product.images[i]%>',event)">&times;</button>
+                                            <div class="close-btn-background"></div>
+                                            <img class="img-fluid" id="image<%= i + 1 %>" src="/static/images/ProductImages/<%= product.images[i] %>" alt="">
+                                            <div class="caption">
+                                                <h6 id="image<%= i + 1 %>">Image <%= i+1 %></h6>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 <% } %>
                             </div>   
                         </div> 
@@ -308,7 +158,7 @@
         </div>
     </section>
     
-
+    <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
 
@@ -473,9 +323,6 @@
         function updateProduct(e){
             e.preventDefault()
 
-            console.log('Existing image count : ',existImageCount)
-            console.log("selected image count : ",selectedImageCount)
-
             let totalImageCount = parseInt(existImageCount) + selectedImageCount;
             if (totalImageCount !== 5) {
                 swal.fire({
@@ -494,7 +341,9 @@
                 title: 'Validation Error',
                 text: 'Please ensure all fields are filled out correctly.',
                 icon: 'error',
-                confirmButtonText: 'OK'
+                timer: 3000,
+                timerProgressBar: true,
+                showConfirmButton: false
             });
             return false;
         }
@@ -543,6 +392,7 @@
                         title: 'Success!',
                         text: data.message,
                         icon: 'success',
+                        showConfirmButton: true,
                         confirmButtonText: 'OK'
                     }).then(()=>{
                         window.location.href = "/admin/products"
@@ -552,7 +402,9 @@
                         title: 'Error!',
                         text: data.message,
                         icon: 'error',
-                        confirmButtonText: 'OK'
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             })
@@ -569,8 +421,6 @@
         function deleteImage(imageId, productId, productImage,event) {
             existImageCount--
             
-            console.log("Product id = ",productId)
-            console.log("image Name =",productImage)
             event.preventDefault();
 
             fetch('/admin/deleteProductImage', {
@@ -591,7 +441,9 @@
                         title: 'Error!',
                         text: data.message,
                         icon: 'error',
-                        confirmButtonText: 'OK'
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
                     });
                 }
             })
