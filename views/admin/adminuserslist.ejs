@@ -2,50 +2,50 @@
 <%-include("../adminpartials/admin_navbar.ejs")%>
 
 <section class="view">
-<div class="container mt-5">
-    <div class="row">
-        <div class="col-md-10 offset-md-1">
-            <h1>Users</h1>
-            <hr>
-            <div class="table-responsive ">
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <h1>Users</h1>
+                <hr>
+                <div class="table-responsive ">
                     <% if(users !="" ){ %>
                         <table class="table text-center table-striped my-5 p-1">
-                                <thead>
-                                    <tr class="table-dark">
-                                        <th class="text-center text-light">ID</th>
-                                        <th class="text-center text-light">Name</th>
-                                        <th class="text-center text-light">Email</th>
-                                        <th class="text-center text-light">Phone</th>
-                                        <th class="text-center text-light">Options</th>
+                            <thead>
+                                <tr class="table-dark">
+                                    <th class="text-center text-light">ID</th>
+                                    <th class="text-center text-light">Name</th>
+                                    <th class="text-center text-light">Email</th>
+                                    <th class="text-center text-light">Phone</th>
+                                    <th class="text-center text-light">Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% users.forEach((row,index)=> { %>
+                                    <tr class="align-middle">
+                                        <td>
+                                            <%= index+1 %>
+                                        </td>
+                                        <td>
+                                            <%= row.fullname %>
+                                        </td>
+                                        <td>
+                                            <%= row.email %>
+                                        </td>
+                                        <td>
+                                            <%= row.phone %>
+                                        </td>
+                                        <td>
+                                            <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isblocked) { %>checked<% } %>>
+                                            <label for="block_<%= row._id %>" class="text-danger">Block</label>
+                                            <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isblocked) { %>checked<% } %>>
+                                            <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>                
+                                        </td>
                                     </tr>
-                                </thead>
-                                <tbody>
-                                    <% users.forEach((row,index)=> { %>
-                                        <tr class="align-middle">
-                                            <td>
-                                                <%= index+1 %>
-                                            </td>
-                                            <td>
-                                                <%= row.fullname %>
-                                            </td>
-                                            <td>
-                                                <%= row.email %>
-                                            </td>
-                                            <td>
-                                                <%= row.phone %>
-                                            </td>
-                                            <td>
-                                                <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isblocked) { %>checked<% } %>>
-                                                <label for="block_<%= row._id %>" class="text-danger">Block</label>
-                                                <input type="radio" class="user-switch" data-user-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isblocked) { %>checked<% } %>>
-                                                <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>                
-                                            </td>
-                                        </tr>
-                                    <% }) %>
-                                </tbody>
-                            </table>
-                        <% } else {%>
-                            <div class="alert alert-info text-center" role="alert">No Users found in the database.</div>
+                                <% }) %>
+                            </tbody>
+                        </table>
+                    <% } else {%>
+                        <div class="alert alert-info text-center" role="alert">No Users found in the database.</div>
                     <% } %>
                 </div>
             </div>
@@ -53,15 +53,16 @@
     </div>
 </section>
 
+<!-- script for the sweet alert -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+
     ////// Script for block and unblock the user \\\\\\
     document.querySelectorAll('.user-switch').forEach(function(userSwitch) {
         userSwitch.addEventListener('change', function () {
             var userId = this.dataset.userId;
             var blockStatus = this.value;
 
-            // Confirm the action with a modal dialog
             Swal.fire({
                 title: 'Confirmation',
                 text: 'Are you sure you want to change the block status?',
@@ -72,7 +73,6 @@
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Send a POST request to the server
                     fetch(`/admin/blockUser${userId}`, {
                         method: 'POST',
                         headers: {
@@ -81,7 +81,6 @@
                         body: JSON.stringify({ blockStatus: blockStatus })
                     })
                     .then(response => {
-                        // Check if the response is successful
                         if (response.ok) {
                             return response.json();
                         } else {
@@ -89,24 +88,25 @@
                         }
                     })
                     .then(data => {
-                        // Handle the response data
                         Swal.fire({
                             icon: 'success',
                             title: 'Success!',
-                            text: 'User block status has been updated.'
-                        });
-                        
+                            text: 'User block status has been updated.',
+                            showConfirmButton: true,
+                            confirmButtonText: 'OK'
+                        });                  
                     })
                     .catch(error => {
-                        // Handle errors
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
-                            text: error.message
+                            text: error.message,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
                         });
                     });
                 } else {
-                    // Action cancelled
                     location.reload();
                 }
             });
@@ -119,6 +119,7 @@
             order : [0, 'desc']
         })    
     })
+
     </script>
     
     <!-- Admin footer -->
