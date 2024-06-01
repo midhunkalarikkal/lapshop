@@ -2,7 +2,7 @@
     <%-include("../userpartials/navbar.ejs")%>
 
         <head>
-            <!-- User login page css -->
+            <!-- custom user login page css -->
             <link rel='stylesheet' href='/static/css/user_login_register.css' type="text/css" />
         </head>
 
@@ -76,19 +76,8 @@
 
             ////// Alert script \\\\\\
             var alertElement = document.getElementById('myAlert');
-            function hideAlert() {
-                alertElement.style.transition = "opacity 1s";
-                alertElement.style.opacity = "0";
-                setTimeout(function () {
-                    alertElement.style.display = "none";
-                }, 1000);
-            }
-            setTimeout(hideAlert, 3000);
-
-            var alertElement = document.getElementById('myAlert');
-            
             if (alertElement) {
-                function hideAlert() {
+                function hideAlert(){
                     alertElement.style.transition = "opacity 1s";
                     alertElement.style.opacity = "0";
                     setTimeout(function () {
@@ -98,7 +87,7 @@
                 setTimeout(hideAlert, 3000);
             }
             
-            ////// For showing the password
+            ////// For showing the password \\\\\\
             function showpassword() {
             var checkbox = document.getElementById("showPasswordCheckbox");
             var passwordInput = document.getElementById("password");
@@ -109,7 +98,8 @@
                 passwordInput.type = "password";
             }
         }
-        </script>
+
+    </script>
 
         <!-- User footer -->
         <%-include("../userpartials/footer.ejs")%>
