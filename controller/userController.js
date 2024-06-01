@@ -206,13 +206,13 @@ const postLogin = async (req, res) => {
 // To get the user login page
 const getLogin = async (req, res) => {
     try {
-        if(!req.session.user || !req.session.user.isBlocked){
-            let userDetails = ''
-            const type = req.query.type || ""
-            const message = req.query.message || ""
-            return res.render('user/login',{type, message, userDetails})
-        }else{
+        if(req.session && req.session.user && req.session.user !== null){
             res.redirect('/')
+        }else{
+            let userDetails = '';
+            let type = req.query.type || '';
+            let message = req.query.message || '';
+            return res.render('user/login',{type, message, userDetails})
         }
     } catch (error) {
         return res.redirect('/errorPage')
@@ -228,7 +228,9 @@ const getLogout = async(req,res)=>{
                 return res.redirect('/errorPage');
             }
             cartItemCount = ""
-            return res.redirect('/login')
+            const message = "Logged out successfully"
+            const type = "success"
+            res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`);
         });
     }catch(error){
         return res.redirect('/errorPage')
@@ -302,8 +304,8 @@ const getHome = async (req, res) => {
             });
             validCoupons = newValidCoupons
         }
-
         return res.render('user/home',{userDetails , homeCarousel , bestSellingProducts , category  , coupon : validCoupons , brands})
+
     } catch (error) {
         return res.redirect('/errorPage')
     }

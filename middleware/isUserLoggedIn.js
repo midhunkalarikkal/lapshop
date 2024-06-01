@@ -1,48 +1,44 @@
 const User = require('../models/userModel')
 
-const isUserLoggedIn = async (req, res, next) => {
+const isLoggedIn = async (req, res, next) => {
     try {
-        if(req.session && req.session.user){
-            User.findById({_id :req.session.user._id}).lean()
-            .then((data)=>{
-                if(data.isblocked == false){
-                    console.log("req.session.user",req.session.user)
-                    console.log("user is not blocked")
-                    next()
-                }else{
-                    console.log("user blocked : ",data.isblocked)
-                    console.log("rendering login page")
-                    req.session.destroy()
-                    res.redirect('/login')
-                    // const message = "Your account is checking, Please contact us"
-                    // const type = "danger"
-                    // res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`)
-                }
-            })
-        }else{
-            console.log("no user in session and redirecting to login")
-            res.redirect('/login')
+        if (req.session && req.session.user) {
+            next();
+        } else {
+            const message = "Your account is blocked, Please contact us"
+            const type = "danger"
+            res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`);
         }
     } catch (error) {
-        console.log(error.message);
-        res.status(500).send("Internal Server Error.");
+        return res.redirect('errorPage')
     }
 };
 
-const isUserLogout = async(req,res,next)=>{
+
+const isBlocked = async (req, res, next) => {
     try {
-        if(req.session.user){
-            console.log("user session is not null")
-            res.redirect('/')
-        }else{
-            next()
+        if (req.session && req.session.user) {
+            const user = await User.findById({ _id: req.session.user._id }).lean();
+            if (user.isblocked) {
+                console.log("user blocked: ", user.isblocked);
+                console.log("rendering login page");
+                const message = "Your account is blocked, Please contact us"
+                const type = "danger"
+                req.session.user = null
+                req.session.userNC = null
+                res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`);
+            } else {
+                next();
+            }
+        } else {
+            res.redirect('/login');
         }
     } catch (error) {
-        console.log(error.message);
+        return res.redirect('/errorPage')
     }
-}
+};
 
 module.exports = {
-    isUserLoggedIn,
-    isUserLogout
+    isLoggedIn,
+    isBlocked
 };
