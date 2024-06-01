@@ -12,9 +12,6 @@ const easyinvoice = require('easyinvoice')
 // To place an order from user
 const placeOrder = async(req,res)=>{
     try{
-        console.log("place order api start")
-        console.log("req.session.user :",req.session.user)
-        console.log("req.session.userNC :",req.session.userNC)
         const userId = req.session.user._id
         const addressId = req.query.addressId
         const paymentMethod = req.query.paymentMethod
@@ -24,29 +21,12 @@ const placeOrder = async(req,res)=>{
         const walletdeductedAmount = req.query.walletBalance
         const totalAmount = req.query.amount
         let couponApplied = false
-        
-        console.log("UserId :",userId)
-        console.log("addressId :",addressId)
-        console.log("totalAmount :",totalAmount)
-        console.log("type of totoalAmount :",totalAmount)
-        console.log("paymentMethod :",paymentMethod)
-        console.log("payment status :",paymentStatus)
-        console.log("coupon Name :",couponCode)
-        console.log("wallet used :",walletUsed)
-        console.log()
 
         const cart = await Cart.find({ userId : userId})
-        console.log("cart :",cart[0])
         let cartIdToUpdate = cart[0]._id
-        console.log("cart id :",cartIdToUpdate)
 
         if(couponCode && couponCode !== ""){
-            console.log("coupon applied")
-            console.log("couponCode :",couponCode)
             couponApplied = true
-        }else{
-            console.log("coupon not applied :",)
-            console.log("coupon code :",couponCode)
         }
 
         if (walletUsed && walletUsed !== undefined) {
@@ -91,8 +71,6 @@ const placeOrder = async(req,res)=>{
         if (orderSaved) {
                 await Promise.all(cart[0].items.map(async (item) => {
                     const product = await Product.findById(item.product);
-                    console.log("product quantity :", product.noOfStock);
-                    console.log("orderedItem quantity :", item.quantity);
                     product.noOfStock -= item.quantity;
                     await product.save();
                 }));
@@ -101,12 +79,9 @@ const placeOrder = async(req,res)=>{
                 cart[0].totalCartDiscountPrice = 0;
                 req.session.userNC.cartItemCount = cart[0].items.length
                 await cart[0].save()
-                console.log("updated cart :",cart[0])
-                console.log("req.session.NC :",req.session.NC)
             return res.redirect('/paymentSuccess');
         } 
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -114,9 +89,6 @@ const placeOrder = async(req,res)=>{
 // To place order with wallet and razorpay from user
 const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
     try{
-        console.log("Place order with wallet and razorpay api start")
-        console.log("req.body :", req.body)
-
         const paymentAmount = req.body.paymentAmount
         const userId = req.session.user._id
         const name = req.session.user.fullname;
@@ -124,12 +96,6 @@ const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
         const walletBalance = req.body.walletBalance
 
         const razorpayAmount = paymentAmount - walletBalance
-
-        console.log("Payment amount: ", paymentAmount);
-        console.log("userId : ",userId)
-        console.log("name :",name)
-        console.log("email :",email)
-        console.log("razorpay amount :",razorpayAmount)
 
         const options = {
             amount: razorpayAmount * 100,
@@ -151,9 +117,7 @@ const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
                 return res.status(400).send({ success: false, message: "Something went wrong!" });
             }
             });
-            console.log("i have done with instance creation");
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -161,13 +125,11 @@ const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
 // To confirm an order from user
 const orderConfirmation = async(req,res)=>{
     try{
-        console.log("order confirmation api start")
         const amount = req.body.totalAmount
         const paymentMethod = req.body.paymentMethod
         const userId = req.session.user._id
         
         if (paymentMethod === "razorpay") {
-            console.log("i am creating instance");
             const name = req.session.user.fullname;
             const email = req.session.user.email;
             const options = {
@@ -190,15 +152,12 @@ const orderConfirmation = async(req,res)=>{
                 res.status(400).send({ success: false, message: "Something went wrong!" });
             }
             });
-            console.log("i have done with instance creation");
         }
         if (paymentMethod === "cod") {
             res.status(200).send({ success: true });
         }
         if(paymentMethod === "wallet"){
           const wallet = await Wallet.find({ user : userId})
-          console.log("Wallet api start")
-          console.log("wallet :",wallet)
           let walletBalance = 0;
           let totalCreditedAmount = 0;
           let totalDebitedAmount = 0;
@@ -218,7 +177,6 @@ const orderConfirmation = async(req,res)=>{
           });
         }
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -233,8 +191,6 @@ const getOrders = async(req,res)=>{
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
         }).sort({ orderDate: -1 });
-        console.log("orders :",order)
-        // Edit
         for(let i = 0; i < order.length; i++){
             console.log("order 0 :",order[i])
             for(let j = 0; j < order[i].orderedItems.length; j++){
@@ -243,7 +199,6 @@ const getOrders = async(req,res)=>{
         }
         return res.render('user/orders',{userDetails , order : order})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -259,7 +214,6 @@ const getOrderDetail = async(req,res)=>{
         }).populate("address");
         return res.render('user/orderDetail',{userDetails , order})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -267,12 +221,9 @@ const getOrderDetail = async(req,res)=>{
 // To cancel an order from user
 const userCancelOrder = async(req,res)=>{
     try{
-        console.log("UserCancelorder api start")
         const orderId = req.body.orderId
-        console.log("orderId :",orderId)
         const userId = req.session.user._id
         const order = await Order.findById(orderId)
-        console.log("Order :",order)
         let orderTotal = order.orderTotal
 
         if(order.walletDebitedAmount && order.walletDebitedAmount !== undefined && order.walletDebitedAmount !== 0){
@@ -292,7 +243,6 @@ const userCancelOrder = async(req,res)=>{
 
         const orderedItemsLength = order.orderedItems.length
         for(let i =0; i< orderedItemsLength; i++){
-            console.log("Product quantity :",order.orderedItems[i].quantity)
             const productId = order.orderedItems[i].product.toString()
             const productQty = order.orderedItems[i].quantity
             await Product.updateOne({_id : productId}, { $inc: { noOfStock:  productQty} })
@@ -300,7 +250,6 @@ const userCancelOrder = async(req,res)=>{
         await order.save()
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -312,10 +261,8 @@ const adminGetOrders = async(req,res)=>{
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
         }).sort({ orderDate: -1 });
-        console.log("orders : ",orders)
         return res.render("admin/adminOrders", { title : "Lapshop Admin" , orders : orders })
     }catch(error){
-        console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
     }
 }
@@ -323,18 +270,15 @@ const adminGetOrders = async(req,res)=>{
 // To get order Detail from admin
 const adminGetOrderDetail = async(req,res)=>{
     try{
-        console.log("Request.params.prodId :",req.params.orderId)
         const orderId = req.params.orderId
         const order = await Order.find({ _id : orderId}).populate({
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
         }).populate("address");
-        console.log("order :",order)
         if(order){
             return res.render('admin/adminOrderDetails',{ title : "Lapshop Admin" ,order})
         }
     }catch(error){
-        console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
     }
 }
@@ -342,15 +286,10 @@ const adminGetOrderDetail = async(req,res)=>{
 // To change order status from admin
 const changeOrderStatus = async(req,res)=>{
     try{
-        console.log("change order status api start")
         const orderId = req.body.orderId
         const selectedStatus = req.body.selectedStatus
-        console.log("orderId :",orderId)
-        console.log("selectedStatus :",selectedStatus)
 
         const order = await Order.findById(orderId)
-        console.log("order :",order)
-        console.log("order paymentMethod : ",order.paymentMethod)
 
         if(selectedStatus === order.status){
             return res.status(400).json({ success : false , message : "Order status is same."})
@@ -363,7 +302,6 @@ const changeOrderStatus = async(req,res)=>{
             return res.status(200).json({ success : true , message : `Order status changed to ${selectedStatus}`})
         
     }catch(error){
-        console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
     }
 }
@@ -371,13 +309,9 @@ const changeOrderStatus = async(req,res)=>{
 //To cancel a order from admin
 const adminCancelOrder = async(req,res)=>{
     try{
-        console.log("Admin cancel order")
         const orderId = req.body.orderId
-        console.log("orderId :",orderId)
         const order = await Order.findById(orderId)
-        console.log("Order :",order)
         const userId = order.userId
-        console.log("userId :",userId)
 
         let orderTotal = order.orderTotal
 
@@ -397,7 +331,6 @@ const adminCancelOrder = async(req,res)=>{
 
         const orderedItemsLength = order.orderedItems.length
         for(let i =0; i< orderedItemsLength; i++){
-            console.log("Product quantity :",order.orderedItems[i].quantity)
             const productId = order.orderedItems[i].product.toString()
             const productQty = order.orderedItems[i].quantity
             await Product.updateOne({_id : productId}, { $inc: { noOfStock:  productQty} })
@@ -407,7 +340,6 @@ const adminCancelOrder = async(req,res)=>{
         await order.save()
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/admin/adminErrorPage')
     }
 }
@@ -415,10 +347,7 @@ const adminCancelOrder = async(req,res)=>{
 //To download the order invoice for the user
 const downloadInvoice = async(req,res)=>{
     try{
-        console.log("download invoice api start")
-        console.log("req.params : ",req.params)
         const orderId = req.params.orderId
-        console.log("orderId :",orderId)
 
         const filePath = path.join(
             __dirname,
@@ -435,21 +364,17 @@ const downloadInvoice = async(req,res)=>{
         res.contentType("application/pdf");
         res.sendFile(filePath, (err) => {
             if (err) {
-                console.log("Error sending invoice:", err);
                 res.redirect('/errorPage');
             }
         });
       
     }catch(error){
-        console.log("invoice download error")
         return res.redirect('/errorPage')
     }
 }
 
 const generateInvoice = async (orderId) => {
     try {
-        console.log("Generating invoice...");
-
         const order = await Order.findById(orderId)
         .populate({
             path: "orderedItems",
@@ -504,8 +429,6 @@ const generateInvoice = async (orderId) => {
             },
         };
 
-        console.log("data : ",data)
-
         const result = await easyinvoice.createInvoice(data);
 
         const folderPath = path.join(__dirname, "..", "public", "invoice");
@@ -516,24 +439,18 @@ const generateInvoice = async (orderId) => {
 
         order.invoice = filePath;
         await order.save();
-
-        console.log(`Invoice saved at: ${filePath}`);
-
     } catch (error) {
-        console.log("Error generating invoice:", error);
+        return res.redirect('/errorPage')
     }
 };
 
 // To repayment the order if the payment is failed
 const repayment = async(req,res)=>{
     try{
-        console.log("repayment api start")
         const orderId = req.params.orderId
         const order = await Order.findById(orderId).populate("orderedItems.product").populate("userId").populate("address")
-        console.log("order : ",order)
         return res.render("user/repayment",{order})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -541,16 +458,12 @@ const repayment = async(req,res)=>{
 // To confirm the repayment
 const repaymentOrderConfirm = async(req,res)=>{
     try{
-        console.log("repayment order confirmation api start")
         const data = req.body
-        console.log("data : ",data)
         const paymentMethod = req.body.paymentMethod
         const amount = req.body.totalAmount
         const orderId = req.body.orderId 
-        console.log("env : ",process.env.KEY_ID)
 
         if (paymentMethod === "razorpay" || paymentMethod === "wallet with razorpay") {
-            console.log("i am creating instance from repayment");
             const name = req.session.user.fullname;
             const email = req.session.user.email;
             const options = {
@@ -574,27 +487,18 @@ const repaymentOrderConfirm = async(req,res)=>{
                 res.status(400).send({ success: false, message: "Something went wrong! in repayment" });
             }
             });
-            console.log("i have done with instance creation repayment");
         }
     }catch(error){
-        console.log(error)
+        return res.redirect('/errorPage')
     }
 }
 
 // To place order for the repayment order
 const rePaymentPlaceOrder = async(req,res)=>{
     try{
-        console.log("repayment place order api start")
-        console.log("req.session.user :",req.session.user)
-        console.log("req.session.userNC :",req.session.userNC)
-
         const paymentStatus = req.query.paymentStatus
         const totalAmount = req.query.amount
         const orderId = req.query.orderId
-
-        console.log("totalAmount :",totalAmount)
-        console.log("payment status :",paymentStatus)
-        console.log("orderId : ",orderId)
 
         const order = await Order.findById(orderId)
         order.paymentStatus = paymentStatus
@@ -606,14 +510,13 @@ const rePaymentPlaceOrder = async(req,res)=>{
             return res.redirect('/paymentSuccess');
         } 
     }catch(error){
-        console.log(error)
+        return res.redirect('/errorPage')
     }
 }
 
 // To return an order from user 
 const userReturnOrder = async(req,res)=>{
     try{
-        console.log("return order api start")
         const orderId = req.body.orderId
         const order = await Order.findById(orderId)
         order.status = "Request return"
@@ -625,14 +528,13 @@ const userReturnOrder = async(req,res)=>{
             return res.status(400).json({ success : false , message : "Order return requesting failed"})
         }
     }catch(error){
-        console.log(error)
+        return res.redirect('/errorPage')
     }
 }
 
 //To accept an order return request in admin from user
 const adminAcceptReturn = async(req,res)=>{
     try{
-        console.log(" Admin order return request accept")
         const orderId = req.body.orderId
         const userId = req.session.user._id
         const order = await Order.findById(orderId)
@@ -657,14 +559,13 @@ const adminAcceptReturn = async(req,res)=>{
             return res.status(400).json({ success : false , message : "No order found." })
         }
     }catch(error){
-        console.log(error)
+        return res.redirect('/admin/adminErrorPage')
     }
 }
 
 //To reject an order return request in admin from user
 const adminRejectReturn = async(req,res)=>{
     try{
-        console.log(" Admin order return request reject")
         const orderId = req.body.orderId
         const order = await Order.findById(orderId)
         const amount = order.orderTotal
@@ -681,7 +582,7 @@ const adminRejectReturn = async(req,res)=>{
             return res.status(400).json({ success : false , message : "No order found." })
         }
     }catch(error){
-        console.log(error)
+        return res.redirect('/admin/adminErrorPage')
     }
 }
 

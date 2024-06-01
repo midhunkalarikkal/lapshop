@@ -20,7 +20,6 @@ const getCartPage = async(req,res)=>{
         
         res.render('user/cart' , {userDetails , cartItems , cart})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -79,7 +78,6 @@ const postProductToCartFromShop = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error.message);
         res.redirect('/errorPage')
     }
 };
@@ -140,7 +138,6 @@ const postCartProductQtyDec = async(req,res)=>{
         return res.status(200).json({ success : true , message : "Quantity decremented"})
   
     }catch(error){
-        console.log(error.message)
         res.redirect('/errorPage')
     }
 }
@@ -177,7 +174,6 @@ const deleteProductFromCart = async(req,res)=>{
         await cart.save();
         return res.status(200).json({ success : true, message: "Product deleted from your cart ." });
     }catch(error){
-        console.log(error.message)
         res.redirect('/errorPage')
     }
 }

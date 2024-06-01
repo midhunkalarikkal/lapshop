@@ -18,7 +18,6 @@ const getWishlistPage = async(req,res)=>{
         const products = await Product.find({_id : {$in : prodId}}).populate("brand")
         return res.render('user/wishlist', {userDetails , products ,wishlistProducts})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -54,7 +53,6 @@ const AddToWishlist = async(req,res)=>{
         }
 
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -77,7 +75,6 @@ const deleteProductFromWishlist = async(req,res)=>{
         }
     
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -143,7 +140,6 @@ const postProductToCart = async (req, res) => {
 
         return res.status(200).json({ success: true, message: "Product added to your cart." });
     } catch (error) {
-        console.log(error.message);
         return res.redirect('/errorPage')
     }
 };

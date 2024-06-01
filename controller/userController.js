@@ -44,38 +44,34 @@ const generateOtp = () => {
         const index = crypto.randomInt(0, chars.length);
         otp += chars[index];
     }
-    console.log(otp)
     return otp;
 }
 
 //Send otp through email
 const sendOtpMail = async(email,otp)=>{
     try {
-      const transporter = nodemailer.createTransport({
-        service: "gmail",
-            host: "smtp.gmail.com",
-            port: 465,
-            secure: true,
-            auth: {
-                user: process.env.AUTH_EMAIL,
-                pass: process.env.AUTH_PASS,
-            },
-      });
-      const mailOptions= {
-        from: 'lapshopotp@gmail.com',
-        to: email,
-        subject: "OTP for register in LapShop Ecommerce",
-        html:'<p>Hi, Your One Time Password to Login is '+ otp +'</p>'
-      }
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+                host: "smtp.gmail.com",
+                port: 465,
+                secure: true,
+                auth: {
+                    user: process.env.AUTH_EMAIL,
+                    pass: process.env.AUTH_PASS,
+                },
+        });
+        const mailOptions= {
+            from: 'lapshopotp@gmail.com',
+            to: email,
+            subject: "OTP for register in LapShop Ecommerce",
+            html:'<p>Hi, Your One Time Password to Login is '+ otp +'</p>'
+        }
 
-      transporter.sendMail(mailOptions,function(error,info){
-        if(error){
-          console.log(error);
-        }
-        else{
-          console.log("Email has been sent: ",info.response);
-        }
-      })       
+        transporter.sendMail(mailOptions,function(error,info){
+            if(error){
+                return res.redirect('/errorPage')
+            }
+        })       
     } catch (error) {
         return res.redirect('/errorPage')
     }
@@ -103,12 +99,11 @@ const postRegister = async (req, res) => {
 
         if (!userEmail){
             sendOtpMail(enteredEmail,otp);
-            return res.render('user/otpvalidation', { type: "success", message: "Check your email for otp", userDetails})
+            return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
         } else {
             return res.render('user/registration', { type: "danger", message: "Email already registered.", userDetails})
         }
     } catch (error) {
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -127,7 +122,6 @@ const postRegisterOtp = async (req, res) => {
         const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         
         if(concatenatedOTP === saveOtp){
-            console.log("otp is okkkkkkkkkkkkkkkkkk")
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
             const referalCode = await generateReferralCode(enteredFullname , enteredPhone)
 
@@ -164,11 +158,10 @@ const postRegisterOtp = async (req, res) => {
                 return res.render('user/registration',{type : "danger" , message : "User already exist.", userDetails})
             }   
         }else{
-            return res.render("user/otpvalidation",{type : "danger" , message : "Invalid OTP", userDetails});
+            return res.render("user/otpValidation",{type : "danger" , message : "Invalid OTP", userDetails});
         }
         
     } catch (error) {
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -196,7 +189,6 @@ const postLogin = async (req, res) => {
             
             bcrypt.compare(password, user.password, function (err, result) {
                 if (err) {
-                    console.log(err);
                     return res.status(500).send('An error occurred while comparing the passwords.');
                 } if (result) {
                     req.session.user = user;
@@ -207,7 +199,6 @@ const postLogin = async (req, res) => {
                 }
             });
     } catch (error) {
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -216,7 +207,6 @@ const postLogin = async (req, res) => {
 const getLogin = async (req, res) => {
     try {
         if(!req.session.user || !req.session.user.isBlocked){
-            console.log("get login")
             let userDetails = ''
             const type = req.query.type || ""
             const message = req.query.message || ""
@@ -225,7 +215,6 @@ const getLogin = async (req, res) => {
             res.redirect('/')
         }
     } catch (error) {
-        console.log(error)
         return res.redirect('/errorPage')
     }
 }
@@ -242,7 +231,6 @@ const getLogout = async(req,res)=>{
             return res.redirect('/login')
         });
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -251,13 +239,10 @@ const getLogout = async(req,res)=>{
 //To get the user home
 const getHome = async (req, res) => {
     try {
-        console.log("Home api start")
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
         const brands = await Brand.find({ isBlocked : false})
-
-        console.log("brands : ",brands)
 
         const bestSellingProducts = await Order.aggregate([
             { 
@@ -320,7 +305,6 @@ const getHome = async (req, res) => {
 
         return res.render('user/home',{userDetails , homeCarousel , bestSellingProducts , category  , coupon : validCoupons , brands})
     } catch (error) {
-        console.log(error)
         return res.redirect('/errorPage')
     }
 }
@@ -331,7 +315,6 @@ const getRegister = async (req, res) => {
         let userDetails = req.session.userNC
         return res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
     } catch (error) {
-        console.log(error)
         return res.redirect('/errorPage')
     }
 }
@@ -340,9 +323,8 @@ const getRegister = async (req, res) => {
 const getotppage = async(req,res)=>{
     try{
         userDetails = req.session.userNC
-        return res.render('user/otpvalidation',{type : "", message : "" , userDetails})
+        return res.render('user/otpValidation',{type : "", message : "" , userDetails})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -362,7 +344,6 @@ const resendOtp = async(req,res)=>{
 
         res.status(200).send('OTP resent successfully');
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -379,7 +360,6 @@ const getUserProfile = async(req,res)=>{
         
         return res.render('user/profile',{userData, formattedDate , userDetails, address})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -399,7 +379,6 @@ const postUserUpdatedInfo = async(req,res)=>{
         }
 
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -428,7 +407,6 @@ const postUserProfileImage = async(req,res)=>{
         }
         
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -468,7 +446,6 @@ const getUserShop = async(req,res)=>{
         return res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId, totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -495,7 +472,6 @@ const getCatProduct = async(req,res)=>{
             const cart = await Cart.find({ userId : user._id }) 
             if(cart){
                 cartProdId = cart[0].items.map(item => item.product)
-                console.log("cartProductId :",cartProdId)
             }
         }
         
@@ -577,14 +553,11 @@ const getCatProduct = async(req,res)=>{
                 productData.sort((a,b) => b.name.localeCompare(a.name))
             }
 
-            console.log(productData)
-
             return res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
         }else{
             return res.status(400).json({ message : "No categorized found" })
         }
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -597,7 +570,6 @@ const getUserNewAddress = async(req,res)=>{
         let userDetails = req.session.userNC
         return res.render('user/addAddress',{userDetails , userId})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -627,7 +599,6 @@ const postUserAddress = async(req,res)=>{
             await newAddress.save()
             return res.status(200).json({ message: "Address added successfully" })
         } catch (error) {
-            console.log(error.message);
             return res.redirect('/errorPage')
         }
     }
@@ -644,7 +615,6 @@ const postAddressDelete = async (req, res) => {
             return res.status(200).json({ message: "Address deleted successfully" });
         }
     } catch (error) {
-        console.log(error.message);
         return res.redirect('/errorPage')
     }
 }
@@ -657,7 +627,6 @@ const getUserEditAddress = async(req,res)=>{
         let userDetails = req.session.userNC
         return res.render('user/updateAddress',{userAddress, userDetails})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -691,7 +660,6 @@ const postUpdateUserAddress = async (req, res) => {
         }
 
     } catch (error) {
-        console.log(error.message);
         return res.redirect('/errorPage')
     }
 };
@@ -712,7 +680,6 @@ const postOtpForChangePass = async (req, res) => {
 
         return res.status(200).json({ message: "OTP sent successfully" });
     } catch (error) {
-        console.log(error.message);
         return res.redirect('/errorPage')
     }
 };
@@ -727,7 +694,6 @@ const checkOtpForChangePass = async(req,res)=>{
             return res.status(400).json({ message: "Incorrect OTP" });
         }
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -749,7 +715,6 @@ const postUserNewPass = async (req, res) => {
 
         return res.status(200).json({ message: "Password updated successfully" });
     } catch (error) {
-        console.error(error.message);
         return res.redirect('/errorPage')
     }
 };
@@ -760,7 +725,6 @@ const getForgotPassword = async(req,res)=>{
         let userDetails = req.session.userNC
         return res.render('user/forgotPassword',{userDetails})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -787,7 +751,6 @@ const postForgotPasswordEmail = async(req,res)=>{
             return res.status(200).json({ message: "OTP has been sent to your email." });
         }
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -806,7 +769,6 @@ const postForgotPasswordOtp = async(req,res)=>{
             }
         }
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -838,7 +800,6 @@ const postForgotPasswordNewPass = async (req, res) => {
             }
         }
     } catch (error) {
-        console.log(error.message);
         return res.redirect('/errorPage')
     }
 };
@@ -860,7 +821,6 @@ const getProductDetail = async(req,res)=>{
         
         return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -874,7 +834,6 @@ const getCheckout = async(req,res)=>{
         let userAddress = await Address.find({ userId : userId})
         return res.render('user/checkout' , { userCart , userAddress })
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -885,7 +844,6 @@ const getUserNewAddressFromCheckout = async(req,res)=>{
         let userDetails = req.session.userNC
         return res.render('user/addAddressFromCheckout',{userDetails , userId})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -906,7 +864,6 @@ const getPaymentPage = async(req,res)=>{
 
         return res.render('user/payment' , {userAddress , userCart , coupon})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -917,9 +874,7 @@ const getPaymentSuccess = async(req,res)=>{
         let userDetails = req.session.userNC
         const userId = req.session.user._id
         const order = await Order.find({userId : userId})
-        console.log("order :",order)
         const latestOrder = order.sort((a, b) => b.orderDate - a.orderDate)[0];
-        console.log("latest order :",latestOrder)
         const addressId = latestOrder.address
         const deliveryAddress = await Address.findById(addressId)
         let paymentMethod = latestOrder.paymentMethod
@@ -946,7 +901,6 @@ const getPaymentSuccess = async(req,res)=>{
         }
         return res.render('user/orderConfirmation',{userDetails , data})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -959,7 +913,6 @@ const getUserEditAddressFromCheckout = async(req,res)=>{
         let userDetails = req.session.userNC
         return res.render('user/editAddressFromCheckout',{ userDetails, address})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
@@ -990,7 +943,6 @@ const updateAddressFromCheckout = async(req,res)=>{
             return res.status(500).json({ message: "Failed to update address" });
         }
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }

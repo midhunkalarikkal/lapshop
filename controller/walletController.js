@@ -25,7 +25,6 @@ const getUserWallet = async(req,res)=>{
 
         return res.render('user/wallet',{userDetails, wallet, totalAmount, totalCreditedAmount, totalDebitedAmount, creditCount, debitCount})
     }catch(error){
-        console.log(error.message)
         return res.redirect('/errorPage')
     }
 }
