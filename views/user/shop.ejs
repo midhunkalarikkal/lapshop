@@ -304,6 +304,7 @@
 
     <!-- script for jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <!-- script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
@@ -489,6 +490,7 @@
                             productCardFooter.append(defaultAddToCartButton);
                         }
                     }
+                    productCardFooter.append(defaultAddToCartButton);
                        
 
                     ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
@@ -651,6 +653,7 @@
                 body: JSON.stringify({ productId: productId })
             })
             .then(response => {
+                console.log('Response received:', response);
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.includes('application/json')) {
                     return response.json(); 
@@ -658,24 +661,23 @@
                     window.location.href = `/login`;    
                 }
             })
-            .then(data => {
-                if(data.added){
+            .then(response => {
+                if(response.success){
                     Swal.fire({
-                        title: "Success",
-                        text: data.message,
                         icon: "success",
+                        title: "Success",
+                        text: response.message,
                         timer: 2000,
                         timerProgressBar: true,
-                        showConfirmButton: false
-                    }).then(() => {
-                        setTimeout(() => {
-                            location.reload();
-                        },0);
+                        showConfirmButton: false,
+                    })
+                    .then(() => {
+                        location.reload();
                     });
                 }else{
                     Swal.fire({
                         title: "Info",
-                        text: data.message,
+                        text: response.message,
                         icon: "info",
                         timer: 2000,
                         timerProgressBar: true,
