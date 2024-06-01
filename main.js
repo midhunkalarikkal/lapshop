@@ -2,7 +2,6 @@ const express = require('express')
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const path = require('path')
-const createError = require('http-errors')
 const morgan = require('morgan')
 const app = express()
 const config = require('./config/config')
@@ -10,7 +9,6 @@ const config = require('./config/config')
 require('dotenv').config()
 config.mongooseConnection();
 
-//session
 app.use(cookieParser())
 app.use(session({
     name : process.env.SESSION_NAME,
@@ -21,7 +19,6 @@ app.use(session({
         name: 'myCookie',
         maxAge: 1000 * 60 * 60 * 2,
         sameSite: true,
-        // httpOnly: true,
     }
 }))
 
