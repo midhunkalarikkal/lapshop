@@ -42,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-8 mt-4">
+                        <div class="col-md-8 mt-4 d-none d-md-block">
                             <table class="table shadow table-striped">
                                 <thead>
                                     <tr class="table-dark">
@@ -86,7 +86,42 @@
                                         </tr>
                                     <% }) %>
                                 </tbody>
-                            </table>   
+                            </table> 
+                        </div>
+
+                        <div class="col-md-8 mt-4 d-block d-md-none">
+                            <table class="table shadow table-striped">
+                                <thead>
+                                    <tr class="table-dark">
+                                        <th class="col-4">Type</th>
+                                        <th class="col-4">Amount</th>
+                                        <th class="col-4">Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% wallet.forEach((data,index)=>{ %>
+                                        <tr>
+                                            <td>
+                                                <% if(data.type === "credit"){ %>
+                                                    <h6 class="col-4"><%= data.type %></h6>
+                                                <% }else{ %>
+                                                    <h6 class="col-4 text-warning"><%= data.type %></h6>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <% if(data.type === "credit"){ %>
+                                                    <h6 class="col-4 text-success"><%= data.amount %></h6>
+                                                <% }else{ %>
+                                                    <h6 class="col-4 text-danger"><%= data.amount %></h6>
+                                                <% } %>
+                                            </td>
+                                            <td>
+                                                <h6 class="col-4"><%= data.updatedAt.toLocaleDateString() %></h6>
+                                            </td>
+                                        </tr>
+                                    <% }) %>
+                                </tbody>
+                            </table> 
                         </div>
                     <% }else{ %>
                         <div class="alert alert-info text-center mt-4" role="alert">No wallet for you.</div>

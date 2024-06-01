@@ -11,4 +11,73 @@
     float: left;
     text-align: left;
 }
+  
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+  .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
 
+
+  /*======> Very small devices <======*/
+@media (max-width: 576px) {
+    .dataTables_wrapper .dataTables_info {
+        font-size: .8rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate{
+        margin-top: -20px;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button .page-link{
+        font-size: .7rem;
+    }
+}
+
+/*======> XS/SM devices <======*/
+@media (min-width: 576px) and (max-width: 767px) {
+    .dataTables_wrapper .dataTables_info {
+        font-size: .8rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate{
+        margin-top: -20px;
+    }
+    
+      .dataTables_wrapper .dataTables_paginate .paginate_button .page-link{
+        font-size: .8rem;
+      }
+}
+
+/*======> MD devices <======*/
+@media (min-width: 768px) and (max-width: 991px) {
+    .dataTables_wrapper .dataTables_info {
+        font-size: .8rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button .page-link{
+        font-size: .8rem;      
+    }
+}
+
+/*======> LG devices <======*/
+@media (min-width: 992px) and (max-width: 1199px) {
+    .dataTables_wrapper .dataTables_info {
+        font-size: 1rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button .page-link{
+        font-size: 1rem;      
+    }
+}
+
+/*======> XL devices <======*/
+@media (min-width: 1200px) {
+    .dataTables_wrapper .dataTables_info {
+        font-size: 1rem;
+    }
+    
+    .dataTables_wrapper .dataTables_paginate .paginate_button .page-link{
+        font-size: 1rem;      
+    }
+}
