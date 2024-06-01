@@ -1,6 +1,9 @@
 <!-- User navbar -->
 <%-include("../userpartials/navbar.ejs")%>
-
+<head>
+    <!-- custom css for wallet page -->
+    <link rel="stylesheet" href="/static/css/wallet.css" type="text/css">
+</head>
     <section class="view">
         <div class="mt-5">
             <div class="container">
@@ -10,7 +13,7 @@
                 <hr>
                 <div class="row mb-3">
                     <% if(Array.isArray(wallet) && wallet.length > 0){ %>
-                        <div class="col-12 col-md-4">
+                        <div class="col-md-4">
                             <div class="mt-4 shadow d-flex flex-column p-3">
                                 <div class="user-info text-center mt-3">
                                     <h5><%= userDetails.userName %></h5>

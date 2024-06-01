@@ -1,0 +1,14 @@
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter  {
+    display: none;
+}
+
+.dataTables_wrapper .dataTables_paginate {
+    float: right;
+    text-align: right;
+}
+.dataTables_wrapper .dataTables_info {
+    float: left;
+    text-align: left;
+}
+
