@@ -319,17 +319,6 @@ const getRegister = async (req, res) => {
     }
 }
 
-//To get the user otp page
-const getotppage = async(req,res)=>{
-    try{
-        userDetails = req.session.userNC
-        return res.render('user/otpValidation',{type : "", message : "" , userDetails})
-    }catch(error){
-        return res.redirect('/errorPage')
-    }
-}
-
-
 // For resending the otp
 const resendOtp = async(req,res)=>{
     try{
@@ -964,7 +953,6 @@ module.exports = {
     postRegister,
     postRegisterOtp,
     postLogin,
-    getotppage,
     resendOtp,
     getUserProfile,
     postUserUpdatedInfo,
