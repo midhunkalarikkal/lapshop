@@ -159,6 +159,11 @@ const postRegisterOtp = async (req, res) => {
             if(!userEmail && !userPhone){
                 const userData = await user.save()
                 if(userData){
+                    enteredFullname = ''
+                    enteredEmail = ''
+                    enteredPhone = ''
+                    enteredPassword = ''
+                    enteredReferal = ''
                     return res.render('user/login',{type : "success" , message : "Registration has been successfull.", userDetails})
                 }else{
                     return res.render('user/registration',{type : "danger" , message : "Registration has been failed.", userDetails})
