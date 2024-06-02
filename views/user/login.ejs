@@ -1,105 +1,104 @@
-    <!-- User navbar -->
-    <%-include("../userpartials/navbar.ejs")%>
+<!-- User navbar -->
+<%-include("../userpartials/navbar.ejs")%>
 
-        <head>
-            <!-- custom user login page css -->
-            <link rel='stylesheet' href='/static/css/user_login_register.css' type="text/css" />
-        </head>
+<head>
+    <!-- custom user login page css -->
+    <link rel='stylesheet' href='/static/css/user_login_register.css' type="text/css" />
+</head>
 
-        <div id="screen-size"></div>
+<div id="screen-size"></div>
 
-        <section class="view">
-            <div class="container input-box">
-                <div class="form-box col-12 col-md-6 col-lg-4">
-                    <header class="my-4 fs-4 title text-center">Sign In</header>
-                    <form action="/login" method="post" id="loginForm">
-                        <div class="input-field" id="email-input">
-                            <input type="email" class="input" id="email" name="email" required oninput="validateEmail()">
-                            <label for="email">Email</label>
-                            <span id="emailError" class="input-error" style="color: #f82b50;"></span>
-                        </div>
-                        <div class="input-field">
-                            <input type="password" class="input" id="password" name="password" required>
-                            <label for="password">Password</label>
-                        </div>
-                        <div class="d-flex flex-row my-2 justify-content-between" style="width: 90%;">
-                            <div class="left d-flex align-items-center mx-3">
-                                <input type="checkbox" id="showPasswordCheckbox" onchange="showpassword()">
-                                <label for="showPasswordCheckbox" class="showpassword mx-1">Show password</label>
-                            </div>
-                        </div>
-                        <p class="text-center"><a class="text-center fp" href="/forgotPassword">Forgot password</a></p>
-                        <div class="input-field">
-                            <button type="submit" class="btn" id="submit">Sign in</button>
-                        </div>
-                    </form>
-                    <div class="signin mb-2">
-                        <span>New to LapShop ?,<a href="/register">Sign Up</a></span>
-                        <% if(message){ %>
-                            <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
-                                style="padding: 5px; font-size: 14px;">
-                                <strong>
-                                    <%= message %>
-                                </strong>
-                            </div>
-                        <% } %>
+<section class="view">
+    <div class="container input-box">
+        <div class="form-box col-12 col-md-6 col-lg-4">
+            <header class="my-4 fs-4 title text-center">Sign In</header>
+            <form action="/login" method="post" id="loginForm">
+                <div class="input-field" id="email-input">
+                    <input type="email" class="input" id="email" name="email" required oninput="validateEmail()">
+                    <label for="email">Email</label>
+                    <span id="emailError" class="input-error" style="color: #f82b50;"></span>
+                </div>
+                <div class="input-field">
+                    <input type="password" class="input" id="password" name="password" required>
+                    <label for="password">Password</label>
+                </div>
+                <div class="d-flex flex-row my-2 justify-content-between" style="width: 90%;">
+                    <div class="left d-flex align-items-center mx-3">
+                        <input type="checkbox" id="showPasswordCheckbox" onchange="showpassword()">
+                        <label for="showPasswordCheckbox" class="showpassword mx-1">Show password</label>
                     </div>
                 </div>
+                <p class="text-center"><a class="text-center fp" href="/forgotPassword">Forgot password</a></p>
+                <div class="input-field">
+                    <button type="submit" class="btn" id="submit">Sign in</button>
+                </div>
+            </form>
+            <div class="signin mb-2">
+                <span>New to LapShop ?,<a href="/register">Sign Up</a></span>
+                <% if(message){ %>
+                    <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
+                        <strong>
+                            <%= message %>
+                        </strong>
+                    </div>
+                <% } %>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
 
-        <script>
+<script>
             
-            ////// To validate the email \\\\\\
-            function validateEmail() {
-                var emailInput = document.getElementById("email");
-                var email = emailInput.value;
-                var emailRegex = /^[^\s@]+@gmail\.com$/;
-                if (!email) {
-                    emailInput.classList.remove("invalid-email");
-                    document.getElementById('emailError').innerText = "";
-                    document.getElementById('email-input').classList.remove('mb-3');
-                    return false;
-                }
-                if (!emailRegex.test(email)) {
-                    emailInput.classList.add("invalid-email");
-                    document.getElementById('emailError').innerText = "Invalid email"
-                    document.getElementById('email-input').classList.add('mb-3');
-                    return false;
-                }else {
-                    emailInput.classList.remove("invalid-email");
-                    document.getElementById('emailError').innerText = ""
-                    document.getElementById('email-input').classList.remove('mb-3');
-                    return true;
-                }
-            }
-
-            ////// Alert script \\\\\\
-            var alertElement = document.getElementById('myAlert');
-            if (alertElement) {
-                function hideAlert(){
-                    alertElement.style.transition = "opacity 1s";
-                    alertElement.style.opacity = "0";
-                    setTimeout(function () {
-                        alertElement.style.display = "none";
-                    }, 1000);
-                }
-                setTimeout(hideAlert, 3000);
-            }
-            
-            ////// For showing the password \\\\\\
-            function showpassword() {
-            var checkbox = document.getElementById("showPasswordCheckbox");
-            var passwordInput = document.getElementById("password");
-            
-            if (checkbox.checked) {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
+    ////// To validate the email \\\\\\
+    function validateEmail() {
+        var emailInput = document.getElementById("email");
+        var email = emailInput.value;
+        var emailRegex = /^[^\s@]+@gmail\.com$/;
+        if (!email) {
+            emailInput.classList.remove("invalid-email");
+            document.getElementById('emailError').innerText = "";
+            document.getElementById('email-input').classList.remove('mb-3');
+            return false;
         }
+        if (!emailRegex.test(email)) {
+            emailInput.classList.add("invalid-email");
+            document.getElementById('emailError').innerText = "Invalid email"
+            document.getElementById('email-input').classList.add('mb-3');
+            return false;
+        }else {
+            emailInput.classList.remove("invalid-email");
+            document.getElementById('emailError').innerText = ""
+                document.getElementById('email-input').classList.remove('mb-3');
+            return true;
+        }
+    }
+
+    ////// Alert script \\\\\\
+    var alertElement = document.getElementById('myAlert');
+    if (alertElement) {
+        function hideAlert(){
+            alertElement.style.transition = "opacity 1s";
+            alertElement.style.opacity = "0";
+            setTimeout(function () {
+                alertElement.style.display = "none";
+            }, 1000);
+        }
+        setTimeout(hideAlert, 3000);
+    }
+            
+    ////// For showing the password \\\\\\
+    function showpassword() {
+        var checkbox = document.getElementById("showPasswordCheckbox");
+        var passwordInput = document.getElementById("password");
+            
+        if (checkbox.checked) {
+            passwordInput.type = "text";
+        } else {
+            passwordInput.type = "password";
+        }
+    }
 
     </script>
 
-        <!-- User footer -->
-        <%-include("../userpartials/footer.ejs")%>
+<!-- User footer -->
+<%-include("../userpartials/footer.ejs")%>
