@@ -5,7 +5,7 @@ const isLoggedIn = async (req, res, next) => {
         if (req.session && req.session.user) {
             next();
         } else {
-            const message = "Your account is blocked, Please contact us"
+            const message = "Session expired, please login"
             const type = "danger"
             res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`);
         }
