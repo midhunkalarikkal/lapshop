@@ -62,6 +62,12 @@ p,
     --fourth-color: #f82b50;
     --fifth-color: #38ed77;
     --sixth-color: #e4e4e4;
+    --offerprice-color: #22a751;
+    --realprice-color: #3c3c3c;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
 #screen-size {
@@ -103,7 +109,15 @@ p,
 
 .nav-item a:hover {
     color: var(--primary-color);
-    background-color: var(--third-color);
+}
+
+.dropdown-menu{
+    background-image: var(--btn-color);
+}
+
+.dropdown-menu .dropdown-item:hover{
+    color: var(--third-color);
+    background-image: var(--btnHover-color);
 }
 
 .search-input {
