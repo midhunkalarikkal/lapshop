@@ -18,7 +18,9 @@ const path = require('path')
 const fs = require('fs')
 
 //for storing otp
-let saveOtp;
+let registerOtp;
+let cpOtp;
+let fpOtp;
 let enteredFullname;
 let enteredEmail;
 let enteredPhone;
@@ -87,11 +89,10 @@ const sendOtpMail = async(email,otp,subject,message)=>{
 const postRegister = async (req, res) => {
     try {
         let userDetails = req.session.userNC
-        const otp = generateOtp()
-        saveOtp = otp;
-        
+        registerOtp = generateOtp()
+
         function clearSaveOtp() {
-            saveOtp = ""; 
+            registerOtp = ""; 
         }
         setTimeout(clearSaveOtp, 180000);
 
@@ -106,7 +107,7 @@ const postRegister = async (req, res) => {
         if (!userEmail){
             const subject = "Your OTP for Registration at LapShop Ecommerce";
             const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
-            sendOtpMail(enteredEmail ,otp ,subject , message);
+            sendOtpMail(enteredEmail ,registerOtp ,subject , message);
             return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
         } else {
             return res.render('user/registration', { type: "danger", message: "Email already registered.", userDetails})
@@ -129,7 +130,7 @@ const postRegisterOtp = async (req, res) => {
         const otp6 = enteredOtp.otp6;
         const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         
-        if(concatenatedOTP === saveOtp){
+        if(concatenatedOTP === registerOtp){
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
             const referalCode = await generateReferralCode(enteredFullname , enteredPhone)
 
@@ -331,14 +332,16 @@ const getRegister = async (req, res) => {
 // For resending the otp
 const resendOtp = async(req,res)=>{
     try{
-        const otp = generateOtp()
-        saveOtp = otp;
-        sendOtpMail(enteredEmail,otp);
+        registerOtp = generateOtp()
         
         function clearSaveOtp() {
-            saveOtp = ""; 
+            registerOtp = ""; 
         }
-        setTimeout(clearSaveOtp, 30000);
+        setTimeout(clearSaveOtp, 180000);
+
+        const subject = "Your OTP for Registration at LapShop Ecommerce";
+        const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
+        sendOtpMail(enteredEmail, registerOtp, subject, message);
 
         res.status(200).send('OTP resent successfully');
     }catch(error){
@@ -666,15 +669,16 @@ const postUpdateUserAddress = async (req, res) => {
 const postOtpForChangePass = async (req, res) => {
     try {
         const { email } = req.body;
-        const otp = generateOtp();
-        saveOtp = otp;
+        cpOtp = generateOtp();
 
         function clearSaveOtp() {
-            saveOtp = "";
+            cpOtp = "";
         }
         setTimeout(clearSaveOtp, 30000);
 
-        sendOtpMail(email, saveOtp);
+        const subject = "Your OTP for updating your password at LapShop Ecommerce";
+        const message = "Thank you for choosing LapShop Ecommerce. To update your password, please use the following One Time Password (OTP):"
+        sendOtpMail(email, cpOtp, subject, message);
 
         return res.status(200).json({ message: "OTP sent successfully" });
     } catch (error) {
@@ -686,7 +690,7 @@ const postOtpForChangePass = async (req, res) => {
 const checkOtpForChangePass = async(req,res)=>{
     try{
         const enteredOtp = req.body.otp
-        if (enteredOtp === saveOtp) {
+        if (enteredOtp === cpOtp) {
             return res.status(200).json({ message: "OTP matched" });
         } else {
             return res.status(400).json({ message: "Incorrect OTP" });
@@ -736,15 +740,16 @@ const postForgotPasswordEmail = async(req,res)=>{
         if(!user){
             return res.status(400).json({ message : "Email is not registered" })
         }else{
-            const otp = generateOtp();
-            saveOtp = otp;
+            const fpOtp = generateOtp();
 
             function clearSaveOtp() {
-                saveOtp = "";
+                fpOtp = "";
             }
             setTimeout(clearSaveOtp, 30000);
 
-            sendOtpMail(email, saveOtp);
+            const subject = "Your OTP for changing password at LapShop Ecommerce";
+            const message = "Thank you for choosing LapShop Ecommerce. To change your password, please use the following One Time Password (OTP):"
+            sendOtpMail(email, fpOtp, subject, message);
 
             return res.status(200).json({ message: "OTP has been sent to your email." });
         }
@@ -760,7 +765,7 @@ const postForgotPasswordOtp = async(req,res)=>{
         if(!enteredOtp){
             return res.status(400).json({ message : "Otp sending error"})
         }else{
-            if(enteredOtp === saveOtp){
+            if(enteredOtp === fpOtp){
                 return res.status(200).json({ message : "Otp is verified" })
             }else{
                 return res.status(400).json({ message : "Invalid Otp" })
