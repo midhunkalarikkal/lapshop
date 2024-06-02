@@ -125,17 +125,7 @@ const postRegister = async (req, res) => {
 // Verifying the otp and saving the user in db
 const postRegisterOtp = async (req, res) => {
     try {
-        let userDetails = req.session.userNC
         const enteredOtp = req.body.otp
-        console.log("req.body : ",req.body)
-        console.log("register otp : ",registerOtp)
-        // const otp1 = enteredOtp.otp;
-        // const otp2 = enteredOtp.otp2;
-        // const otp3 = enteredOtp.otp3;
-        // const otp4 = enteredOtp.otp4;
-        // const otp5 = enteredOtp.otp5;
-        // const otp6 = enteredOtp.otp6;
-        // const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         
         if(enteredOtp == registerOtp){
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
@@ -167,17 +157,11 @@ const postRegisterOtp = async (req, res) => {
                 enteredPhone = ''
                 enteredReferal = ''
                 enteredPassword = ''
-                // return res.render('user/login',{type : "success" , message : "Registration has been successfull.", userDetails})
-                console.log("here 1")
                 return res.status(200).json({ success : true , message : "Registration has been successfull." })
             }else{
-                // return res.render('user/registration',{type : "danger" , message : "Registration has been failed.", userDetails})
-                console.log("here 2")
                 return res.status(400).json({ success : false , message : "Registration has been failed."})
             }
         }else{
-            // return res.render("user/otpValidation",{type : "danger" , message : "Invalid OTP", userDetails});
-            console.log("here 3")
             return res.status(400).json({ success : false , message : "Invalid otp." , invalidOtp : true })
         } 
     } catch (error) {
