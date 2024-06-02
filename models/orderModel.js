@@ -2,6 +2,10 @@ const mongoose = require('mongoose')
 const Address = require('../models/addressModel')
 
 const orderSchema = new mongoose.Schema({
+    orderId: {
+        type: String,
+        required: true
+    },
     userId : {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',

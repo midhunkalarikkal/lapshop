@@ -7,7 +7,23 @@ const path = require('path')
 const fs = require('fs')
 const moment = require("moment")
 const easyinvoice = require('easyinvoice')
+const Counter = require('../models/counterModel');
 
+//To generate an unique sequential order id
+const generateOrderId = async () => {
+    const currentDate = new Date();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const year = String(currentDate.getFullYear()).slice(-2);
+
+    const counter = await Counter.findByIdAndUpdate(
+        { _id: 'orderId' },
+        { $inc: { seq: 1 } },
+        { new: true, upsert: true }
+    );
+
+    const orderId = `ORD-${month}${year}-${counter.seq}`;
+    return orderId;
+};
 
 // To place an order from user
 const placeOrder = async(req,res)=>{
@@ -23,7 +39,6 @@ const placeOrder = async(req,res)=>{
         let couponApplied = false
 
         const cart = await Cart.find({ userId : userId})
-        let cartIdToUpdate = cart[0]._id
 
         if(couponCode && couponCode !== ""){
             couponApplied = true
@@ -50,7 +65,9 @@ const placeOrder = async(req,res)=>{
             }
         }
 
+        const orderId = await generateOrderId();
         const newOrder = new Order({
+            orderId : orderId,
             userId : userId,
             orderedItems: cart[0].items.map(item => ({
                 product: item.product,
