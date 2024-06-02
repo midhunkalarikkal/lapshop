@@ -48,7 +48,7 @@ const generateOtp = () => {
 }
 
 //Send otp through email
-const sendOtpMail = async(email,otp)=>{
+const sendOtpMail = async(email,otp,subject,message)=>{
     try {
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -63,8 +63,14 @@ const sendOtpMail = async(email,otp)=>{
         const mailOptions= {
             from: 'lapshopotp@gmail.com',
             to: email,
-            subject: "OTP for register in LapShop Ecommerce",
-            html:'<p>Hi, Your One Time Password to Login is '+ otp +'</p>'
+            subject: subject,
+            html: `
+                <p>Dear Valued Customer,</p>
+                <p>${message}</p>
+                <p><strong>${otp}</strong></p>
+                <p>This OTP is valid for the next 3 minutes. Please do not share this OTP with anyone for security reasons.</p>
+                <p>If you did not request this OTP, please ignore this email or contact our support team immediately.</p>
+                <p>Best regards,<br>The LapShop Team</p>`
         }
 
         transporter.sendMail(mailOptions,function(error,info){
@@ -87,7 +93,7 @@ const postRegister = async (req, res) => {
         function clearSaveOtp() {
             saveOtp = ""; 
         }
-        setTimeout(clearSaveOtp, 30000);
+        setTimeout(clearSaveOtp, 180000);
 
         enteredFullname = req.body.fullname;
         enteredEmail = req.body.email;
@@ -98,7 +104,9 @@ const postRegister = async (req, res) => {
         const userEmail =  await User.findOne({email:enteredEmail}); 
 
         if (!userEmail){
-            sendOtpMail(enteredEmail,otp);
+            const subject = "Your OTP for Registration at LapShop Ecommerce";
+            const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
+            sendOtpMail(enteredEmail ,otp ,subject , message);
             return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
         } else {
             return res.render('user/registration', { type: "danger", message: "Email already registered.", userDetails})
@@ -159,8 +167,7 @@ const postRegisterOtp = async (req, res) => {
             }   
         }else{
             return res.render("user/otpValidation",{type : "danger" , message : "Invalid OTP", userDetails});
-        }
-        
+        } 
     } catch (error) {
         return res.redirect('/errorPage')
     }
