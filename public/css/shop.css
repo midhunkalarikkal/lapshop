@@ -8,7 +8,8 @@
     --sixth-color: #e4e4e4;
     --offerprice-color: #22a751;
     --realprice-color: #3c3c3c;
-    --discount-color: #be2626;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
 }
 
 /*======> Filter menu <======*/
@@ -66,7 +67,8 @@
 }
 
 .badge{
-    background-color: var(--primary-color);
+    background-color: var(--badgeBg-color);
+    color: var(--offerprice-color);
 }
 
 .offer-price{
@@ -86,22 +88,14 @@
 }
 
 .card-footer{
-    background-color: var(--sixth-color);
-    border: 2px solid var(--primary-color);
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    margin: 3px;
+    color: var(--secondary-color);
 }
 
-.card-footer a{
-    color: var(--third-color);
-}
-
-.card-footer i{
-    color: var(--primary-color);
-}
 .card-footer:hover{
-    background-color: var(--primary-color);
-    a , i{
-        color: var(--secondary-color);
-    }
+    border: 3px solid var(--primary-color);
 }
 
 /*======> Both default and filter pagination <======*/
@@ -111,8 +105,9 @@
 }
 
 .active>.page-link{
-    color: var(--third-color);
-    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
     border-color: var(--primary-color);
 }
 
@@ -122,4 +117,17 @@
 
 .page-link:hover{
     color: black;
+}
+
+.sideBarBox{
+    color: var(--secondary-color);
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    border-radius: 10px;
+}
+
+.sideBarHead{
+    background-color: var(--secondary-color);
+    color: var(--realprice-color);
+    border-radius: 10px;
 }
