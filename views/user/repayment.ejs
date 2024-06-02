@@ -154,6 +154,18 @@
             let subTotal = document.getElementById('subTotal').innerText;
             let orderId = document.getElementById("orderId").value
 
+            if (subTotal == 0) {
+                Swal.fire({
+                    icon: 'info',
+                    title: "Empty cart",
+                    text: "Your cart is empty!",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+                return false;
+            }
+
             const data = {
                 paymentMethod: paymentMethod,
                 totalAmount: subTotal,
@@ -193,21 +205,19 @@
                             prefill: {
                                 name: "" + data.name + "",
                                 email: "" + data.email + "",
-                                contact: "9000090000",
+                                contact : "" + data.phone + ""
                             },
                             notes: {
                                 address: "Razorpay Corporate Office",
                             },
                             theme: {
-                                color: "#ffc107",
+                                color: "#50c878",
                             },
                         };
                         var rzp1 = new Razorpay(options);
-                        rzp1.on("payment.failed", function (response) {
-                            setTimeout(()=>{
-                                let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
-                                window.location.href = redirectUrl;
-                            },3000)
+                        rzp1.on("payment.failed", function (response) {    
+                            let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+                            window.location.href = redirectUrl;
                         });
                         rzp1.open();
                     } else {

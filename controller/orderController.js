@@ -90,7 +90,7 @@ const placeOrder = async(req,res)=>{
 const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
     try{
         const paymentAmount = req.body.paymentAmount
-        const userId = req.session.user._id
+        const phone = req.session.user.phone
         const name = req.session.user.fullname;
         const email = req.session.user.email;
         const walletBalance = req.body.walletBalance
@@ -112,6 +112,7 @@ const orderConfirmWithWalletAndRazorpay = async(req,res)=>{
                 key_id: process.env.KEY_ID,
                 name: name,
                 email: email,
+                phone: phone
                 });
             } else {
                 return res.status(400).send({ success: false, message: "Something went wrong!" });
@@ -132,6 +133,7 @@ const orderConfirmation = async(req,res)=>{
         if (paymentMethod === "razorpay") {
             const name = req.session.user.fullname;
             const email = req.session.user.email;
+            const phone = req.session.user.phone;
             const options = {
             amount: amount * 100,
             currency: "INR",
@@ -147,6 +149,7 @@ const orderConfirmation = async(req,res)=>{
                 key_id: process.env.KEY_ID,
                 name: name,
                 email: email,
+                phone: phone
                 });
             } else {
                 res.status(400).send({ success: false, message: "Something went wrong!" });
@@ -466,6 +469,7 @@ const repaymentOrderConfirm = async(req,res)=>{
         if (paymentMethod === "razorpay" || paymentMethod === "wallet with razorpay") {
             const name = req.session.user.fullname;
             const email = req.session.user.email;
+            const phone = req.session.user.phone
             const options = {
             amount: amount * 100,
             currency: "INR",
@@ -482,6 +486,7 @@ const repaymentOrderConfirm = async(req,res)=>{
                 key_id: process.env.KEY_ID,
                 name: name,
                 email: email,
+                phone: phone
                 });
             } else {
                 res.status(400).send({ success: false, message: "Something went wrong! in repayment" });

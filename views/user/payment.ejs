@@ -313,6 +313,18 @@
         const subTotal = document.getElementById('subTotal').innerText;
         const coupon = cancelCouponInput.value ? cancelCouponInput.value : ""
 
+        if (subTotal == 0) {
+            Swal.fire({
+                icon: 'info',
+                title: "Empty cart",
+                text: "Your cart is empty!",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+            return false;
+        }
+
         if (paymentMethod === "cod" && subTotal > 1000) {
             Swal.fire({
                 icon: 'info',
@@ -364,21 +376,19 @@
                         prefill: {
                             name: "" + data.name + "", 
                             email: "" + data.email + "",
-                            contact: "9000090000", 
+                            contact : "" + data.phone + ""
                             },
                             notes: {
                                 address: "Razorpay Corporate Office",
                             },
                             theme: {
-                                color: "#ffc107",
+                                color: "#50c878",
                             },
                     };
                     var rzp1 = new Razorpay(options);
                     rzp1.on("payment.failed", function (response) {
-                        setTimeout(()=>{
-                            let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=false&coupon=${coupon}`;
-                            window.location.href = redirectUrl;
-                        }, 3000)
+                        let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=false&coupon=${coupon}`;
+                        window.location.href = redirectUrl;        
                     });
                     rzp1.open();
                 } else if (paymentMethod === "cod") {
@@ -473,13 +483,13 @@
                                                     prefill: {
                                                         name: "" + data.name + "", 
                                                         email: "" + data.email + "",
-                                                        contact: "9000090000", 
+                                                        contact: "" + data.phone + "" 
                                                         },
                                                         notes: {
                                                             address: "Razorpay Corporate Office",
                                                         },
                                                         theme: {
-                                                            color: "#ffc107",
+                                                            color: "#50c878",
                                                         },
                                                 };
                                                 var rzp1 = new Razorpay(options);
