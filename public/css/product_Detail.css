@@ -1,14 +1,17 @@
 /*======> Root colour <======*/
 :root {
     --primary-color: #50c878;
-    --btnhover-color: #55c96e;
     --secondary-color: #f0ffff;
     --third-color: #1b1b1b;
     --fourth-color: #f82b50;
     --fifth-color: #38ed77;
     --sixth-color: #e4e4e4;
     --offerprice-color: #22a751;
-    --realprice-color: #be2626;
+    --realprice-color: #3c3c3c;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
 /*======> Very small devices <======*/
@@ -322,22 +325,20 @@
 
 /*======> Product detail view buttons <======*/
 .goToCart-btn{
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
+    background-image: var(--btn-color)
 }
 
 .addtocart-btn{
-    background-color: var(--primary-color);
-    color: var(--secondary-color);
+    background-image: var(--btn-color)
 }
 
 /*======> Product detail view buttons <======*/
 .goToCart-btn:hover{
-    background-color: var(--btnhover-color);
+    background-image: var(--btnHover-color)
 }
 
 .addtocart-btn:hover{
-    background-color: var(--btnhover-color);
+    background-image: var(--btnHover-color)
 }
 
 /*======> Class real price <======*/
@@ -352,7 +353,7 @@
 
 /*======> Class discount percentage <======*/
 .discount-perc {
-    color: var(--realprice-color);
+    color: var(--discount-color);
     font-weight: normal;
 }
 
@@ -399,4 +400,9 @@
 /*======> product image <======*/
 .product-image .first { 
     position: relative; 
+}
+
+/*======> same category products <======*/
+.small-card{
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
 }

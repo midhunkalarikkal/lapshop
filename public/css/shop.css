@@ -10,6 +10,8 @@
     --realprice-color: #3c3c3c;
     --discount-color: #d73131;
     --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
 /*======> Filter menu <======*/
@@ -35,6 +37,10 @@
 /*======> Side filter <======*/
 
 /*======> Product <======*/
+.card{
+    border: 0;
+}
+
 .product-outline{
     text-decoration: none;
 }
@@ -88,46 +94,39 @@
 }
 
 .card-footer{
-    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
-    background-blend-mode: multiply;
+    background-image: var(--btn-color);
     margin: 3px;
-    color: var(--secondary-color);
+    border:  2px solid white;
 }
 
 .card-footer:hover{
-    border: 3px solid var(--primary-color);
+    background-image: var(--btnHover-color);
+    border:  2px solid white;
 }
 
 /*======> Both default and filter pagination <======*/
 .pagination .page-link{
     border-radius: 10px;
     border: 0;
+    color: var(--third-color);
 }
 
 .active>.page-link{
-    color: var(--secondary-color);
-    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
-    background-blend-mode: multiply;
-    border-color: var(--primary-color);
+    background-image: var(--btnHover-color);
 }
 
 .page-link{
-    color: black;
+    background-image: var(--btn-color);
 }
 
-.page-link:hover{
-    color: black;
-}
 
 .sideBarBox{
-    color: var(--secondary-color);
-    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
-    background-blend-mode: multiply;
+    background-image: var(--btn-color);
+    color: var(--third-color);
     border-radius: 10px;
 }
 
 .sideBarHead{
-    background-color: var(--secondary-color);
-    color: var(--realprice-color);
+    color: var(--third-color);
     border-radius: 10px;
 }

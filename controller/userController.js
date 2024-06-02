@@ -410,7 +410,7 @@ const postUserProfileImage = async(req,res)=>{
 //To get the shop page
 const getUserShop = async(req,res)=>{
     try{
-        const productData = await Product.find({ $and : [ { isBlocked : false},{ noOfStock : { $gt : 0} } ] });
+        const productData = await Product.find({ $and : [ { isBlocked : false},{ noOfStock : { $gt : 0} } ] }).populate("brand")
         const totalProducts = await Product.countDocuments({ isBlocked: false }); 
         const adCarousel = await AdCarousel.find({ isBlocked: false });
         const category = await Category.find({ isBlocked : false})

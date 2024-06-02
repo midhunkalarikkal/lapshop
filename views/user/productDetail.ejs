@@ -52,12 +52,12 @@
                             <%= productData.description %>
                         </h6>
                         <div class="d-flex align-items-end my-lg-auto">
-                            <h5 class="discount-perc">
+                            <h4 class="offer-price">
+                                ₹<%= productData.offerPrice %>
+                            </h4>
+                            <h4 class="discount-perc mx-3">
                                 -<%= productData.discountPercentage %>%
                                 <span class="off small">Off</span>
-                            </h5>
-                            <h4 class="offer-price mx-3">
-                                ₹<%= productData.offerPrice %>
                             </h4>
                         </div>
                         <h6 class="text-muted">
@@ -82,7 +82,7 @@
                                     </span>
                                 <% }else{ %>
                                     <span class="mx-3 text-success">
-                                        <%= productData.noOfStock %>
+                                        in stock
                                     </span>
                                 <% } %>
                             </p>
@@ -132,25 +132,23 @@
         </div>
 
         <div class="container-fluid py-5 mt-5">
-            <div class="text-center mb-4">
-                <h2 class="section-title px-5"><span class="px-2">Same category products</span></h2>
+            <div class="mb-4">
+                <h3 class="section-title px-5"><span class="px-2">Same category products</span></h3>
             </div>
-            <section class="bg-light mt-2" id="sectiontwo">
+            <section class="mt-2" id="sectiontwo">
                 <div class="col-12">
                     <div class="scroll-container">
                         <div class="d-flex overflow-auto p-2">
                             <% if(sameCategoryProduct !="" ){ %>
                                 <% sameCategoryProduct.forEach((product , index)=>{ %>
                                     <a href="/productDetail/<%= product._id %>" class="product-outline">
-                                        <div class="box-two mx-2 text-center border-0" style="flex: 0 0 auto;">
-                                            <div class="img">
+                                        <div class="box-two mx-2 text-center border-0 small-card" style="flex: 0 0 auto;">
+                                            <div class="img p-1">
                                                 <img src="/static/images/ProductImages/<%= product.images[0] %>"
                                                     alt="No image">
                                             </div>
                                             <div class="name">
-                                                <h5>
-                                                    <%= product.name %>
-                                                </h5>
+                                                <h5><%= product.name %></h5>
                                             </div>
                                             <div class="offer">
                                                 <h6>Min <%= product.discountPercentage %> off</h6>
@@ -230,17 +228,6 @@
                         });
                     }
                 })
-                .catch(error => {
-                    console.log("error :", error)
-                    Swal.fire({
-                        title: "Error",
-                        text: "Internal server error.",
-                        icon: "error",
-                        timer: 2000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
-                });
             }
 
             ////// function to show the selected image \\\\\\
