@@ -439,7 +439,7 @@ const generateInvoice = async (orderId) => {
                 country: order.address.country,
             },
             information: {
-                ID: order._id,
+                ID: order.orderId,
                 date: moment(order.date).format("YYYY-MM-DD HH:mm:ss"),
             },
             products: orderedItems,

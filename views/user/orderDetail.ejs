@@ -19,7 +19,7 @@
                             <% for(let i = 0; i < order.length; i++){ %>
                                 <div class="details d-md-flex flex-row mt-3 border">
                                     <div class="left d-flex flex-column p-3 col-md-8">
-                                        <span class="product-price "><span class="heads">Order id :</span> <%= order[i]._id.toString().slice(-6)  %></span>
+                                        <span class="product-price "><span class="heads">Order# :</span> <%= order[i].orderId  %></span>
                                         <span class="product-price "><span class="heads">Order date :</span> <%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
                                         <%
                                             const orderDate = new Date(order[i].orderDate);
