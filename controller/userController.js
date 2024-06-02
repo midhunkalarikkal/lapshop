@@ -849,7 +849,6 @@ const getUserNewAddressFromCheckout = async(req,res)=>{
 // To get the payment page
 const getPaymentPage = async(req,res)=>{
     try{
-        const currentDate = new Date();
         const addressId = req.params.selectedAddressId
         let userAddress = await Address.find({ _id : addressId})
         let userId = req.session.user._id
@@ -915,6 +914,7 @@ const getUserEditAddressFromCheckout = async(req,res)=>{
     }
 }
 
+//To update the address from checkout page
 const updateAddressFromCheckout = async(req,res)=>{
     try{
         const addressId = req.params.addressId
@@ -945,6 +945,7 @@ const updateAddressFromCheckout = async(req,res)=>{
     }
 }
 
+//To get the error page
 const getErrorPage = async(req,res)=>{
     try{
         return res.render('user/errorPage')
@@ -952,7 +953,6 @@ const getErrorPage = async(req,res)=>{
         console.log(error.message)
     }
 }
-
 
 module.exports = {
     getHome,

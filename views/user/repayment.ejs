@@ -204,8 +204,10 @@
                         };
                         var rzp1 = new Razorpay(options);
                         rzp1.on("payment.failed", function (response) {
-                            let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
-                            window.location.href = redirectUrl;
+                            setTimeout(()=>{
+                                let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+                                window.location.href = redirectUrl;
+                            },3000)
                         });
                         rzp1.open();
                     } else {
