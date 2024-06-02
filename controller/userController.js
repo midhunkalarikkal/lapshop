@@ -103,12 +103,17 @@ const postRegister = async (req, res) => {
         enteredReferal = req.body.referalCode
 
         const userEmail =  await User.findOne({email:enteredEmail}); 
+        const userPhone = await User.findOne({phone : enteredPhone})
 
         if (!userEmail){
-            const subject = "Your OTP for Registration at LapShop Ecommerce";
-            const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
-            sendOtpMail(enteredEmail ,registerOtp ,subject , message);
-            return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
+            if(!userPhone){
+                const subject = "Your OTP for Registration at LapShop Ecommerce";
+                const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
+                sendOtpMail(enteredEmail ,registerOtp ,subject , message);
+                return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
+            }else{
+                return res.render('user/registration', { type: "danger", message: "Phone number already registered.", userDetails})                
+            }
         } else {
             return res.render('user/registration', { type: "danger", message: "Email already registered.", userDetails})
         }
@@ -121,16 +126,18 @@ const postRegister = async (req, res) => {
 const postRegisterOtp = async (req, res) => {
     try {
         let userDetails = req.session.userNC
-        const enteredOtp = req.body
-        const otp1 = enteredOtp.otp;
-        const otp2 = enteredOtp.otp2;
-        const otp3 = enteredOtp.otp3;
-        const otp4 = enteredOtp.otp4;
-        const otp5 = enteredOtp.otp5;
-        const otp6 = enteredOtp.otp6;
-        const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
+        const enteredOtp = req.body.otp
+        console.log("req.body : ",req.body)
+        console.log("register otp : ",registerOtp)
+        // const otp1 = enteredOtp.otp;
+        // const otp2 = enteredOtp.otp2;
+        // const otp3 = enteredOtp.otp3;
+        // const otp4 = enteredOtp.otp4;
+        // const otp5 = enteredOtp.otp5;
+        // const otp6 = enteredOtp.otp6;
+        // const concatenatedOTP = otp1 + otp2 + otp3 + otp4 + otp5 + otp6;
         
-        if(concatenatedOTP === registerOtp){
+        if(enteredOtp == registerOtp){
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
             const referalCode = await generateReferralCode(enteredFullname , enteredPhone)
 
@@ -153,26 +160,25 @@ const postRegisterOtp = async (req, res) => {
                 await walletOne.save();
             }
 
-            const userEmail = await User.findOne({email : enteredEmail})
-            const userPhone = await User.findOne({phone : enteredPhone})
-
-            if(!userEmail && !userPhone){
-                const userData = await user.save()
-                if(userData){
-                    enteredFullname = ''
-                    enteredEmail = ''
-                    enteredPhone = ''
-                    enteredPassword = ''
-                    enteredReferal = ''
-                    return res.render('user/login',{type : "success" , message : "Registration has been successfull.", userDetails})
-                }else{
-                    return res.render('user/registration',{type : "danger" , message : "Registration has been failed.", userDetails})
-                }
+            const userData = await user.save()
+            if(userData){
+                enteredFullname = ''
+                enteredEmail = ''
+                enteredPhone = ''
+                enteredReferal = ''
+                enteredPassword = ''
+                // return res.render('user/login',{type : "success" , message : "Registration has been successfull.", userDetails})
+                console.log("here 1")
+                return res.status(200).json({ success : true , message : "Registration has been successfull." })
             }else{
-                return res.render('user/registration',{type : "danger" , message : "User already exist.", userDetails})
-            }   
+                // return res.render('user/registration',{type : "danger" , message : "Registration has been failed.", userDetails})
+                console.log("here 2")
+                return res.status(400).json({ success : false , message : "Registration has been failed."})
+            }
         }else{
-            return res.render("user/otpValidation",{type : "danger" , message : "Invalid OTP", userDetails});
+            // return res.render("user/otpValidation",{type : "danger" , message : "Invalid OTP", userDetails});
+            console.log("here 3")
+            return res.status(400).json({ success : false , message : "Invalid otp." , invalidOtp : true })
         } 
     } catch (error) {
         return res.redirect('/errorPage')
