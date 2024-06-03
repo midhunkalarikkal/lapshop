@@ -111,7 +111,8 @@
                                 <div class="button mt-3">
                                     <p class="text-danger">Sorry, there is no refund policy available as of now.</p>
                                     <input type="hidden" id="orderId" value="<%= order._id %>">
-                                    <button class="btn btn-warning w-100" id="goToPayment">Re pay</button>
+                                    <button class="btn btn-warning w-100 d-none d-md-block" id="goToPayment">Re pay</button>
+                                    <button class="btn btn-warning w-100 btn-sm d-block d-md-none" id="goToPayment">Re pay</button>
                                 </div>
                             </div>
                         </div>

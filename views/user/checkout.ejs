@@ -107,7 +107,7 @@
                             <div class="subtotal mt-4 shadow d-flex flex-column p-3">
                                 <div class="head text-center">
                                     <h4 class="">Order summary</h4>
-                                    <p class="text-success">Part of your our website lauching all deliveries are free now.</p>
+                                    <p class="text-success">Part of our website lauching all deliveries are free now.</p>
                                 </div>
                                 <hr>
                                 <div class="details">
@@ -115,7 +115,8 @@
                                     <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
                                 </div>
                                 <div class="button mt-3">
-                                    <button class="btn btn-warning w-100" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn btn-warning w-100 d-none d-md-block" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn btn-warning w-100 btn-sm d-block d-md-none" id="goToPayment">Proceed to Payment</button>
                                 </div>
                             </div>
                         </div>
