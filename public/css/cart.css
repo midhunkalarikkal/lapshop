@@ -1,20 +1,43 @@
+:root {
+    --primary-color: #50c878;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
+    --offerprice-color: #22a751;
+    --realprice-color: #3c3c3c;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+}
+
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
     .product-img {
         width: 100%;
     }
 
-    .product-text span {
+    .product-brand , .product-name , .head p{
+        font-size: 14px;
+    }
+
+    .product-desc , .product-stock , .item-added-date{
         font-size: 12px;
     }
 
-    .add-to-cart-btn {
-        width: 5rem;
-        font-size: 12px;
+    .product-offerPrice {
+        font-size: 14px;
+        font-weight: 600;
     }
 
-    .delete-btn {
-        font-size: 12px;
+    .details h6{
+        font-size: 14px;
+    }
+    
+    .details h5{
+        font-size: 18px;
     }
 }
 
@@ -24,8 +47,25 @@
         width: 100%;
     }
 
-    .product-text span {
-        font-size: 14px;
+    .product-brand , .product-name , .head p{
+        font-size: 15px;
+    }
+
+    .product-desc , .product-stock , .item-added-date{
+        font-size: 13px;
+    }
+
+    .product-offerPrice {
+        font-size: 15px;
+        font-weight: 600;
+    }
+
+    .details h6{
+        font-size: 15px;
+    }
+    
+    .details h5{
+        font-size: 20px;
     }
 }
 
@@ -33,6 +73,32 @@
 @media (min-width: 768px) and (max-width: 991px) {
     .product-img {
         width: 60%;
+    }
+
+    .product-brand , .product-name 
+    {
+        font-size: 17px;
+    }
+
+    .head p{
+        font-size: 14px;
+    }
+
+    .product-desc , .product-stock , .item-added-date{
+        font-size: 14px;
+    }
+
+    .product-offerPrice {
+        font-size: 16px;
+        font-weight: 600;
+    }
+
+    .details h6{
+        font-size: 15px;
+    }
+    
+    .details h5{
+        font-size: 20px;
     }
 }
 
@@ -83,4 +149,16 @@
 .product-card-each,
 .subtotal {
     border-radius: 10px;
+}
+
+.proceed-btn , .quantity-btn{
+    background-image: var(--btn-color);
+}
+
+.proceed-btn{
+    border: 1px solid var(--third-color);
+}
+
+.proceed-btn:hover , .quantity-btn:hover{
+    background-image: var(--btnHover-color);
 }

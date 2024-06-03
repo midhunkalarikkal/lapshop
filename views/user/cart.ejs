@@ -43,12 +43,12 @@
                                             </span>
                                             <br>
                                             <% if(product.product.noOfStock < 5){ %>
-                                                <span class="product-lowStock text-danger">Only few left!</span>
+                                                <span class="product-stock text-danger">Only few left!</span>
                                             <% }else{ %>
                                                 <span class="product-stock">In stock</span>
                                             <% } %>
                                             <br>
-                                            <span>Item added to your cart on <span class="item-added-date"></span><%= product.addedAt.toDateString() %></span></span> 
+                                            <span class="item-added-date">Item added to your cart on <span class="item-added-date"></span><%= product.addedAt.toDateString() %></span></span> 
                                         </p>
                                         <div class="buttons mb-3 d-flex">
                                             <div class="quantity-input">
@@ -87,8 +87,8 @@
                                         <h5>Subtotal : <span class="subtotal"> ₹ <%= cart[0].totalCartPrice %></span></h5>   
                                     </div>
                                     <div class="button mt-3">
-                                        <button onclick="goToCheckout(event)" class="btn btn-warning w-100 d-none d-md-block">Proceed to Buy</button>
-                                        <button onclick="goToCheckout(event)" class="btn btn-warning w-100 btn-sm d-block d-md-none">Proceed to Buy</button>
+                                        <button onclick="goToCheckout(event)" class="btn proceed-btn w-100 d-none d-md-block">Proceed to Buy</button>
+                                        <button onclick="goToCheckout(event)" class="btn proceed-btn w-100 btn-sm d-block d-md-none">Proceed to Buy</button>
                                     </div>
                                 </div>
                             </div>
