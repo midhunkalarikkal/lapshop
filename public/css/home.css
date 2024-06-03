@@ -17,16 +17,17 @@ p,
 /*======> Root colour <======*/
 :root {
   --primary-color: #50c878;
-  --btnhover-color: #55c96e;
-  --secondary-color: #f0ffff;
-  --third-color: #1b1b1b;
-  --outline-color: #989898;
-  --fourth-color: #f82b50;
-  --fifth-color: #38ed77;
-  --sixth-color: #e4e4e4;
-  --offerprice-color: #22a751;
-  --realprice-color: #be2626;
-  --couponbg: #d4d454;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
+    --offerprice-color: #22a751;
+    --realprice-color: #3c3c3c;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
 /*======> Home carousel shop button <======*/
@@ -135,6 +136,36 @@ p,
 }
 
   /* Best offer css end */
+
+  /* Coupon start */
+
+  .coupon-head{
+    font-size: 10px;
+  }
+  
+  .coupon-amount {
+    font-size: 16px;
+  }
+  
+  .coupon-p{
+    font-size: 7px;
+  }
+  
+  .coupon-code{
+    font-size: 10px;
+    width: 100%;
+  }
+  
+  .coupon-button{
+    font-size: 10px;
+    width: 100%;
+  }
+  
+  #countdown{
+    font-size: 7px;
+  }
+  /* Coupon end */
+
 }
 
 /*======> Samll devices <======*/
@@ -212,6 +243,35 @@ p,
 }
 
   /* Best offer css end */
+
+    /* Coupon start */
+
+    .coupon-head{
+      font-size: 12px;
+    }
+    
+    .coupon-amount {
+      font-size: 18px;
+    }
+    
+    .coupon-p{
+      font-size: 9px;
+    }
+    
+    .coupon-code{
+      font-size: 10px;
+      width: 100%;
+    }
+    
+    .coupon-button{
+      font-size: 10px;
+      width: 100%;
+    }
+    
+    #countdown{
+      font-size: 9px;
+    }
+    /* Coupon end */
 }
 
 /*======> Medium devices <======*/
@@ -282,6 +342,35 @@ p,
     font-size: 18px;
 }
   /* Best offer css end */
+
+    /* Coupon start */
+
+    .coupon-head{
+      font-size: 14px;
+    }
+    
+    .coupon-amount {
+      font-size: 18px;
+    }
+    
+    .coupon-p{
+      font-size: 10px;
+    }
+    
+    .coupon-code{
+      font-size: 14px;
+      width: 100%;
+    }
+    
+    .coupon-button{
+      font-size: 14px;
+      width: 100%;
+    }
+    
+    #countdown{
+      font-size: 10px;
+    }
+    /* Coupon end */
   
 }
 
@@ -353,6 +442,35 @@ p,
 }
 
   /* Best offer css end */
+
+  /* Coupon start */
+
+  .coupon-head{
+    font-size: 16px;
+  }
+  
+  .coupon-amount {
+    font-size: 20px;
+  }
+  
+  .coupon-p{
+    font-size: 12px;
+  }
+  
+  .coupon-code{
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  .coupon-button{
+    font-size: 14px;
+    width: 100%;
+  }
+  
+  #countdown{
+    font-size: 12px;
+  }
+  /* Coupon end */
 }
 
 /*======> Extra Large devices <======*/
@@ -428,15 +546,8 @@ p,
 
 /*======> Parallax two start <======*/
 
-.parallax-two {
-  background: url('../images/HomeCarousels/1709548071821-Add\ wall\ 1.jpg') no-repeat;
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-}
-
 .coupon-card{
-  background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  background-image: linear-gradient(60deg, #abecd6 0%, #fbed96 100%);
   border-radius: 10px;
 }
 
@@ -463,14 +574,15 @@ p,
 }
 
 .coupon-code{
-  background-image: linear-gradient(to right, #243949 0%, #517fa4 100%);
   border: 0;
   font-weight: 600;
-  color: var(--secondary-color);
+  color: var(--third-color);
+  border: dashed;
 }
 
 .coupon-button{
-  background-image: linear-gradient(60deg, #29323c 0%, #485563 100%);
+  background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+ background-blend-mode: multiply;
   border: 0;
   color: var(--secondary-color);
 }
@@ -544,4 +656,3 @@ p,
   color: var(--secondary-color);
 }
 /*======> Category cards end <======*/
-

@@ -84,7 +84,7 @@
                                 <i class="fa-solid fa-cart-shopping fs-5"></i>
                                 <% if(userDetails){ %>
                                     <% if(userDetails.cartItemCount > 0){ %>
-                                        <span class="position-absolute top-5 start-100 translate-middle badge rounded-pill bg-danger">
+                                        <span class="position-absolute top-5 start-md-100 translate-middle badge text-white rounded-pill bg-danger" id="cart-item-count">
                                             <%= userDetails.cartItemCount %>
                                         </span>
                                     <% } %>

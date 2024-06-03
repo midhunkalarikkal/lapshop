@@ -11,29 +11,29 @@
     <div class="container input-box col-8 col-md-6 col-lg-12">
         <div class="form-box">
             <header class="my-4 fs-4 title text-center">Enter OTP</header>
-            <form action="/otpverify" method="post">
+            <form>
                 <div class="d-flex">
                     <div class="input-field">
-                        <input type="text" class="input" id="otp" name="otp" required>
+                        <input type="text" class="input otp-input" id="otp" name="otp" required>
                     </div>
                     <div class="input-field">
-                        <input type="text" class="input" id="otp" name="otp2" required>
+                        <input type="text" class="input otp-input" id="otp" name="otp2" required>
                     </div>
                     <div class="input-field">
-                        <input type="text" class="input" id="otp" name="otp3" required>
+                        <input type="text" class="input otp-input" id="otp" name="otp3" required>
                     </div>
                     <div class="input-field">
-                        <input type="text" class="input" id="otp" name="otp4" required>
+                        <input type="text" class="input otp-input" id="otp" name="otp4" required>
                     </div>
                     <div class="input-field">
-                        <input type="text" class="input" id="otp" name="otp5" required>
+                        <input type="text" class="input otp-input" id="otp" name="otp5" required>
                     </div>
                     <div class="input-field">
-                        <input type="text" class="input" id="otp" name="otp6" required>
+                        <input type="text" class="input otp-input" id="otp" name="otp6" required>
                     </div>
                 </div>
                 <div class="input-field">
-                    <button type="submit" class="btn" id="submit">Verify otp</button>
+                    <button class="btn" id="submit">Verify otp</button>
                 </div>
             </form>
             <div class="signin mb-2">
@@ -49,135 +49,194 @@
     </div>
 </section>
 
+<!-- script for sweet alert -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <script>
 
     ////// Attach input event listener to each input field \\\\\\
     const otpInputs = document.querySelectorAll('.input');
     otpInputs.forEach((input, index) => {
         input.addEventListener('input', (event) => {
-        if (event.target.value.length === 1 && index < otpInputs.length - 1) {
-            otpInputs[index + 1].focus();
-        }
-    });
+            if (event.target.value.length === 1 && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            }
+        });
 
-    ////// Prevent pasting into input fields \\\\\\
-    input.addEventListener('paste', (event) => {
-        event.preventDefault();
-        const clipboardData = event.clipboardData || window.clipboardData;
-        const pastedText = clipboardData.getData('text');
-        const pastedChars = pastedText.split('');
-        pastedChars.forEach((char, i) => {
-            if (index + i < otpInputs.length && otpInputs[index + i].value.length === 0) {
-                otpInputs[index + i].value = char;
-                if (index + i < otpInputs.length - 1) {
-                    otpInputs[index + i + 1].focus();
+        ////// Prevent pasting into input fields \\\\\\
+        input.addEventListener('paste', (event) => {
+            event.preventDefault();
+            const clipboardData = event.clipboardData || window.clipboardData;
+            const pastedText = clipboardData.getData('text');
+            const pastedChars = pastedText.split('');
+            pastedChars.forEach((char, i) => {
+                if (index + i < otpInputs.length && otpInputs[index + i].value.length === 0) {
+                    otpInputs[index + i].value = char;
+                    if (index + i < otpInputs.length - 1) {
+                        otpInputs[index + i + 1].focus();
+                    }
                 }
+            });
+        });
+
+        ////// Arrow key navigation \\\\\\
+        input.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowRight' && index < otpInputs.length - 1) {
+                otpInputs[index + 1].focus();
+            } else if (event.key === 'ArrowLeft') {
+                event.preventDefault();
+                if (index > 0) {
+                    otpInputs[index - 1].focus();
+                    otpInputs[index - 1].setSelectionRange(otpInputs[index - 1].value.length, otpInputs[index - 1].value.length); // Set cursor position to end of value
+                }
+            } else if (event.key.length === 1 && otpInputs[index].value.length > 0) {
+                event.preventDefault();
             }
         });
     });
 
-    ////// Arrow key navigation \\\\\\
-    input.addEventListener('keydown', (event) => {
-        if (event.key === 'ArrowRight' && index < otpInputs.length - 1) {
-            otpInputs[index + 1].focus();
-        } else if (event.key === 'ArrowLeft') {
-            event.preventDefault();
-            if (index > 0) {
-                otpInputs[index - 1].focus();
-                otpInputs[index - 1].setSelectionRange(otpInputs[index - 1].value.length, otpInputs[index - 1].value.length); // Set cursor position to end of value
-            }
-        } else if (event.key.length === 1 && otpInputs[index].value.length > 0) {
-            event.preventDefault();
-        }
-    });
-});
-
-////// For the alert \\\\\\
-var alertElement = document.getElementById('myAlert');
-function hideAlert() {
-    alertElement.style.transition = "opacity 1s";
-    alertElement.style.opacity = "0";
-    setTimeout(function () {
-        alertElement.style.display = "none";
-    }, 1000);
-}
-setTimeout(hideAlert, 3000);
-
-////// Funtion to display the timer \\\\\\
-let timerRunning = true;
-
-function startTimer() {
-    const resendOtpSpan = document.getElementById('resendOtp');
-    const otpViewSpan = document.getElementById('otpView');
-    const verifyOtpBtn = document.getElementById('submit');
-
-    resendOtpSpan.style.display = 'none';
-    otpViewSpan.innerHTML = 'Timer: 00:30'; 
-
-    let secondsLeft = 30; 
-
-    const countdown = setInterval(() => {
-        secondsLeft--; 
-        const minutes = Math.floor(secondsLeft / 60);
-        const seconds = secondsLeft % 60;
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(seconds).padStart(2, '0');
-
-        if (secondsLeft <= 0) {
-            clearInterval(countdown); 
-            resendOtpSpan.style.display = 'inline';
-            otpViewSpan.innerHTML = '';
-            timerRunning = false;
-            verifyOtpBtn.disabled = true;
-        } else {
-            otpViewSpan.innerHTML = 'Timer: ' + formattedMinutes + ':' + formattedSeconds;
-        }
-    }, 1000); 
-}
-startTimer();
-
-////// Fetch for the resend otp \\\\\\
-function sendotp(){
-    const verifyOtpBtn = document.getElementById('submit')
-    verifyOtpBtn.disabled = false
-    if (!timerRunning) {
-        startTimer();
+    ////// For the alert \\\\\\
+    var alertElement = document.getElementById('myAlert');
+    function hideAlert() {
+        alertElement.style.transition = "opacity 1s";
+        alertElement.style.opacity = "0";
+        setTimeout(function () {
+            alertElement.style.display = "none";
+        }, 1000);
     }
-    fetch('/resendotp', {
-        method: 'POST',
-    })
-    .then(response => {
-        if (response.ok) {
-            Swal.fire({
-                icon: 'success',
-                title: 'OTP Sent',
-                text: 'Your OTP has been resent successfully!',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        } else {
+    setTimeout(hideAlert, 3000);
+
+    ////// Funtion to display the timer \\\\\\
+    let timerRunning = true;
+
+    function startTimer() {
+        const resendOtpSpan = document.getElementById('resendOtp');
+        const otpViewSpan = document.getElementById('otpView');
+        const verifyOtpBtn = document.getElementById('submit');
+
+        resendOtpSpan.style.display = 'none';
+        otpViewSpan.innerHTML = 'Timer: 00:30'; 
+
+        let secondsLeft = 180; 
+
+        const countdown = setInterval(() => {
+            secondsLeft--; 
+            const minutes = Math.floor(secondsLeft / 60);
+            const seconds = secondsLeft % 60;
+            const formattedMinutes = String(minutes).padStart(2, '0');
+            const formattedSeconds = String(seconds).padStart(2, '0');
+
+            if (secondsLeft <= 0) {
+                clearInterval(countdown); 
+                resendOtpSpan.style.display = 'inline';
+                otpViewSpan.innerHTML = '';
+                timerRunning = false;
+                verifyOtpBtn.disabled = true;
+            } else {
+                otpViewSpan.innerHTML = 'Timer: ' + formattedMinutes + ':' + formattedSeconds;
+            }
+        }, 1000); 
+    }
+    startTimer();
+
+    ////// Fetch for the resend otp \\\\\\
+    function sendotp(){
+        const verifyOtpBtn = document.getElementById('submit')
+        verifyOtpBtn.disabled = false
+        if (!timerRunning) {
+            startTimer();
+        }
+        fetch('/resendotp', {
+            method: 'POST',
+        })
+        .then(response => {
+            if (response.ok) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'OTP Sent',
+                    text: 'Your OTP has been resent successfully!',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Failed to resend OTP',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+        })
+        .catch(error => {
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: 'Failed to resend OTP',
+                text: 'An error occurred while resending OTP',
                 timer: 3000,
                 timerProgressBar: true,
                 showConfirmButton: false
             });
-        }
-    })
-    .catch(error => {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'An error occurred while resending OTP',
-            timer: 3000,
-            timerProgressBar: true,
-            showConfirmButton: false
         });
-    });
-}
+    }
+
+    ////// function to submit the otp form \\\\\\
+    document.getElementById("submit").addEventListener("click",function(e){
+        e.preventDefault()
+
+        const otpInputs = document.querySelectorAll('.otp-input');
+        let otp = '';
+        otpInputs.forEach(input => otp += input.value);
+        console.log("otp : ",otp)
+
+        fetch('/otpverify',{
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ otp : otp})
+        })
+        .then(response => {
+            return response.json(); 
+        })
+        .then(response => {
+            if(response.success){
+                Swal.fire({
+                    title: "Success",
+                    text: response.message,
+                    icon: "success",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(()=>{
+                    window.location.href = '/login'
+                })
+            } else if(response.invalidOtp){
+                Swal.fire({
+                    title: "Info",
+                    text: response.message,
+                    icon: "info",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                })
+            } else{
+                Swal.fire({
+                    title: "Info",
+                    text: response.message,
+                    icon: "info",
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                })
+                .then(()=>{
+                    window.location.href = '/register'
+                })
+            }
+        })
+    })  
+
 </script>
 
 <!-- User footer -->

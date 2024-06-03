@@ -189,6 +189,9 @@
         <%= JSON.stringify(timedOrders.dailyOrders) %>
     </div>
 
+    <!--  Script for sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
     <!-- Script for the chart js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -326,16 +329,37 @@
         });
 
         ////// Set date for sales report \\\\\\
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+
         $('#salesDateRange').daterangepicker({
             minSpan: {
-            days: 7
+                days: 7
             },
             maxSpan: {
-            days: 31
+                days: 31
             }
-        }, function(start, end, label) {
+        }, function(start, end) {
+            const startDate = start.toDate();
+            const endDate = end.toDate();
+
+            startDate.setHours(0, 0, 0, 0);
+            endDate.setHours(0, 0, 0, 0);
+
+            if (startDate > currentDate || endDate > currentDate) {
+                Swal.fire({
+                    icon: "info",
+                    title: "Invalid Date",
+                    text: "Please select a date that is less than or equal to today.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
+                });
+                return false;
+            }
+
             updateSalesReportByDate(start.format('YYYY-MM-DD'), end.format('YYYY-MM-DD'));
         });
+
 
         ////// update sales report \\\\\\
         function updateSalesReport(timePeriod) {
@@ -385,7 +409,7 @@
                         
                         row.innerHTML = `
                         <td>${order.userId.fullname}</td>
-                        <td>${order._id.slice(-6)}</td>
+                        <td>${order.orderId}</td>
                         <td>${moment(order.orderDate).format('DD-MM-YYYY HH:mm')}</td>
                         <td>${moment(order.statusDate).format('DD-MM-YYYY HH:mm')}</td>
                         
