@@ -18,6 +18,8 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
+    <link rel='stylesheet' href='/static/css/checkout.css' type="text/css" />    
+
 </head>
 
 <body>
@@ -60,11 +62,9 @@
                                                 <h6 class="mx-2 mt-2">
                                                     <%= address.name %>
                                                 </h6>
-                                                <button class="btn btn-primary btn-sm border-0 text-primary"
-                                                    id="edit-address" data-adId="<%= address._id %>"
-                                                    style="background-color: #00000000;">
-                                                    <i class="fa-regular fa-pen-to-square text-primary"></i>
-                                                    Edit
+                                                <button class="btn btn-sm"
+                                                    id="edit-address" data-adId="<%= address._id %>"> 
+                                                    <i class="fa-regular fa-pen-to-square"></i>
                                                 </button>
                                             </div>
                                             <div class="col-12 address text-muted">
@@ -82,18 +82,18 @@
                                     <% }); %>
                                 <% } %>
                                 <div class="address-btn">
-                                    <button class="mx-3 border-0 text-primary"
-                                        style="background-color: #f1f1f100;" id="add-address">
-                                        <i class="fa-solid fa-plus text-primary"></i>
+                                    <button class="mx-3 btn btn-secondary btn-sm"
+                                        id="add-address">
+                                        <i class="fa-solid fa-plus"></i>
                                         Add new address
                                     </button>
                                 </div>
                                 <div class="extra-btns my-3">
-                                    <button class="btn btn-primary btn-sm"
+                                    <button class="btn extra-btn btn-sm"
                                         onclick="goToShop(event)">
-                                        Continue shopping
+                                        Back to shop
                                     </button>
-                                    <button class="btn btn-primary btn-sm"
+                                    <button class="btn extra-btn btn-sm"
                                         onclick="goToCart(event)">
                                         Review cart
                                     </button>
@@ -115,8 +115,8 @@
                                     <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
                                 </div>
                                 <div class="button mt-3">
-                                    <button class="btn btn-warning w-100 d-none d-md-block" id="goToPayment">Proceed to Payment</button>
-                                    <button class="btn btn-warning w-100 btn-sm d-block d-md-none" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn extra-btn w-100 d-none d-md-block" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn extra-btn w-100 btn-sm d-block d-md-none" id="goToPayment">Proceed to Payment</button>
                                 </div>
                             </div>
                         </div>

@@ -1,0 +1,18 @@
+:root{
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #c9cdcc 100%);
+    --btnHover-color: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+}
+
+.extra-btn{
+    background-image: var(--btn-color);
+    border: 1px solid black;
+}
+
+.extra-btn:hover{
+    background-image: var(--btnHover-color);
+}
+
+.product-card-each , .subtotal{
+    border-radius: 10px;
+}
+

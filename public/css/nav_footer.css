@@ -66,7 +66,7 @@ p,
     --realprice-color: #3c3c3c;
     --discount-color: #d73131;
     --badgeBg-color: #6eeaa468;
-    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #c9cdcc 100%);
     --btnHover-color: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
