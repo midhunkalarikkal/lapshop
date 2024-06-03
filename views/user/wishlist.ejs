@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="d-flex justify-content-between">
                         <h3>Your wishlist</h3>
-                        <button class="btn btn-warning btn-sm" onclick="gotoCart(event)">Go to cart</button>
+                        <button class="btn btn-secondary btn-sm" onclick="gotoCart(event)">Go to cart</button>
                     </div>
                     <% if(products !="" ){ %>
                         <table class="table mt-4 shadow">
@@ -60,7 +60,7 @@
                                             </td>
                                         <% } %>
                                         <td class="col-2">
-                                            <button class="btn btn-primary btn-sm mt-4"
+                                            <button class="btn btn-secondary btn-sm mt-4"
                                                 data-prod-id="<%= product._id %>"
                                                 onclick="addToCart(this)">Add to cart
                                             </button>
@@ -88,10 +88,11 @@
         <div class="product mt-5 d-block d-md-none">
             <div class="container">
                 <div class="row">
-                    <div class="d-flex justify-content-between">
+                    <div class="d-flex justify-content-between align-items-center">
                         <h3>Your wishlist</h3>
-                        <button class="btn btn-warning" onclick="gotoCart(event)">Go to cart</button>
+                        <button class="btn btn-secondary btn-sm" onclick="gotoCart(event)">Go to cart</button>
                     </div>
+                    <hr class="my-3">
                 </div>
                 <% if(products !="" ){ %>
                     <% products.forEach((product)=>{ %>
@@ -123,7 +124,7 @@
                                     </p>
                                 </div>
                                 <div class="buttons">
-                                    <button class="btn btn-primary btn-sm add-to-cart-btn"
+                                    <button class="btn btn-secondary btn-sm add-to-cart-btn"
                                         data-prod-id="<%= product._id %>" onclick="addToCart(this)">Add to cart</button>
                                     <button class="btn btn-danger btn-sm delete-btn" data-prod-id="<%= product._id %>"
                                         onclick="deleteProduct(this)"><i class="fa fa-trash"></i></button>

@@ -87,7 +87,7 @@
                                             </td>
                                             <td class="col-2 buttons">
                                                 <div class="d-flex flex-column align-items-center">
-                                                    <button class="btn btn-primary btn-sm mt-2" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
+                                                    <button class="btn btn-secondary btn-sm mt-2" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
                                                     <% if(order[i].status === "Delivered"){ %>
                                                         <button class="btn btn-danger btn-sm mt-2" id="prod-cancel" onclick="returnOrder(this)" data-orderId="<%= order[i]._id %>">Return</button>
                                                     <% }else if(order[i].status === "Processing" || order[i].status === "Shipped"){ %>
@@ -100,7 +100,7 @@
                                 </tbody>
                             </table>
                         <% }else{ %>
-                            <div class="alert alert-info text-center mt-4" role="alert">No order yet.</div>
+                            <div class="alert alert-info text-center mt-4" role="alert">No orders yet.</div>
                         <% } %>
                     </div>
                 </div>
@@ -148,7 +148,7 @@
                                             <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button>
                                         <% } %>
                                     </p>
-                                    <button class="btn btn-primary btn-sm" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
+                                    <button class="btn btn-secondary btn-sm" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
                                     <% if(order[i].status === "Delivered"){ %>
                                         <button class="btn btn-danger btn-sm" id="prod-cancel" onclick="returnOrder(this)" data-orderId="<%= order[i]._id %>">Return</button>
                                     <% }else if(order[i].status === "Processing" || order[i].status === "Shipped"){ %>
@@ -159,7 +159,7 @@
                         </div>
                     <% } %>
                 <% }else{ %>
-                    <div class="alert alert-info text-center mt-4" role="alert">No order yet.</div>
+                    <div class="alert alert-info text-center mt-4" role="alert">No orders yet.</div>
                 <% } %>
             </div>
         </div>

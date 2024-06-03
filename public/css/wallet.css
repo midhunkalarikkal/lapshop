@@ -1,3 +1,18 @@
+:root {
+    --primary-color: #50c878;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
+    --offerprice-color: #22a751;
+    --realprice-color: #3c3c3c;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+}
+
 .dataTables_wrapper .dataTables_length,
 .dataTables_wrapper .dataTables_filter  {
     display: none;
@@ -11,13 +26,6 @@
     float: left;
     text-align: left;
 }
-  
-  .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-  .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-    background-color: #007bff;
-    color: #fff;
-  }
-
 
   /*======> Very small devices <======*/
 @media (max-width: 576px) {
@@ -80,4 +88,20 @@
     .dataTables_wrapper .dataTables_paginate .paginate_button .page-link{
         font-size: 1rem;      
     }
+}
+
+.active>.page-link, .page-link.active {
+    background-color: #858585;
+    border-color: #858585;
+}
+
+.verified-icon{
+    color: var(--primary-color);
+}
+
+.user-wallet-info{
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
+    border-radius: 10px;
+    color: var(--secondary-color);
 }

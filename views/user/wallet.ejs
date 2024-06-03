@@ -14,10 +14,10 @@
                 <div class="row mb-3">
                     <% if(Array.isArray(wallet) && wallet.length > 0){ %>
                         <div class="col-md-4">
-                            <div class="mt-4 shadow d-flex flex-column p-3">
+                            <div class="mt-4 shadow d-flex flex-column p-3 user-wallet-info">
                                 <div class="user-info text-center mt-3">
                                     <h5><%= userDetails.userName %></h5>
-                                    <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check"></i></h6>
+                                    <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check verified-icon"></i></h6>
                                 </div>
                                 <hr>
                                 <div class="cred-deb d-flex flex-row justify-content-around">
@@ -43,9 +43,9 @@
                         </div>
 
                         <div class="col-md-8 mt-4 d-none d-md-block">
-                            <table class="table shadow table-striped">
+                            <table class="table shadow">
                                 <thead>
-                                    <tr class="table-dark">
+                                    <tr>
                                         <th class="col-2">Id</th>
                                         <th class="col-2">Type</th>
                                         <th class="col-2">Amount</th>
@@ -81,7 +81,7 @@
                                                 <h6 class="col-2"><%= data.updatedAt.toLocaleTimeString() %></h6>
                                             </td>
                                             <td>
-                                                <h6 class="col-2"><i class="fa-solid fa-circle-check"></i></h6>
+                                                <h6 class="col-2"><i class="fa-solid fa-circle-check verified-icon"></i></h6>
                                             </td>
                                         </tr>
                                     <% }) %>
@@ -90,9 +90,9 @@
                         </div>
 
                         <div class="col-md-8 mt-4 d-block d-md-none">
-                            <table class="table shadow table-striped">
+                            <table class="table shadow">
                                 <thead>
-                                    <tr class="table-dark">
+                                    <tr>
                                         <th class="col-4">Type</th>
                                         <th class="col-4">Amount</th>
                                         <th class="col-4">Date</th>

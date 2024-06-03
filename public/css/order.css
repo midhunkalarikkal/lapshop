@@ -65,3 +65,8 @@
     font-weight: 600;
 }
 
+.active>.page-link, .page-link.active {
+    background-color: #858585;
+    border-color: #858585;
+}
+
