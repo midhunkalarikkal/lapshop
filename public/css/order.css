@@ -1,7 +1,27 @@
+/*======> Root colours <======*/
+:root {
+    --primary-color: #50c878;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
+    --offerprice-color: #22a751;
+    --realprice-color: #3c3c3c;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
+}
+
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
     .product-text span {
         font-size: 12px;
+    }
+
+    .product-price{
+        font-size: 10px;
     }
 }
 
@@ -9,6 +29,10 @@
 @media (min-width: 576px) and (max-width: 767px) {
     .product-text span {
         font-size: 14px;
+    }
+
+    .product-price{
+        font-size: 12px;
     }
 }
 
@@ -40,3 +64,4 @@
 .heads{
     font-weight: 600;
 }
+

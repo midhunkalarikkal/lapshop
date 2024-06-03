@@ -139,10 +139,6 @@ p,
     color: var(--third-color);
 }
 
-.fa-solid {
-    color: var(--primary-color);
-}
-
 .navbar{
     position: fixed;
     width: 100%;
