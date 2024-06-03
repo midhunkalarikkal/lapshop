@@ -16,32 +16,39 @@ p,
 
 
 :root {
-  --primary-color: #50c878;
-  --secondary-color: #f0ffff;
-  --third-color: #1b1b1b;
-  --fourth-color: #f82b50;
-  --fifth-color: #38ed77;
-  --sixth-color: #e4e4e4;
+    --primary-color: #50c878;
+    --secondary-color: #f0ffff;
+    --third-color: #1b1b1b;
+    --fourth-color: #f82b50;
+    --fifth-color: #38ed77;
+    --sixth-color: #e4e4e4;
+    --offerprice-color: #22a751;
+    --realprice-color: #3c3c3c;
+    --discount-color: #d73131;
+    --badgeBg-color: #6eeaa468;
+    --btn-color: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    --btnHover-color: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
 }
 
 /*======> Profile left side <======*/
 .gradient-custom {
-    background: var(--primary-color);
+    background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
+    background-blend-mode: multiply;
 }
 
 .extra-btn{
-    background-color: var(--secondary-color);
+    background-image: var(--btn-color);
     border-radius: 5px;
 }
 
 .extra-btn:hover{
-    background-color: var(--third-color);
+    background-image: var(--btnHover-color);
     a,i{
-        color: var(--secondary-color);
+        color: var(--third-color);
     }
 }
  
-.extra-btn a{
+a{
     text-decoration: none;
     color: #1b1b1b;
 }
@@ -50,6 +57,19 @@ p,
     color: var(--third-color);
 }
 
-.card{
-    border: 1px solid var(--primary-color);
+.card-body{
+    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+}
+
+.btn{
+    background-image: var(--btn-color);
+    border: 1px solid var(--third-color);
+}
+
+.btn:hover{
+    background-image: var(--btnHover-color);
+}
+
+.btn-text{
+    color: var(--third-color);
 }

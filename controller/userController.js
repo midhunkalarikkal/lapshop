@@ -249,52 +249,49 @@ const getHome = async (req, res) => {
         const coupon = await Coupon.find({ isBlocked : false})
         const brands = await Brand.find({ isBlocked : false})
 
-        // edit
-        const bestSellingProducts = await Product.find()
-        // const bestSellingProducts = await Order.aggregate([
-        //     { 
-        //         $match: { status: "Delivered" }
-        //     },
-        //     {
-        //         $unwind: "$orderedItems"
-        //     },
-        //     {
-        //         $group: {
-        //             _id: "$orderedItems.product",
-        //             totalOrdered: { $sum: "$orderedItems.quantity" } 
-        //         }
-        //     },
-        //     {
-        //         $sort: { totalOrdered: -1 } 
-        //     },
-        //     {
-        //         $lookup: {
-        //             from: "products", 
-        //             localField: "_id",
-        //             foreignField: "_id",
-        //             as: "product" 
-        //         }
-        //     },
-        //     {
-        //         $unwind: "$product" 
-        //     },
-        //     {
-        //         $addFields: {
-        //             firstImage: { $arrayElemAt: ["$product.images", 0] }
-        //         }
-        //     },
-        //     {
-        //         $project: {
-        //             _id: "$product._id",
-        //             name: "$product.name",
-        //             discount: "$product.discountPercentage",
-        //             totalOrdered: "$totalOrdered",
-        //             imagePath: { $concat: ["/static/images/ProductImages/", "$firstImage"] }
-        //         }
-        //     }
-        // ])
+        const bestSellingProducts = await Order.aggregate([
+            { 
+                $match: { status: "Delivered" }
+            },
+            {
+                $unwind: "$orderedItems"
+            },
+            {
+                $group: {
+                    _id: "$orderedItems.product",
+                    totalOrdered: { $sum: "$orderedItems.quantity" } 
+                }
+            },
+            {
+                $sort: { totalOrdered: -1 } 
+            },
+            {
+                $lookup: {
+                    from: "products", 
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "product" 
+                }
+            },
+            {
+                $unwind: "$product" 
+            },
+            {
+                $addFields: {
+                    firstImage: { $arrayElemAt: ["$product.images", 0] }
+                }
+            },
+            {
+                $project: {
+                    _id: "$product._id",
+                    name: "$product.name",
+                    discount: "$product.discountPercentage",
+                    totalOrdered: "$totalOrdered",
+                    imagePath: { $concat: ["/static/images/ProductImages/", "$firstImage"] }
+                }
+            }
+        ])
 
-        
         let validCoupons = coupon
         let newValidCoupons = []
         let userDetails = req.session.userNC
