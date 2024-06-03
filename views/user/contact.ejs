@@ -1,0 +1,269 @@
+<!-- Admin navbar -->
+<%-include("../userpartials/navbar.ejs")%>
+
+    <head>
+        <!-- Css for the admin data edit form -->
+        <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
+    </head>
+        <section class="view">
+            <div class="container d-flex align-items-center justify-content-center">
+                <div class="main">
+                    <form action="" method="POST" id="submit-form">
+                        <div class="p-5">
+                            <h4 class=" fs-3 text-dark">Send your response to us</h4>
+                            <h6 class=" text-center text-success mb-2">www.lapshop.online</h6>
+                            <div class="input-box d-md-flex">
+                                <div class="col-12">
+                                    <div class="mb-3">
+                                        <label for="Name" class="form-label">Name</label>
+                                        <input type="text" class="form-control" name="name" id="name" required
+                                            oninput="validateName()">
+                                        <span id="nameError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" name="email" id="email" required
+                                            oninput="validateEmail()">
+                                        <span id="emailError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Phone" class="form-label">Phone</label>
+                                        <input type="text" class="form-control" name="phone" id="phone" required
+                                            oninput="validatePhone()">
+                                        <span id="phoneError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="Message" class="form-label">Message</label>
+                                        <textarea class="form-control" name="message" id="message" rows="2"
+                                            required oninput="validateMessage()"></textarea>
+                                        <span id="messageError" class="text-danger"></span>
+                                    </div>
+                                    <div class="mt-5 d-md-block d-none">
+                                        <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
+                                        <button type="submit" id="submitButton" class="btn btn-success"><i class="fa-regular fa-paper-plane"></i> Send</button>
+                                    </div>
+                                </div>
+                                <div class="mt-4 d-block d-md-none">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">Cancel</button>
+                                    <button type="submit" id="submitButton" class="btn btn-success btn-sm"><i class="fa-regular fa-paper-plane"></i> Send</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        <script>
+            ////// Validation function for name input \\\\\\
+            function validateName() {
+                const nameInput = document.getElementById('name');
+                const name = nameInput.value.trim();
+                const nameError = document.getElementById('nameError');
+
+                const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
+
+                if (name === "") {
+                    nameInput.classList.remove('is-invalid');
+                    nameError.textContent = '';
+                    return false;
+                }
+                if (!namePattern.test(name)) {
+                    nameInput.classList.add('is-invalid');
+                    nameError.textContent = 'Name must contain only alphabets and spaces.';
+                    return false;
+                } else if (name.length < 5 || name.length > 25) {
+                    nameInput.classList.add('is-invalid');
+                    nameError.textContent = 'Name must be between 5 and 25 characters long';
+                    return false;
+                } else {
+                    nameInput.classList.remove('is-invalid');
+                    nameError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for phone input \\\\\\
+            function validatePhone() {
+                const phoneInput = document.getElementById('phone');
+                const phone = phoneInput.value.trim();
+                const phoneError = document.getElementById('phoneError');
+
+                const phonePattern = /^\d{10}$/;
+
+                if (phone === "") {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneError.textContent = '';
+                    return false;
+                }
+                if (!phonePattern.test(phone)) {
+                    phoneInput.classList.add('is-invalid');
+                    phoneError.textContent = 'Phone number must contain only 10 digits';
+                    return false;
+                } else {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// To validate the email \\\\\\
+            function validateEmail() {
+                const emailInput = document.getElementById('email');
+                const email = emailInput.value.trim();
+                const emailError = document.getElementById('emailError');
+
+                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+                if (email === "") {
+                    emailInput.classList.remove('is-invalid');
+                    emailError.textContent = '';
+                    return false;
+                }
+                if (!emailPattern.test(email)) {
+                    emailInput.classList.add('is-invalid');
+                    emailError.textContent = 'Please enter a valid email address.';
+                    return false;
+                } else {
+                    emailInput.classList.remove('is-invalid');
+                    emailError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// To validate message \\\\\\
+            function validateMessage() {
+                const messageInput = document.getElementById('message');
+                const message = messageInput.value.trim();
+                const messageError = document.getElementById('messageError');
+
+                const minLength = 10;
+                const maxLength = 400;
+
+                if (message === "") {
+                    messageInput.classList.remove('is-invalid');
+                    messageError.textContent = '';
+                    return false;
+                }
+                if (message.length < minLength || message.length > maxLength) {
+                    messageInput.classList.add('is-invalid');
+                    messageError.textContent = `Message must be between ${minLength} and ${maxLength} characters long.`;
+                    return false;
+                } else {
+                    messageInput.classList.remove('is-invalid');
+                    messageError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// To submit the form \\\\\\
+            const infoDiv = document.getElementById("response-info");
+            $("#submit-form").submit((e)=>{
+            e.preventDefault()
+            $.ajax({
+                url:"https://script.google.com/macros/s/AKfycbyjxJBsYD7Tpcl7M-OLQbyFuzWU6HEoG5d6yopYkSgctwaBTryaDKh4im_UkTU6P9fmpA/exec",
+                data:$("#submit-form").serialize(),
+                method:"post",
+                success:function (response){
+                    swal.fire({
+                        icon: "success",
+                        title: "Response sended successfully",
+                        text: "Thak your for your response.",
+                        showConfirmButton: true,
+                        confirmButtonText: "Ok"
+                    })
+                    .then(()=>{
+                        window.location.href = '/shop'
+                    })
+                },
+                error:function (err){
+                    swal.fire({
+                        icon: "info",
+                        title: "Response sending failed.",
+                        text: response.message,
+                        showConfirmButton: true,
+                        confirmButtonText: "Ok"
+                    })
+                }
+            })
+        })
+
+
+
+
+            ////// To submit the form \\\\\\
+            // function validateForm() {
+            //     const isValidName = validateName();
+            //     const iValidEmail = validateEmail()
+            //     const isValidPhone = validatePhone();
+            //     const isValidMessage = validateMessage()
+
+            //     return isValidName && iValidEmail && isValidPhone && isValidMessage
+            // }
+
+            // document.getElementById('submitButton').addEventListener('click', async function (event) {
+            //     event.preventDefault();
+
+            //     if (validateForm()) {
+            //         const form = document.querySelector('form');
+            //         const formData = {
+            //             name: document.getElementById('name').value,
+            //             phone: document.getElementById('phone').value,
+            //             email: document.getElementById('email').value,
+            //             message: document.getElementById('message').value
+            //         };
+            //         console.log("formData : ",formData)
+            //         const response = await fetch('', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'Content-Type': 'application/json'
+            //             },
+            //             body: JSON.stringify(formData)
+            //         });
+            //         await response.json();
+            //         if (response) {
+            //             if(response.success){
+            //                 swal.fire({
+            //                     icon: "success",
+            //                     title: "Response sended successfully",
+            //                     text: response.message,
+            //                     showConfirmButton: true,
+            //                     confirmButtonText: "Ok"
+            //                 }).then(()=>{
+            //                     window.location.href = '/shop'
+            //                 })
+            //             }else{
+            //                 swal.fire({
+            //                     icon: "info",
+            //                     title: "Response sending failed.",
+            //                     text: response.message,
+            //                     showConfirmButton: true,
+            //                     confirmButtonText: "Ok"
+            //                 })
+            //             }
+            //         } else {
+            //             swal.fire({
+            //                     icon: "info",
+            //                     title: "Incorrect form data.",
+            //                     text: "Please check the form fields.",
+            //                     showConfirmButton: true,
+            //                     confirmButtonText: "Ok"
+            //                 })
+            //         }
+            //     } else {
+                    
+            //     }
+            // });
+
+            ////// Cancel button goBack function \\\\\\
+            function goBack() {
+                window.location.href = "/shop"
+            }
+            //https://script.google.com/macros/s/AKfycbyjxJBsYD7Tpcl7M-OLQbyFuzWU6HEoG5d6yopYkSgctwaBTryaDKh4im_UkTU6P9fmpA/exec
+
+        </script>
+
+        <!-- Admin footer -->
+        <%-include("../userpartials/footer.ejs")%>

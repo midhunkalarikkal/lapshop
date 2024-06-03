@@ -6,8 +6,8 @@
             <div class="container">
                 <div class="row d-flex justify-content-center">
                     <div class="col-md-8">    
-                        <div class="product-card-each mt-4 shadow p-5">
-                            <div class="head d-flex align-items-center justify-content-center">
+                        <div class="product-card-each mt-4 shadow p-5 mb-4">
+                            <div class="head d-flex flex-column flex-md-row align-items-center justify-content-center">
                                 <lord-icon
                                     src="https://cdn.lordicon.com/guqkthkk.json"
                                     trigger="in"
@@ -20,7 +20,7 @@
                             <div class="thankyounote">
                                 <p class="text-center">Thank you for your purchase from LapShop! Your order is confirmed. Happy shopping!</p>
                             </div>
-                            <div class="center d-flex">
+                            <div class="center d-flex flex-column flex-md-row">
                                 <div class="left col-md-6">
                                     <div class="Order details mt-4">
                                         <% if(data && data !== ""){ %>
@@ -50,7 +50,7 @@
                                     </lord-icon>
                                 </div>
                             </div>
-                            <div class="buttons d-flex mt-3">
+                            <div class="buttons d-flex mt-3 d-flex justify-content-center">
                                 <button onclick="goToShop()" class="btn btn-success" id="shopping">Continue shopping</button>
                                 <button onclick="goToOrder()" class="btn btn-success mx-3" id="orders">Review orders</button>
                             </div>

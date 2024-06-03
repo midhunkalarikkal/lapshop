@@ -75,11 +75,7 @@ const sendOtpMail = async(email,otp,subject,message)=>{
                 <p>Best regards,<br>The LapShop Team</p>`
         }
 
-        transporter.sendMail(mailOptions,function(error,info){
-            if(error){
-                return res.redirect('/errorPage')
-            }
-        })       
+        return transporter.sendMail(mailOptions)
     } catch (error) {
         return res.redirect('/errorPage')
     }
@@ -944,6 +940,61 @@ const updateAddressFromCheckout = async(req,res)=>{
     }
 }
 
+//To get the contact page
+const getContactPage = async(req,res)=>{
+    try{
+        let userDetails = req.session.userNC
+        return res.render('user/contact',{ userDetails })
+    }catch(error){
+        console.log("error : ",error)
+        return res.redirect('/errorPage')
+    }
+}
+
+// //To send the data from contact page
+// const postContactForm = async(req,res)=>{
+//     try{
+//         const { name , phone , email , message } = req.body
+//         if (!name || !phone || !email || !message) {
+//             return res.status(400).json({ success: false, message: "All fields are required." });
+//         }
+//         await sendContactForm(name,email,phone,message)
+//         return res.status(200).json({ success : true , message : "Thank you for your response." })
+//     }catch(error){
+//         return res.redirect('/errorPage')
+//     }
+// }
+
+// // To send the contct form data to admin email
+// const sendContactForm = async(name,email,phone,message)=>{
+//     try {
+//         const transporter = nodemailer.createTransport({
+//             service: "gmail",
+//                 host: "smtp.gmail.com",
+//                 port: 465,
+//                 secure: true,
+//                 auth: {
+//                     user: process.env.AUTH_EMAIL,
+//                     pass: process.env.AUTH_PASS,
+//                 },
+//         });
+//         const mailOptions= {
+//             from: `${email}`,
+//             to: "lapshopotp@gmail.com",
+//             subject: "Lapshop contact form response",
+//             html: `
+//                 <p>From : <strong>${name}</strong></p>
+//                 <p>Email : ${email}</p>
+//                 <p>Phone : ${phone}</p>
+//                 <p>Message : ${message}</p>`
+//         }
+
+//         return transporter.sendMail(mailOptions)       
+//     } catch (error) {
+//         return res.redirect('/errorPage')
+//     }
+//   }
+
 //To get the error page
 const getErrorPage = async(req,res)=>{
     try{
@@ -986,6 +1037,8 @@ module.exports = {
     updateAddressFromCheckout,
     getPaymentPage,
     getPaymentSuccess,
+    getContactPage,
+    // postContactForm,
     getErrorPage
 }
 

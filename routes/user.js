@@ -70,7 +70,8 @@ userRouter.get('/productDetail/:productId',userController.getProductDetail)
 userRouter.get('/shop',userController.getUserShop)
 //To get the categorizes products in shop page
 userRouter.post('/shopCategoryId',userController.getCatProduct)
-
+//To get the contact page
+userRouter.get('/contact',userController.getContactPage)
 
 //To get the wishlist page
 userRouter.get('/wishlist',userAuth.isLoggedIn,userAuth.isBlocked,wishlistController.getWishlistPage)
