@@ -92,7 +92,7 @@ p,
 }
 
 .navbar {
-    background-color: var(--third-color);
+    background-color: rgb(0, 0, 0);
 }
 
 .nav-item a {
@@ -159,18 +159,19 @@ p,
     caret-color: var(--secondary-color);
     color: var(--sixth-color);
 }
+
 /*======> Navbar end <======*/
 
 /*======> Footer start <======*/
 .footer-section h6 {
-    font-size: 13px;
+    font-size: 14px;
     margin-bottom: 10px;
     color: var(--sixth-color);
 }
 
 .footer-section p {
     margin-bottom: 1px;
-    font-size: 11px;
+    font-size: 13px;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--secondary-color);
 }
@@ -180,7 +181,7 @@ p,
 }
 
 #footer{
-    background-color: var(--third-color);
+    background-color: rgb(0, 0, 0);
 }
 
 #footer {
@@ -190,6 +191,21 @@ p,
     right: 0;
     z-index: 1000;
 }
+
+.footer-a{
+    text-decoration: none;
+    color: var(--secondary-color);
+}
+
+.logo-footer{
+    color: var(--secondary-color);
+}
+
+.copyright{
+    font-size: 18px;
+    color: #484848;
+}
+
 /*======> Footer end <======*/
 
 /*======> Very small devices <======*/
