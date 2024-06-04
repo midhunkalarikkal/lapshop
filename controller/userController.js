@@ -854,7 +854,7 @@ const getPaymentPage = async(req,res)=>{
         const userCart = cart[0]
         let coupon = await Coupon.find({isBlocked : false })
 
-        return res.render('user/payment' , {userAddress , userCart , coupon})
+        return res.render('user/payment' , {userAddress , userCart , coupon })
     }catch(error){
         return res.redirect('/errorPage')
     }

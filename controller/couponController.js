@@ -123,7 +123,6 @@ const applyCoupon = async (req, res) => {
         const userCouponCode = req.body.userCouponCode
         const coupon = await Coupon.findOne({ $and: [{ couponCode: userCouponCode }, { isBlocked: false }] })
         const cart = await Cart.find({ userId: userId })
-        const currentDate = new Date()
         const couponMinAmount = coupon ? coupon.minAmount : 0
 
         if (coupon) {
