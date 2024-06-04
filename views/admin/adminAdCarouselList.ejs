@@ -108,6 +108,8 @@
             formData.append('adCarouselName', adCarouselName);
             formData.append('adCarouselImage', adCarouselImage);
 
+            console.log("formData : ",formData)
+
             try {
                 const response = await fetch("/admin/addAdCarousel", {
                     method: "POST",
@@ -118,7 +120,7 @@
                 if (response.ok) {
                     const data = await response.json();
                     Swal.fire({
-                        icon: 'uccess',
+                        icon: 'success',
                         title: 'Success!',
                         text: data.message,
                         showConfirmButton: true,
