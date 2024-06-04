@@ -258,6 +258,7 @@
                 deleteButton.addEventListener('click', () => {
                     imageContainer.removeChild(figure);
                     imageArray = imageArray.filter(src => src !== imgSrc);
+                    maxCount--
                 });
 
                 figure.appendChild(deleteButton);
