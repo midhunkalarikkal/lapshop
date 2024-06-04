@@ -98,38 +98,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <% bsProds.forEach(product => { %>
-                                    <tr>
-                                      <td><%= product.name %></td>
-                                      <td><%= product.count %></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
-                                <% }) %>
-                            
-                                <% bsCats.forEach(category => { %>
-                                    <tr>
-                                      <td></td>
-                                      <td></td>
-                                      <td><%= category.category %></td>
-                                      <td><%= category.count %></td>
-                                      <td></td>
-                                      <td></td>
-                                    </tr>
-                                <% }) %>
-                            
-                                <% bsBrands.forEach(brand => { %>
-                                    <tr>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td></td>
-                                      <td><%= brand.brand %></td>
-                                      <td><%= brand.count %></td>
-                                    </tr>
-                                <% }) %>
+                                <tr>
+                                    <% bsProds.forEach(product => { %>
+                                          <td><%= product.name %></td>
+                                          <td><%= product.count %></td>
+                                    <% }) %>                    
+                                    <% bsCats.forEach(category => { %>
+                                          <td><%= category.category %></td>
+                                          <td><%= category.count %></td>     
+                                    <% }) %>
+                                    <% bsBrands.forEach(brand => { %>
+                                          <td><%= brand.brand %></td>
+                                          <td><%= brand.count %></td>
+                                    <% }) %>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
