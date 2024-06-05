@@ -70,7 +70,7 @@
                                     </td>
                                     <td class="">
                                         <button class="btn btn-primary btn-sm mt-3" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= orders[i]._id %>">Details</button>
-                                        <% if(orders[i].status !== "Delivered" && orders[i].status !== "Cancelled" && orders[i].status !== "Admin cancelled" && orders[i].status !== "Request return"){ %>
+                                        <% if(orders[i].status !== "Delivered" && orders[i].status !== "Cancelled" && orders[i].status !== "Admin cancelled" && orders[i].status !== "Request return" && orders[i].status !== "Return accepted" && orders[i].status !== "Return rejected"){ %>
                                             <button class="btn btn-danger btn-sm mt-3" id="prod-detail" onclick="cancelOrder(this)" data-orderId="<%= orders[i]._id %>">Cancel</button>
                                         <% } %>
                                     </td>
