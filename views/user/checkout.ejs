@@ -117,8 +117,8 @@
                                     <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
                                 </div>
                                 <div class="button mt-3">
-                                    <button class="btn extra-btn w-100 d-none d-md-block" id="goToPayment">Proceed to Payment</button>
-                                    <button class="btn extra-btn w-100 btn-sm d-block d-md-none" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn extra-btn w-100 d-none d-md-block goToPayment" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn extra-btn w-100 btn-sm d-block d-md-none goToPayment" id="goToPayment">Proceed to Payment</button>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,7 @@
         })
 
         ////// To go to payment \\\\\\
-        document.getElementById('goToPayment').addEventListener('click', async function (event) {
+        document.getElementByClassName('goToPayment').addEventListener('click', async function (event) {
             event.preventDefault()
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked')
             if (!selectedAddress) {
