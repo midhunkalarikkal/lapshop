@@ -117,8 +117,8 @@
                                     <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
                                 </div>
                                 <div class="button mt-3">
-                                    <button class="btn extra-btn w-100 d-none d-md-block goToPayment" id="goToPayment">Proceed to Payment</button>
-                                    <button class="btn extra-btn w-100 btn-sm d-block d-md-none goToPayment" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn extra-btn w-100 d-none d-md-block" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn extra-btn w-100 btn-sm d-block d-md-none" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
                                 </div>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                 <div class="col-12">
                     <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
                         <div class="d-flex flex-column align-items-center justify-content-center">
-                            <img src="/static/images/Bg/desktop/Lapshop logo.png" class="img-fluid w-25 h-25">
+                            <img src="/static/images/Bg/desktop/Lapshoplogo.png" class="img-fluid w-25 h-25">
                             <div class="text text-center">
                                 <h1>LapShop</h1>
                                 <h6>Discover Your Digital World with Us.</h6>
@@ -162,11 +162,11 @@
         })
 
         ////// To go to payment \\\\\\
-        document.getElementByClassName('goToPayment').addEventListener('click', async function (event) {
+        function goToPayment(event){
             event.preventDefault()
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked')
             if (!selectedAddress) {
-
+                
                 Swal.fire({
                     icon: 'info',
                     title: 'Address not selected',
@@ -178,11 +178,11 @@
                 return;
             }
             const selectedAddressId = selectedAddress.value;
-            console.log("Selected address :", selectedAddressId)
             const url = `/payment/${selectedAddressId}`;
             window.location.href = url;
-        })
-
+        }
+            
+            
         ////// Go to shop \\\\\\
         function goToShop(event) {
             event.preventDefault()
