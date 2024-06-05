@@ -107,9 +107,7 @@
 
         ////// Function to delete a product from cart \\\\\\
         function deleteProduct(delbtn) {
-            console.log("del")
             const productId = delbtn.getAttribute("data-product-id");
-            console.log("productId :", productId)
 
             fetch('/deleteProductFromcart', {
                 method: 'POST',
@@ -163,13 +161,11 @@
 
         ////// Function for the product quantity increment \\\\\\
         function increaseQuantity(element) {
-            console.log("Increment")
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
             input.value = value + 1;
 
             const productId = element.getAttribute("data-product-id");
-            console.log("productId :", productId)
 
             fetch('/incrementCartProduct', {
                 method: 'POST',
@@ -234,7 +230,6 @@
 
         ////// Function for the product quantity decrement \\\\\\
         function decreaseQuantity(element) {
-            console.log("decrement")
             var input = element.parentElement.querySelector('.quantity-value');
             var value = parseInt(input.value);
 

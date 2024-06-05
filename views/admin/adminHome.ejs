@@ -327,7 +327,6 @@
             const weeklyCount = Array(7).fill(0);
 
             weeklyData.forEach(order => {
-                console.log("data : ", order)
                 const day = order.dayOfWeek - 1
                 weeklyCount[day] = order.count;
             });

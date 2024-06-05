@@ -176,14 +176,12 @@
         ////// To got orderDetail page \\\\\\
         function goToOrderDetail(button) {
             const orderId = button.getAttribute('data-orderId');
-            console.log("orderId :", orderId);
             window.location.href = `/orderDetail/${orderId}`;
         }
 
         ////// To cancel a order \\\\\\
         function cancelOrder(button){
             const orderId = button.getAttribute("data-orderId")
-            console.log("orderId :",orderId)
 
             Swal.fire({
                 title: 'Are you sure want to cancel this order?',
@@ -227,7 +225,6 @@
                         }
                     })
                     .catch(error => {
-                        console.error('Error:', error);
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',
@@ -240,23 +237,19 @@
 
         ////// To complete payment if the payment is failed \\\\\\
         function repayment(button){
-            console.log("utton clicked")
             const orderId = button.getAttribute("data-orderId")
-            console.log("order id : ",orderId)
             window.location.href = `/rePayment/${orderId}`
         }
 
         ////// To got orderDetail page \\\\\\
         function goToOrderDetail(button) {
             const orderId = button.getAttribute('data-orderId');
-            console.log("orderId :", orderId);
             window.location.href = `/orderDetail/${orderId}`;
         }
 
         ////// To return an order \\\\\\
         function returnOrder(button){
             const orderId = button.getAttribute("data-orderId")
-            console.log("orderId :",orderId)
 
             Swal.fire({
                 title: 'Are you sure want to return this order?',
@@ -300,7 +293,6 @@
                         }
                     })
                     .catch(error => {
-                        console.error('Error:', error);
                         Swal.fire({
                             icon: 'error',
                             title: 'Error!',

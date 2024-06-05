@@ -196,7 +196,6 @@
         ////// Funciton to add wishlist product to cart \\\\\\
         function addToCart(element) {
             const productId = element.getAttribute('data-prod-id');
-            console.log('Product ID:', productId);
 
             fetch('/addProductToCartFromWishlist', {
                 method: 'POST',

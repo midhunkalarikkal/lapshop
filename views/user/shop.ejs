@@ -321,7 +321,6 @@
 
             searchInput.on('input', function () {
                 inputValue = $(this).val();
-                console.log('Input value changed:', inputValue);
                 updateProductList();
             });
         });
@@ -545,7 +544,6 @@
                         let nextEl = this.nextElementSibling;
                         if (nextEl && nextEl.classList.contains('submenu')) {
                             e.preventDefault();
-                            console.log(nextEl);
                             if (nextEl.style.display == 'block') {
                                 nextEl.style.display = 'none';
                             } else {

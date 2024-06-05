@@ -348,9 +348,6 @@
                     pincode: document.getElementById('pincode').value,
                     country: document.getElementById('country').value
                 };
-                console.log("Form data :",formData)
-                console.log("form action :",form.action)
-
                 
                     const response = await fetch(form.action, {
                         method: 'POST',

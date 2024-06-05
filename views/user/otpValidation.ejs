@@ -188,7 +188,6 @@
         const otpInputs = document.querySelectorAll('.otp-input');
         let otp = '';
         otpInputs.forEach(input => otp += input.value);
-        console.log("otp : ",otp)
 
         fetch('/otpverify',{
                 method: 'POST',

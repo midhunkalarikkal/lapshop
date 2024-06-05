@@ -203,12 +203,9 @@
 
         ////// For the submit button \\\\\\
         function registerbtn(){
-            console.log("registerbtn function called");
             if(validateEmail() && validatePhone() && validateFullName() && validatePassword() && validateConfirmPassword()){
-                console.log("All validations passed");
                 return true;
             }else{
-                console.log("Validation failed");
                 Swal.fire({
                     title: "Registration error",
                     text: "Check all the fields are entered correctly.",

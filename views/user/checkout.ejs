@@ -161,7 +161,6 @@
         ////// To go to edit address page \\\\\\
         document.getElementById('edit-address').addEventListener("click", function () {
             const addressId = this.dataset.adid;
-            console.log("Addres id :", addressId)
             window.location.href = `/editAddressFromCheckout/${addressId}`;
         })
 

@@ -190,78 +190,10 @@
             })
         })
 
-
-
-
-            ////// To submit the form \\\\\\
-            // function validateForm() {
-            //     const isValidName = validateName();
-            //     const iValidEmail = validateEmail()
-            //     const isValidPhone = validatePhone();
-            //     const isValidMessage = validateMessage()
-
-            //     return isValidName && iValidEmail && isValidPhone && isValidMessage
-            // }
-
-            // document.getElementById('submitButton').addEventListener('click', async function (event) {
-            //     event.preventDefault();
-
-            //     if (validateForm()) {
-            //         const form = document.querySelector('form');
-            //         const formData = {
-            //             name: document.getElementById('name').value,
-            //             phone: document.getElementById('phone').value,
-            //             email: document.getElementById('email').value,
-            //             message: document.getElementById('message').value
-            //         };
-            //         console.log("formData : ",formData)
-            //         const response = await fetch('', {
-            //             method: 'POST',
-            //             headers: {
-            //                 'Content-Type': 'application/json'
-            //             },
-            //             body: JSON.stringify(formData)
-            //         });
-            //         await response.json();
-            //         if (response) {
-            //             if(response.success){
-            //                 swal.fire({
-            //                     icon: "success",
-            //                     title: "Response sended successfully",
-            //                     text: response.message,
-            //                     showConfirmButton: true,
-            //                     confirmButtonText: "Ok"
-            //                 }).then(()=>{
-            //                     window.location.href = '/shop'
-            //                 })
-            //             }else{
-            //                 swal.fire({
-            //                     icon: "info",
-            //                     title: "Response sending failed.",
-            //                     text: response.message,
-            //                     showConfirmButton: true,
-            //                     confirmButtonText: "Ok"
-            //                 })
-            //             }
-            //         } else {
-            //             swal.fire({
-            //                     icon: "info",
-            //                     title: "Incorrect form data.",
-            //                     text: "Please check the form fields.",
-            //                     showConfirmButton: true,
-            //                     confirmButtonText: "Ok"
-            //                 })
-            //         }
-            //     } else {
-                    
-            //     }
-            // });
-
-            ////// Cancel button goBack function \\\\\\
-            function goBack() {
-                window.location.href = "/shop"
-            }
-            //https://script.google.com/macros/s/AKfycbyjxJBsYD7Tpcl7M-OLQbyFuzWU6HEoG5d6yopYkSgctwaBTryaDKh4im_UkTU6P9fmpA/exec
+        ////// Cancel button goBack function \\\\\\
+        function goBack() {
+            window.location.href = "/shop"
+        }
 
         </script>
 
