@@ -7,7 +7,6 @@ async function deleteExpiredCoupons() {
         const currentDate = new Date();
         const expiredCoupons = await Coupon.find({ endDate: { $lt: currentDate } });
         const delc = await Coupon.deleteMany({ _id: { $in: expiredCoupons.map(coupon => coupon._id) } });
-        console.log("deleted coupon : ",delc)
     } catch (error) {
         console.error('Error deleting expired coupons:', error);
     }

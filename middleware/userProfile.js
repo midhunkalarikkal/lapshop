@@ -27,9 +27,7 @@ const uploadProfileImage = multer({
     if (extname && mimetype) {
       return cb(null, true);
     } else {
-      // Render the error page
-    //   return req.res.render('multererror', { message: 'Only image files are allowed' });
-    console.log("Multer error")
+      return res.redirect('/errorPage')
     }
   }
 });

@@ -211,12 +211,7 @@ const getOrders = async(req,res)=>{
             path: "orderedItems.product",
             populate:  [{ path: "brand" }, { path: "category" }]
         }).sort({ orderDate: -1 });
-        for(let i = 0; i < order.length; i++){
-            console.log("order 0 :",order[i])
-            for(let j = 0; j < order[i].orderedItems.length; j++){
-                console.log("orderedItes : ",order[i].orderedItems[j])
-            }
-        }
+        
         return res.render('user/orders',{userDetails , order : order})
     }catch(error){
         return res.redirect('/errorPage')

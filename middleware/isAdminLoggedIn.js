@@ -1,14 +1,11 @@
 const isAdminLoggedIn = async (req, res, next) => {
     try {
         if(req.session.adminData){
-            console.log("admin Data : ",req.session.adminData)
             return next()
         }else{
-            console.log("admin session  empty")
             return res.redirect('/admin/')
         }
     } catch (error) {
-        console.log(error);
         res.status(500).send("Internal Server Error.");
     }
 };

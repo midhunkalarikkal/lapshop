@@ -946,7 +946,6 @@ const getContactPage = async(req,res)=>{
         let userDetails = req.session.userNC
         return res.render('user/contact',{ userDetails })
     }catch(error){
-        console.log("error : ",error)
         return res.redirect('/errorPage')
     }
 }
