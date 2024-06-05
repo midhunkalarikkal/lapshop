@@ -84,18 +84,18 @@
                                     <% }); %>
                                 <% } %>
                                 <div class="address-btn">
-                                    <button class="mx-3 btn btn-secondary btn-sm"
+                                    <button class="mx-3 btn btn-sm text-primary border-0"
                                         id="add-address">
                                         <i class="fa-solid fa-plus"></i>
                                         Add new address
                                     </button>
                                 </div>
                                 <div class="extra-btns my-3">
-                                    <button class="btn extra-btn btn-sm"
+                                    <button class="btn btn-primary btn-sm"
                                         onclick="goToShop(event)">
                                         Back to shop
                                     </button>
-                                    <button class="btn extra-btn btn-sm"
+                                    <button class="btn btn-primary btn-sm"
                                         onclick="goToCart(event)">
                                         Review cart
                                     </button>
@@ -117,8 +117,8 @@
                                     <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart[0].totalCartPrice %></span></h5>
                                 </div>
                                 <div class="button mt-3">
-                                    <button class="btn extra-btn w-100 d-none d-md-block" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
-                                    <button class="btn extra-btn w-100 btn-sm d-block d-md-none" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn btn-warning w-100 d-none d-md-block" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn btn-warning w-100 btn-sm d-block d-md-none" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
                                 </div>
                             </div>
                         </div>
