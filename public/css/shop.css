@@ -130,3 +130,21 @@
     color: var(--third-color);
     border-radius: 10px;
 }
+
+
+/*======> Very small devices <======*/
+@media (max-width: 576px) {
+    .card-footer{
+        margin-top: 0px;
+        font-size: small;
+    }
+   
+}
+
+/*======> XS / SM devices <======*/
+@media (min-width: 576px) and (max-width: 767px) {
+    .card-footer{
+        margin-top: 0px;
+        font-size: small;
+    }
+}

@@ -151,14 +151,3 @@
     border-radius: 10px;
 }
 
-.proceed-btn , .quantity-btn{
-    background-image: var(--btn-color);
-}
-
-.proceed-btn{
-    border: 1px solid var(--third-color);
-}
-
-.proceed-btn:hover , .quantity-btn:hover{
-    background-image: var(--btnHover-color);
-}
