@@ -326,6 +326,8 @@
                 formData.append(`productImages`, blob, `image${index}.png`);
             });
 
+            console.log("formData : ",formData)
+
             if(imageArray.length < 5){
                 swal.fire({
                     icon: "info",

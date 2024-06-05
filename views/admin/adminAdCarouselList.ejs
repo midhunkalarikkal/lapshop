@@ -108,8 +108,6 @@
             formData.append('adCarouselName', adCarouselName);
             formData.append('adCarouselImage', adCarouselImage);
 
-            console.log("formData : ",formData)
-
             try {
                 const response = await fetch("/admin/addAdCarousel", {
                     method: "POST",

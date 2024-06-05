@@ -162,7 +162,7 @@
         })
 
         ////// To go to payment \\\\\\
-        document.getElementById('goToPayment').addEventListener('click', async function (event) {
+        document.getElementsByClassName('goToPayment').addEventListener('click', async function (event) {
             event.preventDefault()
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked')
             if (!selectedAddress) {
