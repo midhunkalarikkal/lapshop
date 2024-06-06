@@ -111,9 +111,7 @@
             const response = await fetch("/admin/addAdCarousel", {
                 method: "POST",
                 body: formData
-            });
-
-            $('#exampleModal').modal('hide')
+            })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Failed to update Advertisement carousel block status.');
@@ -121,6 +119,7 @@
                 return response.json();
             })
             .then((data)=>{
+                $('#exampleModal').modal('hide')
                 if(data.success){
                     Swal.fire({
                         icon: 'success',
