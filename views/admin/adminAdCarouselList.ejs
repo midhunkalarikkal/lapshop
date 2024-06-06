@@ -108,7 +108,6 @@
             formData.append('adCarouselName', adCarouselName);
             formData.append('adCarouselImage', adCarouselImage);
 
-            try {
                 const response = await fetch("/admin/addAdCarousel", {
                     method: "POST",
                     body: formData
@@ -148,15 +147,6 @@
                         showConfirmButton: false
                     });
                 }
-            } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: error,
-                    showConfirmButton: true,
-                    confirmButtonText: "Ok"
-                });
-            }
         });
 
         ////// For blocking and unblocking the home carousel start\\\\\\
