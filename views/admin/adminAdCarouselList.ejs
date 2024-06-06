@@ -152,10 +152,9 @@
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: 'Network error. Please try again.',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
+                    text: error,
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
                 });
             }
         });
