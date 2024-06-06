@@ -964,7 +964,7 @@ const postAdminAdCarousel = async(req,res)=>{
         if(saveAdCarousel){
             return res.status(200).json({ success : true, message: "Ad Carousel added successfully" });
         }else{
-            return res.status(400).json({ false : true, message: "AdCarousel adding failed." });
+            return res.status(400).json({ success : false, message: "AdCarousel adding failed." });
         }
     }catch(error){
         return res.redirect('/admin/adminErrorPage')
