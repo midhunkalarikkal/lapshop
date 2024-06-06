@@ -108,45 +108,45 @@
             formData.append('adCarouselName', adCarouselName);
             formData.append('adCarouselImage', adCarouselImage);
 
-                const response = await fetch("/admin/addAdCarousel", {
-                    method: "POST",
-                    body: formData
-                });
+            const response = await fetch("/admin/addAdCarousel", {
+                method: "POST",
+                body: formData
+            });
 
-                $('#exampleModal').modal('hide');
-                if (response.ok) {
-                    const data = await response.json();
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: data.message,
-                        showConfirmButton: true,
-                        confirmButtonText: 'Ok'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            location.reload();
-                        }
-                    });
-                } else if (response.status === 400) {
-                    const errorData = await response.json();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: errorData.error,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'An unexpected error occurred. Please try again.',
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
-                }
+            $('#exampleModal').modal('hide');
+            if (response.ok) {
+                const data = await response.json();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message,
+                    showConfirmButton: true,
+                    confirmButtonText: 'Ok'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        location.reload();
+                    }
+                });
+            } else if (response.status === 400) {
+                const errorData = await response.json();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorData.error,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'An unexpected error occurred. Please try again.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
         });
 
         ////// For blocking and unblocking the home carousel start\\\\\\
