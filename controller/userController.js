@@ -530,7 +530,7 @@ const getCatProduct = async(req,res)=>{
                 };
             }
 
-            productData = await Product.find(query).skip(skip).limit(perPage);
+            productData = await Product.find(query).skip(skip).limit(perPage).populate("brand")
             const totalProducts = await Product.countDocuments(query);
             const totalPages = Math.ceil(totalProducts / perPage);
                 
