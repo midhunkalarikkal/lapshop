@@ -108,37 +108,43 @@
             formData.append('adCarouselName', adCarouselName);
             formData.append('adCarouselImage', adCarouselImage);
 
-            try{
             const response = await fetch("/admin/addAdCarousel", {
                 method: "POST",
                 body: formData
             });
 
-            $('#exampleModal').modal('hide');
-            if (response.ok) {
-                const data = await response.json();
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: data.message,
-                    showConfirmButton: true,
-                    confirmButtonText: 'Ok'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        location.reload();
-                    }
-                });
-            } else if (response.status === 400) {
-                const errorData = await response.json();
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: errorData.error,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
-            } else {
+            $('#exampleModal').modal('hide')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update Advertisement carousel block status.');
+                }
+                return response.json();
+            })
+            .then((data)=>{
+                if(data.success){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message,
+                        showConfirmButton: true,
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            location.reload();
+                        }
+                    });
+                }else{
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: 'An unexpected error occurred. Please try again.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                }
+            })
+            .catch((error)=>{
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
@@ -147,17 +153,8 @@
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-            }
-        }catch(error){
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: error,
-                showConfirmButton: true,
-                confirmButtonText: "Ok"
-            });
-        }
-        });
+            })
+        })
 
         ////// For blocking and unblocking the home carousel start\\\\\\
         document.querySelectorAll('.adCarousel-switch').forEach(function (adCarouselSwitch) {

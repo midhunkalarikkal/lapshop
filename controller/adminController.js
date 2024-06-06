@@ -924,7 +924,7 @@ const adminUpdateBrand = async(req,res)=>{
             await existingBrand.save();
             res.redirect('/admin/brands')
         }
-    } catch (error) {
+    }catch(error) {
         return res.redirect('/admin/adminErrorPage')
     }
 }
@@ -945,22 +945,23 @@ const postAdminAdCarousel = async(req,res)=>{
         const { adCarouselName }  = req.body;
 
         if (!req.file) {
-            return res.status(400).json({ error: "No image uploaded" });
+            return res.status(400).json({ message : "No image uploaded" });
         }
 
         const existingAdCarousel = await AdCarousel.findOne({ name: adCarouselName });
         if (existingAdCarousel) {
             const imagePath = path.join(__dirname, "../public/images/AdCarousels", req.file.filename);
             fs.unlinkSync(imagePath);
-            return res.status(400).json({ error: "Ad Carousel already exists" });
+            return res.status(400).json({ message : "Ad Carousel already exists" });
         }
 
         const newAdCarousel = new AdCarousel({
             name: adCarouselName,
             image: req.file.filename
         });
-        const saveAdCarousel = await newAdCarousel.save();
-        return res.status(201).json({ message: "Ad Carousel added successfully" , data : saveAdCarousel});
+
+        await newAdCarousel.save();
+        return res.status(200).json({ message: "Ad Carousel added successfully" });
     }catch(error){
         return res.redirect('/admin/adminErrorPage')
     }
