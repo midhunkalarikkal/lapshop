@@ -16,6 +16,7 @@ adminRouter.use(bodyParser.urlencoded({extended:true}));
 const adminController = require('../controller/adminController')
 const couponController = require('../controller/couponController')
 const orderController = require('../controller/orderController')
+const brandController = require('../controller/brandController')
 
 adminRouter.get('/',adminAuth.isAdminLogout,adminController.getAdminlogin)
 adminRouter.post('/login',adminAuth.isAdminLogout,adminController.postAdminlogin)
@@ -46,11 +47,11 @@ adminRouter.delete('/homeCarouselDelete/:homeCarouselId',adminAuth.isAdminLogged
 adminRouter.get('/homeCarouselEdit/:homeCarouselId',adminAuth.isAdminLoggedIn,adminController.adminEditHomeCarousel)
 adminRouter.post('/updateHomeCarousel/:homeCarouselId',adminAuth.isAdminLoggedIn,uploadHomeCarousel.single('homeCarouselImage'),adminController.adminUpdateHomeCarousel)
 
-adminRouter.get('/brands',adminAuth.isAdminLoggedIn,adminController.getAdminBrands)
-adminRouter.post('/addBrand',adminAuth.isAdminLoggedIn,uploadBrand.single('brandImg'),adminController.adminAddNewBrand)
-adminRouter.post('/blockBrand/:brandId',adminAuth.isAdminLoggedIn,adminController.adminBlockBrand)
-adminRouter.get('/brandEdit/:brandId',adminAuth.isAdminLoggedIn,adminController.adminEditBrand)
-adminRouter.post('/updateBrand/:brandId',adminAuth.isAdminLoggedIn,uploadBrand.single('brandImage'),adminController.adminUpdateBrand)
+adminRouter.get('/brands',adminAuth.isAdminLoggedIn,brandController.getAdminBrands)
+adminRouter.post('/addBrand',adminAuth.isAdminLoggedIn,uploadBrand.single('brandImg'),brandController.adminAddNewBrand)
+adminRouter.post('/blockBrand/:brandId',adminAuth.isAdminLoggedIn,brandController.adminBlockBrand)
+adminRouter.get('/brandEdit/:brandId',adminAuth.isAdminLoggedIn,brandController.adminEditBrand)
+adminRouter.post('/updateBrand',adminAuth.isAdminLoggedIn,uploadBrand.single('brandImage'),brandController.adminUpdateBrand)
 
 adminRouter.get('/adCarousel',adminAuth.isAdminLoggedIn,adminController.getAdCarousel)
 adminRouter.post('/addAdCarousel',adminAuth.isAdminLoggedIn,uploadAdCarousel.single('adCarouselImage'),adminController.postAdminAdCarousel)

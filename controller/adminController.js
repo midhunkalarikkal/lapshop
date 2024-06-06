@@ -306,7 +306,7 @@ const bestSellingBrands = async () => {
 const getAdminHome = async (req, res) => {
     try {
         const totalUsers = await User.countDocuments()
-        const totalOrders = await Order.countDocuments()
+        const totalOrders = await Order.find({ status : "Delivered"}).countDocuments()
         const totalCategories = await Category.countDocuments()
         const totalBrands = await Brand.countDocuments()
         const totalCoupons = await Coupon.countDocuments()
@@ -837,98 +837,6 @@ const adminUpdateHomeCarousel = async(req,res)=>{
     }
 }
 
-//To get the brands page
-const getAdminBrands = async(req,res)=>{
-    try{
-        const brandData = await Brand.find()
-        return res.render('admin/adminBrandsList',{ brand : brandData })
-    }catch(error){
-        return res.redirect('/admin/adminErrorPage')
-    }
-}
-
-//To add new brand
-const adminAddNewBrand = async(req,res)=>{
-    try{
-        const { brandName } = req.body
-
-        const existbrand = await Brand.findOne({
-            name: { $regex: new RegExp(`^${brandName}$`, "i") }
-        });
-        
-        if (existbrand) {
-            const newImage = req.file.filename
-            const imagePath = path.join(__dirname, "../public/images/BrandImages", newImage);
-            fs.unlinkSync(imagePath);
-            return res.status(409).json({ message : "Brand already exist" })
-        }else if(!req.file){
-            return res.status(400).json({ message: "Image is not selected." })
-        }else{
-            const newBrand = new Brand({
-                name: brandName,
-                image: req.file.filename
-            });
-            const savedBrand = await newBrand.save();
-            return res.status(201).json({ message: "Brand saved successfully", data: savedBrand });
-        } 
-    }catch(error){
-        return res.redirect('/admin/adminErrorPage')
-    }
-}
-
-//To block and unblock a brand
-const adminBlockBrand = async(req,res)=>{
-    try {
-        const brand = await Brand.findById({_id : req.params.brandId});
-        if (!brand) {
-            return res.status(404).json({ success: false, message: "Brand not found" });
-        } else {
-            brand.isBlocked = req.body.blockStatus === 'block';
-            await brand.save();
-            return res.status(200).json({ success: true , message: "Block status updated successfully" });
-        }
-    } catch (error) {
-        return res.redirect('/admin/adminErrorPage')
-    }
-}
-
-//To edit brand from brand list page
-const adminEditBrand = async(req,res)=>{
-    try{
-        const brand = await Brand.findOne({_id : req.params.brandId})
-        return res.render('admin/adminEditBrand',{ brand })
-    }catch(error){
-        return res.redirect('/admin/adminErrorPage')
-    }
-}
-
-//To update the edited brand
-const adminUpdateBrand = async(req,res)=>{
-    try {
-        const { brandName } = req.body;
-
-        const brandId = req.params.brandId;       
-        
-        const existingBrand = await Brand.findById(brandId);
-        if (!existingBrand) {
-            return res.status(404).json({ error: "Brand not found" });
-        }else{
-            const oldImageFilename = existingBrand.image;
-
-            if (req.file){
-                existingBrand.image = req.file.filename;
-                const imagePath = path.join(__dirname, "../public/images/BrandImages", oldImageFilename);
-                fs.unlinkSync(imagePath);
-            }
-            existingBrand.name = brandName;
-            await existingBrand.save();
-            res.redirect('/admin/brands')
-        }
-    }catch(error) {
-        return res.redirect('/admin/adminErrorPage')
-    }
-}
-
 // To get the Ad-carouselpage
 const getAdCarousel = async(req,res)=>{
     try{
@@ -1051,11 +959,6 @@ module.exports = {
     adminDeleteHomeCarousel,
     adminEditHomeCarousel,
     adminUpdateHomeCarousel,
-    getAdminBrands,
-    adminAddNewBrand,
-    adminBlockBrand,
-    adminEditBrand,
-    adminUpdateBrand,
     getAdCarousel,
     postAdminAdCarousel,
     adminBlockAdCarousel,
