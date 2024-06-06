@@ -943,8 +943,6 @@ const getAdCarousel = async(req,res)=>{
 const postAdminAdCarousel = async(req,res)=>{
     try{
         const adCarouselName  = req.body.adCarouselName;
-        console.log("adCarouselName : ",adCarouselName)
-        console.log("req.file : ",req.file)
 
         if (!req.file) {
             return res.status(400).json({ error: "No image uploaded" });
@@ -964,7 +962,6 @@ const postAdminAdCarousel = async(req,res)=>{
         const saveAdCarousel = await newAdCarousel.save();
         return res.status(201).json({ message: "Ad Carousel added successfully" , data : saveAdCarousel});
     }catch(error){
-        console.log("error : ",error)
         return res.redirect('/admin/adminErrorPage')
     }
 }

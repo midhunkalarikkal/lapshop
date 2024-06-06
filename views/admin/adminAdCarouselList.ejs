@@ -114,7 +114,9 @@
             });
 
             $('#exampleModal').modal('hide');
+            console.log("response before if: ",response)
             if (response.ok) {
+                console.log("response : ",response)
                 const data = await response.json();
                 Swal.fire({
                     icon: 'success',
