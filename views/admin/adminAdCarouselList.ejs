@@ -113,16 +113,15 @@
                 body: formData
             })
             .then(response => {
-                console.log("response : ",response)
                 return response.json();
             })
-            .then((data)=>{
+            .then((response)=>{
                 $('#exampleModal').modal('hide')
-                if(data.success){
+                if(response.success){
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message,
+                        text: response.message,
                         showConfirmButton: true,
                         confirmButtonText: 'Ok'
                     }).then((result) => {
@@ -134,7 +133,7 @@
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'An unexpected error occurred. Please try again.',
+                        text: response.message,
                         timer: 3000,
                         timerProgressBar: true,
                         showConfirmButton: false
@@ -177,34 +176,34 @@
                             body: JSON.stringify({ blockStatus: blockStatus })
                         })
                         .then(response => {
-                                if (!response.ok) {
-                                    throw new Error('Failed to update Advertisement carousel block status.');
+                            if (!response.ok) {
+                                throw new Error('Failed to update Advertisement carousel block status.');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: data.message,
+                                showConfirmButton: true,
+                                confirmButtonText: 'Ok'
+                            }).then((result) => {
+                                if(result.isConfirmed){
+                                    location.reload();
                                 }
-                                return response.json();
-                            })
-                            .then(data => {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Success!',
-                                    text: data.message,
-                                    showConfirmButton: true,
-                                    confirmButtonText: 'Ok'
-                                }).then((result) => {
-                                    if(result.isConfirmed){
-                                        location.reload();
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error!',
-                                    text: error.message,
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false
-                                });
                             });
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: error.message,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                showConfirmButton: false
+                            });
+                        });
                     } else {
                         location.reload();
                     }
