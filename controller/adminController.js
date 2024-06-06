@@ -942,7 +942,7 @@ const getAdCarousel = async(req,res)=>{
 //To add a new Advertisement carousel
 const postAdminAdCarousel = async(req,res)=>{
     try{
-        const adCarouselName  = req.body.adCarouselName;
+        const { adCarouselName }  = req.body;
 
         if (!req.file) {
             return res.status(400).json({ error: "No image uploaded" });
