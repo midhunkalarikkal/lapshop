@@ -172,6 +172,22 @@ p,
 
   /* Coupon end */
 
+  .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+  
+  .promise h4 {
+    font-size: 1.1rem;
+  }
+  
+  .promise p {
+    font-size: 0.8rem;
+  }
+
 }
 
 /*======> Samll devices <======*/
@@ -280,6 +296,22 @@ p,
   }
 
   /* Coupon end */
+
+  .section-title {
+    font-size: 1.8rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1rem;
+  }
+  
+  .promise h4 {
+    font-size: 1.1rem;
+  }
+  
+  .promise p {
+    font-size: 0.8rem;
+  }
 }
 
 /*======> Medium devices <======*/
@@ -383,6 +415,22 @@ p,
 
   /* Coupon end */
 
+  .section-title {
+    font-size: 2.1rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.05rem;
+  }
+  
+  .promise h4 {
+    font-size: 1.2rem;
+  }
+  
+  .promise p {
+    font-size: 0.9rem;
+  }
+
 }
 
 /*======> Large devices <======*/
@@ -485,6 +533,22 @@ p,
   }
 
   /* Coupon end */
+
+  .section-title {
+    font-size: 2.2rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.15rem;
+  }
+  
+  .promise h4 {
+    font-size: 1.4rem;
+  }
+  
+  .promise p {
+    font-size: 1rem;
+  }
 }
 
 /*======> Extra Large devices <======*/
@@ -557,6 +621,22 @@ p,
   }
 
   /* Best offer css end */
+
+  .section-title {
+    font-size: 2.3rem;
+  }
+  
+  .section-subtitle {
+    font-size: 1.25rem;
+  }
+  
+  .promise h4 {
+    font-size: 1.5rem;
+  }
+  
+  .promise p {
+    font-size: 1rem;
+  }
 }
 
 /*======> best offer products start <======*/
@@ -638,12 +718,10 @@ p,
 }
 
 .section-title {
-  font-size: 2.5rem;
   margin-bottom: 1rem;
 }
 
 .section-subtitle {
-  font-size: 1.25rem;
   margin-bottom: 3rem;
   color: #6c757d;
 }
@@ -653,13 +731,11 @@ p,
 }
 
 .promise h4 {
-  font-size: 1.5rem;
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
 
 .promise p {
-  font-size: 1rem;
   color: #6c757d;
 }
 
