@@ -13,7 +13,8 @@
                     <div class="heading">
                         <h2>Your profile details</h2>
                     </div>
-                    <div class="card mb-3" style="border-radius: .5rem;">
+                    <hr>
+                    <div class="card mb-3 shadow" style="border-radius: .5rem;">
                         <div class="row g-0">
                             <% if(userData !="" ){ %>
                                 <div class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center">
@@ -27,7 +28,7 @@
                                     </div>  
                                     <div class="extra-btns d-flex flex-column my-auto d-none d-md-block" style="width: 75%;">
                                         <% if(userData.profileimage ) { %>
-                                            <a data-bs-toggle="modal" data-bs-target="#profileImageModal">
+                                            <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
                                                 <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                     <div class="col-4 d-flex justify-content-end">
                                                         <i class="fas fa-upload"></i>
@@ -38,7 +39,7 @@
                                                 </div>
                                             </a>
                                         <% }else{ %>
-                                            <a data-bs-toggle="modal" data-bs-target="#profileImageModal">
+                                            <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
                                                 <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                     <div class="col-4 d-flex justify-content-end">
                                                         <i class="fas fa-upload"></i>
@@ -49,7 +50,7 @@
                                                 </div>
                                             </a>       
                                         <% } %>
-                                        <a data-bs-toggle="modal" data-bs-target="#verifyModal">
+                                        <a data-bs-toggle="modal" data-bs-target="#verifyModal" class="prf-btn">
                                             <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                 <div class="col-4 d-flex justify-content-end">
                                                     <i class="fas fa-lock"></i>
@@ -201,7 +202,7 @@
                                         <div class="extra-btns d-flex flex-column my-auto" style="width: 75%;">
                                             
                                                 <% if(userData.profileimage ) { %>
-                                                    <a data-bs-toggle="modal" data-bs-target="#profileImageModal">
+                                                    <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
                                                         <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                             <div class="col-4 d-flex justify-content-end">
                                                                 <i class="fas fa-upload"></i>
@@ -212,7 +213,7 @@
                                                         </div>
                                                     </a>
                                                 <% }else{ %>
-                                                    <a data-bs-toggle="modal" data-bs-target="#profileImageModal">
+                                                    <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
                                                         <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                             <div class="col-4 d-flex justify-content-end">
                                                                 <i class="fas fa-upload"></i>
@@ -223,7 +224,7 @@
                                                         </div>
                                                     </a>       
                                                 <% } %>
-                                                <a data-bs-toggle="modal" data-bs-target="#verifyModal">
+                                                <a data-bs-toggle="modal" data-bs-target="#verifyModal" class="prf-btn">
                                                     <div class="extra-btn p-1 mb-1 d-flex align-items-center justify-content-center" style="border: 1px solid black;">
                                                         <div class="col-4 d-flex justify-content-end">
                                                             <i class="fas fa-lock"></i>
@@ -268,7 +269,7 @@
                                                         <div class="col-4 d-flex justify-content-end">
                                                             <i class="fas fa-boxes-stacked"></i>
                                                         </div>
-                                                        <div class="col-8 d-flex justify-content-start btn-text">
+                                                        <div class="col-8 d-flex justify-content-start mx-2 btn-text">
                                                             Your orders
                                                         </div>
                                                     </div>
@@ -302,11 +303,13 @@
                         <% if(userData !="" ){ %>
                             <div class="mb-3">
                                 <label for="userName" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="userName" name="userName" value="<%= userData.fullname %>">
+                                <input type="text" class="form-control" id="userName" name="userName" value="<%= userData.fullname %>" oninput="validateName()">
+                                <span id="nameError" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone no</label>
-                                <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>">
+                                <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>" oninput="validatePhone()">
+                                <span id="phoneError" class="text-danger"></span>
                             </div>
                             <div class="mb-3" style="display: none;">
                                 <label for="userId" class="form-label">User id</label>
@@ -373,9 +376,10 @@
                         <% if(userData !="" ){ %>
                             <div class="mb-3">
                                 <label for="userName" class="form-label">Enter your email</label>
-                                <input type="email" class="form-control" id="email" name="email" required>
+                                <input type="email" class="form-control" id="email" name="email" required oninput="validateEmail()">
+                                <span id="emailError" class="text-danger"></span>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 d-none" id="otp-input">
                                 <label for="passotp" class="form-label">Enter Otp</label>
                                 <input type="text" class="form-control" id="passotp" name="passotp" required>
                             </div>
@@ -384,7 +388,7 @@
                                 <input type="text" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
                             </div>
                             <div class="mb-3" style="display: none;">
-                                <label for="userEmail" class="form-label">User id</label>
+                                <label for="userEmail" class="form-label">User email</label>
                                 <input type="text" class="form-control" id="userEmail" name="userEmail" value="<%= userData.email %>">
                             </div>
                         <% } %>
@@ -464,54 +468,6 @@
             });
         }
 
-
-        ////// To update the user information \\\\\\
-        document.getElementById('saveUserInfo').addEventListener('click', function () {
-            const formData = {
-                userName: document.getElementById('userName').value,
-                phone: document.getElementById('phone').value,
-                userId: document.getElementById('userId').value
-            };
-
-            fetch('/updateUserInfo', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => {
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        return response.json(); 
-                    } else {
-                        window.location.href = `/login`;
-                    }
-                }).then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: data.message || 'User updated successfully',
-                        showConfirmButton: true,
-                        confirmButtonText: "Ok"
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            $('#informationModal').modal('hide');
-                            location.reload();
-                        }
-                    });
-                }).catch(error => {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: error.message || 'Failed to update user information',
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
-                });
-        });
-
         ////// Function to handle image preview \\\\\\
         function previewImage() {
             const preview = document.getElementById('preview');
@@ -529,19 +485,164 @@
             }
         }
 
+         ////// Validation function for name input \\\\\\
+         function validateName() {
+                const nameInput = document.getElementById('userName');
+                const name = nameInput.value.trim();
+                const nameError = document.getElementById('nameError');
+
+                const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
+
+                if (name === "") {
+                    nameInput.classList.remove('is-invalid');
+                    nameError.textContent = '';
+                    return false;
+                }
+                if (!namePattern.test(name)) {
+                    nameInput.classList.add('is-invalid');
+                    nameError.textContent = 'Name must contain only alphabets and spaces.';
+                    return false;
+                } else if (name.length < 5 || name.length > 25) {
+                    nameInput.classList.add('is-invalid');
+                    nameError.textContent = 'Name must be between 5 and 25 characters long';
+                    return false;
+                } else {
+                    nameInput.classList.remove('is-invalid');
+                    nameError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for phone input \\\\\\
+            function validatePhone() {
+                const phoneInput = document.getElementById('phone');
+                const phone = phoneInput.value.trim();
+                const phoneError = document.getElementById('phoneError');
+
+                const phonePattern = /^\d{10}$/;
+
+                if (phone === "") {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneError.textContent = '';
+                    return false;
+                }
+                if (!phonePattern.test(phone)) {
+                    phoneInput.classList.add('is-invalid');
+                    phoneError.textContent = 'Phone number must contain only 10 digits.';
+                    return false;
+                } else {
+                    phoneInput.classList.remove('is-invalid');
+                    phoneError.textContent = '';
+                    return true;
+                }
+            }
+
+            ////// Validation function for phone input \\\\\\
+            function validateEmail() {
+            const emailInput = document.getElementById("email");
+            const email = emailInput.value;
+            const emailError = document.getElementById('emailError');
+
+            var emailRegex = /^[^\s@]+@gmail\.com$/;
+
+            if (email === "") {
+                emailInput.classList.remove('is-invalid');
+                emailError.textContent = '';
+                return false;
+            }
+            if (!emailRegex.test(email)) {
+                emailInput.classList.add('is-invalid');
+                emailError.textContent = 'Phone check the email.';
+                return false;
+            } else {
+                emailInput.classList.remove('is-invalid');
+                emailError.textContent = '';
+                return true;
+            }
+        }
+
+
+        ////// To update the user information \\\\\\
+        document.getElementById('saveUserInfo').addEventListener('click', async function () {
+            const formData = {
+                userName: document.getElementById('userName').value,
+                phone: document.getElementById('phone').value,
+                userId: document.getElementById('userId').value
+            };
+
+            if(!validateName() || !validatePhone()){
+                swal.fire({
+                    icon: "warning",
+                    title: "Invalid info",
+                    text: "Please check the fields.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
+                })
+                return false
+            }            
+
+            try {
+                const response = await fetch('/updateUserInfo', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.message || 'User updated successfully',
+                            showConfirmButton: true,
+                            confirmButtonText: "Ok"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#informationModal').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.message || 'Failed to update user information',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
+                } else {
+                    window.location.href = `/login`;
+                    return;
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Internal server error',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+        });
+
         ////// Function to handle image upload \\\\\\
-        document.getElementById('saveUserImage').addEventListener('click', function () {
+        document.getElementById('saveUserImage').addEventListener('click', async function () {
             const userProfileImageInput = document.getElementById("image").files[0];
             const userId = document.getElementById('userIdFromImage').value;
 
             if (!userProfileImageInput) {
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
+                    icon: 'info',
+                    title: 'Profile image',
                     text: 'Please select an image',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false            
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"       
                 });
                 return;
             }
@@ -550,48 +651,61 @@
             formData.append('profileImg', userProfileImageInput);
             formData.append('userId', userId);
 
-            fetch('/uploadProfileImage', {
-                method: 'POST',
-                body: formData
-            }).then(response => {
+            try {
+                const response = await fetch('/uploadProfileImage', {
+                    method: 'POST',
+                    body: formData
+                });
+
                 const contentType = response.headers.get('content-type');
                 if (contentType && contentType.includes('application/json')) {
-                    return response.json(); 
+                    const data = await response.json();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: data.message || 'Profile image uploaded successfully',
+                            showConfirmButton: true,
+                            confirmButtonText: "Ok"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#profileImageModal').modal('hide');
+                                location.reload();
+                            }
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.message || 'Failed to upload profile image',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
                 } else {
                     window.location.href = `/login`;
+                    return;
                 }
-            }).then(data => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Profile image uploaded successfully',
-                    showConfirmButton: true,
-                    confirmButtonText : "Ok"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#profileImageModal').modal('hide');
-                        location.reload();
-                    }
-                });
-            }).catch(error => {
+            } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: error.message || 'Failed to upload profile image',
+                    text: 'Internal server error',
                     timer: 3000,
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-            });
+            }
         });
 
 
         ////// To delete a specific address \\\\\\
         document.querySelectorAll('.delete-address-btn').forEach(button => {
-            button.addEventListener('click', function () {
+            button.addEventListener('click', async function () {
                 const addressId = this.dataset.adid;
 
-                Swal.fire({
+                const confirmResult = await Swal.fire({
                     icon: 'warning',
                     title: 'Are you sure?',
                     text: 'You are about to delete this address.',
@@ -599,46 +713,58 @@
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, delete it'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        fetch(`/deleteAddress/${addressId}`, {
+                });
+
+                if (confirmResult.isConfirmed) {
+                    try {
+                        const response = await fetch(`/deleteAddress/${addressId}`, {
                             method: 'DELETE'
-                        }).then(response => {
-                            const contentType = response.headers.get('content-type');
-                            if (contentType && contentType.includes('application/json')) {
-                                return response.json(); 
-                            } else {
-                                window.location.href = `/login`;
+                        });
+                        const contentType = response.headers.get('content-type');
+                        if (contentType && contentType.includes('application/json')) {
+                            const data = await response.json();
+                            if(data.success){
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message || 'Address deleted successfully.',
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'OK'
+                                }).then((result)=>{
+                                    if(result.isConfirmed){
+                                        location.reload();
+                                    }
+                                })
+                            }else{
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message || 'Address deletion failed.',
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false
+                                })
                             }
-                        }).then(data => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success!',
-                                text: data.message || 'Address deleted successfully.',
-                                showConfirmButton: true,
-                                confirmButtonText: 'OK'
-                            }).then((result) => {
-                                if (result.isConfirmed) {
-                                    location.reload();
-                                }
-                            });
-                        }).catch(error => {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: error.message || 'Failed to delete address',
-                                timer: 3000,
-                                timerProgressBar: true,
-                                showConfirmButton: false
-                            });
+                        }else{
+                            window.location.href = '/login'
+                            return;
+                        }
+                    } catch (error) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: error.message || 'Failed to delete address',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
                         });
                     }
-                });
+                }
             });
         });
 
-         ////// To add a new address \\\\\\
-         document.getElementById('add-address').addEventListener('click', function () {
+        ////// To add a new address \\\\\\
+        document.getElementById('add-address').addEventListener('click', function () {
             const userId = this.dataset.userid;
             window.location.href = `/addAddress/${userId}`; 
         });    
@@ -660,21 +786,31 @@
             const userId = document.getElementById('userId').value;
             const userEmail = document.getElementById('userEmail').value;
 
-            const formData = {
-                email: email
-            };
-            
-            if(email !== userEmail){
+            if(!validateEmail()){
                 Swal.fire({
-                    icon: 'error',
-                    title: 'Eamil!',
-                    text: 'Entered email is not registered.',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
+                    icon: 'warning',
+                    title: 'Incorrect eamil!',
+                    text: 'Please check the email..',
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
                 });
                 return;
             }
+
+            if(email !== userEmail){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Eamil!',
+                    text: 'Entered email is not registered.',
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
+                });
+                return;
+            }
+
+            const formData = {
+                email: email
+            };
 
             try {
                 const response = await fetch('/sendOtpForPass', {
@@ -684,22 +820,34 @@
                     },
                     body: JSON.stringify(formData)
                 });
-                if (response.ok) {
-                    const contentType = response.headers.get('content-type');
-                    if (contentType && contentType.includes('application/json')) {
-                        Swal.fire("Success!", "OTP sent successfully", "success");
-                        document.getElementById("submitOtp").disabled = false;
-                        document.getElementById("sendOtp").disabled = true; 
 
-                        let timeLeft = 30;
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'OTP Sent!',
+                            text: data.message || 'OTP sent successfully.',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+
+                        document.getElementById("submitOtp").disabled = false;
+                        document.getElementById("sendOtp").disabled = true;
+                        document.getElementById("otp-input").classList.remove("d-none")
+                        document.getElementById("otp-input").classList.add("d-block")
+
+                        let timeLeft = 180;
                         const timerElement = document.getElementById('timer');
                         const timerInterval = setInterval(() => {
                             const minutes = Math.floor(timeLeft / 60);
                             const seconds = timeLeft % 60;
                             timerElement.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
                             timeLeft--;
-                            if(timeLeft < 10){
-                                timerElement.style.color = "red"
+                            if (timeLeft < 30) {
+                                timerElement.style.color = "red";
                             }
 
                             if (timeLeft < 0) {
@@ -707,22 +855,25 @@
                                 document.getElementById("sendOtp").disabled = false;
                                 document.getElementById("submitOtp").disabled = true;
                                 document.getElementById("sendOtp").innerText = "Resend OTP";
+                                document.getElementById("otp-input").classList.remove("d-block")
+                                document.getElementById("otp-input").classList.add("d-none")
                                 timerElement.innerText = "00:00";
-                                timerElement.style.color = "black"
+                                timerElement.style.color = "black";
                             }
                         }, 1000);
                     } else {
-                        window.location.href = `/login`;
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.message || 'Failed to send OTP',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                     }
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: 'Failed to send OTP',
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
+                }else{
+                    window.location.href = `/login`;
+                    return;
                 }
             } catch (error) {
                 Swal.fire({
@@ -737,40 +888,59 @@
         });
 
         ////// For submiting otp \\\\\\
-        document.getElementById('submitOtp').addEventListener('click', function () {
+        document.getElementById('submitOtp').addEventListener('click', async function () {
             const formData = {
                 otp: document.getElementById('passotp').value,
             };
 
-            fetch('/submitOtp', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => {
+            try {
+                const response = await fetch('/submitOtp', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const contentType = response.headers.get('content-type');
                 if (contentType && contentType.includes('application/json')) {
-                    if (response.ok) {
-                        $('#verifyModal').modal('hide');
-                        $('#passModal').modal('show');
+                    const data = await response.json();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Otp verified",
+                            text: data.message || "Opt verified successfully.",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        }).then(()=>{
+                            $('#verifyModal').modal('hide');
+                            $('#passModal').modal('show');
+                        })
                     } else {
-                        throw new Error('Incorrect OTP');
+                        Swal.fire({
+                            icon: "error",
+                            title: "Invalid OTP",
+                            text: data.message || "Entered OTP is incorrect",
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                     }
                 } else {
                     window.location.href = `/login`;
+                    return;
                 }
-            })
-            .catch(error => {
+            } catch (error) {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: error.message || 'Invalid otp',
+                    text: 'Network error. Please try again.',
                     timer: 3000,
                     timerProgressBar: true,
                     showConfirmButton: false
                 });
-            });
+            }
         });
 
         ////// For submiting the new password \\\\\\
@@ -786,9 +956,8 @@
                     icon: 'info',
                     title: 'Password!',
                     text: 'Password is not matching.',
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
                 });
                 return;
             }
@@ -806,34 +975,35 @@
                     },
                     body: JSON.stringify(formData)
                 })
-                .then(response => {
-                        if (contentType && contentType.includes('application/json')) {
-                            if (response.ok) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Password',
-                                    text: 'Password changed successfully.',
-                                    showConfirmButton: true,
-                                    confirmButtonText: "Ok"
-                                }).then((result) => {
-                                    if(result.isConfirmed){
-                                        $('#passModal').modal('hide');
-                                    }
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Failed!',
-                                    text: 'Password updation failed, try again.',
-                                    timer: 3000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false
-                                });
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    const data = await response.json();
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Password',
+                            text: data.message || 'Password changed successfully.',
+                            showConfirmButton: true,
+                            confirmButtonText: "Ok"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                $('#passModal').modal('hide');
                             }
-                        } else {
-                            window.location.href = `/login`;
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed!',
+                            text: data.message || 'Password update failed, please try again.',
+                            timer: 3000,
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
                     }
-                })
+                } else {
+                    window.location.href = `/login`;
+                    return;
+                }
             } catch (error) {
                 Swal.fire({
                     icon: 'error',

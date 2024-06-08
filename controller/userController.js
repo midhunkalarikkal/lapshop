@@ -75,9 +75,10 @@ const sendOtpMail = async(email,otp,subject,message)=>{
                 <p>Best regards,<br>The LapShop Team</p>`
         }
 
-        return transporter.sendMail(mailOptions)
+        await transporter.sendMail(mailOptions)
+        return true;
     } catch (error) {
-        return res.redirect('/errorPage')
+        return false;
     }
   }
 
@@ -105,8 +106,12 @@ const postRegister = async (req, res) => {
             if(!userPhone){
                 const subject = "Your OTP for Registration at LapShop Ecommerce";
                 const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
-                sendOtpMail(enteredEmail ,registerOtp ,subject , message);
-                return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
+                const sendOtp = await sendOtpMail(enteredEmail ,registerOtp ,subject , message);
+                if(sendOtp){
+                    return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
+                }else{
+                    return res.render('user/registration', { type: "danger", message: "Otp sending failed , please try again.", userDetails})
+                }
             }else{
                 return res.render('user/registration', { type: "danger", message: "Phone number already registered.", userDetails})                
             }
@@ -122,10 +127,19 @@ const postRegister = async (req, res) => {
 const postRegisterOtp = async (req, res) => {
     try {
         const enteredOtp = req.body.otp
+        if(!enteredOtp){
+            return res.status(400).json({ success : false, message : "Otp fetching error."})
+        }
         
         if(enteredOtp == registerOtp){
             const hashpassword = await bcrypt.hash(enteredPassword, 10)
+            if(!hashpassword){
+                return res.status(400).json({ success : false, message : "Something went wrong."})
+            }
             const referalCode = await generateReferralCode(enteredFullname , enteredPhone)
+            if(!referalCode){
+                return res.status(400).json({ success : false, message : "Something went wrong."})
+            }
 
             const user = new User({
                 fullname : enteredFullname,
@@ -158,7 +172,7 @@ const postRegisterOtp = async (req, res) => {
                 return res.status(400).json({ success : false , message : "Registration has been failed."})
             }
         }else{
-            return res.status(400).json({ success : false , message : "Invalid otp." , invalidOtp : true })
+            return res.status(400).json({ success : false , message : "Please enter the correct otp." , invalidOtp : true })
         } 
     } catch (error) {
         return res.redirect('/errorPage')
@@ -331,9 +345,12 @@ const resendOtp = async(req,res)=>{
 
         const subject = "Your OTP for Registration at LapShop Ecommerce";
         const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
-        sendOtpMail(enteredEmail, registerOtp, subject, message);
-
-        res.status(200).send('OTP resent successfully');
+        const sendOtp = await sendOtpMail(enteredEmail, registerOtp, subject, message);
+        if(sendOtp){
+            return res.stauts(200).json({ success : true, message : "Otp resented succesfully."})
+        }else{
+            return res.stauts(400).json({ success : true, message : "Otp resenting failed."})
+        }
     }catch(error){
         return res.redirect('/errorPage')
     }
@@ -360,15 +377,18 @@ const postUserUpdatedInfo = async(req,res)=>{
     try{
         const { userName, phone, userId } = req.body;
 
+        if(!userName || !phone || !userId){
+            return res.status(400).json({ success : false, message : "User data submiting failed"})
+        }
+
         const updateUser = await User.findByIdAndUpdate(userId, { fullname: userName, phone: phone },
             { new: true } );
         
         if (!updateUser) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ success : false, message: "User not found" });
         } else {
-            return res.status(200).json({ message: "User updated successfully", user: updateUser });
+            return res.status(200).json({ success : true, message: "User updated successfully", user: updateUser });
         }
-
     }catch(error){
         return res.redirect('/errorPage')
     }
@@ -378,7 +398,18 @@ const postUserUpdatedInfo = async(req,res)=>{
 const postUserProfileImage = async(req,res)=>{
     try{
         const userId = req.body.userId
+        if(!userId){
+            return res.status(400).json({ success : false, message : "userId fething failed."})
+        }
+
         const user = await User.findById(userId)
+        if(!user){
+            return res.status(404).json({ success : false, message : "User not found."})
+        }
+
+        if(!req.file){
+            return res.status(400).json({ success : false, message : "Image is not uploaded correctly"})
+        }
 
         if(user.profileimage){
             existingimage = user.profileimage
@@ -386,17 +417,12 @@ const postUserProfileImage = async(req,res)=>{
             fs.unlinkSync(imagePath);
         }
 
-        if(!req.file){
-            return res.status(400).json({ message : "Image is not uploaded correctly"})
-        }
-
         const updateUserImage = await User.findByIdAndUpdate(userId, {profileimage : req.file.filename})
         if (updateUserImage) {
-            return res.status(200).json({ message: "Profile image uploaded successfully" });
+            return res.status(200).json({ success : true, message: "Profile image uploaded successfully" });
         } else {
-            return res.status(500).json({ message: "Failed to update profile image" });
+            return res.status(500).json({ success : false, message: "Failed to update profile image" });
         }
-        
     }catch(error){
         return res.redirect('/errorPage')
     }
@@ -598,12 +624,15 @@ const postUserAddress = async(req,res)=>{
 const postAddressDelete = async (req, res) => {
     try {
         const addressId = req.params.addressId;
+        if(!addressId){
+            return res.status(400).json({ success : false, message : "Address fetching error."})
+        }
 
         const deletedAddress = await Address.findByIdAndDelete(addressId);
-        if (!deletedAddress) {
-            return res.status(404).json({ message: "Address not found" });
+        if (deletedAddress) {
+            return res.status(200).json({ success : true, message: "Address deleted successfully" });
         }else{
-            return res.status(200).json({ message: "Address deleted successfully" });
+            return res.status(404).json({ success : false, message: "Address not found" });
         }
     } catch (error) {
         return res.redirect('/errorPage')
@@ -626,6 +655,9 @@ const getUserEditAddress = async(req,res)=>{
 const postUpdateUserAddress = async (req, res) => {
     try {
         const addressId = req.params.addressId;
+        if(!addressId){
+            return res.status(400).json({ success : false, message : "Address fetching error."})
+        }
         
         const newaddress = {
             name: req.body.name,
@@ -645,9 +677,9 @@ const postUpdateUserAddress = async (req, res) => {
         );
 
         if (updatedAddress) {
-            return res.status(200).json({ message: "Address updated successfully" });
+            return res.status(200).json({ success : true, message: "Address updated successfully" });
         } else {
-            return res.status(500).json({ message: "Failed to update address" });
+            return res.status(500).json({ success : false, message: "Failed to update address" });
         }
 
     } catch (error) {
@@ -664,13 +696,16 @@ const postOtpForChangePass = async (req, res) => {
         function clearSaveOtp() {
             cpOtp = "";
         }
-        setTimeout(clearSaveOtp, 30000);
+        setTimeout(clearSaveOtp, 180000);
 
         const subject = "Your OTP for updating your password at LapShop Ecommerce";
         const message = "Thank you for choosing LapShop Ecommerce. To update your password, please use the following One Time Password (OTP):"
-        sendOtpMail(email, cpOtp, subject, message);
-
-        return res.status(200).json({ message: "OTP sent successfully" });
+        const sendOtp = await sendOtpMail(email, cpOtp, subject, message);
+        if(sendOtp){
+            return res.status(200).json({ success : true, message : "OTP sent successfully." });
+        }else{
+            return res.status(400).json({ message : false, message : "OTP sending failed, please try again." });
+        }
     } catch (error) {
         return res.redirect('/errorPage')
     }
@@ -680,10 +715,14 @@ const postOtpForChangePass = async (req, res) => {
 const checkOtpForChangePass = async(req,res)=>{
     try{
         const enteredOtp = req.body.otp
+        if(!enteredOtp){
+            return res.status(400).json({ success : false, message : "Otp submition failed." });
+        }
+
         if (enteredOtp === cpOtp) {
-            return res.status(200).json({ message: "OTP matched" });
+            return res.status(200).json({ success : true, message : "Otp verified successfully" });
         } else {
-            return res.status(400).json({ message: "Incorrect OTP" });
+            return res.status(400).json({ success : false, message : "Please enter the correct otp." });
         }
     }catch(error){
         return res.redirect('/errorPage')
@@ -694,18 +733,31 @@ const checkOtpForChangePass = async(req,res)=>{
 const postUserNewPass = async (req, res) => {
     try {
         const { newPass, userId } = req.body;
+
+        if (!newPass) {
+            return res.status(400).json({ success : false, message: "Password submition failed." });
+        }
+
+        if (!userId) {
+            return res.status(400).json({ success : false, message: "User not found" });
+        }
+
         const user = await User.findById(userId);
 
         if (!user) {
-            return res.status(404).json({ message: "User not found" });
+            return res.status(404).json({ success : false, message: "User not found" });
         }
 
         const hashpassword = await bcrypt.hash(newPass, 10);
 
         user.password = hashpassword;
-        await user.save();
+        const saveUser = await user.save();
 
-        return res.status(200).json({ message: "Password updated successfully" });
+        if(saveUser){
+            return res.status(200).json({ success : true, message: "Password updated successfully" });
+        }else{
+            return res.status(500).json({ succes : false, message: "Password updation failed." });
+        }
     } catch (error) {
         return res.redirect('/errorPage')
     }
@@ -725,23 +777,31 @@ const getForgotPassword = async(req,res)=>{
 const postForgotPasswordEmail = async(req,res)=>{
     try{
         const email = req.body.email
+        if(!email){
+            return res.status(400).json({ success :false, message : "Email fetching error." })
+        }
         enteredEmail = email
         const user = await User.findOne({ email : email})
+
         if(!user){
-            return res.status(400).json({ message : "Email is not registered" })
+            return res.status(400).json({ success :false, message : "Email is not registered" })
         }else{
-            const fpOtp = generateOtp();
+            fpOtp = generateOtp();
+            console.log("fpotp : ",fpOtp)
 
             function clearSaveOtp() {
                 fpOtp = "";
             }
-            setTimeout(clearSaveOtp, 30000);
+            setTimeout(clearSaveOtp, 180000);
 
             const subject = "Your OTP for changing password at LapShop Ecommerce";
             const message = "Thank you for choosing LapShop Ecommerce. To change your password, please use the following One Time Password (OTP):"
-            sendOtpMail(email, fpOtp, subject, message);
-
-            return res.status(200).json({ message: "OTP has been sent to your email." });
+            const sendOtp = await sendOtpMail(email, fpOtp, subject, message);
+            if(sendOtp){
+                return res.status(200).json({ success : true, message: "OTP has been sent to your email." });
+            }else{
+                return res.status(400).json({ success : false, message : "Otp sending falied, please try again"})
+            }
         }
     }catch(error){
         return res.redirect('/errorPage')
@@ -752,13 +812,14 @@ const postForgotPasswordEmail = async(req,res)=>{
 const postForgotPasswordOtp = async(req,res)=>{
     try{
         const enteredOtp = req.body.otp
+
         if(!enteredOtp){
-            return res.status(400).json({ message : "Otp sending error"})
+            return res.status(400).json({ success : false, message : "Otp sending error"})
         }else{
             if(enteredOtp === fpOtp){
-                return res.status(200).json({ message : "Otp is verified" })
+                return res.status(200).json({ success : true, message : "Otp is verified" })
             }else{
-                return res.status(400).json({ message : "Invalid Otp" })
+                return res.status(400).json({ success : false , message : "Please enter the correct otp." , invalidOtp : true })
             }
         }
     }catch(error){
@@ -770,14 +831,17 @@ const postForgotPasswordOtp = async(req,res)=>{
 const postForgotPasswordNewPass = async (req, res) => {
     try {
         const { newPassword } = req.body; 
+        if(!newPassword){
+            return res.status(400).json({ success : false, message : "Password fetching error."})
+        }
      
         const user = await User.findOne({ email: enteredEmail });
         if (!user) {
-            return res.status(400).json({ message: "User not found" });
+            return res.status(400).json({success : false, message : "User not found" });
         } else {
             const hashpassword = await bcrypt.hash(newPassword, 10);
             if (!hashpassword) {
-                return res.status(500).json({ message: "Error hashing password" });
+                return res.status(500).json({ success : false, message : "Error hashing password" });
             }
             
             const updatePassword = await User.findOneAndUpdate(
@@ -787,9 +851,9 @@ const postForgotPasswordNewPass = async (req, res) => {
             );
             if (updatePassword) {
                 enteredEmail = ""
-                return res.status(200).json({ message: "Password reset successfully" });
+                return res.status(200).json({ success : true, message : "Password is reseted successfully" });
             } else {
-                return res.status(400).json({ message: "Error in password reset" });
+                return res.status(400).json({ success : false, message : "Error in password reset" });
             }
         }
     } catch (error) {

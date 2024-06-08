@@ -63,3 +63,7 @@ a{
 .btn-text{
     color: var(--third-color);
 }
+
+.prf-btn{
+    cursor: pointer;
+}

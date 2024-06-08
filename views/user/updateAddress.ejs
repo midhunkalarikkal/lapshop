@@ -305,6 +305,7 @@
                         pincode: document.getElementById('pincode').value,
                         country: document.getElementById('country').value
                     };
+                    try{
                         const response = await fetch(form.action, {
                             method: 'POST',
                             headers: {
@@ -319,13 +320,14 @@
                             data = await response.json();
                         } else {
                             window.location.href = `/login`;
+                            return;
                         }
 
-                        if (response.ok) {
+                        if (data.success) {
                             swal.fire({
                                 icon: 'success',
-                                title: 'OTP Sent',
-                                text: 'Your address updated successfully!',
+                                title: 'Success',
+                                text: data.message || 'Address updated successfully!',
                                 showConfirmButton: true,
                                 confirmButtonText: "Ok"
                             }).then((result) => {
@@ -337,17 +339,27 @@
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Error!',
-                                text: 'Failed to update your address.',
+                                text: data.message || 'Failed to update address.',
                                 timer: 3000,
                                 timerProgressBar: true,
                                 showConfirmButton: false
                             });
                         }
-                } else {
-                    Swal.fire({
+                    }catch(error){
+                        Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: "Internal server error",
+                        text: "Internal server error.",
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                    }
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Form fields',
+                        text: "Please check all fields are correct.",
                         timer: 3000,
                         timerProgressBar: true,
                         showConfirmButton: false
