@@ -19,13 +19,12 @@
                             <% if(userData !="" ){ %>
                                 <div class="col-md-4 gradient-custom text-center text-white d-flex flex-column align-items-center">
                                     <% if(userData.profileimage ) { %>
-                                        <img src="../../static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
+                                        <img src="../../static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3" style="width: 150px; height: 150px;" />
+                                        <a onclick="deletePI()" class="text-danger mb-3 mb-md-0 prf-btn">Remove picture</a>
                                     <% }else{ %>
                                         <img src="../../static/images/icons/No profile image.jpg" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
                                     <% } %>
-                                    <div class="name-date mt-2">
-                                        <h5>Hi, <span> <%= userData.fullname %> </span></h5>
-                                    </div>  
+                                    
                                     <div class="extra-btns d-flex flex-column my-auto d-none d-md-block" style="width: 75%;">
                                         <% if(userData.profileimage ) { %>
                                             <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
@@ -443,6 +442,67 @@
     <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
+        ////// To delete the profile image \\\\\\
+        async function deletePI(button){
+            const confirmation = await swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover your profile image!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, delete it!',
+                cancelButtonText: 'No, cancel!',
+                reverseButtons: true
+            });
+
+            if (confirmation.isConfirmed) {
+                try {
+                    const response = await fetch('/deleteUserProfileImage', {
+                        method: 'DELETE'
+                    });
+
+                    const contentType = response.headers.get('content-type');
+                    let data;
+                    if (contentType && contentType.includes('application/json')) {
+                        data = await response.json();
+                    } else {
+                        window.location.href = '/login'
+                        return;
+                    }
+
+                    if (data.success) {
+                        swal.fire({
+                            icon: 'success',
+                            title: 'Success',
+                            text: 'Profile image deleted successfully!',
+                            showConfirmButton: true,
+                            confirmButtonText: "Ok"
+                        }).then((result)=>{
+                            if(result.isConfirmed){
+                                location.reload()
+                            }
+                        })
+                    } else {
+                        swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'Failed to delete profile image!',
+                            showConfirmButton: true,
+                            confirmButtonText: "Ok"
+                        });
+                    }
+                } catch (error) {
+                    swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Internal server error, Please try again later.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                    });
+                }
+            }
+        }
 
         ////// To copy the referal code \\\\\\
         function copyReferal() {

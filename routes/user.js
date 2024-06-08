@@ -53,6 +53,8 @@ userRouter.post('/sendOtpForPass',userAuth.isLoggedIn,userAuth.isBlocked,userCon
 userRouter.post('/submitOtp',userAuth.isLoggedIn,userAuth.isBlocked,userController.checkOtpForChangePass)
 //To update the changed password from profile
 userRouter.post('/updatePassword',userAuth.isLoggedIn,userAuth.isBlocked,userController.postUserNewPass)
+//To delete the profile image
+userRouter.delete('/deleteUserProfileImage',userAuth.isLoggedIn,userAuth.isBlocked,userController.delteUserProfileImage)
 
 
 //To get the forgot password page from login form

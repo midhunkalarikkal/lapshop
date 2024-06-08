@@ -56,10 +56,6 @@ a{
     color: var(--third-color);
 }
 
-.card-body{
-    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-}
-
 .btn-text{
     color: var(--third-color);
 }
@@ -67,3 +63,5 @@ a{
 .prf-btn{
     cursor: pointer;
 }
+
+

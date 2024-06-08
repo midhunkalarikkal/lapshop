@@ -428,6 +428,48 @@ const postUserProfileImage = async(req,res)=>{
     }
 }
 
+//To delete user profile image
+const delteUserProfileImage = async(req,res)=>{
+    try{
+        const userId = req.session.user._id
+        const user = await User.findById(userId)
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: 'User not found.' });
+        }
+
+        if (!user.profileimage) {
+            return res.status(400).json({ success: false, message: 'User does not have a profile image.' });
+        }
+
+        const existingImage = user.profileimage;
+        const imagePath = path.join(__dirname, "../public/images/UserProfile", existingImage);
+
+        if (!fs.existsSync(imagePath)) {
+            return res.status(404).json({ success: false, message: 'Profile image not found.' });
+        }
+
+        try {
+            fs.unlinkSync(imagePath);
+            if (fs.existsSync(imagePath)) {
+                throw new Error('Failed to delete profile image');
+            }
+        } catch (error) {
+            return res.status(500).json({ success: false, message: 'Failed to delete profile image.' });
+        }
+
+        const updateUserImage = await User.findByIdAndUpdate(userId, { profileimage: "" });
+        if (updateUserImage) {
+            return res.status(200).json({ success: true, message: 'Profile image deleted successfully.' });
+        } else {
+            return res.status(500).json({ success: false, message: 'Failed to update user profile.' });
+        }
+        
+    }catch(error){
+        return res.redirect('/errorPage')
+    }
+}
+
 //To get the shop page
 const getUserShop = async(req,res)=>{
     try{
@@ -1035,6 +1077,7 @@ module.exports = {
     getUserProfile,
     postUserUpdatedInfo,
     postUserProfileImage,
+    delteUserProfileImage,
     getUserShop,
     postUserAddress,
     postAddressDelete,
