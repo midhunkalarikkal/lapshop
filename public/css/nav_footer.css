@@ -164,14 +164,12 @@ p,
 
 /*======> Footer start <======*/
 .footer-section h6 {
-    font-size: 14px;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     color: var(--sixth-color);
 }
 
 .footer-section p {
     margin-bottom: 1px;
-    font-size: 13px;
     font-family: Arial, Helvetica, sans-serif;
     color: var(--secondary-color);
 }
@@ -218,6 +216,18 @@ p,
     .navbar-nav {
         margin-top: 1rem;
     }
+
+    .footer-section h1 {
+        font-size: 15px;
+    }
+
+    .footer-section h6 {
+        font-size: 11px;
+    }
+    
+    .footer-section p {
+        font-size: 9px;
+    }
 }
 
 /*======> XS/SM devices <======*/
@@ -230,6 +240,18 @@ p,
     .navbar-nav {
         margin-top: 1rem;
     }
+
+    .footer-section h1 {
+        font-size: 17px;
+    }
+
+    .footer-section h6 {
+        font-size: 12px;
+    }
+    
+    .footer-section p {
+        font-size: 10px;
+    }
 }
 
 /*======> MD devices <======*/
@@ -238,6 +260,19 @@ p,
     #screen-size::before {
         content: "Medium (md)";
     }
+
+    .footer-section h1 {
+        font-size: 20px;
+    }
+
+    .footer-section h6 {
+        font-size: 13px;
+    }
+    
+    .footer-section p {
+        font-size: 11px;
+    }
+    
 }
 
 /*======> LG devices <======*/
@@ -250,6 +285,18 @@ p,
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
+    }
+
+    .footer-section h1 {
+        font-size: 22px;
+    }
+
+    .footer-section h6 {
+        font-size: 15px;
+    }
+    
+    .footer-section p {
+        font-size: 13px;
     }
 
     .copyright{
@@ -266,14 +313,22 @@ p,
         content: "Extra Large (xl)";
     }
 
-    /*Navbar start*/
-
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
     }
 
-    /*Navbar end*/
+    .footer-section h1 {
+        font-size: 24px;
+    }
+
+    .footer-section h6 {
+        font-size: 15px;
+    }
+    
+    .footer-section p {
+        font-size: 13px;
+    }
 
     .copyright{
         font-size: 14px;
