@@ -3,10 +3,10 @@ const isAdminLoggedIn = async (req, res, next) => {
         if(req.session.adminData){
             return next()
         }else{
-            return res.redirect('/admin/')
+            return res.redirect(`/admin/`)
         }
     } catch (error) {
-        res.status(500).send("Internal Server Error.");
+        return res.redirect('/admin/adminErrorPage')
     }
 };
 
@@ -15,10 +15,11 @@ const isAdminLogout = async(req,res,next)=>{
         if(req.session.adminData){
             res.redirect('/admin/home')
         }else{
+            console.log("Logoutting one")
             next()
         }
     } catch (error) {
-        console.log(error);
+        return res.redirect('/admin/adminErrorPage')
     }
 }
 

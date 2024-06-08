@@ -438,7 +438,7 @@ const getAdminLogout = async (req, res) => {
             if (err) {
                 return res.redirect('/admin/adminErrorPage');
             }
-            return res.redirect('/admin/')
+            return res.redirect(`/admin/`)
         })
     } catch (error) {
         return res.redirect('/admin/adminErrorPage')

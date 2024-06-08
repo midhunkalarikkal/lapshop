@@ -29,6 +29,7 @@
                     <div class="input-field">
                         <input type="text" class="input" id="email" name="email" required oninput="validateEmail()">
                         <label for="email">Email</label>
+                        <span id="emailError" class="input-error" style="color: #f82b50;"></span>
                     </div>
                     <div class="input-field">
                         <input type="password" class="input" id="password" name="password" required>
@@ -58,64 +59,12 @@
     </section>
 
     <!-- script for the bootstrap -->
+    <script src="/static/scripts/admin_login.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-    </script>
-
-    <script>
-
-        ////// To validate the email \\\\\\
-        function validateEmail() {
-                var emailInput = document.getElementById("email");
-                var email = emailInput.value;
-                var emailRegex = /^[^\s@]+@gmail\.com$/;
-                if (!email) {
-                    emailInput.classList.remove("invalid-email");
-                    document.getElementById('emailError').innerText = "";
-                    document.getElementById('email-input').classList.remove('mb-3');
-                    return false;
-                }
-                if (!emailRegex.test(email)) {
-                    emailInput.classList.add("invalid-email");
-                    document.getElementById('emailError').innerText = "Invalid email"
-                    document.getElementById('email-input').classList.add('mb-3');
-                    return false;
-                }else {
-                    emailInput.classList.remove("invalid-email");
-                    document.getElementById('emailError').innerText = ""
-                    document.getElementById('email-input').classList.remove('mb-3');
-                    return true;
-                }
-            }
-
-            ////// Alert script \\\\\\
-            var alertElement = document.getElementById('myAlert');
-            if (alertElement) {
-                function hideAlert(){
-                    alertElement.style.transition = "opacity 1s";
-                    alertElement.style.opacity = "0";
-                    setTimeout(function () {
-                        alertElement.style.display = "none";
-                    }, 1000);
-                }
-                setTimeout(hideAlert, 3000);
-            }
-            
-            ////// For showing the password \\\\\\
-            function showpassword() {
-            var checkbox = document.getElementById("showPasswordCheckbox");
-            var passwordInput = document.getElementById("password");
-            
-            if (checkbox.checked) {
-                passwordInput.type = "text";
-            } else {
-                passwordInput.type = "password";
-            }
-        }
-
     </script>
     
 </body>
