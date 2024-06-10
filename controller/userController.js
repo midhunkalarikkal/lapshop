@@ -478,6 +478,7 @@ const getUserShop = async(req,res)=>{
         const adCarousel = await AdCarousel.find({ isBlocked: false });
         const category = await Category.find({ isBlocked : false})
         const brand = await Brand.find({ isBlocked : false})
+
         let categoryId = []
         let brandId = []
         let wishlistProdId = []
@@ -501,7 +502,7 @@ const getUserShop = async(req,res)=>{
 
         const page = parseInt(req.query.page) || 1;  
         const limit = 6; 
-
+        
         return res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId, totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
@@ -607,9 +608,9 @@ const getCatProduct = async(req,res)=>{
             }else if(sortCriteria === "lowToHigh"){
                 productData.sort((a,b) => a.offerPrice - b.offerPrice)
             }else if(sortCriteria === "ascending"){
-                productData.sort((a,b) => a.name.localeCompare(b.name))
+                productData.sort((a,b) => a.brand.name.localeCompare(b.name))
             }else if(sortCriteria === "descending"){
-                productData.sort((a,b) => b.name.localeCompare(a.name))
+                productData.sort((a,b) => b.brand.name.localeCompare(a.name))
             }
 
             return res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})

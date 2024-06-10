@@ -148,3 +148,7 @@
         font-size: small;
     }
 }
+
+.card-body{
+    padding-bottom: 0;
+}

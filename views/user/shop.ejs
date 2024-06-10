@@ -15,7 +15,7 @@
                         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Filters and sorters</a>
                         <ul class="dropdown-menu">
                             <% if(category && category.length>0 ){ %>
-                                <li><a class="dropdown-item" href="#">Filter by category <i class="fa-solid fa-angles-down"></i> </a>
+                                <li><a class="dropdown-item" href="#">Filter by category <i class="fa-solid fa-angle-down"></i> </a>
                                     <ul class="submenu dropdown-menu">
                                         <% for(let i=0; i < category.length; i++){ %>
                                             <li>
@@ -35,7 +35,7 @@
                                 </li>
                             <% } %>
                             <% if(brand && brand.length>0 ){ %>
-                                <li><a class="dropdown-item" href="#"> Filter by brand <i class="fa-solid fa-angles-down"></i> </a>
+                                <li><a class="dropdown-item" href="#"> Filter by brand <i class="fa-solid fa-angle-down"></i> </a>
                                     <ul class="submenu dropdown-menu">
                                         <% for(let i=0; i < brand.length; i++){ %>
                                             <li>
@@ -50,7 +50,7 @@
                                     </ul>
                                 </li>
                             <% } %>
-                            <li><a class="dropdown-item" href="#"> Sort by price <i class="fa-solid fa-angles-down"></i></a>
+                            <li><a class="dropdown-item" href="#"> Sort by price <i class="fa-solid fa-angle-down"></i></a>
                                 <ul class="submenu dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="#">
@@ -179,6 +179,12 @@
                         <div class="row pb-3" id="productCardRow">
                             <% const currentPageProducts = productData.slice((currentPage - 1) * productsPerPage,currentPage * productsPerPage); %>
                             <% currentPageProducts.forEach((product,index)=>{ %>
+                                <% 
+                                    const currentDate = new Date();
+                                    const fiveDaysAgo = new Date(currentDate);
+                                    fiveDaysAgo.setDate(currentDate.getDate() - 5);
+                                    const isNewProduct = new Date(product.created) >= fiveDaysAgo;
+                                %>   
                                 <div class="col-lg-4 col-md-6 col-sm-6 col-6 pb-1">
                                     <div class="card product-item mb-4 product-card shadow">
                                         <a href="/productDetail/<%= product._id %>" class="product-outline">
@@ -188,7 +194,7 @@
                                                     <% for(let i=0; i < wishlistProdId.length; i++){ %>
                                                         <% if(wishlistProdId[i]==product._id.toString()){ %>
                                                             <a href="#" class="position-absolute"
-                                                                style="top: 8px; right: 50px; z-index: 1;"
+                                                                style="top: 8px; right: 10px; z-index: 1;"
                                                                 data-product-id="<%= product._id %>"
                                                                 onclick="addToWishlist(this)">
                                                                 <i class="fa-solid fa-heart wish-btn"></i>
@@ -197,19 +203,20 @@
                                                     <% } %>
                                                 <% } %>
                                                 <a href="#" class="position-absolute"
-                                                    style="top: 8px; right: 50px; z-index: 1;"
+                                                    style="top: 8px; right: 10px; z-index: 1;"
                                                     data-product-id="<%= product._id %>"
                                                     onclick="addToWishlist(this)">
                                                     <i class="fa-regular fa-heart wish-btn"></i>
-                                                </a>
-                                                <div class="position-absolute" style="top: 5px; right: 5px; z-index: 1;">
-                                                    <span class="badge">New</span>
-                                                </div>
+                                                </a>                    
                                             </div>
                                         </a>
                                         <div class="card-body">
                                             <h6 class="product-name tet-center mb-2">
+                                                <%= product.brand.name %>
                                                 <%= product.name %>
+                                                <% if (isNewProduct){ %>                         
+                                                    <span class="badge">New</span>
+                                                <% } %>
                                             </h6>
                                             <div class="d-flex align-items-center">                         
                                                 <h5 class="offer-price">₹<%= product.offerPrice %></h5>
@@ -388,29 +395,37 @@
                 let cartProdId = data.cartProdId
                 updatePaginationUI(totalPages);
 
+                const currentDate = new Date();
+                const fiveDaysAgo = new Date(currentDate);
+                fiveDaysAgo.setDate(currentDate.getDate() - 5);
+
                 ////// Emptying the child elements of the productCardRow div \\\\\\
                 $("#productCardRow").empty()
 
                 productData.forEach((product) => {
+                    const isNewProduct = new Date(product.created) >= fiveDaysAgo;
                     const productDiv = $(
                         `<div class='col-lg-4 col-md-6 col-sm-6 col-6 pb-1'>
                             <div class='card product-item mb-4 product-card shadow'>
                                 <a href='/productDetail/${product._id}' class='product-outline'>
                                     <div class='card-header product-img position-relative overflow-hidden  p-0'>
                                         <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
-
-                                        <div class='position-absolute' style='top: 5px; right: 5px; z-index: 1;'>
-                                            <span class='badge'>New</span>
-                                        </div>
+                                        
                                     </div>
                                     <div class='card-body'>
-                                        <h6 class='product-name mb-2'> ${product.name}</h6>
+                                        <h6 class='product-name mb-2'> 
+                                            ${product.brand.name}
+                                            ${product.name}
+                                            `+
+                                            (isNewProduct ? `<span class='badge'>New</span>` : '')
+                                            +`
+                                        </h6>
                                         <div class='d-flex align-items-center'>
                                             <h5 class='offer-price'>₹${product.offerPrice}</h5>
                                             <h6 class='offer-price text-danger mx-2'>₹${product.discountPercentage}%</h6>
-                                            <h6 class='real-price small mx-2 d-none d-md-block'>₹<del class='real-price'>${product.realPrice}</del></h6>
+                                            <h6 class='real-price small mx-2 d-none d-md-block'>M.R.P ₹<del class='real-price'>${product.realPrice}</del></h6>
                                             </div>
-                                        <h6 class='real-price small mx-2 d-block d-md-none'>₹<del class='real-price'>${product.realPrice}</del></h6>
+                                        <h6 class='real-price small mx-2 d-block d-md-none'>M.R.P ₹<del class='real-price'>${product.realPrice}</del></h6>
                                     </div>
                                 </a>
                                 
@@ -424,7 +439,7 @@
                         for (let i = 0; i < prodId.length; i++) {
                             if (prodId[i] == product._id.toString()) {
                                 const wishlistButton = $(`
-                                    <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
+                                    <a href="#" class="position-absolute" style="top: 8px; right: 10px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
                                         <i class="fa-solid fa-heart wish-btn"></i> 
                                     </a>
                                 `);
@@ -434,7 +449,7 @@
                     }
 
                     const defaultWishlistButton = $(`
-                        <a href="#" class="position-absolute" style="top: 8px; right: 50px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
+                        <a href="#" class="position-absolute" style="top: 8px; right: 10px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
                             <i class="fa-regular fa-heart wish-btn"></i> 
                         </a>
                     `);
