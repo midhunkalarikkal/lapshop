@@ -600,8 +600,8 @@ const getAdminProducts = async(req,res)=>{
 // To get the Admin New Product adding page
 const getAdminAddProduct = async(req,res)=>{
     try{
-        const categories = await Category.find()
-        const brands = await Brand.find()
+        const categories = await Category.find({ isBlocked: false })
+        const brands = await Brand.find({ isBlocked: false })
         return res.render('admin/adminAddProduct',{ categories , brands , productAdded : false , productExists : false , error : false })
     }catch(error){
         return res.redirect('/admin/adminErrorPage')
@@ -675,8 +675,8 @@ const adminEditProduct = async(req,res)=>{
     try {
         const productId = req.params.productId;
         const product = await Product.findById(productId);
-        const categories = await Category.find()
-        const brands = await Brand.find()
+        const categories = await Category.find({ isBlocked: false })
+        const brands = await Brand.find({ isBlocked: false })
 
         return res.render('admin/adminEditProduct',{ productAdded : false , productExists : false , error : false,product , categories , brands })
     } catch (error) {
