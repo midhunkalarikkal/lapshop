@@ -70,17 +70,6 @@ p,
     --btnHover-color: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
-#screen-size {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 5px;
-    z-index: 9999;
-}
-
-
 /*======> Section view <======*/
 .view{
     min-height: 100vh;
@@ -209,10 +198,6 @@ p,
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
 
-    #screen-size::before {
-        content: "Extra Small (xs)";
-    }
-
     .navbar-nav {
         margin-top: 1rem;
     }
@@ -233,10 +218,6 @@ p,
 /*======> XS/SM devices <======*/
 @media (min-width: 576px) and (max-width: 767px) {
 
-    #screen-size::before {
-        content: "Small (sm)";
-    }
-
     .navbar-nav {
         margin-top: 1rem;
     }
@@ -256,10 +237,6 @@ p,
 
 /*======> MD devices <======*/
 @media (min-width: 768px) and (max-width: 991px) {
-    
-    #screen-size::before {
-        content: "Medium (md)";
-    }
 
     .footer-section h1 {
         font-size: 20px;
@@ -277,10 +254,6 @@ p,
 
 /*======> LG devices <======*/
 @media (min-width: 992px) and (max-width: 1199px) {
-    
-    #screen-size::before {
-        content: "Large (lg)";
-    }
     
     .nav-item {
         margin-left: 1rem;
@@ -308,10 +281,6 @@ p,
 
 /*======> XL devices <======*/
 @media (min-width: 1200px) {
-
-    #screen-size::before {
-        content: "Extra Large (xl)";
-    }
 
     .nav-item {
         margin-left: 1rem;

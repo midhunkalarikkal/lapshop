@@ -27,7 +27,7 @@
     text-align: left;
 }
 
-  /*======> Very small devices <======*/
+/*======> Very small devices <======*/
 @media (max-width: 576px) {
     .dataTables_wrapper .dataTables_info {
         font-size: .8rem;

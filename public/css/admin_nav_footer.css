@@ -62,17 +62,6 @@ p,
     --sixth-color: #e4e4e4;
 }
 
-
-#screen-size {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 5px;
-    z-index: 9999;
-}
-
 /*======> Page container div <======*/
 #page-container {
     display: flex;
@@ -191,10 +180,6 @@ p,
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
     
-    #screen-size::before {
-        content: "Extra Small (xs)";
-    }
-    
     .navbar-nav {
         margin-top: 1rem;
     }
@@ -203,10 +188,6 @@ p,
 /*======> XS / SM devices <======*/
 @media (min-width: 576px) and (max-width: 767px) {
     
-    #screen-size::before {
-        content: "Small (sm)";
-    }
-    
     .navbar-nav {
         margin-top: 1rem;
     }
@@ -214,39 +195,26 @@ p,
 
 /*======> MD devices <======*/
 @media (min-width: 768px) and (max-width: 991px) {
-    
-    #screen-size::before {
-        content: "Medium (md)";
-    }
+    /* no code */
 }
 
 /*======> LG devices <======*/
 @media (min-width: 992px) and (max-width: 1199px) {
     
-    #screen-size::before {
-        content: "Large (lg)";
-    }
-    
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
-    }
-    
+    }  
 }
 
 
 /*======> XL devices <======*/
 @media (min-width: 1200px) {
     
-    #screen-size::before {
-        content: "Extra Large (xl)";
-    }
-    
     .nav-item {
         margin-left: 1rem;
         margin-right: 1rem;
     }
-    
 }
 
 /*======> side box in admin panel <======*/
