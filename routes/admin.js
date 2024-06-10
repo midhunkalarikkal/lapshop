@@ -30,7 +30,7 @@ adminRouter.get("/category",adminAuth.isAdminLoggedIn,adminController.getAdminCa
 adminRouter.post('/addCategory',adminAuth.isAdminLoggedIn,upload.single('categoryImg'),adminController.adminAddNewCategory)
 adminRouter.post('/blockCategory:categoryId',adminAuth.isAdminLoggedIn,adminController.adminBlockCategory)
 adminRouter.get('/categoryEdit/:categoryId',adminAuth.isAdminLoggedIn,adminController.getCategoryForEditing)
-adminRouter.post('/update/:categoryId',adminAuth.isAdminLoggedIn,upload.single('categoryImg'),adminController.updateCategory)
+adminRouter.post('/updateCategory',adminAuth.isAdminLoggedIn,upload.single('categoryImage'),adminController.updateCategory)
 
 adminRouter.get('/products',adminAuth.isAdminLoggedIn,adminController.getAdminProducts)
 adminRouter.get('/adminAddProduct',adminAuth.isAdminLoggedIn,adminController.getAdminAddProduct)

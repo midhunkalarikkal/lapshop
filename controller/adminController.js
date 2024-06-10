@@ -485,15 +485,23 @@ const getAdminCategory = async (req, res) => {
 const adminAddNewCategory = async (req, res) => {
     try {
         const { categoryName, categoryDesc } = req.body;
+        if(!categoryName){
+            return res.status(400).json({ success : false, message : "Data adding error." });
+        }
+
+        if(!categoryDesc){
+            return res.status(400).json({ success : false, message : "Data adding error." });
+        }
+
         if (!req.file) {
-            return res.status(400).json({ message : "No image uploaded" });
+            return res.status(400).json({ success : false, message : "No image uploaded" });
         }
             
         const existingCategory = await Category.findOne({ name: { $regex: new RegExp(`^${categoryName}$`, "i") } });
         if (existingCategory) {
             const imagePath = path.join(__dirname, "../public/images/CategoryImages", req.file.filename);
             fs.unlinkSync(imagePath);
-            return res.status(409).json({ message : "Category already exists" });
+            return res.status(409).json({ success : false, message : "Category already exists" });
         }
 
         const newCategory = new Category({
@@ -501,24 +509,32 @@ const adminAddNewCategory = async (req, res) => {
             desc: categoryDesc,
             image: req.file.filename
         });
+
         const savedCategory = await newCategory.save();
-        return res.status(201).json({ message: "Category created successfully", data: savedCategory });
+        if(savedCategory){
+            return res.status(200).json({ success : true, message: "Category created successfully" });
+        }else{
+            return res.status(500).json({ success : false, message: "Category created successfully" });
+        }
     } catch (error) {
         return res.redirect('/admin/adminErrorPage')
     }
 }
-
 
 // To block a category
 const adminBlockCategory = async (req, res) => {
     try {
         let category = await Category.findById({ _id: req.params.categoryId })
         if (!category) {
-            return res.status(404).json({ success: false, message: "Category not found" })
+            return res.status(400).json({ success: false, message: "Category not found" })
         } else {
             category.isBlocked = req.body.blockStatus === 'block';
-            await category.save();
-            return res.json({ success: true });
+            const saveCategory =  await category.save();
+            if(saveCategory){
+                return res.status(200).json({ success: true, message : "Category status changed successfully." });
+                }else{
+                return res.status(500).json({ success: false, message : "Category status changing error." });
+            }
         }
     } catch (error) {
         return res.redirect('/admin/adminErrorPage')
@@ -539,15 +555,16 @@ const getCategoryForEditing = async (req, res) => {
 // To update the category
 const updateCategory = async (req, res) => {
     try {
-        const { categoryName, categoryDesc } = req.body;
-        const categoryId = req.params.categoryId;
-        if(!categoryId){
-            return res.status(404).json({ error: "Category not found" });
+        const { categoryId, categoryName, categoryDesc } = req.body;
+        console.log("req.body :",req.body)
+        console.log("req.file :",req.file)
+        if (!categoryId || !categoryName || !categoryDesc) {
+            return res.status(400).json({ success: false, message: "Form data fetching error." });
         }
 
         const existingCategory = await Category.findById(categoryId);
         if (!existingCategory) {
-            return res.status(404).json({ error: "Category not found" });
+            return res.status(400).json({ success : false, message: "Category not found" });
         }else{
             const oldImageFilename = existingCategory.image;
             if (req.file) {
@@ -558,8 +575,12 @@ const updateCategory = async (req, res) => {
              
             existingCategory.name = categoryName;
             existingCategory.desc = categoryDesc;
-            await existingCategory.save();
-            res.redirect('/admin/category')
+            const updateCategory = await existingCategory.save();
+            if(updateCategory){
+                return res.status(200).json({ success : true, message : "Category updated successfully."})
+            }else{
+                return res.status(500).json({ success : false, message : "Category updating failed."})
+            }
         }
     } catch (error) {
         return res.redirect('/admin/adminErrorPage')

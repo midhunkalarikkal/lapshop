@@ -10,7 +10,8 @@
     <section class="view">
         <div class="container d-flex align-items-center justify-content-center">
             <div class="main col-12 col-lg-10">
-                <form action="/admin/update/<%= category._id %>" method="POST" enctype="multipart/form-data">
+                <!-- /admin/update/<%= category._id %> -->
+                <form enctype="multipart/form-data">
                     <div class="p-5">
                         <div class="input-box d-md-flex">
                             <div class="col-12 col-md-8">
@@ -28,8 +29,8 @@
                                       <input type="file" class="form-control" name="categoryImg" id="categoryImage" onchange="displayImage()">
                                 </div>
                                 <div class="mt-4 d-md-block d-none">
-                                    <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <button class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                    <button onclick="updateCategory(event,this)" data-catId="<%= category._id %>" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 d-flex flex-md-column align-items-center justify-content-md-center">
@@ -43,8 +44,8 @@
                                 </div>
                             </div>
                             <div class="mt-4 d-block d-md-none">
-                                <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                <button onclick="updateCategory(event,this)" data-catId="<%= category._id %>" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -74,10 +75,69 @@
            }
        }
 
+       ////// To update category \\\\\\
+       async function updateCategory(event,button) {
+            event.preventDefault()
+            const categoryId = button.getAttribute("data-catId");
+            const categoryName = document.getElementById("categoryName").value;
+            const categoryDesc = document.getElementById("CategoryDescription").value;
+            const categoryImage = document.getElementById("categoryImage").files[0];
+
+            console.log("category id : ",categoryId)
+            console.log("categoryName : ",categoryName)
+            console.log("categoryDesc : ",categoryDesc)
+            console.log("categoryImage : ",categoryImage)
+
+            const formData = new FormData();
+            formData.append("categoryId", categoryId);
+            formData.append("categoryName", categoryName);
+            formData.append("categoryDesc", categoryDesc);
+            formData.append("categoryImage", categoryImage);
+
+            try {
+                const response = await fetch("/admin/updateCategory", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message || 'Category updated successfully.',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = "/admin/category"
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message || 'An unexpected error occurred. Please try again.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Network error. Please try again.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+        }
+
         ////// Cancel button goBack function \\\\\\
         function goBack() {
             window.location.href = '/admin/category'
         }
+
     </script>
 
 <!-- Admin foter -->

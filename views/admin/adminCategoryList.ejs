@@ -114,42 +114,23 @@
                     body: formData
                 });
 
-                if (response.ok) {
-                    const data = await response.json();
+                const data = await response.json();
+                $('#exampleModal').modal('hide');
+                if (data.success) {
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: data.message,
+                        text: data.message || 'Category added successfully.',
                         showConfirmButton: true,
                         confirmButtonText: 'OK'
                     }).then(() => {
-                        $('#exampleModal').modal('hide');
-                    });
-                } else if (response.status === 400) {
-                    const errorData = await response.json();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: errorData.message,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
-                    });
-                }else if (response.status === 409) {
-                    const errorData = await response.json();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: errorData.message,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        showConfirmButton: false
+                        location.reload()
                     });
                 } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Error!',
-                        text: 'An unexpected error occurred. Please try again.',
+                        text: data.message || ' Category adding error.',
                         timer: 3000,
                         timerProgressBar: true,
                         showConfirmButton: false
@@ -198,13 +179,23 @@
                             }
                         })
                         .then(data => {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success!',
-                                text: 'Category block status has been updated.',
-                                showConfirmButton: true,
-                                confirmButtonText: 'OK'
-                            });
+                            if(data.success){
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message || 'Category block status has been updated.',
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'OK'
+                                });
+                            }else{
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success!',
+                                    text: data.message || 'Category block status has been updated.',
+                                    showConfirmButton: true,
+                                    confirmButtonText: 'OK'
+                                });
+                            }
                         })
                         .catch(error => {
                             Swal.fire({
