@@ -556,9 +556,9 @@ const getCatProduct = async(req,res)=>{
         } else if (sortCriteria === "lowToHigh") {
             productData.sort((a, b) => a.offerPrice - b.offerPrice);
         } else if (sortCriteria === "ascending") {
-            productData.sort((a, b) => a.name.localeCompare(b.brand.name));
+            productData.sort((a, b) => a.name.localeCompare(b.name));
         } else if (sortCriteria === "descending") {
-            productData.sort((a, b) => b.name.localeCompare(a.brand.name));
+            productData.sort((a, b) => b.name.localeCompare(a.name));
         }
 
         const totalProducts = await Product.countDocuments(query);
