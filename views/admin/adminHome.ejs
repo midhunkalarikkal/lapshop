@@ -84,51 +84,9 @@
 
             <div class="third mt-3 shadow p-3">
                 <h4>Best selling</h4>
-                <div class="row d-none d-md-block">
-                    <div class="table-responsive">
-                        <table class="table table-stripped border">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Count</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% bsProds.forEach(product => { %>
-                                <tr>
-                                    <td><%= product.name %></td>
-                                    <td><%= product.count %></td>
-                                </tr>
-                                <% }) %>   
-                        
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Count</th>
-                                </tr>
-                                <% bsCats.forEach(category => { %>
-                                <tr>
-                                    <td><%= category.category %></td>
-                                    <td><%= category.count %></td>
-                                </tr>
-                                <% }) %>
-                        
-                                <tr>
-                                    <th>Brand</th>
-                                    <th>Count</th>
-                                </tr>
-                                <% bsBrands.forEach(brand => { %>
-                                <tr>
-                                    <td><%= brand.brand %></td>
-                                    <td><%= brand.count %></td>
-                                </tr>
-                                <% }) %>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <div class="d-flex flex-column flex-md-row justify-content-md-around d-block d-md-none">
+                <div class="d-flex flex-column flex-md-row justify-content-md-around">
                     <div id="productList">
-                        <table class="table text-center table-striped p-1 border">
+                        <table class="table text-center table-light table-hover p-1 border">
                             <thead>
                                 <tr>
                                     <th>Product Name</th>
@@ -146,7 +104,7 @@
                         </table>
                     </div>
                     <div id="categoryList">
-                        <table class="table text-center table-striped p-1 border">
+                        <table class="table text-center table-light table-hover p-1 border">
                             <thead>
                                 <tr>
                                     <th>Category Name</th>
@@ -164,7 +122,7 @@
                         </table>
                     </div>
                     <div id="brandList">
-                        <table class="table text-center table-striped p-1 border">
+                        <table class="table text-center table-light table-hover p-1 border">
                             <thead>
                                 <tr>
                                     <th>Brand Name</th>
