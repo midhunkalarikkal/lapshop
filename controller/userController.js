@@ -597,7 +597,7 @@ const getCatProduct = async(req,res)=>{
             }
 
             productData = await Product.find(query).skip(skip).limit(perPage)
-            const totalProducts = productData.length
+            const totalProducts = await Product.countDocuments(query)
             const totalPages = Math.ceil(totalProducts / perPage);
                 
             if(sortCriteria === "highToLow"){
