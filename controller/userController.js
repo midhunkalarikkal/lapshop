@@ -605,9 +605,9 @@ const getCatProduct = async(req,res)=>{
             }else if(sortCriteria === "lowToHigh"){
                 productData.sort((a,b) => a.offerPrice - b.offerPrice)
             }else if(sortCriteria === "ascending"){
-                productData.sort((a,b) => a.brand.name.localeCompare(b.name))
+                productData.sort((a,b) => a.name.localeCompare(b.name))
             }else if(sortCriteria === "descending"){
-                productData.sort((a,b) => b.brand.name.localeCompare(a.name))
+                productData.sort((a,b) => b.name.localeCompare(a.name))
             }
 
             return res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
