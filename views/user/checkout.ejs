@@ -68,7 +68,7 @@
                                                 <h6 class="mx-2 mt-2">
                                                     <%= address.name %>
                                                 </h6>
-                                                <button class="btn btn-sm"
+                                                <button class="btn btn-sm edit-address-btn"
                                                     id="edit-address" data-adId="<%= address._id %>"> 
                                                     <i class="fa-regular fa-pen-to-square"></i>
                                                 </button>
@@ -159,10 +159,12 @@
         });
 
         ////// To go to edit address page \\\\\\
-        document.getElementById('edit-address').addEventListener("click", function () {
+        document.querySelectorAll('.edit-address-btn').forEach(button => {
+            button.addEventListener('click', function () {
             const addressId = this.dataset.adid;
-            window.location.href = `/editAddressFromCheckout/${addressId}`;
-        })
+            window.location.href = `/editAddressFromCheckout/${addressId}`; 
+            });
+        });
 
         ////// To go to payment \\\\\\
         function goToPayment(event){
