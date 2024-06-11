@@ -596,9 +596,7 @@ const getCatProduct = async(req,res)=>{
                 };
             }
 
-            productData = await Product.find(query).skip(skip).limit(perPage)
-            const totalProducts = await Product.countDocuments(query)
-            const totalPages = Math.ceil(totalProducts / perPage);
+            productData = await Product.find(query);
                 
             if(sortCriteria === "highToLow"){
                 productData.sort((a,b) => b.offerPrice - a.offerPrice)
@@ -609,6 +607,10 @@ const getCatProduct = async(req,res)=>{
             }else if(sortCriteria === "descending"){
                 productData.sort((a,b) => b.name.localeCompare(a.name))
             }
+
+            let totalProducts = productData.length;
+            productData = productData.slice(skip, skip + perPage);
+            const totalPages = Math.ceil(totalProducts / perPage);
 
             return res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
         }else{
