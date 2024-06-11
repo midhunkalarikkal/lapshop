@@ -94,6 +94,9 @@ const placeOrder = async(req,res)=>{
                 cart[0].items = [];
                 cart[0].totalCartPrice = 0;
                 cart[0].totalCartDiscountPrice = 0;
+                cart[0].couponApplied = false
+                cart[0].couponAmount = 0
+                cart[0].couponCode = ""
                 req.session.userNC.cartItemCount = cart[0].items.length
                 await cart[0].save()
             return res.redirect('/paymentSuccess');

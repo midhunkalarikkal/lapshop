@@ -93,17 +93,20 @@
                                     <h5>Apply coupon</h5>
                                     <p class="small">Caoupon details are displayed on home page</p>
                                     <hr>
-                                    <div class="coupon shadow p-3 mb-2 col-lg-8" id="coupon" style="border: 2px solid rgb(19, 192, 79);">
-                                        <div class="coupon-body d-flex align-item-center justify-content-center" id="coupon-body">
-                                            <input type="text" class="form-control" placeholder="Coupon code" id="userCouponCode">
-                                            <button class="btn btn-success btn-sm mx-1" onclick="submitCoupon()">Apply</button>
+                                    <% if(!userCart.couponApplied){ %>
+                                        <div class="coupon shadow p-3 mb-2 col-lg-8" id="coupon" style="border: 2px solid rgb(19, 192, 79);">
+                                            <div class="coupon-body d-flex align-item-center justify-content-center" id="coupon-body">
+                                                <input type="text" class="form-control" placeholder="Coupon code" id="userCouponCode">
+                                                <button class="btn btn-success btn-sm mx-1" onclick="submitCoupon()">Apply</button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="coupon-applied text-center d-none" id="coupon-applied">
-                                        <h6 class="text-center text-success" id="coupon-applied">🎉Congradulations, Coupon applied. You got flat <span id="coupon-amount"></span> on this order.🎉</h6>     
-                                        <button class="btn btn-danger cancel-coupon btn-sm" onclick="cancelCoupon()">Cancel coupon</button>
-                                        <input type="text" id="cancelCouponId" hidden>                                    
-                                    </div>
+                                    <% }else{ %>
+                                        <div class="coupon-applied text-center" id="coupon-applied">
+                                            <h6 class="text-center text-success" id="coupon-applied">🎉Congradulations, Coupon applied successfully.🎉</h6>     
+                                            <button class="btn btn-danger cancel-coupon btn-sm" onclick="cancelCoupon()">Cancel coupon</button>
+                                            <input type="text" id="cancelCouponId" value="<%= userCart.couponCode %>" hidden>                                    
+                                        </div>
+                                    <% } %>
                                 <% } %>
                             </div>               
                         </div>
@@ -135,11 +138,16 @@
                             <div class="details">
                                 <% if(userCart){ %>
                                     <div class="total d-flex justify-content-between">
-                                        <h6>Total : </h6> <h6>₹ <%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice).toFixed(2) %></h6>
+                                        <h6>Total : </h6> <h6>₹ <%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice + userCart.couponAmount ).toFixed(2) %></h6>
                                     </div>
                                     <div class="total d-flex justify-content-between">
                                         <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
                                     </div>
+                                    <% if(userCart.couponApplied){ %>
+                                        <div class="total d-flex justify-content-between">
+                                            <h6>Coupon Discount : </h6> <h6>₹ <%= userCart.couponAmount %></h6>
+                                        </div>
+                                    <% } %>
                                     <div class="d-flex justify-content-between">
                                         <h6>Product discount : </h6> <h6>₹ <%= userCart.totalCartDiscountPrice %></h6>
                                     </div> 
@@ -187,12 +195,7 @@
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script>
 
-        let coupon = document.getElementById("coupon") || ""
-        let couponApplied = document.getElementById("coupon-applied") || ""
-        let couponAmount = document.getElementById("coupon-amount") || ""
-        let subTotal = document.getElementById('subTotal')
         let cancelCouponInput = document.getElementById("cancelCouponId") || ""
-        let appliedCouponCode
         
         ////// To appy coupon \\\\\\
         function submitCoupon(){
@@ -222,16 +225,9 @@
                         timerProgressBar: true,
                         showConfirmButton: false
                     })
-                    coupon.classList.add("d-none")
-                    couponApplied.classList.remove("d-none")
-                    if(data.couponAmount <= 99){
-                        couponAmount.innerText = data.couponAmount+" %"
-                    }else if(data.couponAmount >= 100){
-                        couponAmount.innerText = data.couponAmount
-                    }
-                    subTotal.innerText = data.newSubTotal
-                    cancelCouponInput.value = data.userCouponCode
-
+                    .then(()=>{
+                        location.reload()
+                    })
                 }else if(!data.success){
                     Swal.fire({
                         title: "Info",
@@ -247,14 +243,12 @@
 
         ////// To cancel coupon \\\\\\
         function cancelCoupon(){
-            const userCancelCouponCode = document.getElementById("cancelCouponId").value
 
             fetch('/cancelCoupon',{
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({userCancelCouponCode})
             })
             .then(response => {
                 const contentType = response.headers.get('content-type');
@@ -273,18 +267,9 @@
                         timerProgressBar: true,
                         showConfirmButton: false
                     })
-                    coupon.classList.remove("d-none")
-                    couponApplied.classList.add("d-none")
-                    subTotal.innerText = ""
-                    subTotal.innerText = data.cartTotal
-                    couponAmount.innerText = ""
-                    cancelCouponInput.value = ""
-                    const userCouponCode = document.getElementById("userCouponCode")
-                    userCouponCode.value = ""
-                    cdaValue = 0
-                    cdaDiv.classList.add("d-none")
-                    cda.innerText = ""
-
+                    .then(()=>{
+                        location.reload()
+                    })
                 }else if(!data.success){
                     Swal.fire({
                         title: "Info",
@@ -499,14 +484,6 @@
                                                         },
                                                 };
                                                 var rzp1 = new Razorpay(options);
-                                                rzp1.on("payment.failed", function (response) {
-                                                    swal.fire({
-                                                        icon: 'error', 
-                                                        title: "Online payment Failed",
-                                                        text: "Please try again.",
-                                                        showCancelButton: true
-                                                    });
-                                                });
                                                 rzp1.open();
                                             } else {
                                                 swal.fire({

@@ -162,6 +162,7 @@
             let userAddressId = document.getElementById("userAddressId").value;
             let subTotal = document.getElementById('subTotal').innerText;
             let orderId = document.getElementById("orderId").value
+            console.log("paymentMethod : ",paymentMethod)
 
             if (subTotal == 0) {
                 Swal.fire({
@@ -197,48 +198,47 @@
                 }
             })
             .then(data => {
+                console.log("data : ",data)
                 if (data.success) {
-                    if (paymentMethod === "razorpay") {
-                        var options = {
-                            key: "" + data.key_id + "",
-                            amount: "" + data.amount + "",
-                            currency: "INR",
-                            name: "LapShop",
-                            description: "Your laptop",
-                            image: `/static/images/Bg/desktop/Lapshoplogo.png`,
-                            order_id: "" + data.order_id + "",
-                            handler: function (response) {
-                                let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=true`;
-                                window.location.href = redirectUrl;
-                            },
-                            prefill: {
-                                name: "" + data.name + "",
-                                email: "" + data.email + "",
-                                contact : "" + data.phone + ""
-                            },
-                            notes: {
-                                address: "Razorpay Corporate Office",
-                            },
-                            theme: {
-                                color: "#50c878",
-                            },
-                        };
-                        var rzp1 = new Razorpay(options);
-                        rzp1.on("payment.failed", function (response) {    
-                            let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+                    var options = {
+                        key: "" + data.key_id + "",
+                        amount: "" + data.amount + "",
+                        currency: "INR",
+                        name: "LapShop",
+                        description: "Your laptop",
+                        image: `/static/images/Bg/desktop/Lapshoplogo.png`,
+                        order_id: "" + data.order_id + "",
+                        handler: function (response) {
+                            let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=true`;
                             window.location.href = redirectUrl;
-                        });
-                        rzp1.open();
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: "Internal server error",
-                            text: data.message,
-                            timer: 2000,
-                            timerProgressBar: true,
-                            showConfirmButton: false
-                        });
-                    }
+                        },
+                        prefill: {
+                            name: "" + data.name + "",
+                            email: "" + data.email + "",
+                            contact : "" + data.phone + ""
+                        },
+                        notes: {
+                            address: "Razorpay Corporate Office",
+                        },
+                        theme: {
+                            color: "#50c878",
+                        },
+                    };
+                    var rzp1 = new Razorpay(options);
+                    rzp1.on("payment.failed", function (response) {    
+                        let redirectUrl = `/rePaymentPlaceOrder?amount=${data.amount}&orderId=${data.orderId}&paymentStatus=false`;
+                        window.location.href = redirectUrl;
+                    });
+                    rzp1.open();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: "Internal server error",
+                        text: data.message,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
                 }
             })
         })

@@ -121,7 +121,12 @@ const applyCoupon = async (req, res) => {
         const userId = req.session.user._id
         const userCouponCode = req.body.userCouponCode
         const coupon = await Coupon.findOne({ $and: [{ couponCode: userCouponCode }, { isBlocked: false }] })
-        const cart = await Cart.find({ userId: userId })
+
+        const cart = await Cart.findOne({ userId: userId })
+        if (!cart) {
+            return res.status(400).json({ success: false, message: "Cart not found." });
+        }
+
         const couponMinAmount = coupon ? coupon.minAmount : 0
 
         if (coupon) {
@@ -134,16 +139,24 @@ const applyCoupon = async (req, res) => {
                         }
                     }
 
-                    if (cart[0].totalCartPrice >= coupon.minAmount) {
-                        let newSubTotal = 0
+                    let couponAmount = 0;
+                    if (cart.totalCartPrice >= coupon.minAmount) {
                         if (coupon.couponAmount <= 99) {
-                            newSubTotal = cart[0].totalCartPrice - ((coupon.couponAmount * cart[0].totalCartPrice) / 100)
+                            couponAmount = ((coupon.couponAmount * cart.totalCartPrice) / 100)
                         } else if (coupon.couponAmount > 99) {
-                            newSubTotal = cart[0].totalCartPrice - coupon.couponAmount
+                            couponAmount = coupon.couponAmount
                         }
+                        const newSubTotal = cart.totalCartPrice - couponAmount
                         
                         coupon.appliedUsers.push(userId)
                         await coupon.save()
+
+                        cart.couponApplied = true
+                        cart.totalCartPrice = newSubTotal
+                        cart.couponAmount = couponAmount
+                        cart.couponCode = userCouponCode
+                        await cart.save()
+
                         return res.status(200).json({ success: true, message: "Coupon applied successfully", newSubTotal, couponAmount: coupon.couponAmount , userCouponCode })
                     } else {
                         return res.status(400).json({ success: false, message: `This coupon is valid for order purchase amount ${couponMinAmount}.`})
@@ -162,24 +175,47 @@ const applyCoupon = async (req, res) => {
 // To cancel applied coupon from user
 const cancelCoupon = async(req,res)=>{
     try{
-        const cancelCouponName = req.body.userCancelCouponCode
         const userId = req.session.user._id
-            if(cancelCouponName){
-                const coupon = await Coupon.findOne({ $and: [{ couponCode: cancelCouponName }, { isBlocked: false }] })
-                const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
-                const cart = await Cart.find({ userId : userId})
-                const cartTotal = cart[0].totalCartPrice
-
-                for(let i = 0; i < appliedUserIds.length; i++){
-                    if(appliedUserIds[i] === userId){
-                        coupon.appliedUsers.pull(userId)
-                        await coupon.save()
-                        return res.status(200).json({ success: true, message : "Coupon cancelation successfull." , cartTotal })
-                    }
-                }
-            }else{
-                return res.status(400).json({ success : false, message : "coupon not found error."})
+        
+        const cart = await Cart.findOne({ userId: userId })
+        if (!cart) {
+            return res.status(400).json({ success: false, message: "Cart not found." });
+        }
+        // const cancelCouponName = req.body.userCancelCouponCode
+        const cancelCouponName = cart.couponCode
+        
+        if(cancelCouponName){
+            const coupon = await Coupon.findOne({ $and: [{ couponCode: cancelCouponName }, { isBlocked: false }] })
+            if (!coupon) {
+                return res.status(400).json({ success: false, message: "Coupon not found." });
             }
+
+            const appliedUserIds = coupon.appliedUsers.map(user => user._id.toString());
+            for(let i = 0; i < appliedUserIds.length; i++){
+                if(appliedUserIds[i] === userId){
+                    coupon.appliedUsers.pull(userId)
+                    await coupon.save()
+                }
+            }
+
+            let couponAmount = 0;
+            if (coupon.couponAmount <= 99) {
+                couponAmount = ((coupon.couponAmount * cart.totalCartPrice) / 100)
+            } else if (coupon.couponAmount > 99) {
+                couponAmount = coupon.couponAmount
+            }
+            const newSubTotal = cart.totalCartPrice + couponAmount
+                    
+            cart.couponApplied = false
+            cart.totalCartPrice = newSubTotal
+            cart.couponAmount = 0
+            cart.couponCode = ""
+            const cartTotal = cart.totalCartPrice
+            await cart.save()
+            return res.status(200).json({ success: true, message : "Coupon cancelation successfull." , cartTotal })
+        }else{
+            return res.status(400).json({ success : false, message : "coupon not found."})
+        }
     }catch(error){
         res.redirect('/errorPage')
     }

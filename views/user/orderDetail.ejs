@@ -142,7 +142,15 @@
                                     <hr>
                                     <h5>Order total</h5>
                                     <hr>
-                                    <div class="col-md-3">
+                                    <div class="col-md-4">
+                                        <div class="total d-flex justify-content-between">
+                                            <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
+                                        </div>
+                                        <% if(order[i].couponApplied){ %>
+                                            <div class="total d-flex justify-content-between">
+                                                <h6>Coupon : </h6> <h6 class="text-success">Applied</h6>
+                                            </div>
+                                        <% } %>
                                         <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
                                             <div class="total d-flex justify-content-between">
                                                 <h6>Online paid amount : </h6> <h6>₹ <%= order[i].orderTotal %> </h6>
@@ -152,15 +160,7 @@
                                             </div>
                                         <% }else{ %>
                                             <div class="total d-flex justify-content-between">
-                                                <h6>Items total : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
-                                            </div>
-                                        <% } %>
-                                        <div class="total d-flex justify-content-between">
-                                            <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                        </div>
-                                        <% if(order[i].couponApplied){ %>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Coupon : </h6> <h6 class="text-success">Applied</h6>
+                                                <h6>Total paid amount : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
                                             </div>
                                         <% } %>
                                         <hr>

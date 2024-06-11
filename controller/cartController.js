@@ -167,6 +167,10 @@ const deleteProductFromCart = async(req,res)=>{
 
         if(cart.items.length === 0){
             req.session.userNC.cartItemCount = 0
+            cart.couponApplied = false
+            cart.totalCartPrice = 0
+            cart.couponAmount = 0
+            cart.couponCode = ""
         }
 
         cart.totalCartPrice = cart.items.reduce((total, item) => total + item.totalPrice, 0);
