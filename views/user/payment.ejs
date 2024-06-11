@@ -316,6 +316,17 @@
             return false;
         }
 
+        if (subTotal == 0) {
+            Swal.fire({
+                icon: 'info',
+                title: "Online paymnent!",
+                text: "Online payments are currently limitted to 39999. We appologize for any inconvenience and appreciate your understanding.",
+                showConfirmButton: true,
+                confirmButtonText: "Ok"
+            });
+            return false;
+        }
+
         if (paymentMethod === "cod" && subTotal > 1000) {
             Swal.fire({
                 icon: 'info',
