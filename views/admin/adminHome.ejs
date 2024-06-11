@@ -376,7 +376,7 @@
 
                     row.innerHTML = `
                         <td>${order.userId.fullname}</td>
-                        <td>${order._id.slice(-6)}</td>
+                        <td>${order.orderId}</td>
                         <td>${moment(order.orderDate).format('DD-MM-YYYY HH:mm')}</td>
                         <td>${moment(order.statusDate).format('DD-MM-YYYY HH:mm')}</td>
 

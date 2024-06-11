@@ -314,8 +314,6 @@ const getAdminHome = async (req, res) => {
         let codCount = 0;
         let walletCount = 0;
         let walletWithRazorpayCount = 0;
-        
-        const orders = await Order.find()
 
         const [dailyOrdersData, weeklyOrdersData, monthlyOrdersData , bsProds , bsCats , bsBrands] = await Promise.all([
             getDailyDeliveredOrders(),
@@ -325,7 +323,8 @@ const getAdminHome = async (req, res) => {
             bestSellingCategories(),
             bestSellingBrands()
         ]);
-        
+
+        const orders = await Order.find({status : "Delivered"})
         orders.forEach(order => {
             switch (order.paymentMethod) {
                 case 'razorpay':
