@@ -713,6 +713,7 @@ p,
 /*======> Promise sectio start <======*/
 
 .ourPromise {
+  min-height: 100vh;
   position: relative;
   background: linear-gradient(to bottom right, #f8f9fa 50%, #e9ecef 50%);
 }
