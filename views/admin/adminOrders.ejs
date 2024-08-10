@@ -4,12 +4,10 @@
 <section class="view">
     <div class="container mt-5 ">
         <div class="row">
-            <div class="col-lg-10 offset-lg-1">
-                <div class="head d-flex justify-content-between align-items-center">
-                    <h1>Orders</h1>
-                </div>
-                <hr>
+            <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
+                <h1>Orders</h1>
             </div>
+            <hr>
         </div>
         <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
             <div class="table-responsive col-lg-10">
@@ -25,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% if(orders && orders !== "" && Array.isArray(orders)){ %>
+                        <% if(orders && Array.isArray(orders)){ %>
                             <% for(let i = 0; i < orders.length; i++){ %>
                                 <tr class="align-middle">
                                     <td>
