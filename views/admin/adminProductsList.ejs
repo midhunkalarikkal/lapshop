@@ -4,33 +4,31 @@
 <section class="view">
     <div class="container mt-5 ">
         <div class="row">
-            <div class="col-lg-10 offset-lg-1">
-                <div class="head d-flex justify-content-between align-items-center">
-                    <h1>Products</h1>
+            <div class="head col-md-10 offset-md-1 d-flex justify-content-between align-items-center">
+                <h1>Products</h1>
                     <button type="button" class="btn btn-outline-success btn-sm" id="addProduct">Add new product</button>
-                </div>
-                <hr>
             </div>
+            <hr>
         </div>
         
         <div class="row d-flex flex-row align-items-center justify-content-center">
             <div class="table-responsive col-lg-10">
-                <% if(productData != ""){  %>
-                    <table class="table text-center table-striped my-5 p-1">
-                        <thead>
-                            <tr class="table-dark">
-                                <th class="text-center text-light">ID</th>
-                                <th class="text-center text-light">Name</th>
-                                <th class="text-center text-light">Brand</th>
-                                <th class="text-center text-light">Category</th>
-                                <th class="text-center text-light">Real Price</th>
-                                <th class="text-center text-light">Off Price</th>
-                                <th class="text-center text-light">Stock</th>
-                                <th class="text-center text-light">Controls</th>
-                                <th class="text-center text-light">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <table class="table text-center table-striped my-5 p-1">
+                    <thead>
+                        <tr class="table-dark">
+                            <th class="text-center text-light">ID</th>
+                            <th class="text-center text-light">Name</th>
+                            <th class="text-center text-light">Brand</th>
+                            <th class="text-center text-light">Category</th>
+                            <th class="text-center text-light">Real Price</th>
+                            <th class="text-center text-light">Off Price</th>
+                            <th class="text-center text-light">Stock</th>
+                            <th class="text-center text-light">Controls</th>
+                            <th class="text-center text-light">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(productData && Array.isArray(productData)){  %>
                             <% productData.forEach((product,index)=> {%>
                                 <tr class="align-middle">
                                     <td>
@@ -67,8 +65,6 @@
                             <% }) %>
                         </tbody>
                     </table>
-                <% } else {%>
-                    <div class="alert alert-info text-center" role="alert">No Products found in the database.</div>
                 <% } %>
             </div>
         </div>
