@@ -59,9 +59,10 @@
 
         ////// function to display the image \\\\\\
         function displayImage() {
-           const input = document.getElementById('categoryImage');
+           const input = document.getElementById('homeCarouselImage');
            const file = input.files[0];
            if (file) {
+            console.log("file : ",file)
                const reader = new FileReader();
                reader.onload = function (e) {
                    const img = document.getElementById('newImage');
