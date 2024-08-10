@@ -831,26 +831,24 @@ const adminEditHomeCarousel = async(req,res)=>{
 //To update the edited home carousel
 const adminUpdateHomeCarousel = async(req,res)=>{
     try {
-        const { homeCarouselTagline, homeCarouselDesc } = req.body;
-        const hcId = req.params.homeCarouselId;
+        const { homeCarouselId, homeCarouselTagline, homeCarouselDescription } = req.body;
 
-         if (!req.file) {
-            return res.status(400).json({ error: "No file uploaded" });
-        }
-
-        const existingHomeCarousel = await HomeCarousel.findById(hcId);
+        const existingHomeCarousel = await HomeCarousel.findById(homeCarouselId);
         if (!existingHomeCarousel) {
-            return res.status(404).json({ error: "Home Carousel not found" });
+            return res.status(404).json({ success : false, message: "Home Carousel not found" });
         }else{
-            const oldImageFilename = existingHomeCarousel.image;
+            if( existingHomeCarousel.tagline === homeCarouselTagline && existingHomeCarousel.desc === homeCarouselDescription && !req.file){
+                return res.status(404).json({ success : false, info : true, message: "No updations made yet." });
+            }
             existingHomeCarousel.tagline = homeCarouselTagline;
-            existingHomeCarousel.desc = homeCarouselDesc;
-            existingHomeCarousel.image = req.file.filename;
+            existingHomeCarousel.desc = homeCarouselDescription;
+            if(req.file){
+                const imagePath = path.join(__dirname, "../public/images/HomeCarousels", existingHomeCarousel.image);
+                fs.unlinkSync(imagePath);
+                existingHomeCarousel.image = req.file.filename;
+            }
             await existingHomeCarousel.save();
-
-            const imagePath = path.join(__dirname, "../public/images/HomeCarousels", oldImageFilename);
-            fs.unlinkSync(imagePath);
-            res.redirect('/admin/homeCarousel')
+            res.status(200).json({ success: true, message: 'Home Carousel updated successfully.' });
         }
     } catch (error) {
         return res.redirect('/admin/adminErrorPage')

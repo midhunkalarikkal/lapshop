@@ -10,7 +10,7 @@
     <section class="view">
         <div class="container d-flex align-items-center justify-content-center">
             <div class="main col-12 col-lg-10">
-                <form action="/admin/updateHomeCarousel/<%= homeCarousel._id %>" method="POST" enctype="multipart/form-data">
+                <form enctype="multipart/form-data">
                     <div class="p-5">
                         <div class="input-box d-md-flex">
                             <div class="col-12 col-md-8">
@@ -29,7 +29,7 @@
                                 </div>
                                 <div class="mt-4 d-md-block d-none">
                                     <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                    <button type="submit" class="btn btn-primary" onclick="updateHomeCarousel(event, this)" data-hcId="<%= homeCarousel._id %>">Save changes</button>
                                 </div>
                             </div>
                             <div class="col-12 col-md-4 d-flex flex-md-column align-items-center justify-content-md-center">
@@ -44,7 +44,7 @@
                             </div>
                             <div class="mt-4 d-block d-md-none">
                                 <button type="" class="btn btn-warning" onclick="goBack()">Cancel</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="submit" class="btn btn-primary" onclick="updateHomeCarousel(event, this)" data-hcId="<%= homeCarousel._id %>">Save changes</button>
                             </div>
                         </div>
                     </div>
@@ -73,6 +73,68 @@
                img.src = '';
            }
        }
+
+       ////// To update brand \\\\\\
+       async function updateHomeCarousel(event,button) {
+            event.preventDefault()
+            const homeCarouselId = button.getAttribute("data-hcId");
+            const homeCarouselTagline = document.getElementById("homeCarouselTagline").value;
+            const homeCarouselDescription = document.getElementById("homeCarouselDesc").value;
+            const homeCarouselImage = document.getElementById("homeCarouselImage").files[0];
+
+            const formData = new FormData();
+            formData.append("homeCarouselId", homeCarouselId);
+            formData.append("homeCarouselTagline", homeCarouselTagline);
+            formData.append("homeCarouselDescription", homeCarouselDescription);
+            formData.append("homeCarouselImage", homeCarouselImage);
+
+            try {
+                const response = await fetch("/admin/updateHomeCarousel", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: data.message || 'Home carousel updated successfully.',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        window.location.href = "/admin/homeCarousel"
+                    });
+                } else if (data.info) {
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Info',
+                        text: data.message || 'No updates made yet.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    }); 
+                }else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message || 'An unexpected error occurred. Please try again.',
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                }
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Network error. Please try again.',
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+        }
 
        ////// Cancel button goBack function \\\\\\
         function goBack() {

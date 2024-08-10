@@ -45,7 +45,7 @@ adminRouter.post('/addHomeCarousel',adminAuth.isAdminLoggedIn,uploadHomeCarousel
 adminRouter.post('/blockHomeCarousel/:homeCarouselId',adminAuth.isAdminLoggedIn,adminController.adminBlockHomeCarousel)
 adminRouter.delete('/homeCarouselDelete/:homeCarouselId',adminAuth.isAdminLoggedIn,adminController.adminDeleteHomeCarousel)
 adminRouter.get('/homeCarouselEdit/:homeCarouselId',adminAuth.isAdminLoggedIn,adminController.adminEditHomeCarousel)
-adminRouter.post('/updateHomeCarousel/:homeCarouselId',adminAuth.isAdminLoggedIn,uploadHomeCarousel.single('homeCarouselImage'),adminController.adminUpdateHomeCarousel)
+adminRouter.post('/updateHomeCarousel',adminAuth.isAdminLoggedIn,uploadHomeCarousel.single('homeCarouselImage'),adminController.adminUpdateHomeCarousel)
 
 adminRouter.get('/brands',adminAuth.isAdminLoggedIn,brandController.getAdminBrands)
 adminRouter.post('/addBrand',adminAuth.isAdminLoggedIn,uploadBrand.single('brandImg'),brandController.adminAddNewBrand)
