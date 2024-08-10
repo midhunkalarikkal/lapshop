@@ -14,53 +14,51 @@
 
         <div class="row d-flex flex-row align-items-center justify-content-center">
             <div class="table-responsive col-md-10">
-                <% if(homeCarousel != "" ){%>
-                    <table class="table text-center table-striped my-4 p-1">
-                        <thead>
-                            <tr class="table-dark">
-                                <th class="text-center text-light">Nos</th>
-                                <th class="text-center text-light">Image</th>
-                                <th class="text-center text-light">Tagline</th>
-                                <th class="text-center text-light">Description</th>
-                                <th class="text-center text-light">Controls</th>
-                                <th class="text-center text-light">Edit</th>
-                                <th class="text-center text-light">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% homeCarousel.forEach((row,index)=> { %>
+                <table class="table text-center table-striped my-4 p-1">
+                    <thead>
+                        <tr class="table-dark">
+                            <th class="text-center text-light">Nos</th>
+                            <th class="text-center text-light">Image</th>
+                            <th class="text-center text-light">Tagline</th>
+                            <th class="text-center text-light">Description</th>
+                            <th class="text-center text-light">Controls</th>
+                            <th class="text-center text-light">Edit</th>
+                            <th class="text-center text-light">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(homeCarousel && homeCarousel != "" && Array.isArray(homeCarousel)){%>
+                            <% for(let i = 0; i < homeCarousel.length; i++){ %>
                                 <tr class="align-middle">
                                     <td>
-                                        <%= index+1 %>
+                                        <%= i+1 %>
                                     </td>
                                     <td>
-                                        <img src=" /static/images/HomeCarousels/<%= row.image %> " width="50" class="img-thumbnal"/>
+                                        <img src=" /static/images/HomeCarousels/<%= homeCarousel[i].image %> " width="50" class="img-thumbnal"/>
                                     </td>
                                     <td>
-                                        <%= row.tagline %>
+                                        <%= homeCarousel[i].tagline %>
                                     </td>
                                     <td>
-                                        <%= row.desc %>
+                                        <%= homeCarousel[i].desc %>
                                     </td>
                                     <td>
-                                        <input type="radio" class="homeCarousel-switch" data-hc-id="<%= row._id %>" id="block_<%= row._id %>" name="block<%= row._id %>" value="block" <% if(row.isBlocked) { %>checked<% } %>>
-                                        <label for="block_<%= row._id %>" class="text-danger">Block</label>
-                                        <input type="radio" class="homeCarousel-switch" data-hc-id="<%= row._id %>" id="unblock_<%= row._id %>" name="block<%= row._id %>" value="unblock" <% if(!row.isBlocked) { %>checked<% } %>>
-                                        <label for="unblock_<%= row._id %>" class="text-success">Unblock</label>
+                                        <input type="radio" class="homeCarousel-switch" data-hc-id="<%= homeCarousel[i]._id %>" id="block_<%= homeCarousel[i]._id %>" name="block<%= homeCarousel[i]._id %>" value="block" <% if(homeCarousel[i].isBlocked) { %>checked<% } %>>
+                                        <label for="block_<%= homeCarousel[i]._id %>" class="text-danger">Block</label>
+                                        <input type="radio" class="homeCarousel-switch" data-hc-id="<%= homeCarousel[i]._id %>" id="unblock_<%= homeCarousel[i]._id %>" name="block<%= homeCarousel[i]._id %>" value="unblock" <% if(!homeCarousel[i].isBlocked) { %>checked<% } %>>
+                                        <label for="unblock_<%= homeCarousel[i]._id %>" class="text-success">Unblock</label>
                                     </td>
                                     <td>
-                                        <a href="/admin/homeCarouselEdit/<%= row._id %>" class="text-success edit-homeCarousel"><i class="fas fa-edit fa-lg mx-1"></i></a>
+                                        <a href="/admin/homeCarouselEdit/<%= homeCarousel[i]._id %>" class="text-success edit-homeCarousel"><i class="fas fa-edit fa-lg mx-1"></i></a>
                                     </td>
                                     <td>
-                                        <a href="#" onclick="deleteHc('<%= row._id %>')" class="text-danger delete-homeCarousel"><i class="fas fa-trash fa-lg mx-1"></i></a>
+                                        <a href="#" onclick="deleteHc('<%= homeCarousel[i]._id %>')" class="text-danger delete-homeCarousel"><i class="fas fa-trash fa-lg mx-1"></i></a>
                                     </td>
                                 </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                <% } else { %>
-                    <div class="alert alert-info text-center" role="alert">No home carousels found in the database.</div>
-                <% } %>
+                            <% } %>
+                        <% } %>
+                    </tbody>
+                </table>  
             </div>
         </div> 
     </div>
