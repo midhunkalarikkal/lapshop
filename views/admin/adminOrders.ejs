@@ -13,19 +13,19 @@
         </div>
         <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
             <div class="table-responsive col-lg-10">
-                <% if(orders && orders !== "" && Array.isArray(orders)){ %>
-                    <table class="table text-center table-striped my-5 p-1">
-                        <thead>
-                            <tr class="table-dark">
-                                <th class="text-center text-light">OrderId</th>
-                                <th class="text-center text-light">Date</th>
-                                <th class="text-center text-light">Items</th>
-                                <th class="text-center text-light">Order status</th>
-                                <th class="text-center text-light">Order total</th>
-                                <th class="text-center text-light"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <table class="table text-center table-striped my-5 p-1">
+                    <thead>
+                        <tr class="table-dark">
+                            <th class="text-center text-light">OrderId</th>
+                            <th class="text-center text-light">Date</th>
+                            <th class="text-center text-light">Items</th>
+                            <th class="text-center text-light">Order status</th>
+                            <th class="text-center text-light">Order total</th>
+                            <th class="text-center text-light"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(orders && orders !== "" && Array.isArray(orders)){ %>
                             <% for(let i = 0; i < orders.length; i++){ %>
                                 <tr class="align-middle">
                                     <td>
@@ -76,11 +76,9 @@
                                     </td>
                                 </tr>
                             <% } %>
-                        </tbody>
-                    </table>
-                <% }else{ %>
-                    <div class="alert alert-info text-center" role="alert">No Orders found in the database.</div>
-                <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
