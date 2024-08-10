@@ -37,6 +37,10 @@ p,
   border-bottom: 2px solid rgb(99, 230, 99);
 }
 
+.homeCarousel-img{
+  max-height: 100vh;
+}
+
 /*======> Home carousel caption <======*/
 .carousel-caption {
   display: flex;
