@@ -12,18 +12,18 @@
         </div>
         <div class="row d-flex flex-row align-items-center justify-content-center mb-5">
             <div class="table-responsive col-md-10">
-                <% if(brand !="" ){ %>
-                    <table class="table text-center table-striped my-4 p-1">
-                        <thead>
-                            <tr class="table-dark">
-                                <th class="text-center text-light">Nos</th>
-                                <th class="text-center text-light">Image</th>
-                                <th class="text-center text-light">Name</th>
-                                <th class="text-center text-light">Controls</th>
-                                <th class="text-center text-light">Edit</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                <table class="table text-center table-striped my-4 p-1">
+                    <thead>
+                        <tr class="table-dark">
+                            <th class="text-center text-light">Nos</th>
+                            <th class="text-center text-light">Image</th>
+                            <th class="text-center text-light">Name</th>
+                            <th class="text-center text-light">Controls</th>
+                            <th class="text-center text-light">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% if(brand && Array.isArray(brand)){ %>
                             <% brand.forEach((row,index)=> { %>
                             <tr class="align-middle">
                                     <td>
@@ -46,11 +46,9 @@
                                     </td>
                                 </tr>
                             <% } ) %>
-                        </tbody>
-                    </table>
-                <% } else {%>
-                    <div class="alert alert-info text-center" role="alert">No brands found in the database.</div>
-                <% } %>
+                        <% } %>
+                    </tbody>
+                </table>
             </div>
         </div> 
     </div>
