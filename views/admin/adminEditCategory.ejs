@@ -29,7 +29,7 @@
                                       <input type="file" class="form-control" name="categoryImg" id="categoryImage" onchange="displayImage()">
                                 </div>
                                 <div class="mt-4 d-md-block d-none">
-                                    <button class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                    <button class="btn btn-warning" onclick="goBack(event)">Cancel</button>
                                     <button onclick="updateCategory(event,this)" data-catId="<%= category._id %>" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@
                                 </div>
                             </div>
                             <div class="mt-4 d-block d-md-none">
-                                <button class="btn btn-warning" onclick="goBack()">Cancel</button>
+                                <button class="btn btn-warning" onclick="goBack(event)">Cancel</button>
                                 <button onclick="updateCategory(event,this)" data-catId="<%= category._id %>" class="btn btn-primary">Save changes</button>
                             </div>
                         </div>
@@ -134,7 +134,8 @@
         }
 
         ////// Cancel button goBack function \\\\\\
-        function goBack() {
+        function goBack(event) {
+            event.preventDefault()
             window.location.href = '/admin/category'
         }
 
