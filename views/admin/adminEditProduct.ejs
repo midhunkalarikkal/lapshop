@@ -149,8 +149,8 @@
                         </div> 
 
                         <div class="mt-4">
-                            <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
-                            <button type="" onclick="updateProduct(event)" class="btn btn-primary">Save changes</button>
+                            <button class="btn btn-warning" onclick="goBack(event)">Cancel</button>
+                            <button onclick="updateProduct(event)" class="btn btn-primary">Save changes</button>
                         </div>
                     </div>
                 </form>
@@ -410,13 +410,6 @@
             })
         }
 
-
-        ////// Cancel button goBack function \\\\\\
-        function goBack(event) {
-            event.preventDefault();
-            window.location.href = '/admin/products'
-        }
-
         ////// For the deletion of the existing images in databse \\\\\\
         function deleteImage(imageId, productId, productImage,event) {
             existImageCount--
@@ -617,6 +610,12 @@
                 productDiscountError.textContent = '';
                 return true;
             }
+        }
+
+        ////// Cancel button goBack function \\\\\\
+        function goBack(event) {
+            event.preventDefault();
+            window.location.href = '/admin/products'
         }
 
     </script>

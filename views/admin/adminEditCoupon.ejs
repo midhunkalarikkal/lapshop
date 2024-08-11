@@ -65,12 +65,12 @@
                                     </div>
                                     <input type="text" value="<%= coupon._id %>" name="couponId" id="couponId" hidden>
                                     <div class="mt-4 d-md-block d-none">
-                                        <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
+                                        <button class="btn btn-warning" onclick="goBack(event)">Cancel</button>
                                         <button id="updateCoupon" class="btn btn-primary">Save changes</button>
                                     </div>
                                 </div>
                                 <div class="mt-4 d-block d-md-none">
-                                    <button type="" class="btn btn-warning" onclick="goBack(event)">Cancel</button>
+                                    <button class="btn btn-warning" onclick="goBack(event)">Cancel</button>
                                     <button id="updateCoupon" class="btn btn-primary">Save changes</button>
                                 </div>
                             </div>
@@ -273,8 +273,6 @@
                     });
                 }
             });
-
-
 
             ////// Cancel button goBack function \\\\\\
             function goBack(event) {
