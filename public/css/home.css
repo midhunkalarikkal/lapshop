@@ -64,11 +64,6 @@ p,
   margin-top: auto;
 }
 
-.box-two {
-  background-color: white;
-}
-
-
 /*======> Extra small devices <======*/
 @media (max-width: 576px) {
 
@@ -650,10 +645,6 @@ p,
   width: 100%;
 }
 
-.brand-box{
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
-}
-
 .box-two{
   border-radius: 15px;
 }
@@ -673,6 +664,10 @@ p,
 
 .section-title {
   font-weight: 600;
+}
+
+.best-selling-box{
+  background-color: var(--sixth-color);
 }
 
 /*======> best offer products end <======*/
