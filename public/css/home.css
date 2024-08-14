@@ -739,6 +739,24 @@ p,
   color: #6c757d;
 }
 
+.promise:hover {
+  transform: translateY(-10px);
+  transition: transform 0.3s ease-in-out;
+}
+
+.icon {
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.promise h4 {
+  margin-top: 15px;
+  color: #333;
+}
+
+.promise p {
+  color: #555;
+}
+
 /*======> Promise sectio end <======*/
 
 /*======> Coupon cards start <======*/
@@ -816,7 +834,7 @@ p,
 }
 
 .coupon-code button {
-  background-color: #ffc107;
+  background-color: #f2cc0d;
   border: none;
   padding: 5px 10px;
   cursor: pointer;
@@ -824,7 +842,7 @@ p,
 }
 
 .coupon-code button:hover {
-  background-color: #e0a800;
+  background-color: #ffd608;
 }
 
 .coupon-expiry {
