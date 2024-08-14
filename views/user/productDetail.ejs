@@ -141,8 +141,8 @@
                             <% if(sameCategoryProduct !="" ){ %>
                                 <% sameCategoryProduct.forEach((product , index)=>{ %>
                                     <a href="/productDetail/<%= product._id %>" class="product-outline">
-                                        <div class="box-two mx-2 text-center border-0 small-card" style="flex: 0 0 auto;">
-                                            <div class="img p-1">
+                                        <div class="box-two mx-2 text-center border-0 small-card p-2" style="flex: 0 0 auto;">
+                                            <div class="img">
                                                 <img src="/static/images/ProductImages/<%= product.images[0] %>"
                                                     alt="No image">
                                             </div>
