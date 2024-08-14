@@ -175,6 +175,7 @@
                 <% const productsPerPage=6; %>
                 <div class="col-md-10">
                     <div class="container">
+                        
                         <!-- shop product start -->
                         <div class="row pb-3" id="productCardRow">
                             <% const currentPageProducts = productData.slice((currentPage - 1) * productsPerPage,currentPage * productsPerPage); %>
@@ -193,7 +194,7 @@
                                                 <% if (wishlistProdId !="" ) { %>
                                                     <% for(let i=0; i < wishlistProdId.length; i++){ %>
                                                         <% if(wishlistProdId[i]==product._id.toString()){ %>
-                                                            <a href="#" class="position-absolute"
+                                                            <a class="position-absolute"
                                                                 style="top: 8px; right: 10px; z-index: 1;"
                                                                 data-product-id="<%= product._id %>"
                                                                 onclick="addToWishlist(this)">
@@ -211,18 +212,18 @@
                                             </div>
                                         </a>
                                         <div class="card-body">
-                                            <h6 class="product-name tet-center mb-2">
+                                            <h6 class="product-name text-center mb-2">
                                                 <%= product.name %>
                                                 <% if (isNewProduct){ %>                         
                                                     <span class="badge">New</span>
-                                                <% } %>
+                                                <% } %> <br>
+                                                <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
                                             </h6>
-                                            <div class="d-flex align-items-center">                         
-                                                <h5 class="offer-price">₹<%= product.offerPrice %></h5>
-                                                <h6 class="discount-percentage mx-2">-<%= product.discountPercentage %>%</h6>
-                                                <h6 class="real-price small mx-2 d-none d-md-block">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></h6>
+                                            <div class="d-flex align-items-center justify-content-center">                         
+                                                <h6 class="discount-percentage price mx-2">-<%= product.discountPercentage %>%</h6>
+                                                <h5 class="offer-price price">₹<%= product.offerPrice %></h5>
+                                                <h6 class="real-price small price d-none mx-2">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></h6>
                                             </div>
-                                            <h6 class="real-price small d-block d-md-none">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></h6>
                                         </div>                                    
                                         <% if (cartProdId !="" ) { %>
                                             <% for(let i=0; i < cartProdId.length; i++){ %>

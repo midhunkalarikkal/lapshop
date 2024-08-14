@@ -136,7 +136,18 @@
         margin-top: 0px;
         font-size: small;
     }
-   
+
+    .fa-heart{
+        font-size: 15px;
+    }
+
+    .product-name, .product-brand{
+        font-size: 15px;
+    }
+
+    .price{
+        font-size: 15px;
+    }
 }
 
 /*======> XS / SM devices <======*/
@@ -145,8 +156,30 @@
         margin-top: 0px;
         font-size: small;
     }
+
+    .fa-heart{
+        font-size: 15px;
+    }
+
+    .product-name, .product-brand{
+        font-size: 15px;
+    }
+
+    .price{
+        font-size: 15px;
+    }
 }
 
 .card-body{
-    padding-bottom: 0;
+    padding: 0;
 }
+
+.card-header{
+    border-bottom: 0;
+    background-color: white;
+}
+
+.product-brand{
+    color: #9d9f9f;
+}
+
