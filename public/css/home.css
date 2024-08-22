@@ -714,7 +714,7 @@ p,
 .ourPromise {
   min-height: 100vh;
   position: relative;
-  background: linear-gradient(to bottom right, #f8f9fa 50%, #e9ecef 50%);
+  background: linear-gradient(to bottom right, #ffffff 50%, #e9ecef 50%);
 }
 
 .section-title {
@@ -853,11 +853,11 @@ p,
 /*======> Coupon cards end <======*/
 
 .bsac{
-  background: linear-gradient(to bottom right, #e9ecef 50%, #f8f9fa 50%);
+  background: linear-gradient(to bottom right, #e9ecef 50%, #ffffff 50%);
 }
 
 .caba{
-  background: linear-gradient(to bottom right, #f8f9fa 50%, #e9ecef 50%);
+  background: linear-gradient(to bottom right, #ffffff 50%, #e9ecef 50%);
 }
 
 .brand-img{
@@ -868,4 +868,48 @@ p,
   .brand-img{
     transform: rotateY(360deg);
   }
+}
+
+/*  */
+
+@keyframes slide {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Brand images auto scrolling  */
+.scroll-container {
+  overflow: hidden;
+  width: 100%;
+  position: relative;
+}
+
+.scroll-container-two {
+  display: flex;
+  width: max-content;
+  animation: slide 10s linear infinite;
+}
+
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.brand-box {
+  flex: 0 0 auto;
+  margin-right: 10px;
+}
+
+.img {
+  height: 100px;
+  width: 100px;
+  overflow: hidden;
 }

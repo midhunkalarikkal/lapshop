@@ -541,6 +541,8 @@ const getCatProduct = async(req,res)=>{
             const currentPage = req.body.currentPage
 
             const searchInput = req.body.inputValue
+    
+            console.log(namesArray);
 
             const perPage = 6;
             const skip = (currentPage - 1) * perPage;

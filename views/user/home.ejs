@@ -82,7 +82,7 @@
             <h2 class="text-center section-title">Our trusted brands</h2>
             <div class="col-12">
               <div class="scroll-container">
-                <div class="d-flex overflow-auto p-3">
+                <div class="d-flex overflow-auto p-3 scroll-container-two">
                   <% brands.forEach((brand , index)=>{ %>
                     <div class="box-two brand-box mx-2 text-center" style="flex: 0 0 auto;">
                       <div class="img d-flex align-items-center justify-content-center">
@@ -91,6 +91,17 @@
                       </div>
                     </div>
                   <% }) %>
+
+                  <% brands.forEach((brand, index) => { %>
+                    <div class="box-two brand-box mx-2 text-center" style="flex: 0 0 auto;">
+                      <div class="img d-flex align-items-center justify-content-center">
+                        <img src="/static/images/BrandImages/<%= brand.image %>" alt="No image"
+                             class="w-50 h-50 brand-img">
+                      </div>
+                    </div>
+                  <% }) %>
+
+                  
                 </div>
               </div>
             </div>
