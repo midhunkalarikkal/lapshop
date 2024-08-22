@@ -714,7 +714,7 @@ p,
 .ourPromise {
   min-height: 100vh;
   position: relative;
-  background: linear-gradient(to bottom right, #ffffff 50%, #e9ecef 50%);
+  background-color: white;
 }
 
 .section-title {
@@ -736,7 +736,7 @@ p,
 }
 
 .promise p {
-  color: #6c757d;
+  color: var(--secondary-color);
 }
 
 .promise:hover {
@@ -750,11 +750,16 @@ p,
 
 .promise h4 {
   margin-top: 15px;
-  color: #333;
+  color: var(--secondary-color);
 }
 
 .promise p {
-  color: #555;
+  color: var(--secondary-color);
+}
+
+.promise{
+  background-color: var(--third-color);
+  color: var(--secondary-color);
 }
 
 /*======> Promise sectio end <======*/
@@ -853,11 +858,13 @@ p,
 /*======> Coupon cards end <======*/
 
 .bsac{
-  background: linear-gradient(to bottom right, #e9ecef 50%, #ffffff 50%);
+  background-color: white;
+
 }
 
 .caba{
-  background: linear-gradient(to bottom right, #ffffff 50%, #e9ecef 50%);
+  background-color: white;
+
 }
 
 .brand-img{
