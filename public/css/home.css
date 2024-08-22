@@ -742,10 +742,9 @@ p,
 .promise:hover {
   transform: translateY(-10px);
   transition: transform 0.3s ease-in-out;
-}
-
-.icon {
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  .icon {
+    box-shadow: 0 0 8px rgb(174, 173, 173);
+  }
 }
 
 .promise h4 {
