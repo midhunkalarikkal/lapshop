@@ -866,27 +866,6 @@ p,
 
 }
 
-.brand-img{
-  transition: transform 0.5s;
-}
-
-.box-two:hover{
-  .brand-img{
-    transform: rotateY(360deg);
-  }
-}
-
-/*  */
-
-@keyframes slide {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-100%);
-  }
-}
-
 /* Brand images auto scrolling  */
 .scroll-container {
   overflow: hidden;
@@ -897,7 +876,7 @@ p,
 .scroll-container-two {
   display: flex;
   width: max-content;
-  animation: slide 10s linear infinite;
+  animation: slide 20s linear infinite;
 }
 
 @keyframes slide {
