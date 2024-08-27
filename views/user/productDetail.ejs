@@ -10,14 +10,25 @@
         <div class="container-fluid mt-5 d-flex flex-row justify-content-center ">
             <% if(productData !="" ){ %>
                 <div class="container mt-5 row d-flex justify-content-center">
-                    <div class="col-md-2 shadow p-4 side-img d-none d-xl-block" style="height: 400px; overflow-y: scroll;">
+
+                    <div class="col-lg-2 shadow p-4 side-img d-none d-lg-block" style="height: 400px; overflow-y: scroll;">
                         <% productData.images.forEach((image, index)=> { %>
                             <div class="each-img m-3" data-img-id="<%= image %>" data-index="<%= index %>" onclick="changeimage(this)">
                                 <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image">
                             </div>
                         <% }) %>
                     </div>
-                    <div class="col-md-5 product-image">
+
+                    <div class="col-md-6 col-lg-5 product-image d-none d-md-block shadow">
+                        <% productData.images.forEach((image, index) => { %>
+                            <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
+                                <span id="lens"></span>
+                                <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
+                            </div>
+                        <% }); %>
+                    </div>
+
+                    <div class="col-md-6 col-lg-5 product-image d-block d-md-none">
                         <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                             <div class="carousel-inner shadow">
                                 <% productData.images.forEach((image, index) => { %>
@@ -124,6 +135,15 @@
                             <% } %>
                         </div>
                     </div>
+                    
+                    <div class="col-md-6 shadow mt-2 side-img d-none d-md-block d-lg-none" style=" width: 90%; overflow-x: scroll; white-space: nowrap;">
+                        <% productData.images.forEach((image, index)=> { %>
+                            <div class="each-img d-inline-block m-3" data-img-id="<%= image %>" data-index="<%= index %>" onclick="changeimage(this)" style="width: 100px;">
+                                <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image">
+                            </div>
+                        <% }) %>
+                    </div>              
+                    
                 </div>
             <% }else{ %>
                 <h3 class="text-center bg-warning">No Product found</h3>
@@ -230,8 +250,8 @@
             }
 
             ////// function to show the selected image \\\\\\
-            var selectedImage;
             function changeimage(element) {
+                var selectedImage;
                 var index = parseInt(element.getAttribute("data-index"));
 
                 document.querySelectorAll('.carousel-item').forEach(item => {
@@ -244,7 +264,7 @@
                     selectedImage = imgElement.getAttribute('src');
                     carouselItem.classList.add('active');
                 }
-                customChange()
+                customChange(selectedImage)
             }
             
             ////// for showing image in zoom div \\\\\\
@@ -258,7 +278,7 @@
             });
 
             ////// Function to show the selected image in zoom div \\\\\\
-            function customChange() {
+            function customChange(selectedImage) {
                 var targetImage = document.querySelector("#target-image");
                 var second = document.getElementById("second")
                 second.style.backgroundImage = ""
