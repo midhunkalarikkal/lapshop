@@ -721,6 +721,7 @@
                 if (contentType && contentType.includes('application/json')) {
                     const data = await response.json();
                     if (data.success) {
+                        $('#profileImageModal').modal('hide');
                         Swal.fire({
                             icon: 'success',
                             title: 'Success!',
@@ -729,7 +730,6 @@
                             confirmButtonText: "Ok"
                         }).then((result) => {
                             if (result.isConfirmed) {
-                                $('#profileImageModal').modal('hide');
                                 location.reload();
                             }
                         });
