@@ -928,7 +928,11 @@ const getProductDetail = async(req,res)=>{
 const getCheckout = async(req,res)=>{
     try{
         let userId = req.session.user._id
-        let userCart = await Cart.find({ userId : userId})
+        let userCart = await Cart.findOne({ userId : userId}).populate({
+            path: 'items.product',
+            populate: { path: 'brand' }
+        })
+        .exec();
         let userAddress = await Address.find({ userId : userId})
         return res.render('user/checkout' , { userCart , userAddress })
     }catch(error){
