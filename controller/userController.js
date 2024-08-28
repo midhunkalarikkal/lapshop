@@ -521,7 +521,7 @@ const getCatProduct = async(req,res)=>{
         if(req.session.user){
             const user = req.session.user
             const wishlist = await Wishlist.find({ userId : user._id})
-            if(wishlist != ""){
+            if(wishlist){
                 const wishlistProducts = wishlist[0].products
                 const productsId = wishlistProducts.map(item => item.product);
                 prodId = productsId
@@ -541,8 +541,6 @@ const getCatProduct = async(req,res)=>{
             const currentPage = req.body.currentPage
 
             const searchInput = req.body.inputValue
-    
-            console.log(namesArray);
 
             const perPage = 6;
             const skip = (currentPage - 1) * perPage;
