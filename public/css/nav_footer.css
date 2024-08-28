@@ -62,6 +62,7 @@ p,
     --fourth-color: #f82b50;
     --fifth-color: #38ed77;
     --sixth-color: #e4e4e4;
+    --seventh-color: #797777;
     --offerprice-color: #22a751;
     --realprice-color: #3c3c3c;
     --discount-color: #d73131;
@@ -154,7 +155,7 @@ p,
 /*======> Footer start <======*/
 .footer-section h6 {
     margin-bottom: 5px;
-    color: var(--sixth-color);
+    color: var(--seventh-color);
 }
 
 .footer-section p {
@@ -190,7 +191,7 @@ p,
 
 .copyright{
     font-size: 12px;
-    color: #484848;
+    color: var(--seventh-color);
 }
 
 /*======> Footer end <======*/
@@ -265,11 +266,11 @@ p,
     }
 
     .footer-section h6 {
-        font-size: 15px;
+        font-size: 18px;
     }
     
     .footer-section p {
-        font-size: 13px;
+        font-size: 15px;
     }
 
     .copyright{
@@ -292,14 +293,14 @@ p,
     }
 
     .footer-section h6 {
-        font-size: 15px;
+        font-size: 18px;
     }
     
     .footer-section p {
-        font-size: 13px;
+        font-size: 15px;
     }
 
     .copyright{
-        font-size: 14px;
+        font-size: 16px;
     }
 }
