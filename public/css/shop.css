@@ -6,6 +6,7 @@
     --fourth-color: #f82b50;
     --fifth-color: #38ed77;
     --sixth-color: #e4e4e4;
+    --seventh-color: #797777;
     --offerprice-color: #22a751;
     --realprice-color: #3c3c3c;
     --discount-color: #d73131;
@@ -119,13 +120,13 @@
 
 
 .sideBarBox{
-    background-image: var(--btn-color);
-    color: var(--third-color);
+    background-color: var(--third-color);
+    color: var(--secondary-color);
     border-radius: 10px;
 }
 
 .sideBarHead{
-    color: var(--third-color);
+    color: var(--secondary-color);
     border-radius: 10px;
 }
 
