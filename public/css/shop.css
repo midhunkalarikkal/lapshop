@@ -16,21 +16,16 @@
 }
 
 /*======> Filter menu <======*/
-.filter-container {
-    position: relative;
-}
-
-.filter-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.filters{
+    border-bottom: 1px solid var(--third-color);
     background-color: var(--third-color);
-    color: #fff;
-    padding: 10px 20px;
-    cursor: pointer;
+    color: var(--secondary-color);
 }
 
-/*======> Filter navbar dropdown menu for small device <======*/
+.dropdown .dropdown-toggle{
+    color: var(--secondary-color);
+}
+
 .dropdown-menu{
     --bs-dropdown-link-active-bg: var(--primary-color);
 }

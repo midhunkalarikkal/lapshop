@@ -7,86 +7,9 @@
     </head>
 
     <section class="view">
-        <!-- Filter navbar for small screen start -->
-        <div class="filter-container d-md-none d-block">
-            <div class="filter-header">
-                <ul class="navbar-nav">
-                    <li class="nav-item dropdown">
-                        <a class="nav-link submenu-mainhead dropdown-toggle" href="#" data-bs-toggle="dropdown">Filters and sorters</a>
-                        <ul class="dropdown-menu">
-                            <% if(category && category.length>0 ){ %>
-                                <li><a class="dropdown-item submenu-head" href="#">Filter by category <i class="fa-solid fa-angle-down"></i> </a>
-                                    <ul class="submenu dropdown-menu">
-                                        <% for(let i=0; i < category.length; i++){ %>
-                                            <li>
-                                                <a class="dropdown-item" href="#">
-                                                    <input type="checkbox" class="custom-control-input"
-                                                        id="<%= category[i]._id %>"
-                                                        data-category-id="<%= category[i]._id %>"
-                                                        onchange="handleCheckboxChange(this)" <% if
-                                                        (categoryId.includes(category[i]._id)) { %> checked <% } %>>
-                                                        <label class="custom-control-label" for="allCategory">
-                                                            <%= category[i].name %>
-                                                        </label>
-                                                </a>
-                                            </li>
-                                        <% } %>
-                                    </ul>
-                                </li>
-                            <% } %>
-                            <% if(brand && brand.length>0 ){ %>
-                                <li><a class="dropdown-item submenu-head" href="#"> Filter by brand <i class="fa-solid fa-angle-down"></i> </a>
-                                    <ul class="submenu dropdown-menu">
-                                        <% for(let i=0; i < brand.length; i++){ %>
-                                            <li>
-                                                <a class="dropdown-item" href="#">
-                                                    <input type="checkbox" class="custom-control-input" id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>" onchange="handleCheckboxChange(this)" <% if(brandId.includes(brand[i]._id)) { %> checked <% } %>>
-                                                    <label class="custom-control-label" for="allCategory">
-                                                        <%= brand[i].name %>
-                                                    </label>          
-                                                </a>
-                                            </li>
-                                        <% } %>
-                                    </ul>
-                                </li>
-                            <% } %>
-                            <li><a class="dropdown-item submenu-head" href="#"> Sort by price <i class="fa-solid fa-angle-down"></i></a>
-                                <ul class="submenu dropdown-menu">
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <input type="radio" class="custom-control-input" id="price-HighToLow">
-                                            <label class="custom-control-label" for="price-HighToLow">High - Low</label>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <input type="radio" class="custom-control-input" id="price-LowToHigh">    
-                                            <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <input type="radio" class="custom-control-input" id="A-Z">    
-                                            <label class="custom-control-label" for="A-Z">A - Z</label>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" href="#">
-                                            <input type="radio" class="custom-control-input" id="Z-A">    
-                                            <label class="custom-control-label" for="Z-A">Z - A</label>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <!--  Filter navbar for small screen end -->
 
         <!-- Advertisement carousel start -->
-        <div id="carouselExampleAutoplaying" class="carousel slide mt-md-4 mt-0" data-bs-ride="carousel">
+        <div id="carouselExampleAutoplaying" class="carousel slide mt-4" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <% if(adCarousel !="" ){ %>
                     <% adCarousel.forEach((adc, index)=> { %>
@@ -112,6 +35,91 @@
             </button>
         </div>
         <!-- Advertisement carousel end -->
+
+        <div class="filters d-flex flex-row align-items-center justify-content-around">
+            <div class="dropdown-head">
+                <h6 class="my-2 mx-2">Filters</h6>
+            </div>
+            <!-- Left-aligned dropdown -->
+            <div class="dropdown">
+                <button class="btn btn-sm dropdown-toggle w-100" type="button" id="categoryFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                    Category
+                </button>
+                <% if(category && category.length>0 ){ %>
+                    <ul class="submenu dropdown-menu" aria-labelledby="categoryFilter">
+                        <% for(let i=0; i < category.length; i++){ %>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                                    <input type="checkbox" class="custom-control-input"
+                                        id="<%= category[i]._id %>"
+                                        data-category-id="<%= category[i]._id %>"
+                                        onchange="handleCheckboxChange(this)" <% if
+                                        (categoryId.includes(category[i]._id)) { %> checked <% } %>>
+                                    <label class="custom-control-label" for="allCategory">
+                                        <%= category[i].name %>
+                                    </label>
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                <% } %>
+            </div>
+        
+            <!-- Center-aligned dropdown -->
+            <div class="dropdown text-center">
+                <button class="btn btn-sm dropdown-toggle w-100" type="button" id="brandFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                    Brand
+                </button>
+                <% if(brand && brand.length>0 ){ %>
+                    <ul class="submenu dropdown-menu" aria-labelledby="brandFilter">
+                        <% for(let i=0; i < brand.length; i++){ %>
+                            <li>
+                                <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                                    <input type="checkbox" class="custom-control-input" id="<%= brand[i]._id %>" data-brand-id="<%= brand[i]._id %>" onchange="handleCheckboxChange(this)" <% if(brandId.includes(brand[i]._id)) { %> checked <% } %>>
+                                    <label class="custom-control-label" for="allCategory">
+                                        <%= brand[i].name %>
+                                    </label>          
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                <% } %>
+            </div>
+        
+            <!-- Right-aligned dropdown -->
+            <div class="dropdown text-end">
+                <button class="btn btn-sm dropdown-toggle w-100" type="button" id="sortFilter" data-bs-toggle="dropdown" aria-expanded="false">
+                    Sort
+                </button>
+                <ul class="submenu dropdown-menu">
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                            <input type="radio" class="custom-control-input" id="price-HighToLow">
+                            <label class="custom-control-label" for="price-HighToLow">High - Low</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                            <input type="radio" class="custom-control-input" id="price-LowToHigh">    
+                            <label class="custom-control-label" for="price-LowToHigh">Low - High</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                            <input type="radio" class="custom-control-input" id="A-Z">    
+                            <label class="custom-control-label" for="A-Z">A - Z</label>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center justify-content-between" href="#">
+                            <input type="radio" class="custom-control-input" id="Z-A">    
+                            <label class="custom-control-label" for="Z-A">Z - A</label>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
 
         <!-- Shop Start -->
         <div class="container-fluid pt-5">
