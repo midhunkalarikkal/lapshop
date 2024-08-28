@@ -190,7 +190,7 @@ p,
 }
 
 .copyright{
-    font-size: 12px;
+    font-size: 14px;
     color: var(--seventh-color);
 }
 
@@ -208,11 +208,11 @@ p,
     }
 
     .footer-section h6 {
-        font-size: 11px;
+        font-size: 13px;
     }
     
     .footer-section p {
-        font-size: 9px;
+        font-size: 11px;
     }
 }
 
@@ -228,11 +228,11 @@ p,
     }
 
     .footer-section h6 {
-        font-size: 12px;
+        font-size: 14px;
     }
     
     .footer-section p {
-        font-size: 10px;
+        font-size: 11px;
     }
 }
 
