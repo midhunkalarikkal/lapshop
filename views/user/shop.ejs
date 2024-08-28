@@ -184,7 +184,7 @@
                                     fiveDaysAgo.setDate(currentDate.getDate() - 5);
                                     const isNewProduct = new Date(product.created) >= fiveDaysAgo;
                                 %>   
-                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 pb-1">
+                                <div class="col-xl-3 col-lg-4 col-md-6 pb-1 d-none d-md-block">
                                     <div class="card product-item mb-4 product-card shadow">
                                         <a href="/productDetail/<%= product._id %>" class="product-outline">
                                             <div class="card-header product-img position-relative overflow-hidden  p-0">
@@ -256,6 +256,83 @@
                                         <% } %>
                                     </div>
                                 </div>
+
+                                <!-- For small devices -->
+                                <div class="col-12 d-block d-md-none">
+                                    <div class="card product-item mb-2 product-card shadow d-flex flex-row">
+                                        <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                            <div class="col-4 card-header product-img overflow-hidden  p-2 d-flex align-items-center justify-content-center">
+                                                <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
+                                                <% if (wishlistProdId !="" ) { %>
+                                                    <% for(let i=0; i < wishlistProdId.length; i++){ %>
+                                                        <% if(wishlistProdId[i]==product._id.toString()){ %>
+                                                            <a class="position-absolute"
+                                                                style="top: 8px; right: 10px; z-index: 1;"
+                                                                data-product-id="<%= product._id %>"
+                                                                onclick="addToWishlist(this)">
+                                                                <i class="fa-solid fa-heart wish-btn"></i>
+                                                            </a>
+                                                        <% } %>
+                                                    <% } %>
+                                                <% } %>
+                                                <a href="#" class="position-absolute"
+                                                    style="top: 8px; right: 10px; z-index: 1;"
+                                                    data-product-id="<%= product._id %>"
+                                                    onclick="addToWishlist(this)">
+                                                    <i class="fa-regular fa-heart wish-btn"></i>
+                                                </a>                    
+                                            </div>
+                                            <div class="col-8 card-body p-3">
+                                                <h6 class="product-name mb-1">
+                                                    <%= product.brand.name.toUpperCase() %>
+                                                    <%= product.name %>
+                                                    <% if (isNewProduct){ %>                         
+                                                        <span class="badge">New</span>
+                                                    <% } %>
+                                                </h6>
+                                                <p class="small product-desc mb-1">
+                                                    <%= product.description.slice(0,75) %>....
+                                                </p>
+                                                <span class="d-flex product-price ">                         
+                                                    <h6 class="discount-percentage price">-<%= product.discountPercentage %>%</h6>
+                                                    <h5 class="offer-price price mx-2">₹<%= product.offerPrice %></h5>
+                                                    <h6 class="real-price small price">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></h6>
+                                                </span>
+                                                <div class="cart-button">
+                                                    <% if (cartProdId !="" ) { %>
+                                                        <% for(let i=0; i < cartProdId.length; i++){ %>
+                                                            <% if(cartProdId[i] == product._id.toString()){ %>
+                                                                <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" onclick="goToCart(event)">
+                                                                    <span class="d-flex flex-row align-items-center justiy-content-center">
+                                                                        <i class="fas fa-shopping-cart"></i> <span class="mx-1">Go to cart</span>
+                                                                    </span>
+                                                                </button>
+                                                            <% break; %>
+                                                            <% } %>
+                                                            <!-- If it's the last iteration and no match is found -->
+                                                            <% if(i===cartProdId.length - 1){ %>
+                                                                <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" data-prod-id="<%= product._id %>" onclick="addToCart(this)">
+                                                                    <span class="d-flex flex-row align-items-center justiy-content-center small">
+                                                                        <i class="fas fa-shopping-cart"></i> <span class="mx-1">Add to cart</span>
+                                                                    </span>
+                                                                </button>
+                                                            <% } %>
+                                                        <% } %>
+                                                    <% } else { %>
+                                                        <!-- Render "Add to cart" button if cartProdId is empty -->
+                                                        <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" data-prod-id="<%= product._id %>" onclick="addToCart(this)">
+                                                            <span class="d-flex flex-row align-items-center justiy-content-center small">
+                                                                <i class="fas fa-shopping-cart"></i> <span class="mx-1">Add to cart</span>
+                                                            </span>
+                                                        </button>
+                                                    <% } %>
+                                                </div>
+                                            </div>    
+                                        </a>                                
+                                    </div>
+                                </div>
+                                <!-- For small devices -->
+
                             <% } ) %>
                         </div>
                         <!-- Shop Product end -->
