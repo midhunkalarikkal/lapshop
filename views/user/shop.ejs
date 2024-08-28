@@ -226,7 +226,7 @@
                                         <% if (cartProdId !="" ) { %>
                                             <% for(let i=0; i < cartProdId.length; i++){ %>
                                                 <% if(cartProdId[i] == product._id.toString()){ %>
-                                                    <button class="card-footer d-flex justify-content-center" onclick="goToCart(event)">
+                                                    <button class="card-footer d-flex justify-content-center btn btn-sm" onclick="goToCart(event)">
                                                         <span class="d-flex flex-row align-items-center justiy-content-center">
                                                             <i class="fas fa-shopping-cart"></i> <span class="mx-1">Go to cart</span>
                                                         </span>
@@ -235,9 +235,7 @@
                                                 <% } %>
                                                 <!-- If it's the last iteration and no match is found -->
                                                 <% if(i===cartProdId.length - 1){ %>
-                                                    <button class="card-footer d-flex justify-content-center"
-                                                        data-prod-id="<%= product._id %>"
-                                                        onclick="addToCart(this)">
+                                                    <button class="card-footer d-flex justify-content-center btn btn-sm" data-prod-id="<%= product._id %>" onclick="addToCart(this)">
                                                         <span class="d-flex flex-row align-items-center justiy-content-center">
                                                             <i class="fas fa-shopping-cart"></i> <span class="mx-1">Add to cart</span>
                                                         </span>
@@ -246,7 +244,7 @@
                                             <% } %>
                                         <% } else { %>
                                         <!-- Render "Add to cart" button if cartProdId is empty -->
-                                            <button class="card-footer d-flex justify-content-center"
+                                            <button class="card-footer d-flex justify-content-center btn btn-sm"
                                                 data-prod-id="<%= product._id %>"
                                                 onclick="addToCart(this)">
                                                 <span class="d-flex flex-row align-items-center justiy-content-center">
