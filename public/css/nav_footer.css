@@ -82,7 +82,7 @@ p,
 }
 
 .navbar {
-    background-color: rgb(0, 0, 0);
+    background-color: var(--third-color);
 }
 
 .nav-item a {

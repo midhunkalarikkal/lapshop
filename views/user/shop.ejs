@@ -12,10 +12,10 @@
             <div class="filter-header">
                 <ul class="navbar-nav">
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Filters and sorters</a>
+                        <a class="nav-link submenu-mainhead dropdown-toggle" href="#" data-bs-toggle="dropdown">Filters and sorters</a>
                         <ul class="dropdown-menu">
                             <% if(category && category.length>0 ){ %>
-                                <li><a class="dropdown-item" href="#">Filter by category <i class="fa-solid fa-angle-down"></i> </a>
+                                <li><a class="dropdown-item submenu-head" href="#">Filter by category <i class="fa-solid fa-angle-down"></i> </a>
                                     <ul class="submenu dropdown-menu">
                                         <% for(let i=0; i < category.length; i++){ %>
                                             <li>
@@ -35,7 +35,7 @@
                                 </li>
                             <% } %>
                             <% if(brand && brand.length>0 ){ %>
-                                <li><a class="dropdown-item" href="#"> Filter by brand <i class="fa-solid fa-angle-down"></i> </a>
+                                <li><a class="dropdown-item submenu-head" href="#"> Filter by brand <i class="fa-solid fa-angle-down"></i> </a>
                                     <ul class="submenu dropdown-menu">
                                         <% for(let i=0; i < brand.length; i++){ %>
                                             <li>
@@ -50,7 +50,7 @@
                                     </ul>
                                 </li>
                             <% } %>
-                            <li><a class="dropdown-item" href="#"> Sort by price <i class="fa-solid fa-angle-down"></i></a>
+                            <li><a class="dropdown-item submenu-head" href="#"> Sort by price <i class="fa-solid fa-angle-down"></i></a>
                                 <ul class="submenu dropdown-menu">
                                     <li>
                                         <a class="dropdown-item" href="#">
@@ -84,8 +84,6 @@
             </div>
         </div>
         <!--  Filter navbar for small screen end -->
-
-
 
         <!-- Advertisement carousel start -->
         <div id="carouselExampleAutoplaying" class="carousel slide mt-md-4 mt-0" data-bs-ride="carousel">
@@ -186,7 +184,7 @@
                                     fiveDaysAgo.setDate(currentDate.getDate() - 5);
                                     const isNewProduct = new Date(product.created) >= fiveDaysAgo;
                                 %>   
-                                <div class="col-lg-4 col-md-6 col-sm-6 col-6 pb-1">
+                                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 pb-1">
                                     <div class="card product-item mb-4 product-card shadow">
                                         <a href="/productDetail/<%= product._id %>" class="product-outline">
                                             <div class="card-header product-img position-relative overflow-hidden  p-0">
@@ -405,7 +403,7 @@
                 productData.forEach((product) => {
                     const isNewProduct = new Date(product.created) >= fiveDaysAgo;
                     const productDiv = $(
-                        `<div class='col-lg-4 col-md-6 col-sm-6 col-6 pb-1'>
+                        `<div class='col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 pb-1'>
                             <div class='card product-item mb-4 product-card shadow'>
                                 <a href='/productDetail/${product._id}' class='product-outline'>
                                     <div class='card-header product-img position-relative overflow-hidden  p-0'>

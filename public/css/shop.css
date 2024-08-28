@@ -149,6 +149,18 @@
     .price{
         font-size: 15px;
     }
+
+    .submenu-mainhead{
+        font-size: 15px;
+    }
+
+    .submenu-head{
+        font-size: 14px;
+    }
+
+    .submenu li a{
+        font-size: 12px;
+    }
 }
 
 /*======> XS / SM devices <======*/
@@ -168,6 +180,18 @@
 
     .price{
         font-size: 15px;
+    }
+
+    .submenu-mainhead{
+        font-size: 15px;
+    }
+
+    .submenu-head{
+        font-size: 14px;
+    }
+
+    .submenu li a{
+        font-size: 12px;
     }
 }
 
