@@ -21,7 +21,7 @@
                                 <th class="text-center text-light">code</th>
                                 <th class="text-center text-light">Start Date</th>
                                 <th class="text-center text-light">End Date</th>
-                                <th class="text-center text-light">Amount</th>
+                                <th class="text-center text-light">Discount</th>
                                 <th class="text-center text-light">Min Amount</th>
                                 <th class="text-center text- light">Controls</th>
                                 <th class="text-center text-light">Edit</th>
@@ -47,7 +47,11 @@
                                             <%= coupon.endDate.toLocaleDateString() %>
                                         </td>
                                         <td>
-                                            <%= coupon.couponAmount %>
+                                            <% if(coupon.couponAmount < 99){ %>
+                                                <%= coupon.couponAmount %> %
+                                            <% }else{ %>
+                                                Rs <%= coupon.couponAmount %>
+                                            <% } %>
                                         </td>
                                         <td>
                                             <%= coupon.minAmount %>
@@ -121,6 +125,7 @@
                             <input type="text" name="couponAmount" id="couponAmount"
                             class="form-control form-control-md" required oninput="checkAmount()">
                             <span id="amountError" class="text-danger"></span>
+                            <p class="small text-info"> values 1 to 99 consider as percentage value </p>
                         </div>
                     </form>
                 </div>
