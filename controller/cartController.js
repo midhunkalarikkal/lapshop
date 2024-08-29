@@ -330,6 +330,31 @@ const moveFromSaveForLaterCartToCart = async(req,res) => {
     }
 }
 
+const deleteFromSaveForLaterCart = async(req,res) => {
+    try{
+        const productId = req.body.productId
+        const userId = req.session.user._id
+
+        if (!userId || !productId) {
+            return res.status(400).json({ success: false, message: "Invalid request" });
+        }
+
+        const saveForLaterCart = await SaveForLaterCart.findOneAndUpdate({ userId: userId },
+            { $pull: { items: { product: productId } } },
+            { new: true}
+            );
+                
+        if(!saveForLaterCart){
+            return res.status(404).json({ success : false, message : "Product deleting failed, please try again."})
+        }else{
+            return res.status(200).json({ success : true, message : "Product deleted successfully."})
+        }
+
+    }catch(error){
+        res.redirect('/errorPage')
+    }
+}
+
 module.exports = {
     getCartPage,
     postProductToCartFromShop,
@@ -337,5 +362,6 @@ module.exports = {
     postCartProductQtyDec,
     deleteProductFromCart,
     postSaveForLater,
-    moveFromSaveForLaterCartToCart
+    moveFromSaveForLaterCartToCart,
+    deleteFromSaveForLaterCart
 }
