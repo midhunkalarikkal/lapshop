@@ -17,7 +17,6 @@ const getCartPage = async(req,res)=>{
             path: "items.product",
             populate: { path: "brand" }
         });
-
         
         if (!cart || cart === null) {
             cart = { items: [] , totalCartPrice: 0, totalCartDiscountPrice: 0 };
@@ -28,7 +27,6 @@ const getCartPage = async(req,res)=>{
         }
         
         const cartItems = cart.items
-        console.log("cart : ", cart);
         
         res.render('user/cart' , {userDetails , cartItems , cart , saveForLaterCart})
     }catch(error){
@@ -42,7 +40,7 @@ const postProductToCartFromShop = async (req, res) => {
         const userId = req.session.user._id;
         const productId = req.body.productId;
 
-        if (!userId ||!productId) {
+        if (!userId || !productId) {
             return res.status(400).json({ success: false, message: "Invalid request" });
         }
 
@@ -200,6 +198,10 @@ const postSaveForLater = async(req,res) => {
         const productId = req.body.productId
         const userId = req.session.user._id
 
+        if (!userId || !productId) {
+            return res.status(400).json({ success: false, message: "Invalid request" });
+        }
+
         if(!productId){
             return res.status(404).json({ success : false, message : "Product adding to save for later error , please try again."})
         }
@@ -253,11 +255,87 @@ const postSaveForLater = async(req,res) => {
     }
 }
 
+const moveFromSaveForLaterCartToCart = async(req,res) => {
+    try{
+        const productId = req.body.productId
+        const userId = req.session.user._id
+
+        if (!userId || !productId) {
+            return res.status(400).json({ success: false, message: "Invalid request" });
+        }
+        
+        const existingSaveForLaterCart = await SaveForLaterCart.findOne({ userId: userId });
+        if (!existingSaveForLaterCart || !existingSaveForLaterCart.items.some(item => item.product.toString() === productId)) {
+            return res.status(400).json({ success: false, message: "Product is not saved for later." });
+        }
+        
+        const saveForLaterCart = await SaveForLaterCart.findOneAndUpdate({ userId: userId },
+            { $pull: { items: { product: productId } } },
+            { new: true}
+            );
+                
+        if(!saveForLaterCart){
+            return res.status(404).json({ success : false, message : "Moving product to cart is failed, please try again."})
+        }
+
+        let product = await Product.findOne({ _id : productId, isBlocked : false})
+
+        if (!product) {
+            return res.status(404).json({ success: false, message: "Product not found" });
+        }
+
+        if(product.noOfStock === 0){
+            return res.status(404).json({ success: false, message: "Sorry, this product is out of stock." });
+        }
+
+        let existingCart = await Cart.findOne({ userId: userId });
+        if (existingCart !== null) {
+            existingCart.items.push({
+                product: productId,
+                quantity: 1,
+                price: product.offerPrice,
+                totalPrice: product.offerPrice,
+                discountPrice: product.realPrice * (product.discountPercentage / 100)
+            });
+            
+            existingCart.totalCartPrice = existingCart.items.reduce((total, item) => total + item.totalPrice, 0);
+            existingCart.totalCartDiscountPrice = existingCart.items.reduce((total, item) => total + item.discountPrice, 0);
+
+        } else {
+            existingCart = new Cart({
+                userId: userId,
+                items: [{
+                    product: productId,
+                    quantity: 1,
+                    price: product.offerPrice,
+                    totalPrice: product.offerPrice,
+                    discountPrice: product.realPrice * (product.discountPercentage / 100)
+                }],
+                totalCartPrice: product.offerPrice,
+                totalCartDiscountPrice: product.realPrice * (product.discountPercentage / 100)
+            });
+        }
+        
+        req.session.userNC.cartItemCount = existingCart.items.length
+        const updateCart = await existingCart.save();
+
+        if(updateCart){
+            return res.status(200).json({ success : true, message: "Product moved to your cart." });
+        }else{
+            return res.status(400).json({ success : false, message: "Product moving to cart failed, please try again." });
+        }
+
+    }catch(error){
+        res.redirect('/errorPage')
+    }
+}
+
 module.exports = {
     getCartPage,
     postProductToCartFromShop,
     postCartProductQtyInc,
     postCartProductQtyDec,
     deleteProductFromCart,
-    postSaveForLater
+    postSaveForLater,
+    moveFromSaveForLaterCartToCart
 }

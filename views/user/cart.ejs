@@ -156,6 +156,13 @@
                             Product <%= index+1 %>
                           </strong>
                         </span>
+                        <span>
+                          <% if(product.product.noOfStock === 0){%>
+                            <span class="mx-2 text-danger">Out of stock</span>
+                            <% }else if(product.product.noOfStock > 0 && product.product.noOfStock < 5){ %>
+                              <span class="mx-2 text-danger">Only <%= product.product.noOfStock %> left!</span>
+                            <% } %>
+                        </span>
                         <br>
                         <span class="product-brand">
                           <%= product.product.brand.name %>
@@ -167,13 +174,13 @@
                       </p>
                     </div>
                     <div class="buttons d-flex">
+                      <button class="btn btn-secondary btn-sm mx-2 flex-fill"
+                        data-product-id="<%= product.product._id %>" onclick="moveToCart(this,event)">
+                        Move to cart
+                      </button>
                       <button class="btn btn-danger btn-sm mx-2 flex-fill"
                         data-product-id="<%= product.product._id %>" onclick="deleteProductFromSaveForLater(this)">
                         <i class="fa fa-trash"></i> Delete
-                      </button>
-                      <button class="btn btn-secondary btn-sm mx-2 flex-fill"
-                        data-product-id="<%= product.product._id %>" onclick="moveToCart(this)">
-                        Move to cart
                       </button>
                     </div>
                   </div>
@@ -538,7 +545,6 @@
     ////// Function to save for later \\\\\\
     function saveForLater(savebtn) {
       const productId = savebtn.getAttribute("data-product-id");
-      console.log("productid : ", productId)
       fetch('/saveForLater', {
         method: 'POST',
         headers: {
@@ -594,6 +600,62 @@
     function goToShop(event){
       event.preventDefault()
       window.location.href ='/shop'
+    }
+
+    ////// Function to move product from save for later to cart \\\\\\
+    function moveToCart(btn,event) {
+      event.preventDefault()
+      const productId = btn.getAttribute("data-product-id");
+      console.log("productid : ", productId)
+      fetch('/moveToCartFromSaveForLater', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ productId: productId })
+      })
+        .then(response => {
+          const contentType = response.headers.get('content-type');
+          if (contentType && contentType.includes('application/json')) {
+            return response.json();
+          } else {
+            window.location.href = `/login`;
+          }
+        })
+        .then(data => {
+          if (data.success) {
+            Swal.fire({
+              title: "Success",
+              text: data.message,
+              icon: "success",
+              timer: 2000,
+              timerProgressBar: true,
+              showConfirmButton: false
+            }).then(() => {
+              location.reload();
+            })
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: data.message,
+              icon: "error",
+              timer: 2000,
+              timerProgressBar: true,
+              showConfirmButton: false
+            });
+          }
+        })
+        .catch(error => {
+          console.log("error : ", error)
+          Swal.fire({
+            title: "Error",
+            text: "Internal server error.",
+            icon: "error",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          });
+        });
     }
 
   </script>

@@ -97,6 +97,8 @@ userRouter.post('/decrementCartProduct',userAuth.isLoggedIn,userAuth.isBlocked,c
 userRouter.post('/deleteProductFromCart',userAuth.isLoggedIn,userAuth.isBlocked,cartController.deleteProductFromCart)
 //To move a cart product to save for later
 userRouter.post('/saveForLater',userAuth.isLoggedIn,userAuth.isBlocked,cartController.postSaveForLater)
+//To move a saveForLaterCart product to cart
+userRouter.post('/moveToCartFromSaveForLater',userAuth.isLoggedIn,userAuth.isBlocked,cartController.moveFromSaveForLaterCartToCart)
 
 
 //To get the checkout page
