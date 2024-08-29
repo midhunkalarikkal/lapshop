@@ -13,6 +13,34 @@
     --btnHover-color: linear-gradient(to top, #c1dfc4 0%, #deecdd 100%);
 }
 
+.cart-intro .fa-question-circle {
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.cart-intro h4 {
+    font-size: 1.5rem;
+}
+
+.instructions {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.instructions h3 {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.instructions p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
+
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
     .product-img {
