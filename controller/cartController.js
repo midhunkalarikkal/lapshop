@@ -1,5 +1,6 @@
 const Product = require('../models/productModel')
 const Cart = require('../models/cartModel')
+const SaveForLaterCart = require('../models/saveForLaterCart')
 
 //To get the cart page
 const getCartPage = async(req,res)=>{
@@ -7,18 +8,29 @@ const getCartPage = async(req,res)=>{
         const userId = req.session.user._id
         let userDetails = req.session.userNC
 
-        let cart = await Cart.find({userId : userId}).populate({
+        let cart = await Cart.findOne({ userId: userId }).populate({
             path: "items.product",
             populate: { path: "brand" }
-          });
+        });
 
-        if (!cart || cart.length === 0) {
-            cart = [];
-            return res.render('user/cart', { userDetails, cartItems: [], cart: []});
-        }
-        const cartItems = cart[0].items
+        let saveForLaterCart = await SaveForLaterCart.findOne({ userId: userId }).populate({
+            path: "items.product",
+            populate: { path: "brand" }
+        });
+
         
-        res.render('user/cart' , {userDetails , cartItems , cart})
+        if (!cart || cart === null) {
+            cart = { items: [] , totalCartPrice: 0, totalCartDiscountPrice: 0 };
+        }
+        
+        if (!saveForLaterCart || saveForLaterCart === null) {
+            saveForLaterCart = { items: [] };
+        }
+        
+        const cartItems = cart.items
+        console.log("cart : ", cart);
+        
+        res.render('user/cart' , {userDetails , cartItems , cart , saveForLaterCart})
     }catch(error){
         return res.redirect('/errorPage')
     }
@@ -182,10 +194,70 @@ const deleteProductFromCart = async(req,res)=>{
     }
 }
 
+//  To move the cart product to save for later
+const postSaveForLater = async(req,res) => {
+    try{
+        const productId = req.body.productId
+        const userId = req.session.user._id
+
+        if(!productId){
+            return res.status(404).json({ success : false, message : "Product adding to save for later error , please try again."})
+        }
+
+        const cart = await Cart.findOne({ userId: userId, 'items.product': productId });
+
+        if (!cart) {
+            return res.status(404).json({ success: false, message: "Product not found in cart." });
+        }
+
+        const existingCart = await SaveForLaterCart.findOne({ userId: userId });
+        if (existingCart && existingCart.items.some(item => item.product.toString() === productId)) {
+            return res.status(400).json({ success: false, message: "Product is already saved for later." });
+        }
+        
+        const saveForLaterCart = await SaveForLaterCart.findOneAndUpdate({ userId: userId },
+            { $push: { items: { product: productId } } },
+            { new: true, upsert : true}
+            );
+                
+        if(!saveForLaterCart){
+            return res.status(404).json({ success : false, message : "Saving for later failed, please try again."})
+        }
+
+        const updatedCart = await Cart.findOneAndUpdate(
+            { userId: userId },
+            { $pull: { items: { product: productId } } },
+            { new: true }
+        );
+
+        if (!updatedCart) {
+            return res.status(404).json({ success: false, message: "Failed to update cart." });
+        }
+
+        req.session.userNC.cartItemCount = updatedCart.items.length;
+
+        if (updatedCart.items.length === 0) {
+            updatedCart.couponApplied = false;
+            updatedCart.totalCartPrice = 0;
+            updatedCart.couponAmount = 0;
+            updatedCart.couponCode = "";
+        }
+
+        updatedCart.totalCartPrice = updatedCart.items.reduce((total, item) => total + item.totalPrice, 0);
+        updatedCart.totalCartDiscountPrice = updatedCart.items.reduce((total, item) => total + item.discountPrice, 0);
+
+        await updatedCart.save();
+        return res.status(200).json({ success : true, message: "Product saved for later use." });
+    }catch(error){
+        res.redirect('/errorPage')
+    }
+}
+
 module.exports = {
     getCartPage,
     postProductToCartFromShop,
     postCartProductQtyInc,
     postCartProductQtyDec,
-    deleteProductFromCart
+    deleteProductFromCart,
+    postSaveForLater
 }
