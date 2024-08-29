@@ -41,6 +41,14 @@
     margin: 5px 0;
 }
 
+.accordion-button {
+    font-size: 1rem;
+}
+
+.accordion-body {
+    font-size: 0.9rem;
+}
+
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
     .product-img {
