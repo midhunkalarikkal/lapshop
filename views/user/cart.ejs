@@ -60,17 +60,17 @@
                     <div class="buttons mb-3 d-flex">
                       <div class="quantity-input">
                         <button class="quantity-btn" data-product-id="<%= product.product._id %>"
-                          onclick="decreaseQuantity(this)">-</button>
+                          onclick="decreaseQuantity(this,event)">-</button>
                         <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
                         <button class="quantity-btn" data-product-id="<%= product.product._id %>"
-                          onclick="increaseQuantity(this)">+</button>
+                          onclick="increaseQuantity(this,event)">+</button>
                       </div>
                       <button class="btn btn-danger btn-sm mx-2" data-product-id="<%= product.product._id %>"
-                        onclick="deleteProduct(this)">
+                        onclick="deleteProduct(this,event)">
                         <i class="fa fa-trash"></i>
                       </button>
                       <button class="btn btn-secondary btn-sm mx-2" data-product-id="<%= product.product._id %>"
-                        onclick="saveForLater(this)">
+                        onclick="saveForLater(this,event)">
                         Save for later
                       </button>
                     </div>
@@ -343,61 +343,76 @@
   <script>
 
     ////// Function to delete a product from cart \\\\\\
-    function deleteProduct(delbtn) {
+    function deleteProduct(delbtn,event) {
+      event.parentElement()
       const productId = delbtn.getAttribute("data-product-id");
 
-      fetch('/deleteProductFromcart', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ productId: productId })
-      })
-        .then(response => {
-          const contentType = response.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            return response.json();
-          } else {
-            window.location.href = `/login`;
-          }
-        })
-        .then(data => {
-          if (data.success) {
-            Swal.fire({
-              title: "Success",
-              text: data.message,
-              icon: "success",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            }).then(() => {
-              location.reload();
-            })
-          } else {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Do you want to remove this product from Save for Later?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel"
+      }).then((result) => {
+        if(result.isConfirmed) {
+          fetch('/deleteProductFromcart', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: productId })
+          })
+          .then(response => {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+              return response.json();
+            } else {
+              window.location.href = `/login`;
+            }
+          })
+          .then(data => {
+            if (data.success) {
+              Swal.fire({
+                title: "Success",
+                text: data.message,
+                icon: "success",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+              }).then(() => {
+                location.reload();
+              })
+            } else {
+              Swal.fire({
+                title: "Error",
+                text: data.message,
+                icon: "error",
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false
+              });
+            }
+          })
+          .catch(error => {
             Swal.fire({
               title: "Error",
-              text: data.message,
+              text: "Internal server error.",
               icon: "error",
               timer: 2000,
               timerProgressBar: true,
               showConfirmButton: false
-            });
-          }
-        })
-        .catch(error => {
-          Swal.fire({
-            title: "Error",
-            text: "Internal server error.",
-            icon: "error",
-            timer: 2000,
-            timerProgressBar: true,
-            showConfirmButton: false
-          });
-        });
+            })
+          })
+        }
+      })
     }
 
     ////// Function for the product quantity increment \\\\\\
-    function increaseQuantity(element) {
+    function increaseQuantity(element,event) {
+      event.preventDefault()
       var input = element.parentElement.querySelector('.quantity-value');
       var value = parseInt(input.value);
       input.value = value + 1;
@@ -411,62 +426,63 @@
         },
         body: JSON.stringify({ productId: productId })
       })
-        .then(response => {
-          const contentType = response.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            return response.json();
-          } else {
-            window.location.href = `/login`;
-          }
-        })
-        .then(data => {
-          if (data.success) {
-            Swal.fire({
-              title: "Success",
-              text: data.message,
-              icon: "success",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            }).then(() => {
-              location.reload();
-            })
-          } else if (data.status === 409) {
-            Swal.fire({
-              title: "Info",
-              text: data.message,
-              icon: "info",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            }).then(() => {
-              location.reload();
-            })
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: data.message,
-              icon: "error",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            });
-          }
-        })
-        .catch(error => {
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return response.json();
+        } else {
+          window.location.href = `/login`;
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          Swal.fire({
+            title: "Success",
+            text: data.message,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
+          })
+        } else if (data.status === 409) {
+          Swal.fire({
+            title: "Info",
+            text: data.message,
+            icon: "info",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
+          })
+        } else {
           Swal.fire({
             title: "Error",
-            text: "Internal server error.",
+            text: data.message,
             icon: "error",
             timer: 2000,
             timerProgressBar: true,
             showConfirmButton: false
           });
+        }
+      })
+      .catch(error => {
+        Swal.fire({
+          title: "Error",
+          text: "Internal server error.",
+          icon: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
         });
+      });
     }
 
     ////// Function for the product quantity decrement \\\\\\
-    function decreaseQuantity(element) {
+    function decreaseQuantity(element,event) {
+      event.preventDefault()
       var input = element.parentElement.querySelector('.quantity-value');
       var value = parseInt(input.value);
 
@@ -493,47 +509,47 @@
         },
         body: JSON.stringify({ productId: productId })
       })
-        .then(response => {
-          const contentType = response.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            return response.json();
-          } else {
-            window.location.href = `/login`;
-          }
-        })
-        .then(data => {
-          if (data.success) {
-            Swal.fire({
-              title: "Success",
-              text: data.message,
-              icon: "success",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            }).then(() => {
-              location.reload();
-            })
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: data.message,
-              icon: "error",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            });
-          }
-        })
-        .catch(error => {
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return response.json();
+        } else {
+          window.location.href = `/login`;
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          Swal.fire({
+            title: "Success",
+            text: data.message,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
+          })
+        } else {
           Swal.fire({
             title: "Error",
-            text: "Internal server error.",
+            text: data.message,
             icon: "error",
             timer: 2000,
             timerProgressBar: true,
             showConfirmButton: false
           });
+        }
+      })
+      .catch(error => {
+        Swal.fire({
+          title: "Error",
+          text: "Internal server error.",
+          icon: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
         });
+      });
     }
 
     ////// Function to go to checkout \\\\\\
@@ -543,7 +559,8 @@
     }
 
     ////// Function to save for later \\\\\\
-    function saveForLater(savebtn) {
+    function saveForLater(savebtn,event) {
+      event.preventDefault()
       const productId = savebtn.getAttribute("data-product-id");
       fetch('/saveForLater', {
         method: 'POST',
@@ -552,48 +569,48 @@
         },
         body: JSON.stringify({ productId: productId })
       })
-        .then(response => {
-          const contentType = response.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            return response.json();
-          } else {
-            window.location.href = `/login`;
-          }
-        })
-        .then(data => {
-          if (data.success) {
-            Swal.fire({
-              title: "Success",
-              text: data.message,
-              icon: "success",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            }).then(() => {
-              location.reload();
-            })
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: data.message,
-              icon: "error",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            });
-          }
-        })
-        .catch(error => {
-          console.log("error : ", error)
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return response.json();
+        } else {
+          window.location.href = `/login`;
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          Swal.fire({
+            title: "Success",
+            text: data.message,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
+          })
+        } else {
           Swal.fire({
             title: "Error",
-            text: "Internal server error.",
+            text: data.message,
             icon: "error",
             timer: 2000,
             timerProgressBar: true,
             showConfirmButton: false
           });
+        }
+      })
+      .catch(error => {
+        console.log("error : ", error)
+        Swal.fire({
+          title: "Error",
+          text: "Internal server error.",
+          icon: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
         });
+      });
     }
 
     ////// Function to go to shop \\\\\\
@@ -614,48 +631,48 @@
         },
         body: JSON.stringify({ productId: productId })
       })
-        .then(response => {
-          const contentType = response.headers.get('content-type');
-          if (contentType && contentType.includes('application/json')) {
-            return response.json();
-          } else {
-            window.location.href = `/login`;
-          }
-        })
-        .then(data => {
-          if (data.success) {
-            Swal.fire({
-              title: "Success",
-              text: data.message,
-              icon: "success",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            }).then(() => {
-              location.reload();
-            })
-          } else {
-            Swal.fire({
-              title: "Error",
-              text: data.message,
-              icon: "error",
-              timer: 2000,
-              timerProgressBar: true,
-              showConfirmButton: false
-            });
-          }
-        })
-        .catch(error => {
-          console.log("error : ", error)
+      .then(response => {
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          return response.json();
+        } else {
+          window.location.href = `/login`;
+        }
+      })
+      .then(data => {
+        if (data.success) {
+          Swal.fire({
+            title: "Success",
+            text: data.message,
+            icon: "success",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          }).then(() => {
+            location.reload();
+          })
+        } else {
           Swal.fire({
             title: "Error",
-            text: "Internal server error.",
+            text: data.message,
             icon: "error",
             timer: 2000,
             timerProgressBar: true,
             showConfirmButton: false
           });
+        }
+      })
+      .catch(error => {
+        console.log("error : ", error)
+        Swal.fire({
+          title: "Error",
+          text: "Internal server error.",
+          icon: "error",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false
         });
+      });
     }
 
     ////// Function to delete product from save for later \\\\\\
