@@ -44,11 +44,14 @@
                 <div class="row mb-3">
                     <div class="product-card col-md-8">
                         <div class="product-card-each mt-4 shadow d-flex">
-                            <div class="col-12 p-3">
-                                <div class="address-intro mb-4">
-                                    <h4 class="fw-bold mb-3">Manage Your Address</h4>
-                                    <p class="fw-semibold text-muted">Here you can add a new address, edit an existing one, or select your preferred address for billing and shipping. Please ensure that your address details are accurate to avoid any issues with delivery.</p>
-                                </div>                                
+                            <div class="col-12 p-3">                 
+                                <div class="checkout-intro mb-4 d-flex justify-content-between align-items-center">
+                                    <h4 class="fw-bold mb-0">Manage Your Address</h4>
+                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="Here you can add a new address, edit an existing one, or select your preferred address for billing and shipping. Please ensure that your address details are accurate to avoid any issues with delivery.">
+                                        <i class="fas fa-question-circle text-muted"></i>
+                                    </a>
+                                </div>          
+                                <hr>                 
                                 <% if (!userAddress || userAddress.length===0) { %>
                                     <p class="text-danger">You haven't added any address yet</p>
                                 <% } else { %>
@@ -96,139 +99,6 @@
                                         Review cart
                                     </button>
                                 </div>
-                                <div class="instructions">
-                                    <h3>Address Adding Instructions:</h3>
-                                    <p>"Enter your address details below to add a new address."</p>
-                                    <p>"Please provide accurate details to ensure timely delivery."</p>
-                                    <hr>
-                                    <h3>Address Editing Instructions:</h3>
-                                    <p>"Update your address details and save the changes."</p>
-                                    <p>"Review your information carefully before submitting."</p>
-                                    <hr>
-                                    <h3>Address Selecting Instructions:</h3>
-                                    <p>"Choose the address where you want your product delivered."</p>
-                                    <p>"Select from the addresses you've previously added."</p>
-                                </div>
-                                <div class="accordion" id="faqAccordion">
-                                    <h4 class="mx-3">FAQ's</h4>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingAddressNotAccepted">
-                                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddressNotAccepted" aria-expanded="true" aria-controls="collapseAddressNotAccepted">
-                                                Why is my address not being accepted?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseAddressNotAccepted" class="accordion-collapse collapse show" aria-labelledby="headingAddressNotAccepted" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Ensure that all fields are filled out correctly and match the required format. Double-check for any typos or missing information.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingAddressDoesNotFit">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddressDoesNotFit" aria-expanded="false" aria-controls="collapseAddressDoesNotFit">
-                                                What should I do if my address does not fit into the provided fields?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseAddressDoesNotFit" class="accordion-collapse collapse" aria-labelledby="headingAddressDoesNotFit" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Use additional address lines or a notes field (if available) to include any extra details.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingAddressAccuracy">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddressAccuracy" aria-expanded="false" aria-controls="collapseAddressAccuracy">
-                                                How can I ensure my address is accurate?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseAddressAccuracy" class="accordion-collapse collapse" aria-labelledby="headingAddressAccuracy" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Review your address carefully before submitting. Use tools like postal code lookups to verify accuracy.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingMistakeAfterSubmitting">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMistakeAfterSubmitting" aria-expanded="false" aria-controls="collapseMistakeAfterSubmitting">
-                                                What should I do if I made a mistake after submitting?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseMistakeAfterSubmitting" class="accordion-collapse collapse" aria-labelledby="headingMistakeAfterSubmitting" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Use the “Edit” option to correct your address details. Make sure to save the changes.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingPhoneNumberRequired">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePhoneNumberRequired" aria-expanded="false" aria-controls="collapsePhoneNumberRequired">
-                                                Why is my phone number required?
-                                            </button>
-                                        </h2>
-                                        <div id="collapsePhoneNumberRequired" class="accordion-collapse collapse" aria-labelledby="headingPhoneNumberRequired" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                A phone number is essential for delivery services to contact you regarding any issues or updates related to your order.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingChangeDefaultAddress">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChangeDefaultAddress" aria-expanded="false" aria-controls="collapseChangeDefaultAddress">
-                                                How do I change my default address for delivery?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseChangeDefaultAddress" class="accordion-collapse collapse" aria-labelledby="headingChangeDefaultAddress" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Go to your address book and select the new address you want to set as default.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingCountryNotInDropdown">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCountryNotInDropdown" aria-expanded="false" aria-controls="collapseCountryNotInDropdown">
-                                                What if I don’t see my country in the dropdown list?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseCountryNotInDropdown" class="accordion-collapse collapse" aria-labelledby="headingCountryNotInDropdown" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Contact customer support for assistance. They may be able to add it or help you with alternative solutions.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingAddMultipleAddresses">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddMultipleAddresses" aria-expanded="false" aria-controls="collapseAddMultipleAddresses">
-                                                Can I add multiple addresses?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseAddMultipleAddresses" class="accordion-collapse collapse" aria-labelledby="headingAddMultipleAddresses" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Yes, you can typically add and manage multiple addresses in your account settings.
-                                            </div>
-                                        </div>
-                                    </div>
-                                
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="headingDeleteAddress">
-                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeleteAddress" aria-expanded="false" aria-controls="collapseDeleteAddress">
-                                                How do I delete an address?
-                                            </button>
-                                        </h2>
-                                        <div id="collapseDeleteAddress" class="accordion-collapse collapse" aria-labelledby="headingDeleteAddress" data-bs-parent="#faqAccordion">
-                                            <div class="accordion-body">
-                                                Use the “Delete” option next to the address you wish to remove. Ensure that at least one address remains for delivery purposes.
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                
                             </div>
                         </div>
                     </div>
@@ -263,6 +133,141 @@
                             </div>
                         </div>
                     <% } %>
+
+                    <div class="instruction-faq col-md-8 col-12 shadow mt-4 p-3">
+                        <div class="instructions">
+                            <h3>Address Adding Instructions:</h3>
+                            <p>"Enter your address details below to add a new address."</p>
+                            <p>"Please provide accurate details to ensure timely delivery."</p>
+                            <hr>
+                            <h3>Address Editing Instructions:</h3>
+                            <p>"Update your address details and save the changes."</p>
+                            <p>"Review your information carefully before submitting."</p>
+                            <hr>
+                            <h3>Address Selecting Instructions:</h3>
+                            <p>"Choose the address where you want your product delivered."</p>
+                            <p>"Select from the addresses you've previously added."</p>
+                        </div>
+                        <div class="accordion" id="faqAccordion">
+                            <h4 class="mx-3">FAQ's</h4>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingAddressNotAccepted">
+                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddressNotAccepted" aria-expanded="true" aria-controls="collapseAddressNotAccepted">
+                                        Why is my address not being accepted?
+                                    </button>
+                                </h2>
+                                <div id="collapseAddressNotAccepted" class="accordion-collapse collapse show" aria-labelledby="headingAddressNotAccepted" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Ensure that all fields are filled out correctly and match the required format. Double-check for any typos or missing information.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingAddressDoesNotFit">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddressDoesNotFit" aria-expanded="false" aria-controls="collapseAddressDoesNotFit">
+                                        What should I do if my address does not fit into the provided fields?
+                                    </button>
+                                </h2>
+                                <div id="collapseAddressDoesNotFit" class="accordion-collapse collapse" aria-labelledby="headingAddressDoesNotFit" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Use additional address lines or a notes field (if available) to include any extra details.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingAddressAccuracy">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddressAccuracy" aria-expanded="false" aria-controls="collapseAddressAccuracy">
+                                        How can I ensure my address is accurate?
+                                    </button>
+                                </h2>
+                                <div id="collapseAddressAccuracy" class="accordion-collapse collapse" aria-labelledby="headingAddressAccuracy" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Review your address carefully before submitting. Use tools like postal code lookups to verify accuracy.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingMistakeAfterSubmitting">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMistakeAfterSubmitting" aria-expanded="false" aria-controls="collapseMistakeAfterSubmitting">
+                                        What should I do if I made a mistake after submitting?
+                                    </button>
+                                </h2>
+                                <div id="collapseMistakeAfterSubmitting" class="accordion-collapse collapse" aria-labelledby="headingMistakeAfterSubmitting" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Use the “Edit” option to correct your address details. Make sure to save the changes.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingPhoneNumberRequired">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapsePhoneNumberRequired" aria-expanded="false" aria-controls="collapsePhoneNumberRequired">
+                                        Why is my phone number required?
+                                    </button>
+                                </h2>
+                                <div id="collapsePhoneNumberRequired" class="accordion-collapse collapse" aria-labelledby="headingPhoneNumberRequired" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        A phone number is essential for delivery services to contact you regarding any issues or updates related to your order.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingChangeDefaultAddress">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseChangeDefaultAddress" aria-expanded="false" aria-controls="collapseChangeDefaultAddress">
+                                        How do I change my default address for delivery?
+                                    </button>
+                                </h2>
+                                <div id="collapseChangeDefaultAddress" class="accordion-collapse collapse" aria-labelledby="headingChangeDefaultAddress" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Go to your address book and select the new address you want to set as default.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingCountryNotInDropdown">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCountryNotInDropdown" aria-expanded="false" aria-controls="collapseCountryNotInDropdown">
+                                        What if I don’t see my country in the dropdown list?
+                                    </button>
+                                </h2>
+                                <div id="collapseCountryNotInDropdown" class="accordion-collapse collapse" aria-labelledby="headingCountryNotInDropdown" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Contact customer support for assistance. They may be able to add it or help you with alternative solutions.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingAddMultipleAddresses">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseAddMultipleAddresses" aria-expanded="false" aria-controls="collapseAddMultipleAddresses">
+                                        Can I add multiple addresses?
+                                    </button>
+                                </h2>
+                                <div id="collapseAddMultipleAddresses" class="accordion-collapse collapse" aria-labelledby="headingAddMultipleAddresses" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Yes, you can typically add and manage multiple addresses in your account settings.
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingDeleteAddress">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseDeleteAddress" aria-expanded="false" aria-controls="collapseDeleteAddress">
+                                        How do I delete an address?
+                                    </button>
+                                </h2>
+                                <div id="collapseDeleteAddress" class="accordion-collapse collapse" aria-labelledby="headingDeleteAddress" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Use the “Delete” option next to the address you wish to remove. Ensure that at least one address remains for delivery purposes.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -288,6 +293,12 @@
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
+
+        ////// For the tooltip \\\\\\
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
 
         ////// To add a new address \\\\\\
         document.getElementById('add-address').addEventListener('click', function () {

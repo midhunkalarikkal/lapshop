@@ -2,6 +2,15 @@
     border-radius: 10px;
 }
 
+.checkout-intro .fa-question-circle {
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.checkout-intro h4 {
+    font-size: 1.5rem;
+}
+
 .instructions {
     margin: 20px 0;
     padding: 10px;
