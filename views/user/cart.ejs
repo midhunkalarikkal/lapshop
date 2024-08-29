@@ -113,9 +113,9 @@
                 <hr>
               </div>
               <div class="button mt-3">
-                <button onclick="goToCheckout(event)" class="btn btn-warning w-100 d-none d-md-block">Proceed to
+                <button onclick="goToCheckout(this,event)" class="btn btn-warning w-100 d-none d-md-block" data-count="<%= cart.items.length %>">Proceed to
                   Checkout</button>
-                <button onclick="goToCheckout(event)" class="btn btn-warning w-100 btn-sm d-block d-md-none">Proceed to
+                <button onclick="goToCheckout(this,event)" class="btn btn-warning w-100 btn-sm d-block d-md-none" data-count="<%= cart.items.length %>">Proceed to
                   Checkout</button>
               </div>
             </div>
@@ -553,9 +553,21 @@
     }
 
     ////// Function to go to checkout \\\\\\
-    function goToCheckout(event) {
+    function goToCheckout(btn,event) {
       event.preventDefault()
-      window.location.href = "/checkout"
+      const productCount = btn.getAttribute('data-count')
+      if(productCount > 0){
+        window.location.href = "/checkout"
+      }else{
+        Swal.fire({
+            title: "Info",
+            text: "Your cart is empty...",
+            icon: "info",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+          })
+      }
     }
 
     ////// Function to save for later \\\\\\
