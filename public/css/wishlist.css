@@ -42,3 +42,47 @@
         width: 40%;
     }
 }
+
+.wallet-intro{
+    border-radius: 5px;
+}
+
+.wallet-intro .fa-question-circle {
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.wallet-intro h4 {
+    font-size: 1.5rem;
+}
+
+.instruction-faq{
+    border-radius: 5px;
+}
+
+.instructions {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.instructions h3 {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.instructions p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
+
+.accordion-button {
+    font-size: 1rem;
+}
+
+.accordion-body {
+    font-size: 0.9rem;
+}

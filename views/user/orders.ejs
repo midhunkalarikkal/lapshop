@@ -14,12 +14,12 @@
         <div class="cart-wrap d-none d-lg-block mt-5">
             <div class="container">
                 <div class="row">
-                    <div class="">
-                        <h3>Your orders</h3>
+                    <div class="wallet-intro mb-2 d-flex justify-content-between align-items-center p-2">
+                        <h4 class="fw-bold mb-0">Your Orders</h4>
                     </div>
-                    <hr class="mt-3">
+                    <hr>
                     <div class="my-3 mb-3">
-                        <% if(Array.isArray(order) && order.length > 0){ %>
+                        <% if(order.length > 0){ %>
                             <table class="table mt-4 shadow">
                                 <thead>
                                     <tr>
@@ -100,7 +100,15 @@
                                 </tbody>
                             </table>
                         <% }else{ %>
-                            <div class="alert alert-info text-center mt-4" role="alert">No orders yet.</div>
+                            <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
+                                role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                                <i class="fas fa-list me-3" style="font-size: 1.5rem;"></i>
+                                <div>
+                                <strong>Your wishlist is empty!</strong><br>
+                                    Browse products and add items to your wishlist.
+                                </div>
+                            </div>
+                            <button class="btn btn-primary col-2" onclick="goToShop(event)">Continue shopping</button>
                         <% } %>
                     </div>
                 </div>
@@ -112,13 +120,14 @@
         <div class="product mt-5 d-block d-lg-none">
             <div class="container">
                 <div class="row">
-                    <div class="">
-                        <h3>Your orders</h3>
+                    <div class="wallet-intro mb-2 d-flex justify-content-between align-items-center p-2">
+                        <h4 class="fw-bold mb-0">Your Orders</h4>
                     </div>
+                    <hr>
                 </div>
-                <% if(order && order.length > 0){ %>
+                <% if(order.length > 0){ %>
                     <% for(let i = 0; i < order.length; i++){ %>
-                        <div class="mt-4 mb-3 d-flex align-items-center justify-content-around p-3 bg-light shadow">   
+                        <div class="mt-4 mb-3 d-flex align-items-center justify-content-around p-3 bg-light shadow product-card">   
                             <div class="image col-3">
                                 <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
                                 <a href="/productDetail/" style="cursor: pointer;">
@@ -159,7 +168,15 @@
                         </div>
                     <% } %>
                 <% }else{ %>
-                    <div class="alert alert-info text-center mt-4" role="alert">No orders yet.</div>
+                    <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
+                        role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                        <i class="fas fa-list me-3" style="font-size: 1.5rem;"></i>
+                        <div>
+                            <strong>Your wishlist is empty!</strong><br>
+                            Browse products and add items to your wishlist.
+                        </div>
+                    </div>
+                    <button class="btn btn-primary col-3 btn-sm" onclick="goToShop(event)">Continue shopping</button>
                 <% } %>
             </div>
         </div>
@@ -309,6 +326,12 @@
                 ordering : false
             })
         })
+
+        ////// Function to go to shop \\\\\\
+        function goToShop(event){
+            event.preventDefault()
+            window.location.href ='/shop'
+        }
 
     </script>
 
