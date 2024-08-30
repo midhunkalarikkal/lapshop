@@ -1,0 +1,42 @@
+.product-card-each , .subtotal{
+    border-radius: 10px;
+}
+
+.order-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.order-header {
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 10px;
+}
+
+.order-id {
+    font-size: 1.2rem;
+}
+
+.order-date {
+    font-size: 0.9rem;
+    color: #757575;
+}
+
+.order-details {
+    margin-top: 15px;
+}
+
+.order-details .label {
+    font-weight: 500;
+    color: #333;
+}
+
+.order-details .value {
+    font-weight: 700;
+    color: #212121;
+}
+
+.order-details .value strong {
+    color: #000;
+}
