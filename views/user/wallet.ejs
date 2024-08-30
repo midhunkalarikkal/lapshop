@@ -7,125 +7,247 @@
     <section class="view">
         <div class="mt-5">
             <div class="container">
-                <div>
-                    <h3>Your wallet</h3>
-                </div>
-                <hr>
                 <div class="row mb-3">
-                    <% if(Array.isArray(wallet) && wallet.length > 0){ %>
-                        <div class="col-md-4">
-                            <div class="mt-4 shadow d-flex flex-column p-3 user-wallet-info">
-                                <div class="user-info text-center mt-3">
-                                    <h5><%= userDetails.userName %></h5>
-                                    <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check verified-icon"></i></h6>
-                                </div>
-                                <hr>
-                                <div class="cred-deb d-flex flex-row justify-content-around">
-                                    <h6 class="mx-3">Credits count : <%= creditCount %></h6>
-                                    <h6 class="mx-3">Debits count : <%= debitCount %></h6>
-                                </div>
-                                <hr>
-                                <div class="user-wallet-total-credit text-center text-md-start">
-                                    <h6 class="mx-3">Total amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                    <h6 class="mx-3">₹ <%= totalAmount %></h6>
-                                </div>
-                                <hr>
-                                <div class="user-wallet-total-debit text-center text-md-start">
-                                    <h6 class="mx-3">Total credited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                    <h6 class="mx-3">₹ <%= totalCreditedAmount%></h6>
-                                </div>
-                                <hr>
-                                <div class="user-wallet-total-amount text-center text-md-start">
-                                    <h6 class="mx-3">Total debited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                    <h6 class="mx-3">₹ <%= totalDebitedAmount %></h6>
-                                </div>
+
+                    <div class="col-md-4 d-block d-md-none">
+                        <div class="wallet-intro mb-4 d-flex justify-content-between align-items-center shadow p-3">
+                            <h4 class="fw-bold mb-0">Your Wallet</h4>
+                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                              title="If you cancel or return an already paid order, the amount will be credited to your wallet. You can use this amount for future purchases.">
+                              <i class="fas fa-question-circle text-muted"></i>
+                            </a>
+                        </div>
+                        <div class="mt-4 shadow d-flex flex-column p-3 user-wallet-info">
+                            <div class="user-info text-center mt-3">
+                                <h5><%= userDetails.userName %></h5>
+                                <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check verified-icon"></i></h6>
+                            </div>
+                            <hr>
+                            <div class="cred-deb d-flex flex-row justify-content-around">
+                                <h6 class="mx-3">
+                                    Credits count : 
+                                    <% if(!creditCount){ %>
+                                        0
+                                    <% }else{ %>
+                                        <%= creditCount %>
+                                    <% } %>
+                                </h6>
+                                <h6 class="mx-3">
+                                    Debits count : 
+                                    <% if(!debitCount){ %>
+                                        0
+                                    <% }else{ %>
+                                        <%= debitCount %>
+                                    <% } %>
+                                </h6>
+                            </div>
+                            <hr>
+                            <div class="user-wallet-total-credit text-center text-md-start">
+                                <h6 class="mx-3">Total amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
+                                <h6 class="mx-3">
+                                    <% if(!totalAmount){ %>
+                                        0
+                                    <% }else{ %>
+                                        ₹ <%= totalAmount %>
+                                    <% } %>
+                                </h6>
+                            </div>
+                            <hr>
+                            <div class="user-wallet-total-debit text-center text-md-start">
+                                <h6 class="mx-3">Total credited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
+                                <h6 class="mx-3">
+                                    <% if(!totalCreditedAmount){ %>
+                                        0
+                                    <% }else{ %>
+                                        ₹ <%= totalCreditedAmount %>
+                                    <% } %>
+                                </h6>
+                            </div>
+                            <hr>
+                            <div class="user-wallet-total-amount text-center text-md-start">
+                                <h6 class="mx-3">Total debited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
+                                <h6 class="mx-3">
+                                    <% if(!totalDebitedAmount){ %>
+                                        0
+                                    <% }else{ %>
+                                        ₹ <%= totalDebitedAmount %>
+                                    <% } %>
+                                </h6>
                             </div>
                         </div>
+                    </div>
 
-                        <div class="col-md-8 mt-4 d-none d-md-block">
-                            <table class="table shadow">
-                                <thead>
-                                    <tr>
-                                        <th class="col-2">Id</th>
-                                        <th class="col-2">Type</th>
-                                        <th class="col-2">Amount</th>
-                                        <th class="col-2">Date</th>
-                                        <th class="col-2">Time</th>
-                                        <th class="col-2">Verified</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <div class="col-md-8 mt-4 d-none d-md-block ">
+                        <table class="table shadow">
+                            <div class="wallet-intro mb-4 d-flex justify-content-between align-items-center shadow p-3">
+                                <h4 class="fw-bold mb-0">Your Wallet</h4>
+                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                                    title="If you cancel or return an already paid order, the amount will be credited to your wallet. You can use this amount for future purchases.">
+                                    <i class="fas fa-question-circle text-muted"></i>
+                                </a>
+                            </div>
+                            <thead>
+                                <tr>
+                                    <th class="col-2">Id</th>
+                                    <th class="col-2">Type</th>
+                                    <th class="col-2">Amount</th>
+                                    <th class="col-2">Date</th>
+                                    <th class="col-2">Time</th>
+                                    <th class="col-2">Verified</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(wallet && wallet !== null){ %>
                                     <% wallet.forEach((data,index)=>{ %>
                                         <tr>
                                             <td>
-                                                <h6 class="col-2"><%= data._id.toString().slice(-6) %></h6>
+                                                <%= data._id.toString().slice(-6) %>
                                             </td>
                                             <td>
                                                 <% if(data.type === "credit"){ %>
-                                                    <h6 class="col-2"><%= data.type %></h6>
+                                                    <%= data.type %>
                                                 <% }else{ %>
-                                                    <h6 class="col-2 text-warning"><%= data.type %></h6>
+                                                    <span class="col-2 text-warning"><%= data.type %></span>
                                                 <% } %>
                                             </td>
                                             <td>
                                                 <% if(data.type === "credit"){ %>
-                                                    <h6 class="col-2 text-success"><%= data.amount %></h6>
+                                                    <span class="col-2 text-success"><%= data.amount %></span>
                                                 <% }else{ %>
-                                                    <h6 class="col-2 text-danger"><%= data.amount %></h6>
+                                                    <span class="col-2 text-danger"><%= data.amount %></span>
                                                 <% } %>
                                             </td>
                                             <td>
-                                                <h6 class="col-2"><%= data.updatedAt.toLocaleDateString() %></h6>
+                                                <%= data.updatedAt.toLocaleDateString() %>
                                             </td>
                                             <td>
-                                                <h6 class="col-2"><%= data.updatedAt.toLocaleTimeString() %></h6>
+                                                <%= data.updatedAt.toLocaleTimeString() %>
                                             </td>
                                             <td>
-                                                <h6 class="col-2"><i class="fa-solid fa-circle-check verified-icon"></i></h6>
+                                                <span class="col-2"><i class="fa-solid fa-circle-check verified-icon"></i></span>
                                             </td>
                                         </tr>
                                     <% }) %>
-                                </tbody>
-                            </table> 
-                        </div>
+                                <% }else{ %>
+                                    <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
+                                        role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                                        <i class="fas fa-wallet me-3" style="font-size: 1.5rem;"></i>
+                                        <div>
+                                        <strong>Your wallest is empty!</strong><br>
+                                            Happy Shopping With Us......
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </tbody>
+                        </table> 
+                    </div>
 
-                        <div class="col-md-8 mt-4 d-block d-md-none">
-                            <table class="table shadow">
-                                <thead>
-                                    <tr>
-                                        <th class="col-4">Type</th>
-                                        <th class="col-4">Amount</th>
-                                        <th class="col-4">Date</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                    <div class="col-md-8 mt-4 d-block d-md-none">
+                        <table class="table shadow">
+                            <thead>
+                                <tr>
+                                    <th class="col-4">Type</th>
+                                    <th class="col-4">Amount</th>
+                                    <th class="col-4">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% if(wallet && wallet !== null){ %>
                                     <% wallet.forEach((data,index)=>{ %>
                                         <tr>
                                             <td>
                                                 <% if(data.type === "credit"){ %>
-                                                    <h6 class="col-4"><%= data.type %></h6>
+                                                    <span class="col-4"><%= data.type %></span>
                                                 <% }else{ %>
-                                                    <h6 class="col-4 text-warning"><%= data.type %></h6>
+                                                    <span class="col-4 text-warning"><%= data.type %></span>
                                                 <% } %>
                                             </td>
                                             <td>
                                                 <% if(data.type === "credit"){ %>
-                                                    <h6 class="col-4 text-success"><%= data.amount %></h6>
+                                                    <span class="col-4 text-success"><%= data.amount %></span>
                                                 <% }else{ %>
-                                                    <h6 class="col-4 text-danger"><%= data.amount %></h6>
+                                                    <span class="col-4 text-danger"><%= data.amount %></span>
                                                 <% } %>
                                             </td>
                                             <td>
-                                                <h6 class="col-4"><%= data.updatedAt.toLocaleDateString() %></h6>
+                                                <span class="col-4"><%= data.updatedAt.toLocaleDateString() %></span>
                                             </td>
                                         </tr>
                                     <% }) %>
-                                </tbody>
-                            </table> 
+                                <% }else{ %>
+                                    <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
+                                        role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                                        <i class="fas fa-wallet me-3" style="font-size: 1.5rem;"></i>
+                                        <div>
+                                        <strong>Your wallest is empty!</strong><br>
+                                            Happy Shopping With Us......
+                                        </div>
+                                    </div>
+                                <% } %>
+                            </tbody>
+                        </table> 
+                    </div>
+
+                    <div class="col-md-4 d-none d-md-block">
+                        <div class="mt-4 shadow d-flex flex-column p-3 user-wallet-info">
+                            <div class="user-info text-center mt-3">
+                                <h5><%= userDetails.userName %></h5>
+                                <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check verified-icon"></i></h6>
+                            </div>
+                            <hr>
+                            <div class="cred-deb d-flex flex-row justify-content-around">
+                                <h6 class="mx-3">
+                                    Credits count : 
+                                    <% if(!creditCount){ %>
+                                        0
+                                    <% }else{ %>
+                                        <%= creditCount %>
+                                    <% } %>
+                                </h6>
+                                <h6 class="mx-3">
+                                    Debits count : 
+                                    <% if(!debitCount){ %>
+                                        0
+                                    <% }else{ %>
+                                        <%= debitCount %>
+                                    <% } %>
+                                </h6>
+                            </div>
+                            <hr>
+                            <div class="user-wallet-total-credit text-center text-md-start">
+                                <h6 class="mx-3">Total amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
+                                <h6 class="mx-3">
+                                    <% if(!totalAmount){ %>
+                                            0
+                                    <% }else{ %>
+                                        ₹ <%= totalAmount %>
+                                    <% } %>
+                                </h6>
+                            </div>
+                            <hr>
+                            <div class="user-wallet-total-debit text-center text-md-start">
+                                <h6 class="mx-3">Total credited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
+                                <h6 class="mx-3">
+                                    <% if(!totalCreditedAmount){ %>
+                                        0
+                                    <% }else{ %>
+                                        ₹ <%= totalCreditedAmount %>
+                                    <% } %>
+                                </h6>
+                            </div>
+                            <hr>
+                            <div class="user-wallet-total-amount text-center text-md-start">
+                                <h6 class="mx-3">Total debited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
+                                <h6 class="mx-3">
+                                    <% if(!totalDebitedAmount){ %>
+                                        0
+                                    <% }else{ %>
+                                        ₹ <%= totalDebitedAmount %>
+                                    <% } %>
+                                </h6>
+                            </div>
                         </div>
-                    <% }else{ %>
-                        <div class="alert alert-info text-center mt-4" role="alert">No wallet for you.</div>
-                    <% } %>
+                    </div>
                 </div>
             </div>
         </div>

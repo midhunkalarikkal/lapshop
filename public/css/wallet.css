@@ -27,6 +27,19 @@
     text-align: left;
 }
 
+table, th, td {
+    text-align: center;
+}
+
+.wallet-intro .fa-question-circle {
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.wallet-intro h4 {
+    font-size: 1.5rem;
+}
+
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
     .dataTables_wrapper .dataTables_info {
