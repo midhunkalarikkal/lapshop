@@ -29,11 +29,30 @@ let enteredReferal
 let cartItemCount;
 
 //Generate referal code
-const generateReferralCode = (fullname, phone) =>{
+const generateReferralCode = async(fullname, phone) =>{
     let name = fullname.replace(/\s/g, '');
     let firstNameThree = name.substring(0, 4);
     let phoneLastFour = phone.substring(phone.length - 4);
-    let referralCode = firstNameThree + phoneLastFour;
+
+    const createReferralCode = () => {
+        const randomString = Math.random().toString(36).substring(2, 6).toUpperCase();
+        const randomInt = Math.floor(1000 + Math.random() * 9000);
+        return `LP${firstNameThree}${phoneLastFour}${randomString}${randomInt}`;
+    };
+
+    let referralCode;
+    let isUnique = false;
+
+    while (!isUnique) {
+        referralCode = createReferralCode();
+
+        const existingUser = await User.findOne({ referalCode : referralCode });
+
+        if (!existingUser) {
+            isUnique = true;
+        }
+    }
+
     return referralCode;
 }
 
