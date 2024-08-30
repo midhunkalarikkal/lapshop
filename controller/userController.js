@@ -596,7 +596,7 @@ const getCatProduct = async(req,res)=>{
                 };
             }
 
-            productData = await Product.find(query);
+            productData = await Product.find(query).populate({path : "brand"});
                 
             if(sortCriteria === "highToLow"){
                 productData.sort((a,b) => b.offerPrice - a.offerPrice)
