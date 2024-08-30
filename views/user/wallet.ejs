@@ -77,15 +77,16 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8 mt-4 d-none d-md-block ">
-                        <table class="table shadow">
-                            <div class="wallet-intro mb-4 d-flex justify-content-between align-items-center shadow p-3">
+                    <div class="col-md-8 mt-4 d-none d-md-block custom-table shadow">
+                        <table class="table">
+                            <div class="wallet-intro mb-4 d-flex justify-content-between align-items-center p-2">
                                 <h4 class="fw-bold mb-0">Your Wallet</h4>
                                 <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
                                     title="If you cancel or return an already paid order, the amount will be credited to your wallet. You can use this amount for future purchases.">
                                     <i class="fas fa-question-circle text-muted"></i>
                                 </a>
                             </div>
+                            <hr>
                             <thead>
                                 <tr>
                                     <th class="col-2">Id</th>
@@ -128,6 +129,18 @@
                                             </td>
                                         </tr>
                                     <% }) %>
+                                    <% if(wallet.length < 5){ %>
+                                        <% for(let i = 0; i <= 4; i++){ %>
+                                            <tr>
+                                                <td>...</td>
+                                                <td>...</td>
+                                                <td>...</td>
+                                                <td>...</td>
+                                                <td>...</td>
+                                                <td>...</td>
+                                            </tr>
+                                        <% } %>
+                                    <% } %>
                                 <% }else{ %>
                                     <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
                                         role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
@@ -142,8 +155,8 @@
                         </table> 
                     </div>
 
-                    <div class="col-md-8 mt-4 d-block d-md-none">
-                        <table class="table shadow">
+                    <div class="col-md-8 mt-4 d-block d-md-none custom-table shadow">
+                        <table class="table">
                             <thead>
                                 <tr>
                                     <th class="col-4">Type</th>
