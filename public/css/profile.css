@@ -33,27 +33,16 @@ p,
 .gradient-custom {
     background: linear-gradient(to bottom, #323232 0%, #3F3F3F 40%, #1C1C1C 150%), linear-gradient(to top, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.25) 200%);
     background-blend-mode: multiply;
+    border-radius: 3px;
 }
 
-.extra-btn{
-    background-image: var(--btn-color);
+.user-info{
     border-radius: 5px;
 }
 
-.extra-btn:hover{
-    background-image: var(--btnHover-color);
-    a,i{
-        color: var(--third-color);
-    }
-}
- 
 a{
     text-decoration: none;
     color: #1b1b1b;
-}
-
-.extra-btn i{
-    color: var(--third-color);
 }
 
 .btn-text{
@@ -64,4 +53,64 @@ a{
     cursor: pointer;
 }
 
+/*======> Profile right side <======*/
+.square {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.square:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.icon {
+    font-size: 1.5rem;
+    color: var(--realprice-color);
+}
+
+.square p {
+    font-size: 1rem;
+    color: #343a40;
+}
+
+/*======> Profile right side <======*/
+.instructions {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.instructions h3 {
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.instructions p {
+    font-size: 1rem;
+    color: #555;
+    margin: 5px 0;
+}
+
+.accordion-button {
+    font-size: 1rem;
+}
+
+.accordion-body {
+    font-size: 0.9rem;
+}
+
+.profile-intro .fa-question-circle {
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+.profile-intro h4 {
+    font-size: 1.5rem;
+}
