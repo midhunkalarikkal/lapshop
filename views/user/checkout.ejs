@@ -296,12 +296,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
 
-        ////// For the tooltip \\\\\\
-        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-            return new bootstrap.Tooltip(tooltipTriggerEl)
-        })
-
         ////// To add a new address \\\\\\
         document.getElementById('add-address').addEventListener('click', function () {
             window.location.href = `/addAddressFromCheckout`;
