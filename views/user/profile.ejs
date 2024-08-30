@@ -113,27 +113,57 @@
                                     <hr>
                                     <div class="col-12 d-flex">
                                         <p class="col-4 fw-semibold">Name</p>
-                                        <p class="text-muted col-8"> <%= userData.fullname %></p>
+                                        <p class="text-muted col-8">
+                                            <% if(userData.fullname){ %>
+                                                <%= userData.fullname %>
+                                            <% }else{ %>
+                                                <span class="text danger">Fetching error!</span>
+                                            <% } %>
+                                        </p>
                                     </div>
                                     <hr>
                                     <div class="col-12 d-flex">
                                         <p class="col-4 fw-semibold">Email</p>
-                                        <p class="text-muted col-8"> <%= userData.email %> </p>
+                                        <p class="text-muted col-8">
+                                            <% if(userData.email){ %>
+                                                <%= userData.email %> 
+                                            <% }else{ %>
+                                                <span class="text danger">Fetching error!</span>
+                                            <% } %>
+                                        </p>
                                     </div>
                                     <hr>
                                     <div class="col-12 d-flex">
                                         <p class="col-4 fw-semibold">Phone</p>
-                                        <p class="text-muted col-8"> <%= userData.phone %> </p>
+                                        <p class="text-muted col-8">
+                                            <% if(userData.phone){ %>
+                                                <%= userData.phone %> 
+                                            <% }else{ %>
+                                                <span class="text danger">Fetching error!</span>
+                                            <% } %>
+                                        </p>
                                     </div>
                                     <hr>
                                     <div class="col-12 d-flex">
                                         <p class="col-4 fw-semibold">Joined on</p>
-                                        <p class="text-muted col-8"> <%= formattedDate %> </p>
+                                        <p class="text-muted col-8">
+                                            <% if(formattedDate){ %>
+                                                <%= formattedDate %>
+                                            <% }else{ %>
+                                                <span class="text danger">Fetching error!</span>
+                                            <% } %>
+                                        </p>
                                     </div>
                                     <hr>
                                     <div class="col-12 d-flex">
                                         <p class="col-4 fw-semibold">Referal code</p>
-                                        <p class="text-muted col-4" id="referralCode"><%= userData.referalCode %></p>
+                                        <p class="text-muted col-4" id="referralCode">
+                                            <% if(userData.referalCode){ %>
+                                                <%= userData.referalCode %>
+                                            <% }else{ %>
+                                                <span class="text danger">Fetching error!</span>
+                                            <% } %>
+                                        </p>
                                         <p onclick="copyReferal()" style="cursor: pointer;"><i class="fa-solid fa-copy" style="color: black;"></i> <span id="referalCopyBtn">COPY REFERAL</span></p>
                                     </div>
                                     <hr>
