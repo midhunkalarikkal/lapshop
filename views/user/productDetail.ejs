@@ -102,7 +102,7 @@
                                 <% for(let i=0; i < cartProdId.length; i++){ %>
                                     <% if(cartProdId[i] == productData._id.toString()){ %>
                                         <button class="btn goToCart-btn px-3 shadow d-none d-lg-block" 
-                                            id="goToCart" onclick="toGetCart(event)">
+                                            id="goToCart" onclick="toGetCart()">
                                             <i class="fa fa-shopping-cart mr-1"></i> Go to cart
                                         </button>
                                         <button class="btn goToCart-btn px-3 btn-sm shadow d-block d-lg-none" id="goToCart"
@@ -192,7 +192,7 @@
         <script>
 
             ////// To get the cart page \\\\\\
-            function toGetCart(event){
+            function toGetCart(){
                 window.location.href = "/cart"
             }
 

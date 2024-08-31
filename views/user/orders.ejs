@@ -108,7 +108,7 @@
                                     Browse products and add items to your wishlist.
                                 </div>
                             </div>
-                            <button class="btn btn-primary col-2" onclick="goToShop(event)">Continue shopping</button>
+                            <button class="btn btn-primary col-2" onclick="goToShop()">Continue shopping</button>
                         <% } %>
                     </div>
                 </div>
@@ -176,7 +176,7 @@
                             Browse products and add items to your wishlist.
                         </div>
                     </div>
-                    <button class="btn btn-primary col-3 btn-sm" onclick="goToShop(event)">Continue shopping</button>
+                    <button class="btn btn-primary col-3 btn-sm" onclick="goToShop()">Continue shopping</button>
                 <% } %>
             </div>
         </div>
@@ -328,8 +328,7 @@
         })
 
         ////// Function to go to shop \\\\\\
-        function goToShop(event){
-            event.preventDefault()
+        function goToShop(){
             window.location.href ='/shop'
         }
 

@@ -234,7 +234,7 @@
                                         <% if (cartProdId !="" ) { %>
                                             <% for(let i=0; i < cartProdId.length; i++){ %>
                                                 <% if(cartProdId[i] == product._id.toString()){ %>
-                                                    <button class="card-footer d-flex justify-content-center btn btn-sm" onclick="goToCart(event)">
+                                                    <button class="card-footer d-flex justify-content-center btn btn-sm" onclick="goToCart()">
                                                         <span class="d-flex flex-row align-items-center justiy-content-center">
                                                             <i class="fas fa-shopping-cart"></i> <span class="mx-1">Go to cart</span>
                                                         </span>
@@ -308,7 +308,7 @@
                                                     <% if (cartProdId !="" ) { %>
                                                         <% for(let i=0; i < cartProdId.length; i++){ %>
                                                             <% if(cartProdId[i] == product._id.toString()){ %>
-                                                                <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" onclick="goToCart(event)">
+                                                                <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" onclick="goToCart()">
                                                                     <span class="d-flex flex-row align-items-center justiy-content-center">
                                                                         <i class="fas fa-shopping-cart"></i> <span class="mx-1">Go to cart</span>
                                                                     </span>
@@ -559,7 +559,7 @@
                         if (isInCart) {
                             ////// If product is in cart, create the go to cart button \\\\\\
                             const goToCartButton = $(`
-                                <button class="card-footer d-flex justify-content-center" onclick="goToCart(event)">
+                                <button class="card-footer d-flex justify-content-center" onclick="goToCart()">
                                     <span class="d-flex flex-row align-items-center justiy-content-center">
                                         <i class="fas fa-shopping-cart"></i> <span class="mx-1">Go to cart</span>
                                     </span>
@@ -778,8 +778,7 @@
         }
 
         ////// To go to cart \\\\\\
-        function goToCart(e){
-            e.preventDefault()
+        function goToCart(){
             window.location.href = '/cart'
         }
 

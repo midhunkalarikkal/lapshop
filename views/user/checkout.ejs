@@ -93,11 +93,11 @@
                                 </div>
                                 <div class="extra-btns my-3">
                                     <button class="btn btn-primary btn-sm"
-                                        onclick="goToShop(event)">
+                                        onclick="goToShop()">
                                         Back to shop
                                     </button>
                                     <button class="btn btn-primary btn-sm"
-                                        onclick="goToCart(event)">
+                                        onclick="goToCart()">
                                         Review cart
                                     </button>
                                 </div>
@@ -129,8 +129,8 @@
                                     <h5>Subtotal : <span class="subtotal"> ₹ <%= userCart.totalCartPrice %></span></h5>
                                 </div>
                                 <div class="button mt-3">
-                                    <button class="btn btn-warning w-100 d-none d-md-block" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
-                                    <button class="btn btn-warning w-100 btn-sm d-block d-md-none" onclick="goToPayment(event)" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn btn-warning w-100 d-none d-md-block" onclick="goToPayment()" id="goToPayment">Proceed to Payment</button>
+                                    <button class="btn btn-warning w-100 btn-sm d-block d-md-none" onclick="goToPayment()" id="goToPayment">Proceed to Payment</button>
                                 </div>
                             </div>
                         </div>
@@ -310,8 +310,7 @@
         });
 
         ////// To go to payment \\\\\\
-        function goToPayment(event){
-            event.preventDefault()
+        function goToPayment(){
             const selectedAddress = document.querySelector('input[name="selectedAddress"]:checked')
             if (!selectedAddress) {
                 
@@ -332,14 +331,12 @@
             
             
         ////// Go to shop \\\\\\
-        function goToShop(event) {
-            event.preventDefault()
+        function goToShop() {
             window.location.href = '/shop'
         }
 
         ////// Go To Cart \\\\\\
-        function goToCart(event) {
-            event.preventDefault()
+        function goToCart() {
             window.location.href = '/cart'
         }
     </script>
