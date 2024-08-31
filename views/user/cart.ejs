@@ -60,17 +60,17 @@
                     <div class="buttons mb-3 d-flex">
                       <div class="quantity-input">
                         <button class="quantity-btn" data-product-id="<%= product.product._id %>"
-                          onclick="decreaseQuantity(this,event)">-</button>
+                          onclick="decreaseQuantity(this)">-</button>
                         <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
                         <button class="quantity-btn" data-product-id="<%= product.product._id %>"
-                          onclick="increaseQuantity(this,event)">+</button>
+                          onclick="increaseQuantity(this)">+</button>
                       </div>
                       <button class="btn btn-danger btn-sm mx-2" data-product-id="<%= product.product._id %>"
-                        onclick="deleteProduct(this,event)">
+                        onclick="deleteProduct(this)">
                         <i class="fa fa-trash"></i>
                       </button>
                       <button class="btn btn-secondary btn-sm mx-2" data-product-id="<%= product.product._id %>"
-                        onclick="saveForLater(this,event)">
+                        onclick="saveForLater(this)">
                         Save for later
                       </button>
                     </div>
@@ -87,7 +87,7 @@
                     Browse our products and add items to your cart.
                 </div>
               </div>
-              <button class="btn btn-primary" onclick="goToShop(event)">Continue shopping</button>
+              <button class="btn btn-primary" onclick="goToShop()">Continue shopping</button>
             <% } %>
           </div>
 
@@ -113,9 +113,9 @@
                 <hr>
               </div>
               <div class="button mt-3">
-                <button onclick="goToCheckout(this,event)" class="btn btn-warning w-100 d-none d-md-block" data-count="<%= cart.items.length %>">Proceed to
+                <button onclick="goToCheckout(this)" class="btn btn-warning w-100 d-none d-md-block" data-count="<%= cart.items.length %>">Proceed to
                   Checkout</button>
-                <button onclick="goToCheckout(this,event)" class="btn btn-warning w-100 btn-sm d-block d-md-none" data-count="<%= cart.items.length %>">Proceed to
+                <button onclick="goToCheckout(this)" class="btn btn-warning w-100 btn-sm d-block d-md-none" data-count="<%= cart.items.length %>">Proceed to
                   Checkout</button>
               </div>
             </div>
@@ -175,11 +175,11 @@
                     </div>
                     <div class="buttons d-flex">
                       <button class="btn btn-secondary btn-sm mx-2 flex-fill"
-                        data-product-id="<%= product.product._id %>" onclick="moveToCart(this,event)">
+                        data-product-id="<%= product.product._id %>" onclick="moveToCart(this)">
                         Move to cart
                       </button>
                       <button class="btn btn-danger btn-sm mx-2 flex-fill"
-                        data-product-id="<%= product.product._id %>" onclick="deleteProductFromSaveForLater(this,event)">
+                        data-product-id="<%= product.product._id %>" onclick="deleteProductFromSaveForLater(this)">
                         <i class="fa fa-trash"></i> Delete
                       </button>
                     </div>
@@ -343,8 +343,7 @@
   <script>
 
     ////// Function to delete a product from cart \\\\\\
-    function deleteProduct(delbtn,event) {
-      event.parentElement()
+    function deleteProduct(delbtn) {
       const productId = delbtn.getAttribute("data-product-id");
 
       Swal.fire({
@@ -411,8 +410,7 @@
     }
 
     ////// Function for the product quantity increment \\\\\\
-    function increaseQuantity(element,event) {
-      event.preventDefault()
+    function increaseQuantity(element) {
       var input = element.parentElement.querySelector('.quantity-value');
       var value = parseInt(input.value);
       input.value = value + 1;
@@ -481,8 +479,7 @@
     }
 
     ////// Function for the product quantity decrement \\\\\\
-    function decreaseQuantity(element,event) {
-      event.preventDefault()
+    function decreaseQuantity(element) {
       var input = element.parentElement.querySelector('.quantity-value');
       var value = parseInt(input.value);
 
@@ -553,8 +550,7 @@
     }
 
     ////// Function to go to checkout \\\\\\
-    function goToCheckout(btn,event) {
-      event.preventDefault()
+    function goToCheckout(btn) {
       const productCount = btn.getAttribute('data-count')
       if(productCount > 0){
         window.location.href = "/checkout"
@@ -571,8 +567,7 @@
     }
 
     ////// Function to save for later \\\\\\
-    function saveForLater(savebtn,event) {
-      event.preventDefault()
+    function saveForLater(savebtn) {
       const productId = savebtn.getAttribute("data-product-id");
       fetch('/saveForLater', {
         method: 'POST',
@@ -626,14 +621,12 @@
     }
 
     ////// Function to go to shop \\\\\\
-    function goToShop(event){
-      event.preventDefault()
+    function goToShop(){
       window.location.href ='/shop'
     }
 
     ////// Function to move product from save for later to cart \\\\\\
-    function moveToCart(btn,event) {
-      event.preventDefault()
+    function moveToCart(btn) {
       const productId = btn.getAttribute("data-product-id");
       console.log("productid : ", productId)
       fetch('/moveToCartFromSaveForLater', {
@@ -688,8 +681,7 @@
     }
 
     ////// Function to delete product from save for later \\\\\\
-    function deleteProductFromSaveForLater(btn,event) {
-      event.preventDefault()
+    function deleteProductFromSaveForLater(btn) {
       const productId = btn.getAttribute("data-product-id");
 
       Swal.fire({
