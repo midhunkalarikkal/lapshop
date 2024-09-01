@@ -6,99 +6,99 @@
      <style>
        
        .order-tracker-container {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 400px; /* Adjusted for vertical layout */
-    margin: auto; /* Center the container */
-}
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px; /* Adjusted for vertical layout */
+        margin: auto; /* Center the container */
+    }
 
-.order-tracker-title {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-}
+    .order-tracker-title {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
 
-.order-tracker {
-    display: flex;
-    flex-direction: column; /* Change to column for vertical layout */
-    position: relative;
-    padding: 0;
-}
+    .order-tracker {
+        display: flex;
+        flex-direction: column; /* Change to column for vertical layout */
+        position: relative;
+        padding: 0;
+    }
 
-.step {
-    text-align: left;
-    position: relative;
-    color: #999;
-    padding-left: 40px; /* Space for the line and icon */
-    margin-bottom: 20px;
-}
+    .step {
+        text-align: left;
+        position: relative;
+        color: #999;
+        padding-left: 40px; /* Space for the line and icon */
+        margin-bottom: 20px;
+    }
 
-.step .step-icon {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 30px;
-    height: 30px;
-    background-color: #ddd;
-    border-radius: 50%;
-    line-height: 30px;
-    font-size: 16px;
-    color: white;
-    text-align: center;
-}
+    .step .step-icon {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 30px;
+        height: 30px;
+        background-color: #ddd;
+        border-radius: 50%;
+        line-height: 30px;
+        font-size: 16px;
+        color: white;
+        text-align: center;
+    }
 
-.step .step-label {
-    font-size: 14px;
-    margin-bottom: 5px;
-}
+    .step .step-label {
+        font-size: 14px;
+        margin-bottom: 5px;
+    }
 
-.step .step-date {
-    font-size: 12px;
-    color: #666;
-}
+    .step .step-date {
+        font-size: 12px;
+        color: #666;
+    }
 
-.step.completed .step-icon {
-    background-color: #4CAF50;
-}
+    .step.completed .step-icon {
+        background-color: #4CAF50;
+    }
 
-.step.completed .step-label, 
-.step.completed .step-date {
-    color: #333;
-}
+    .step.completed .step-label, 
+    .step.completed .step-date {
+        color: #333;
+    }
 
-.step.active .step-icon {
-    background-color: #FF9800;
-}
+    .step.active .step-icon {
+        background-color: #FF9800;
+    }
 
-.step.active .step-label, 
-.step.active .step-date {
-    color: #333;
-}
+    .step.active .step-label, 
+    .step.active .step-date {
+        color: #333;
+    }
 
-.order-tracker::before {
-    content: '';
-    position: absolute;
-    left: 14px; /* Align with step icon */
-    top: 20px;
-    width: 2px;
-    height: calc(100% - 20px);
-    background-color: #ddd;
-    z-index: 0;
-}
+    .order-tracker::before {
+        content: '';
+        position: absolute;
+        left: 14px; /* Align with step icon */
+        top: 20px;
+        width: 2px;
+        height: calc(100% - 20px);
+        background-color: #ddd;
+        z-index: 0;
+    }
 
-.step.completed::before {
-    content: '';
-    position: absolute;
-    left: 14px; /* Align with step icon */
-    top: 0;
-    width: 2px;
-    height: 100%;
-    background-color: #4CAF50;
-    z-index: 1;
-}
+    .step.completed::before {
+        content: '';
+        position: absolute;
+        left: 14px; /* Align with step icon */
+        top: 0;
+        width: 2px;
+        height: 100%;
+        background-color: #4CAF50;
+        z-index: 1;
+    }
 
 
      </style>
