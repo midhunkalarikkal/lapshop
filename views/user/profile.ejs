@@ -624,7 +624,8 @@
         function copyReferal() {
             const referralCodeElement = document.getElementById('referralCode');
             const btn = document.getElementById('referalCopyBtn')
-            const referralCode = referralCodeElement.textContent;
+            let referralCode = referralCodeElement.textContent;
+            referralCode = referralCode.trim()
             navigator.clipboard.writeText(referralCode)
             .then(() => {
                 btn.innerHTML = "COPIED";
