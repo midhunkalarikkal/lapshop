@@ -52,145 +52,174 @@ if (alertElement) {
     setTimeout(hideAlert, 3000);
 }
 
+document.addEventListener("DOMContentLoaded", function() {
+    var submitButton = document.getElementById("submit");
+    if (submitButton) {
+        submitButton.classList.add("d-none")
+    }
+});
+
 ////// Funtion to display the timer \\\\\\
-let timerRunning = true;
+let timerRunning = false;
 
 function startTimer() {
-    const resendOtpSpan = document.getElementById('resendOtp');
-    const otpViewSpan = document.getElementById('otpView');
-    const verifyOtpBtn = document.getElementById('submit');
+const sendOtp = document.getElementById('sendOtp'); // Corrected from 'resendOtp' to 'sendOtp'
+const otpViewSpan = document.getElementById('otpTimeView');
+const submitButton = document.getElementById("submit");
 
-    resendOtpSpan.style.display = 'none';
-    otpViewSpan.innerHTML = 'Timer: 00:30'; 
-
-    let secondsLeft = 180; 
-
-    const countdown = setInterval(() => {
-        secondsLeft--; 
-        const minutes = Math.floor(secondsLeft / 60);
-        const seconds = secondsLeft % 60;
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(seconds).padStart(2, '0');
-
-        if (secondsLeft <= 0) {
-            clearInterval(countdown); 
-            resendOtpSpan.style.display = 'inline';
-            otpViewSpan.innerHTML = '';
-            timerRunning = false;
-            verifyOtpBtn.disabled = true;
-        } else {
-            otpViewSpan.innerHTML = 'Timer: ' + formattedMinutes + ':' + formattedSeconds;
-        }
-    }, 1000); 
+if (sendOtp) {
+    sendOtp.classList.add("d-none");
 }
-startTimer();
+if (submitButton) {
+    submitButton.classList.remove("d-none");
+}
+
+otpViewSpan.innerHTML = 'Timer: 00:30'; 
+let secondsLeft = 180; 
+
+const countdown = setInterval(() => {
+    secondsLeft--; 
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = secondsLeft % 60;
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+
+    if (secondsLeft <= 0) {
+        clearInterval(countdown); 
+        if (sendOtp) {
+            sendOtp.classList.remove("d-none");
+            sendOtp.innerHTML = "Resend OTP"
+        }
+        otpViewSpan.innerHTML = '';
+        timerRunning = false;
+        if (submitButton) {
+            submitButton.classList.add("d-none");
+        }
+    } else {
+        otpViewSpan.innerHTML = 'Timer: ' + formattedMinutes + ':' + formattedSeconds;
+    }
+}, 1000); 
+}
 
 ////// Fetch for the resend otp \\\\\\
 async function sendotp() {
-    const verifyOtpBtn = document.getElementById('submit');
-    verifyOtpBtn.disabled = false;
+const verifyOtpBtn = document.getElementById('submit');
+verifyOtpBtn.disabled = false;
 
-    if (!timerRunning) {
-        startTimer();
+if (!timerRunning) {
+    startTimer();
+}
+
+try {
+    const response = await fetch('/sendotp', {
+        method: 'POST',
+    });
+
+    if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    try {
-        const response = await fetch('/resendotp', {
-            method: 'POST',
+    const contentType = response.headers.get("Content-Type");
+
+    const rawData = await response.text();
+
+    let data;
+    if (contentType && contentType.includes("application/json")) {
+        data = JSON.parse(rawData);
+    } else {
+        throw new Error("Unexpected content type");
+    }
+
+    if (data.success) {
+        Swal.fire({
+            icon: 'success',
+            title: 'OTP Sent',
+            text: data.message || 'Your OTP has been resent successfully!',
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
         });
-
-        const data = await response.json();
-
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'OTP Sent',
-                text: data.message || 'Your OTP has been resent successfully!',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: data.message || 'Failed to resend OTP',
-                timer: 3000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        }
-    } catch (error) {
+    } else {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'An error occurred while resending OTP',
+            text: data.message || 'Failed to resend OTP',
             timer: 3000,
             timerProgressBar: true,
             showConfirmButton: false
         });
     }
+} catch (error) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while resending OTP',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+    });
+}
 }
 
 ////// function to submit the otp form \\\\\\
 document.getElementById("submit").addEventListener("click", async function(e){
-    e.preventDefault()
+e.preventDefault()
 
-    const otpInputs = document.querySelectorAll('.otp-input');
-    let otp = '';
-    otpInputs.forEach(input => otp += input.value);
+const otpInputs = document.querySelectorAll('.otp-input');
+let otp = '';
+otpInputs.forEach(input => otp += input.value);
 
-    try {
-        const response = await fetch('/otpverify', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ otp: otp })
-        });
+try {
+    const response = await fetch('/otpverify', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ otp: otp })
+    });
 
-        const data = await response.json();
+    const data = await response.json();
 
-        if (data.success) {
-            Swal.fire({
-                icon: "success",
-                title: "Success",
-                text: data.message,
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            }).then(() => {
-                window.location.href = '/login';
-            });
-        } else if (data.invalidOtp) {
-            Swal.fire({
-                title: "Invalid otp",
-                text: data.message || 'Please enter the correct otp.',
-                icon: "info",
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            });
-        } else {
-            Swal.fire({
-                title: "Info",
-                text: data.message || 'Something went wrong.',
-                icon: "info",
-                timer: 2000,
-                timerProgressBar: true,
-                showConfirmButton: false
-            }).then(() => {
-                window.location.href = '/register';
-            });
-        }
-    } catch (error) {
+    if (data.success) {
         Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'An error occurred while verifying OTP',
-            timer: 3000,
+            icon: "success",
+            title: "Success",
+            text: data.message,
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = '/login';
+        });
+    } else if (data.invalidOtp) {
+        Swal.fire({
+            title: "Invalid otp",
+            text: data.message || 'Please enter the correct otp.',
+            icon: "info",
+            timer: 2000,
             timerProgressBar: true,
             showConfirmButton: false
         });
+    } else {
+        Swal.fire({
+            title: "Info",
+            text: data.message || 'Something went wrong.',
+            icon: "info",
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = '/register';
+        });
     }
+} catch (error) {
+    Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'An error occurred while verifying OTP',
+        timer: 3000,
+        timerProgressBar: true,
+        showConfirmButton: false
+    });
+}
 });

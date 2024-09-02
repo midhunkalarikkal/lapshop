@@ -28,8 +28,8 @@ userRouter.post('/register',userController.postRegister)
 userRouter.post('/otpverify',userController.postRegisterOtp)
 //To logout user
 userRouter.get('/logout',userAuth.isLoggedIn,userController.getLogout)
-//To resend otp
-userRouter.post('/resendotp',userController.resendOtp)
+//To send otp for registration
+userRouter.post('/sendotp',userController.sendOtp)
 
 //To get user profile
 userRouter.get('/userProfile',userAuth.isLoggedIn,userAuth.isBlocked,userController.getUserProfile)

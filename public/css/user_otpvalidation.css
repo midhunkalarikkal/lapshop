@@ -133,7 +133,7 @@ font-family: 'Saira Semi Condensed', sans-serif;
     color: var(--secondary-color);
 }
 
-#submit{
+#submit, #sendOtp{
   background-color: var(--primary-color);
   font-size: 15px;
   color: var(--third-color);

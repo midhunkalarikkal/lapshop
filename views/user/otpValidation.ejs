@@ -35,9 +35,9 @@
                     <button class="btn" id="submit">Verify otp</button>
                 </div>
             </form>
+            <button class="btn col-12" onclick="sendotp()" id="sendOtp">Send OTP</button>
             <div class="signin mb-2">
-                <span id="resendOtp"><a href="#" onclick="sendotp()">Resend OTP</a></span>
-                <span id="otpView"></span>
+                <span id="otpTimeView"></span>
                 <% if(message){ %>
                     <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
                         <strong> <%= message %> </strong>

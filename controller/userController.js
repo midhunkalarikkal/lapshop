@@ -123,14 +123,7 @@ const postRegister = async (req, res) => {
 
         if (!userEmail){
             if(!userPhone){
-                const subject = "Your OTP for Registration at LapShop Ecommerce";
-                const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
-                const sendOtp = await sendOtpMail(enteredEmail ,registerOtp ,subject , message);
-                if(sendOtp){
-                    return res.render('user/otpValidation', { type: "success", message: "Check your email for otp", userDetails})
-                }else{
-                    return res.render('user/registration', { type: "danger", message: "Otp sending failed , please try again.", userDetails})
-                }
+                return res.render('user/otpValidation', { type: "", message: "", userDetails})
             }else{
                 return res.render('user/registration', { type: "danger", message: "Phone number already registered.", userDetails})                
             }
@@ -358,8 +351,8 @@ const getRegister = async (req, res) => {
     }
 }
 
-// For resending the otp
-const resendOtp = async(req,res)=>{
+// For sending the otp
+const sendOtp = async(req,res)=>{
     try{
         registerOtp = generateOtp()
         
@@ -372,9 +365,9 @@ const resendOtp = async(req,res)=>{
         const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
         const sendOtp = await sendOtpMail(enteredEmail, registerOtp, subject, message);
         if(sendOtp){
-            return res.stauts(200).json({ success : true, message : "Otp resented succesfully."})
+            return res.status(200).json({ success : true, message : "Otp sented succesfully."})
         }else{
-            return res.stauts(400).json({ success : true, message : "Otp resenting failed."})
+            return res.status(400).json({ success : false, message : "Otp senting failed."})
         }
     }catch(error){
         return res.redirect('/errorPage')
@@ -1101,7 +1094,7 @@ module.exports = {
     postRegister,
     postRegisterOtp,
     postLogin,
-    resendOtp,
+    sendOtp,
     getUserProfile,
     postUserUpdatedInfo,
     postUserProfileImage,
