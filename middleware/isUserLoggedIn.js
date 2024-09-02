@@ -18,10 +18,10 @@ const isLoggedIn = async (req, res, next) => {
 const isBlocked = async (req, res, next) => {
     try {
         if (req.session && req.session.user) {
-            const user = await User.findById({ _id: req.session.user._id }).lean();
+            const user = await User.findById({ _id: req.session.user._id })
             if (user.isblocked) {
-                console.log("user blocked: ", user.isblocked);
-                console.log("rendering login page");
+                user.loggedIn = false
+                user.save()
                 const message = "Your account is blocked, Please contact us"
                 const type = "danger"
                 req.session.user = null

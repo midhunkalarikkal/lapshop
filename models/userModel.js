@@ -30,6 +30,11 @@ const userSchema = new mongoose.Schema({
         type : String,
         required :  true
     },
+    loggedIn : {
+        type : Boolean,
+        required : true,
+        default : false
+    },
     created : {
         type : Date,
         requird : true,

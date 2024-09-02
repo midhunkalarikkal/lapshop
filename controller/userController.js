@@ -225,6 +225,8 @@ const postLogin = async (req, res) => {
                 } if (result) {
                     req.session.user = user;
                     req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
+                    user.loggedIn = true
+                    user.save()
                     res.redirect('/')
                 } else {  
                     return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
@@ -255,10 +257,14 @@ const getLogin = async (req, res) => {
 //To get the user logout function
 const getLogout = async(req,res)=>{
     try{
+        const userId = req.session.user._id
+        const user = await User.findOne({ userId : userId })
         req.session.destroy((err) => {
             if (err) {
                 return res.redirect('/errorPage');
             }
+            user.loggedIn = false
+            user.save()
             cartItemCount = ""
             const message = "Logged out successfully"
             const type = "success"
