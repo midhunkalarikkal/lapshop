@@ -7,67 +7,64 @@
     </head>
 
     <section class="view">
-        <div class="container input-box col-8 col-md-6 col-lg-12">
-            <div class="form-box">
-                <header class="my-4 fs-4 title text-center">Sign In</header>
-                <form action="/register" method="POST" id="registrationForm" onsubmit="return registerbtn()">
-                    <div class="input-field" id="fullname-input">
-                        <input type="text" class="input" id="fullname" name="fullname" required oninput="validateFullName()">
-                        <label for="fullname">First and last name</label>
-                        <span id="fullnameError" class="input-error" style="color: #f82b50;"></span>
-                    </div>
-                    <div class="input-field" id="email-input">
-                        <input type="email" class="input" id="email" name="email" required oninput="validateEmail()">
-                        <label for="email">Email</label>
-                        <span id="emailError" class="input-error" style="color: #f82b50;"></span>
-                    </div>
-                    <div class="input-field" id="phone-input">
-                        <input type="text" class="input" id="phone" name="phone" required oninput="validatePhone()">
-                        <label for="phone">Mobile number</label>
-                        <span id="phoneError" class="input-error" style="color: #f82b50;"></span>
-                    </div>
-                    <div class="input-field" id="password-input">
-                        <input type="password" class="input" id="password" name="password" required oninput="validatePassword()">
-                        <label for="pass">Password</label>
-                        <span id="passwordError" class="input-error" style="color: #f82b50;"></span>
-                    </div>
-                    <div class="input-field">
-                    <p class="passwordConditions text-danger" id="passwordConditions" style="display: none;">Must have 8 length, Atleast one capital letter, <br> small letter , digit and special charctaer (!@#$%^&*)</p>
-                    </div>
-                    <div class="input-field" id="confirmPassword-input">
-                        <input type="password" class="input" id="confirmpassword" name="confirmpassword" required oninput="validateConfirmPassword()">
-                        <label for="confirmpassword">Confirm password</label>
-                        <span id="confirmPasswordError" class="input-error" style="color: #f82b50;"></span>
-                    </div>
-                    <div class="d-flex flex-row my-2 justify-content-between" style="width: 90%;">
-                        <div class="left d-flex align-items-center mx-3">
-                            <input type="checkbox" id="showPasswordCheckbox" onchange="showpassword()">
-                            <label for="showPasswordCheckbox" class="text-light mx-1">Show password</label>
+        <div class="container input-box">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="form-box">
+                    <header class="my-4 fs-4 title text-center">Sign In</header>
+                    <form action="/register" method="POST" id="registrationForm" onsubmit="return registerbtn()">
+                        <div class="input-field" id="fullname-input">
+                            <input type="text" class="input" id="fullname" name="fullname" required oninput="validateFullName()">
+                            <label for="fullname">First and last name</label>
+                            <span id="fullnameError" class="input-error" style="color: #f82b50;"></span>
                         </div>
-                    </div>
-                    <div class="referal p-2 d-flex justify-content-around">
-                        <button class="btn btn-dark btn-sm" onclick="showRefIn(event)" style="color: #50c878;">Referal</button>
-                        <input type="text" class="d-none" id="referal-input" name="referalCode">
-                    </div>
-                                        
-                    <div class="input-field">
-                        <p class="paragraph text-light small">To verify your email we will send you a OTP to your email.
-                        </p>
-                    </div>
-                    <div class="input-field">
-                        <button type="submit" class="btn regiterbtn" id="submit">Register</button>
-                    </div>
-                </form>
-                <div class="signin mb-2">
-                    <span>Already have an account,<a href="/login">Sign In</a></span>
-                    <% if(message){ %>
-                        <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
-                            style="padding: 5px; font-size: 14px;">
-                            <strong>
-                                <%= message %>
-                            </strong>
+                        <div class="input-field" id="email-input">
+                            <input type="email" class="input" id="email" name="email" required oninput="validateEmail()">
+                            <label for="email">Email</label>
+                            <span id="emailError" class="input-error" style="color: #f82b50;"></span>
                         </div>
-                    <% } %>
+                        <div class="input-field" id="phone-input">
+                            <input type="text" class="input" id="phone" name="phone" required oninput="validatePhone()">
+                            <label for="phone">Mobile number</label>
+                            <span id="phoneError" class="input-error" style="color: #f82b50;"></span>
+                        </div>
+                        <div class="input-field" id="password-input">
+                            <input type="password" class="input" id="password" name="password" required oninput="validatePassword()">
+                            <label for="pass">Password</label>
+                            <span id="passwordError" class="input-error" style="color: #f82b50;"></span>
+                        </div>
+                        <div class="input-field">
+                        <p class="passwordConditions text-danger" id="passwordConditions" style="display: none;">Must have 8 length, Atleast one capital letter, <br> small letter , digit and special charctaer (!@#$%^&*)</p>
+                        </div>
+                        <div class="input-field" id="confirmPassword-input">
+                            <input type="password" class="input" id="confirmpassword" name="confirmpassword" required oninput="validateConfirmPassword()">
+                            <label for="confirmpassword">Confirm password</label>
+                            <span id="confirmPasswordError" class="input-error" style="color: #f82b50;"></span>
+                        </div>
+                        <div class="d-flex flex-row my-2 justify-content-between" style="width: 90%;">
+                            <div class="left d-flex align-items-center mx-3">
+                                <input type="checkbox" id="showPasswordCheckbox" onchange="showpassword()">
+                                <label for="showPasswordCheckbox" class="text-light mx-1">Show password</label>
+                            </div>
+                        </div>
+                        <div class="referal p-2 d-flex justify-content-around">
+                            <button class="btn btn-dark btn-sm" onclick="showRefIn(event)" style="color: #50c878;">Referal</button>
+                            <input type="text" class="d-none" id="referal-input" name="referalCode">
+                        </div>
+                        <div class="input-field">
+                            <button type="submit" class="btn regiterbtn" id="submit">Register</button>
+                        </div>
+                    </form>
+                    <div class="signin mb-2">
+                        <span>Already have an account,<a href="/login">Sign In</a></span>
+                        <% if(message){ %>
+                            <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert"
+                                style="padding: 5px; font-size: 14px;">
+                                <strong>
+                                    <%= message %>
+                                </strong>
+                            </div>
+                        <% } %>
+                    </div>
                 </div>
             </div>
         </div>
