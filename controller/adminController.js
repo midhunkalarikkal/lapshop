@@ -306,16 +306,50 @@ const bestSellingBrands = async () => {
 const getAdminHome = async (req, res) => {
     try {
         const totalUsers = await User.countDocuments()
-        const totalOrders = await Order.find({ status : "Delivered"}).countDocuments()
-        const totalCategories = await Category.countDocuments()
+        const currentTraffic = await User.countDocuments({ loggedIn : true })
+        const blockedUsers = await User.countDocuments({ isblocked : true })
+        
         const totalBrands = await Brand.countDocuments()
+        const blockedBrands = await Brand.countDocuments({ isBlocked : true })
+
+        const totalProducts = await Product.countDocuments()
+        const blockedProducts = await Product.countDocuments({ isBlocked : true})
+
         const totalCoupons = await Coupon.countDocuments()
+        const blockedCoupons = await Coupon.countDocuments({ isBlocked : true })
+
+        const totalOrders = await Order.find({ status : "Delivered"}).countDocuments()
+
+        const totalCategories = await Category.countDocuments()
+        const blockedCategories = await Category.countDocuments({ isBlocked : true })
+
+        const totalHomeCarousels = await HomeCarousel.countDocuments()
+        const blockedHomeCarousels = await HomeCarousel.countDocuments({ isBlocked : true })
+
+        const totalAdCarousels = await AdCarousel.countDocuments()
+        const blockedAdCarousels = await AdCarousel.countDocuments({ isBlocked : true })
+
+        const totalRevenue = await Order.aggregate([
+            { $match : { status : "Delivered" } },
+            { $group : { _id : null, totalRevenue : { $sum : "$orderTotal"} } }
+        ])
+
+        const revenue = totalRevenue.length > 0 ? totalRevenue[0].totalRevenue : 0
+        
+        console.log("totalUsers : ",totalUsers)
+        console.log("Current traffic : ",currentTraffic)
+        console.log("totalOrders : ",totalOrders)
+        console.log("totalCategories : ",totalCategories)
+        console.log("totalBrands : ",totalBrands)
+        console.log("totalCoupons : ",totalCoupons)
+        console.log("totalRevenue : ",revenue)
+
         let razorpayCount = 0;
         let codCount = 0;
         let walletCount = 0;
         let walletWithRazorpayCount = 0;
 
-        const [dailyOrdersData, weeklyOrdersData, monthlyOrdersData , bsProds , bsCats , bsBrands] = await Promise.all([
+        const [dailyOrders, weeklyOrders, monthlyOrders , bsProds , bsCats , bsBrands] = await Promise.all([
             getDailyDeliveredOrders(),
             getWeeklyDeliveredOrders(),
             getMonthlyDeliveredOrders(),
@@ -344,9 +378,11 @@ const getAdminHome = async (req, res) => {
                 }
         });
 
-        let topBoxData = { totalUsers : totalUsers , totalOrders : totalOrders , totalCategories : totalCategories , totalBrands : totalBrands , totalCoupons : totalCoupons}
-        let paymentCount = {razorpayCount : razorpayCount , codCount : codCount , walletCount : walletCount , walletWithRazorpayCount : walletWithRazorpayCount}
-        let timedOrders = {dailyOrders : dailyOrdersData , weeklyOrders : weeklyOrdersData , monthlyOrders : monthlyOrdersData}
+        let topBoxData = { totalUsers , totalOrders  , totalCategories  , totalBrands  , totalCoupons  
+            , currentTraffic , revenue , blockedUsers , blockedBrands , blockedCoupons , blockedCategories 
+            , totalHomeCarousels , blockedHomeCarousels , totalAdCarousels , blockedAdCarousels , totalProducts , blockedProducts}
+        let paymentCount = {razorpayCount , codCount , walletCount , walletWithRazorpayCount }
+        let timedOrders = {dailyOrders , weeklyOrders , monthlyOrders }
 
         return res.render("admin/adminHome", { topBoxData , paymentCount , timedOrders , bsProds , bsCats , bsBrands })
     } catch (error) {
