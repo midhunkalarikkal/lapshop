@@ -208,23 +208,23 @@ const postLogin = async (req, res) => {
         
         const password  = req.body.password
 
-            if (user.isblocked) {
-                return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails})
-            }
+        if (user.isblocked) {
+            return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails})
+        }
             
-            bcrypt.compare(password, user.password, function (err, result) {
-                if (err) {
-                    return res.status(500).send('An error occurred while comparing the passwords.');
-                } if (result) {
-                    req.session.user = user;
-                    req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
-                    user.loggedIn = true
-                    user.save()
-                    res.redirect('/')
-                } else {  
-                    return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
-                }
-            });
+        bcrypt.compare(password, user.password, function (err, result) {
+            if (err) {
+                return res.status(500).send('An error occurred while comparing the passwords.');
+            } if (result) {
+                req.session.user = user;
+                req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
+                user.loggedIn = true
+                user.save()
+                res.redirect('/')
+            } else {  
+                return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
+            }
+        });
     } catch (error) {
         return res.redirect('/errorPage')
     }
@@ -251,7 +251,7 @@ const getLogin = async (req, res) => {
 const getLogout = async(req,res)=>{
     try{
         const userId = req.session.user._id
-        const user = await User.findOne({ userId : userId })
+        const user = await User.findOne({ _id : userId })
         req.session.destroy((err) => {
             if (err) {
                 return res.redirect('/errorPage');
