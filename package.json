@@ -28,6 +28,7 @@
     "nodemailer": "^6.9.9",
     "passport": "^0.7.0",
     "passport-google-oauth": "^2.0.0",
+    "pdfkit": "^0.15.0",
     "razorpay": "^2.9.3"
   },
   "devDependencies": {

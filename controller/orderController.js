@@ -2,7 +2,8 @@ const razorpayInstance = require('../config/razorpayConfig');
 const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
 const Product = require('../models/productModel')
-const Wallet = require('../models/walletModel');
+const Wallet = require('../models/walletModel')
+const PDFDcoument = require('pdfkit')
 const path = require('path')
 const fs = require('fs')
 const moment = require("moment")
@@ -382,11 +383,13 @@ const downloadInvoice = async(req,res)=>{
         res.contentType("application/pdf");
         res.sendFile(filePath, (err) => {
             if (err) {
+                console.log("first error : ",err)
                 res.redirect('/errorPage');
             }
         });
       
     }catch(error){
+        console.log("second error : ",error)
         return res.redirect('/errorPage')
     }
 }
@@ -458,6 +461,7 @@ const generateInvoice = async (orderId) => {
         order.invoice = filePath;
         await order.save();
     } catch (error) {
+        console.log("third error : ",error)
         return res.redirect('/errorPage')
     }
 };
