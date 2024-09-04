@@ -376,20 +376,21 @@ const downloadInvoice = async(req,res)=>{
             `${orderId}.pdf`
           );
       
-          if (!fs.existsSync(filePath)) {
-            await generateInvoice(orderId);
-          }
+        if (!fs.existsSync(filePath)) {
+            const invoiceResult = await generateInvoice(orderId);
+            if (invoiceResult.error) {
+                throw new Error(invoiceResult.error);
+            }
+        }
 
         res.contentType("application/pdf");
         res.sendFile(filePath, (err) => {
             if (err) {
-                console.log("first error : ",err)
                 res.redirect('/errorPage');
             }
         });
       
     }catch(error){
-        console.log("second error : ",error)
         return res.redirect('/errorPage')
     }
 }
@@ -460,9 +461,9 @@ const generateInvoice = async (orderId) => {
 
         order.invoice = filePath;
         await order.save();
+        return { success: true };
     } catch (error) {
-        console.log("third error : ",error)
-        return res.redirect('/errorPage')
+        return { error: error.message };
     }
 };
 
