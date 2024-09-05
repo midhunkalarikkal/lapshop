@@ -3,7 +3,7 @@ const Cart = require('../models/cartModel')
 const Order = require('../models/orderModel')
 const Product = require('../models/productModel')
 const Wallet = require('../models/walletModel')
-const PDFDcoument = require('pdfkit')
+const PDFDocument = require('pdfkit')
 const path = require('path')
 const fs = require('fs')
 const moment = require("moment")
@@ -363,40 +363,85 @@ const adminCancelOrder = async(req,res)=>{
     }
 }
 
+
+
 //To download the order invoice for the user
 const downloadInvoice = async(req,res)=>{
     try{
+        console.log("download invoice function starting");
         const orderId = req.params.orderId
+        console.log("orderid : ",orderId)
 
-        const filePath = path.join(
-            __dirname,
-            "..",
-            "public",
-            "invoice",
-            `${orderId}.pdf`
-          );
-      
-        if (!fs.existsSync(filePath)) {
-            const invoiceResult = await generateInvoice(orderId);
-            if (invoiceResult.error) {
-                throw new Error(invoiceResult.error);
-            }
-        }
+        const doc = new PDFDocument();
 
+        // Use an absolute path to ensure the file is saved in the correct location
+        const outputFilePath = path.join(__dirname, '..', 'public', 'invoice', 'output.pdf');
+        doc.pipe(fs.createWriteStream(outputFilePath));
+
+        // Optionally, remove custom font for testing
+        // doc.font('fonts/PalatinoBold.ttf').fontSize(25).text('Some text with an embedded font!', 100, 100);
+
+        // Add text with a default font
+        doc.fontSize(25).text('Some text without an embedded font!', 100, 100);
+
+        // Use an absolute path for the image
+        const imagePath = path.join(__dirname, '..', 'public', 'images', 'Bg', 'desktop', 'Lapshoplogo.png');
+        doc.image(imagePath, {
+            fit: [250, 300],
+            align: 'center',
+            valign: 'center'
+        });
+
+        // Finalize the PDF and end the stream
+        doc.end();
+
+        console.log("download invoice function end");
+
+        // Once the document is finalized, send the file as a response
         res.contentType("application/pdf");
-        res.sendFile(filePath, (err) => {
+        res.sendFile(outputFilePath, (err) => {
             if (err) {
+                console.log("Error sending file:", err);
                 res.redirect('/errorPage');
             }
         });
+        // console.log("download invoce function starting")
+        // const orderId = req.params.orderId
+        // console.log("orderid : ",orderId)
+
+        // const filePath = path.join(
+        //     __dirname,
+        //     "..",
+        //     "public",
+        //     "invoice",
+        //     `${orderId}.pdf`
+        //   );
+      
+        //   console.log("before calling")
+        // if (!fs.existsSync(filePath)) {
+        //     const invoiceResult = await generateInvoice(orderId);
+        //     if (invoiceResult.error) {
+        //         throw new Error(invoiceResult.error);
+        //     }
+        // }
+        // console.log("after calling")
+
+        // res.contentType("application/pdf");
+        // res.sendFile(filePath, (err) => {
+        //     if (err) {
+        //         res.redirect('/errorPage');
+        //     }
+        // });
       
     }catch(error){
+        console.log("Error in downloadInvoice function:", error);
         return res.redirect('/errorPage')
     }
 }
 
 const generateInvoice = async (orderId) => {
     try {
+        console.log("generate function starting")
         const order = await Order.findById(orderId)
         .populate({
             path: "orderedItems",
@@ -451,7 +496,9 @@ const generateInvoice = async (orderId) => {
             },
         };
 
+        console.log("before result")
         const result = await easyinvoice.createInvoice(data);
+        console.log("after result :",result)
 
         const folderPath = path.join(__dirname, "..", "public", "invoice");
         const filePath = path.join(folderPath, `${order._id}.pdf`);
@@ -463,6 +510,8 @@ const generateInvoice = async (orderId) => {
         await order.save();
         return { success: true };
     } catch (error) {
+        console.log("here")
+        console.log(error)
         return { error: error.message };
     }
 };
