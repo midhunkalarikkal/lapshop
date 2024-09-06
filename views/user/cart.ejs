@@ -22,7 +22,7 @@
               <hr>
               <% if(cartItems && cartItems.length !==0){ %>
                 <% cartItems.forEach((product,index)=>{ %>
-                  <div class="product-card-each d-flex border">
+                  <div class="product-card-each d-flex border mt-1">
                     <div class="col-4 d-flex align-items-center justify-content-center">
                       <a href="/productDetail/" style="cursor: pointer;">
                         <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
