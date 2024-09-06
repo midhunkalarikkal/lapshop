@@ -364,40 +364,25 @@ const adminCancelOrder = async(req,res)=>{
 }
 
 
-
 //To download the order invoice for the user
 const downloadInvoice = async(req,res)=>{
     try{
         console.log("download invoice function starting");
         const orderId = req.params.orderId
         console.log("orderid : ",orderId)
+        
+        const outputFilePath = path.join(__dirname, '..', 'public', 'invoice', `${orderId}.pdf`);
 
-        const doc = new PDFDocument();
+        if (!fs.existsSync(outputFilePath)) {
+            console.log("Invoice does not exist, generating invoice...");
+            const invoiceResult = await generateInvoice(orderId, outputFilePath);
+            if (invoiceResult.error) {
+                throw new Error(invoiceResult.error);
+            }
+        } else {
+            console.log("Invoice already exists, skipping generation.");
+        }
 
-        // Use an absolute path to ensure the file is saved in the correct location
-        const outputFilePath = path.join(__dirname, '..', 'public', 'invoice', 'output.pdf');
-        doc.pipe(fs.createWriteStream(outputFilePath));
-
-        // Optionally, remove custom font for testing
-        // doc.font('fonts/PalatinoBold.ttf').fontSize(25).text('Some text with an embedded font!', 100, 100);
-
-        // Add text with a default font
-        doc.fontSize(25).text('Some text without an embedded font!', 100, 100);
-
-        // Use an absolute path for the image
-        const imagePath = path.join(__dirname, '..', 'public', 'images', 'Bg', 'desktop', 'Lapshoplogo.png');
-        doc.image(imagePath, {
-            fit: [250, 300],
-            align: 'center',
-            valign: 'center'
-        });
-
-        // Finalize the PDF and end the stream
-        doc.end();
-
-        console.log("download invoice function end");
-
-        // Once the document is finalized, send the file as a response
         res.contentType("application/pdf");
         res.sendFile(outputFilePath, (err) => {
             if (err) {
@@ -405,34 +390,6 @@ const downloadInvoice = async(req,res)=>{
                 res.redirect('/errorPage');
             }
         });
-        // console.log("download invoce function starting")
-        // const orderId = req.params.orderId
-        // console.log("orderid : ",orderId)
-
-        // const filePath = path.join(
-        //     __dirname,
-        //     "..",
-        //     "public",
-        //     "invoice",
-        //     `${orderId}.pdf`
-        //   );
-      
-        //   console.log("before calling")
-        // if (!fs.existsSync(filePath)) {
-        //     const invoiceResult = await generateInvoice(orderId);
-        //     if (invoiceResult.error) {
-        //         throw new Error(invoiceResult.error);
-        //     }
-        // }
-        // console.log("after calling")
-
-        // res.contentType("application/pdf");
-        // res.sendFile(filePath, (err) => {
-        //     if (err) {
-        //         res.redirect('/errorPage');
-        //     }
-        // });
-      
     }catch(error){
         console.log("Error in downloadInvoice function:", error);
         return res.redirect('/errorPage')
@@ -440,7 +397,7 @@ const downloadInvoice = async(req,res)=>{
 }
 
 const generateInvoice = async (orderId) => {
-    try {
+
         console.log("generate function starting")
         const order = await Order.findById(orderId)
         .populate({
@@ -465,55 +422,31 @@ const generateInvoice = async (orderId) => {
             price: item.totalPrice
         }));
 
-        const data = {
-            apiKey: process.env.EASYINVOICE_API_KEY,
-            mode: "development",
-            images: {
-                logo: "https://firebasestorage.googleapis.com/v0/b/lapshop-e3a21.appspot.com/o/Lapshop%20logo.png?alt=media&token=35295b10-88d1-4c59-a7f6-9c9e49d2758b",
-            },
-            sender: {
-                company: "Lapshop",
-                address: "main Street",
-                zip: "12345",
-                city: "Banglore",
-                country: "India",
-            },
-            client: {
-                company: order.address.name,
-                address: `${order.address.addressLine} ${order.address.phone} ${order.address.district}`,
-                zip: order.address.pincode,
-                city: order.address.city,
-                country: order.address.country,
-            },
-            information: {
-                ID: order.orderId,
-                date: moment(order.date).format("YYYY-MM-DD HH:mm:ss"),
-            },
-            products: orderedItems,
-            bottomNotice: "Your satisfaction is our priority. Thank you for choosing us.",
-            settings: {
-                currency: "INR",
-            },
-        };
+        console.log("orderedItems : ",orderedItems)
 
         console.log("before result")
-        const result = await easyinvoice.createInvoice(data);
-        console.log("after result :",result)
+        const doc = new PDFDocument();
+        const outputFilePath = path.join(__dirname, '..', 'public', 'invoice', `${order._id}.pdf`);
+        const imagePath = path.join(__dirname, '..', 'public', 'images', 'Bg', 'desktop', 'Lapshoplogo.png');
+        doc.pipe(fs.createWriteStream(outputFilePath));
+        doc.fontSize(25).text('Some text without an embedded font!', 100, 100);
+        doc.image(imagePath, {
+            fit: [250, 300],
+            align: 'center',
+            valign: 'center'
+        });
+        doc.end();
+        console.log("after result")
 
         const folderPath = path.join(__dirname, "..", "public", "invoice");
         const filePath = path.join(folderPath, `${order._id}.pdf`);
 
-        fs.mkdirSync(folderPath, { recursive: true });
-        fs.writeFileSync(filePath, result.pdf, "base64");
+        // fs.mkdirSync(folderPath, { recursive: true });
+        // fs.writeFileSync(filePath, result.pdf, "base64");
 
         order.invoice = filePath;
         await order.save();
-        return { success: true };
-    } catch (error) {
-        console.log("here")
-        console.log(error)
-        return { error: error.message };
-    }
+    
 };
 
 // To repayment the order if the payment is failed
