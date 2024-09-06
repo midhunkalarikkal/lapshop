@@ -5,16 +5,16 @@
         <!-- Css for the data tables -->
         <link href="https://cdn.datatables.net/v/bs5/dt-1.13.10/datatables.min.css" rel="stylesheet">
         
-        <!-- order detail page css -->
+        <!-- order page css -->
         <link rel='stylesheet' href='/static/css/order.css' type="text/css" />
     </head>
 
     <section class="view">
-        <!-- Table wishlist for mediuam and above screen start -->
+        <!-- Table order for mediuam and above screen start -->
         <div class="cart-wrap d-none d-lg-block mt-5">
             <div class="container">
                 <div class="row">
-                    <div class="wallet-intro mb-2 d-flex justify-content-between align-items-center p-2">
+                    <div class="order-intro mb-2 d-flex justify-content-between align-items-center p-2">
                         <h4 class="fw-bold mb-0">Your Orders</h4>
                     </div>
                     <hr>
@@ -119,65 +119,65 @@
         <!-- Table for the small screens start -->
         <div class="product mt-5 d-block d-lg-none">
             <div class="container">
-                <div class="row">
-                    <div class="wallet-intro mb-2 d-flex justify-content-between align-items-center p-2">
+                <div class="orders shadow p-3">
+                    <div class="order-intro mb-2 d-flex justify-content-between align-items-center p-2">
                         <h4 class="fw-bold mb-0">Your Orders</h4>
                     </div>
                     <hr>
-                </div>
-                <% if(order.length > 0){ %>
-                    <% for(let i = 0; i < order.length; i++){ %>
-                        <div class="mt-4 mb-3 d-flex align-items-center justify-content-around p-3 bg-light shadow product-card">   
-                            <div class="image col-3">
-                                <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
-                                <a href="/productDetail/" style="cursor: pointer;">
-                                    <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>" alt="" class="img-fluid">
-                                </a>
-                                <% } %>
-                                <span class="product-price">Order id : <%= order[i]._id.toString().slice(-6)  %></span><br>
-                                <span class="product-price">Order date : <%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
-                            </div>
-                            <div class="product-detials col-7 d-flex flex-column align-items-center">
-                                <div class="product-text">
-                                    <p class="sm-p">
-                                        <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
-                                        <span class="heads">Item : <%= j+1 %></span><br>
-                                        <span class="product-brand"><%= order[i].orderedItems[j].product.brand.name %>, </span>
-                                        <span class="product-name"><%= order[i].orderedItems[j].product.name %>, <%= order[i].orderedItems[j].product.category.name %></span><br>
-                                        <% } %>
-                                        <span class="heads">Order status : </span>
-                                        <% if(order[i].status === "Cancelled"){ %>
-                                            <span class="product-price text-danger"><%= order[i].status %></span>
-                                        <% }else{ %>
-                                            <span class="product-price"><%= order[i].status %></span>
-                                        <% } %>
-                                        <br>
-                                        <span class="product-price heads">Order total : ₹ <span class="text-success"><%= order[i].orderTotal %></span></span>
-                                        <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" && order[i].paymentMethod !== "cod"){ %>
-                                            <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button>
-                                        <% } %>
-                                    </p>
-                                    <button class="btn btn-secondary btn-sm" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
-                                    <% if(order[i].status === "Delivered"){ %>
-                                        <button class="btn btn-danger btn-sm" id="prod-cancel" onclick="returnOrder(this)" data-orderId="<%= order[i]._id %>">Return</button>
-                                    <% }else if(order[i].status === "Processing" || order[i].status === "Shipped"){ %>
-                                        <button class="btn btn-danger btn-sm" id="prod-cancel" onclick="cancelOrder(this)" data-orderId="<%= order[i]._id %>">Cancel</button>
+                    <% if(order.length > 0){ %>
+                        <% for(let i = 0; i < order.length; i++){ %>
+                            <div class="mt-4 mb-3 d-flex align-items-center justify-content-around p-3 bg-light border product-card">   
+                                <div class="image col-3">
+                                    <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
+                                    <a href="/productDetail/" style="cursor: pointer;">
+                                        <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>" alt="" class="img-fluid">
+                                    </a>
                                     <% } %>
+                                    <span class="product-price">Order id : <%= order[i]._id.toString().slice(-6)  %></span><br>
+                                    <span class="product-price">Order date : <%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
+                                </div>
+                                <div class="product-detials col-7 d-flex flex-column align-items-center">
+                                    <div class="product-text">
+                                        <p class="sm-p">
+                                            <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
+                                            <span class="heads">Item : <%= j+1 %></span><br>
+                                            <span class="product-brand"><%= order[i].orderedItems[j].product.brand.name %>, </span>
+                                            <span class="product-name"><%= order[i].orderedItems[j].product.name %>, <%= order[i].orderedItems[j].product.category.name %></span><br>
+                                            <% } %>
+                                            <span class="heads">Order status : </span>
+                                            <% if(order[i].status === "Cancelled"){ %>
+                                                <span class="product-price text-danger"><%= order[i].status %></span>
+                                            <% }else{ %>
+                                                <span class="product-price"><%= order[i].status %></span>
+                                            <% } %>
+                                            <br>
+                                            <span class="product-price heads">Order total : ₹ <span class="text-success"><%= order[i].orderTotal %></span></span>
+                                            <% if(order[i].paymentStatus === false && order[i].status !== "Cancelled" && order[i].paymentMethod !== "cod"){ %>
+                                                <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button>
+                                            <% } %>
+                                        </p>
+                                        <button class="btn btn-secondary btn-sm" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
+                                        <% if(order[i].status === "Delivered"){ %>
+                                            <button class="btn btn-danger btn-sm" id="prod-cancel" onclick="returnOrder(this)" data-orderId="<%= order[i]._id %>">Return</button>
+                                        <% }else if(order[i].status === "Processing" || order[i].status === "Shipped"){ %>
+                                            <button class="btn btn-danger btn-sm" id="prod-cancel" onclick="cancelOrder(this)" data-orderId="<%= order[i]._id %>">Cancel</button>
+                                        <% } %>
+                                    </div>
                                 </div>
                             </div>
+                        <% } %>
+                    <% }else{ %>
+                        <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
+                            role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                            <i class="fas fa-list me-3" style="font-size: 1.5rem;"></i>
+                            <div>
+                                <strong>Your orders list is empty!</strong><br>
+                                Browse products and add items to your wishlist.
+                            </div>
                         </div>
+                        <button class="btn btn-primary col-12 col-md-6 col-lg-4 btn-sm" onclick="goToShop()">Continue shopping</button>
                     <% } %>
-                <% }else{ %>
-                    <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
-                        role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
-                        <i class="fas fa-list me-3" style="font-size: 1.5rem;"></i>
-                        <div>
-                            <strong>Your orders list is empty!</strong><br>
-                            Browse products and add items to your wishlist.
-                        </div>
-                    </div>
-                    <button class="btn btn-primary col-3 btn-sm" onclick="goToShop()">Continue shopping</button>
-                <% } %>
+                </div>
             </div>
         </div>
         <!-- Table for the small screens end -->
