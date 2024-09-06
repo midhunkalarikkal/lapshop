@@ -10,7 +10,7 @@
       <div class="container">
         <div class="row mb-3">
 
-          <div class="col-md-8">
+          <div class="col-md-8 d-none d-md-block">
             <div class="product-card shadow mt-4 p-3">
               <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
                 <h4 class="fw-bold mb-0">Your Shopping Cart</h4>
@@ -22,7 +22,7 @@
               <hr>
               <% if(cartItems && cartItems.length !==0){ %>
                 <% cartItems.forEach((product,index)=>{ %>
-                  <div class="product-card-each d-flex">
+                  <div class="product-card-each d-flex border">
                     <div class="col-4 d-flex align-items-center justify-content-center">
                       <a href="/productDetail/" style="cursor: pointer;">
                         <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
@@ -31,33 +31,108 @@
                     </div>
                     <div class="col-8 mx-2 p-3">
                       <p class="mt-2">
-                        <span class="product-brand">
-                          <%= product.product.brand.name %>
-                        </span>
-                        <br>
-                        <span class="product-name">
-                          <%= product.product.name %>
-                        </span>
-                        <br>
-                        <span class="product-desc">
+                        <span class="product-desc d-none d-lg-block">
                           <%= product.product.description %>
                         </span>
-                        <br>
+                        <span class="product-desc d-md-block d-lg-none">
+                          <%= product.product.description.slice(0,75) %>
+                        </span>
                         <span class="product-offerPrice text-success">
                           ₹ <%= product.price %>
                         </span>
                         <br>
                         <% if(product.product.noOfStock < 5){ %>
                           <span class="product-stock text-danger">Only few left!</span>
+                        <% }else{ %>
+                          <span class="product-stock">In stock</span>
+                        <% } %>
+                        <br>
+                        <span class="item-added-date">Item added to your cart on <span class="item-added-date"></span>
+                          <%= product.addedAt.toDateString() %>
+                        </span></span>
+                      </p>
+                      <div class="buttons mb-3 d-flex flex-wrap">
+                        <div class="quantity-input">
+                          <button class="quantity-btn" data-product-id="<%= product.product._id %>"
+                            onclick="decreaseQuantity(this)">-</button>
+                          <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
+                          <button class="quantity-btn" data-product-id="<%= product.product._id %>"
+                            onclick="increaseQuantity(this)">+</button>
+                        </div>
+                        <button class="btn btn-danger btn-sm mx-2" data-product-id="<%= product.product._id %>"
+                          onclick="deleteProduct(this)">
+                          <i class="fa fa-trash"></i> Delete
+                        </button>
+                        <button class="btn btn-secondary btn-sm mx-2 d-block d-md-none d-lg-block" data-product-id="<%= product.product._id %>"
+                          onclick="saveForLater(this)">
+                          Save for later
+                        </button>
+                      </div>
+                      <button class="btn btn-secondary btn-sm mx-2 d-none d-md-block d-lg-none" data-product-id="<%= product.product._id %>"
+                        onclick="saveForLater(this)">
+                        Save for later
+                      </button>
+                    </div>
+                  </div>
+                <% }) %>
+              <% }else{ %>
+                <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
+                  role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                  <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
+                  <div>
+                    <strong>Your cart is empty!</strong><br>
+                      Browse our products and add items to your cart.
+                  </div>
+                </div>
+                <button class="btn btn-primary" onclick="goToShop()">Continue shopping</button>
+              <% } %>
+            </div>
+          </div>
+
+          <!-- For small devices -->
+          <div class="d-block d-md-none">
+            <div class="product-card shadow mt-4 p-3">
+              <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
+                <h4 class="fw-bold mb-0">Your Shopping Cart</h4>
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                  title="Review the products you've added to your cart. You can increase or decrease the quantity of each item, or remove items you no longer want. When you're ready, proceed to checkout to complete your purchase.">
+                  <i class="fas fa-question-circle text-muted"></i>
+                </a>
+              </div>
+              <hr>
+              <% if(cartItems && cartItems.length !==0){ %>
+                <% cartItems.forEach((product,index)=>{ %>
+                  <div class="product-card-each border">
+                    <div class="card-top d-flex flex-row">
+                      <div class="col-4 d-flex align-items-center justify-content-center">
+                        <a href="/productDetail/" style="cursor: pointer;">
+                          <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
+                            class="product-img shadow">
+                        </a>
+                      </div>
+                      <div class="name d-flex align-items-center justify-content-center p-3">
+                        <p class="mt-2">
+                          <span class="product-desc">
+                            <%= product.product.description.slice(0,50) %>........
+                          </span>
+                          <br>
+                          <span class="product-offerPrice text-success">
+                            ₹ <%= product.price %>
+                          </span>
+                          <br>
+                          <% if(product.product.noOfStock < 5){ %>
+                            <span class="product-stock text-danger">Only few left!</span>
                           <% }else{ %>
                             <span class="product-stock">In stock</span>
-                            <% } %>
-                              <br>
-                              <span class="item-added-date">Item added to your cart on <span
-                                  class="item-added-date"></span>
-                                <%= product.addedAt.toDateString() %>
-                              </span></span>
-                      </p>
+                          <% } %>
+                          <br>
+                          <span class="item-added-date">Item added to your cart on <span class="item-added-date"></span>
+                              <%= product.addedAt.toDateString() %>
+                          </span></span>
+                        </p>
+                      </div>
+                    </div>
+                    <div class="mx-2 p-2">
                       <div class="buttons mb-3 d-flex">
                         <div class="quantity-input">
                           <button class="quantity-btn" data-product-id="<%= product.product._id %>"
@@ -77,7 +152,6 @@
                       </div>
                     </div>
                   </div>
-                  <hr>
                 <% }) %>
               <% }else{ %>
                 <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
@@ -92,6 +166,7 @@
               <% } %>
             </div>
           </div>
+          <!-- For small devices -->
 
           <div class="product-subtotal col-12 col-md-4">
             <div class="subtotal mt-4 shadow d-flex flex-column p-3">
@@ -105,13 +180,11 @@
               </div>
               <div class="details">
                 <hr>
-                <h6>Count of items : <span>
-                    <%= cart.items.length %>
-                  </span></h6>
-                <h6>You will save in this purchace : <span class="purchace-discount"> ₹ <%=
-                      cart.totalCartDiscountPrice.toFixed(2) %></span></h6>
+                <p class="countOfItems">Count of items : <span><%= cart.items.length %></span></p>
+                <p class="purchaseSave">You will save in this purchace : <span class="purchace-discount"> ₹ <%=
+                      cart.totalCartDiscountPrice.toFixed(2) %></span></p>
                 <hr>
-                <h5>Subtotal : <span class="subtotal"> ₹ <%= cart.totalCartPrice %></span></h5>
+                <p class="subTotal">Subtotal : <span class="subtotal"> ₹ <%= cart.totalCartPrice %></span></p>
                 <hr>
               </div>
               <div class="button mt-3">
@@ -144,34 +217,30 @@
                 </div>
               <% }else{ %>
                 <% saveForLaterCart.items.forEach((product, index)=> { %>
-                  <div class="product-card-each d-flex flex-wrap">
-                    <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0">
+                  <div class="product-card-each d-flex">
+                    <div class="col-4 d-flex align-items-center justify-content-center mb-3 mb-md-0">
                       <a href="/productDetail/" style="cursor: pointer;">
                         <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
-                          class="img-fluid w-50">
+                          class="img-fluid">
                       </a>
                     </div>
-                    <div class="col-md-8 d-flex flex-column justify-content-center p-2">
+                    <div class="col-8 d-flex flex-column justify-content-center p-2">
                       <div class="product-data mb-3">
                         <p class="mb-0">
-                          <span class="product-brand">
+                          <span class="saveForLaterText1">
                             <strong>
                               Product <%= index+1 %>
                             </strong>
                           </span>
                           <span>
                             <% if(product.product.noOfStock === 0){%>
-                              <span class="mx-2 text-danger">Out of stock</span>
-                              <% }else if(product.product.noOfStock > 0 && product.product.noOfStock < 5){ %>
-                                <span class="mx-2 text-danger">Only <%= product.product.noOfStock %> left!</span>
-                              <% } %>
+                              <span class="mx-2 text-danger saveForLaterText1">Out of stock</span>
+                            <% }else if(product.product.noOfStock > 0 && product.product.noOfStock < 5){ %>
+                              <span class="mx-2 text-danger saveForLaterText1">Only <%= product.product.noOfStock %> left!</span>
+                            <% } %>
                           </span>
                           <br>
-                          <span class="product-brand">
-                            <%= product.product.brand.name %>
-                            <%= product.product.name %>
-                          </span>
-                          <span class="product-name">
+                          <span class="saveForLaterText2">
                             <%= product.product.description.slice(0,75) %>........
                           </span>
                         </p>

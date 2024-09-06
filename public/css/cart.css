@@ -55,16 +55,16 @@
         width: 100%;
     }
 
-    .product-brand , .product-name , .head p{
-        font-size: 14px;
+    .product-brand , .product-name , .head p, .saveForLaterText1{
+        font-size: 17px;
     }
 
-    .product-desc , .product-stock , .item-added-date{
-        font-size: 12px;
+    .product-desc .product-stock , .item-added-date, .saveForLaterText2{
+        font-size: 14px;
     }
 
     .product-offerPrice {
-        font-size: 14px;
+        font-size: 20px;
         font-weight: 600;
     }
 
@@ -75,6 +75,16 @@
     .details h5{
         font-size: 18px;
     }
+
+    .countOfItems,
+    .purchaseSave{
+        font-size: 18px;
+    }
+
+    .subTotal{
+        font-size: 20px;
+        font-weight: 600;
+    }
 }
 
 /*======> XS/SM devices <======*/
@@ -83,16 +93,16 @@
         width: 100%;
     }
 
-    .product-brand , .product-name , .head p{
-        font-size: 15px;
+    .product-brand , .product-name , .head p , .saveForLaterText1{
+        font-size: 18px;
     }
 
-    .product-desc , .product-stock , .item-added-date{
-        font-size: 13px;
+    .product-desc .product-stock , .item-added-date , .saveForLaterText2{
+        font-size: 15px;
     }
 
     .product-offerPrice {
-        font-size: 15px;
+        font-size: 21px;
         font-weight: 600;
     }
 
@@ -101,31 +111,36 @@
     }
     
     .details h5{
+        font-size: 19px;
+    }
+
+    .countOfItems,
+    .purchaseSave{
+        font-size: 18px;
+    }
+
+    .subTotal{
         font-size: 20px;
+        font-weight: 600;
     }
 }
 
 /*======> MD devices <======*/
 @media (min-width: 768px) and (max-width: 991px) {
     .product-img {
-        width: 60%;
+        width: 100%;
     }
 
-    .product-brand , .product-name 
-    {
-        font-size: 17px;
+    .product-brand , .product-name , .head p , .saveForLaterText1{
+        font-size: 18px;
     }
 
-    .head p{
-        font-size: 14px;
-    }
-
-    .product-desc , .product-stock , .item-added-date{
-        font-size: 14px;
+    .product-desc .product-stock , .item-added-date , .saveForLaterText2{
+        font-size: 15px;
     }
 
     .product-offerPrice {
-        font-size: 16px;
+        font-size: 21px;
         font-weight: 600;
     }
 
@@ -134,7 +149,17 @@
     }
     
     .details h5{
-        font-size: 20px;
+        font-size: 19px;
+    }
+
+    .countOfItems,
+    .purchaseSave{
+        font-size: 18px;
+    }
+
+    .subTotal{
+        font-size: 22px;
+        font-weight: 600;
     }
 }
 
@@ -143,6 +168,37 @@
     .product-img {
         width: 80%;
     }
+
+    .product-brand , .product-name , .head p , .saveForLaterText1{
+        font-size: 19px;
+    }
+
+    .product-desc .product-stock , .item-added-date , .saveForLaterText2{
+        font-size: 16px;
+    }
+
+    .product-offerPrice {
+        font-size: 21px;
+        font-weight: 600;
+    }
+
+    .details h6{
+        font-size: 15px;
+    }
+    
+    .details h5{
+        font-size: 19px;
+    }
+
+    .countOfItems,
+    .purchaseSave{
+        font-size: 18px;
+    }
+
+    .subTotal{
+        font-size: 23px;
+        font-weight: 600;
+    }
 }
 
 
@@ -150,6 +206,37 @@
 @media (min-width: 1200px) {
     .product-img {
         width: 80%;
+    }
+
+    .product-brand , .product-name , .head p , .saveForLaterText1{
+        font-size: 19px;
+    }
+
+    .product-desc .product-stock , .item-added-date , .saveForLaterText2{
+        font-size: 16px;
+    }
+
+    .product-offerPrice {
+        font-size: 21px;
+        font-weight: 600;
+    }
+
+    .details h6{
+        font-size: 15px;
+    }
+    
+    .details h5{
+        font-size: 19px;
+    }
+
+    .countOfItems,
+    .purchaseSave{
+        font-size: 18px;
+    }
+
+    .subTotal{
+        font-size: 24px;
+        font-weight: 600;
     }
 }
 
