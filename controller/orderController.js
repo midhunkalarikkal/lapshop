@@ -367,37 +367,14 @@ const adminCancelOrder = async(req,res)=>{
 //To download the order invoice for the user
 const downloadInvoice = async(req,res)=>{
     try{
-        console.log("download invoice function starting");
         const orderId = req.params.orderId
-        console.log("orderid : ",orderId)
         
         const outputFilePath = path.join(__dirname, '..', 'public', 'invoice', `${orderId}.pdf`);
 
-        // if (!fs.existsSync(outputFilePath)) {
-        //     console.log("Invoice does not exist, generating invoice...");
-        //     const invoiceResult = await generateInvoice(orderId, outputFilePath);
-        //     if (invoiceResult.error) {
-        //         throw new Error(invoiceResult.error);
-        //     }
-        // } else {
-        //     console.log("Invoice already exists, skipping generation.");
-        // }
-
-        // res.contentType("application/pdf");
-        // res.sendFile(outputFilePath, (err) => {
-        //     if (err) {
-        //         console.log("Error sending file:", err);
-        //         res.redirect('/errorPage');
-        //     }
-        // });
         if (!fs.existsSync(outputFilePath)) {
-            console.log("Invoice does not exist, generating invoice...");
             generateInvoice(orderId, outputFilePath);
-            
-            // Immediately respond to the client that the invoice is being generated
             return res.status(202).json({ message: 'Invoice is being generated. Please try downloading after a few seconds.' });
         } else {
-            console.log("Invoice already exists, proceeding to download.");
             res.contentType("application/pdf");
             return res.sendFile(outputFilePath, (err) => {
                 if (err) {
@@ -407,7 +384,6 @@ const downloadInvoice = async(req,res)=>{
             });
         }
     }catch(error){
-        console.log("Error in downloadInvoice function:", error);
         return res.redirect('/errorPage')
     }
 }
@@ -438,9 +414,7 @@ const generateInvoice = async (orderId, outputFilePath) => {
             price: item.totalPrice
         }));
 
-        console.log("orderedItems:", orderedItems);
 
-        console.log("Generating PDF...");
         const doc = new PDFDocument();
         const imagePath = path.join(__dirname, '..', 'public', 'images', 'Bg', 'desktop', 'Lapshoplogo.png');
 
@@ -456,18 +430,14 @@ const generateInvoice = async (orderId, outputFilePath) => {
             doc.fontSize(12).text(`${item.quantity} x ${item.description} - $${item.price}`, { align: 'left' });
         });
         doc.end();
-        console.log("PDF generation completed.");
 
         pdfStream.on('finish', async () => {
-            console.log("PDF generation completed.");
-
             order.invoice = outputFilePath;
             await order.save();
         });
 
         return { success: true };
     } catch (error) {
-        console.log("Error in generateInvoice function:", error);
         return { error: error.message };
     }
 };
