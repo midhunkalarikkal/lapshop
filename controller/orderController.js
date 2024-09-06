@@ -373,44 +373,60 @@ const downloadInvoice = async(req,res)=>{
         
         const outputFilePath = path.join(__dirname, '..', 'public', 'invoice', `${orderId}.pdf`);
 
+        // if (!fs.existsSync(outputFilePath)) {
+        //     console.log("Invoice does not exist, generating invoice...");
+        //     const invoiceResult = await generateInvoice(orderId, outputFilePath);
+        //     if (invoiceResult.error) {
+        //         throw new Error(invoiceResult.error);
+        //     }
+        // } else {
+        //     console.log("Invoice already exists, skipping generation.");
+        // }
+
+        // res.contentType("application/pdf");
+        // res.sendFile(outputFilePath, (err) => {
+        //     if (err) {
+        //         console.log("Error sending file:", err);
+        //         res.redirect('/errorPage');
+        //     }
+        // });
         if (!fs.existsSync(outputFilePath)) {
             console.log("Invoice does not exist, generating invoice...");
-            const invoiceResult = await generateInvoice(orderId, outputFilePath);
-            if (invoiceResult.error) {
-                throw new Error(invoiceResult.error);
-            }
+            generateInvoice(orderId, outputFilePath);
+            
+            // Immediately respond to the client that the invoice is being generated
+            return res.status(202).json({ message: 'Invoice is being generated. Please try downloading after a few seconds.' });
         } else {
-            console.log("Invoice already exists, skipping generation.");
+            console.log("Invoice already exists, proceeding to download.");
+            res.contentType("application/pdf");
+            return res.sendFile(outputFilePath, (err) => {
+                if (err) {
+                    console.log("Error sending file:", err);
+                    return res.redirect('/errorPage');
+                }
+            });
         }
-
-        res.contentType("application/pdf");
-        res.sendFile(outputFilePath, (err) => {
-            if (err) {
-                console.log("Error sending file:", err);
-                res.redirect('/errorPage');
-            }
-        });
     }catch(error){
         console.log("Error in downloadInvoice function:", error);
         return res.redirect('/errorPage')
     }
 }
 
-const generateInvoice = async (orderId) => {
-
-        console.log("generate function starting")
+const generateInvoice = async (orderId, outputFilePath) => {
+    try {
+        console.log("generateInvoice function starting");
         const order = await Order.findById(orderId)
-        .populate({
-            path: "orderedItems",
-            populate: {
-                path: "product",
+            .populate({
+                path: "orderedItems",
                 populate: {
-                    path: "brand"
+                    path: "product",
+                    populate: {
+                        path: "brand"
+                    }
                 }
-            }
-        })
-        .populate("userId")
-        .populate("address");
+            })
+            .populate("userId")
+            .populate("address");
 
         if (!order) {
             throw new Error("Order not found");
@@ -422,31 +438,38 @@ const generateInvoice = async (orderId) => {
             price: item.totalPrice
         }));
 
-        console.log("orderedItems : ",orderedItems)
+        console.log("orderedItems:", orderedItems);
 
-        console.log("before result")
+        console.log("Generating PDF...");
         const doc = new PDFDocument();
-        const outputFilePath = path.join(__dirname, '..', 'public', 'invoice', `${order._id}.pdf`);
         const imagePath = path.join(__dirname, '..', 'public', 'images', 'Bg', 'desktop', 'Lapshoplogo.png');
+
         doc.pipe(fs.createWriteStream(outputFilePath));
-        doc.fontSize(25).text('Some text without an embedded font!', 100, 100);
+        doc.fontSize(25).text('Invoice', 100, 100);
         doc.image(imagePath, {
             fit: [250, 300],
             align: 'center',
             valign: 'center'
         });
+        doc.moveDown();
+        orderedItems.forEach(item => {
+            doc.fontSize(12).text(`${item.quantity} x ${item.description} - $${item.price}`, { align: 'left' });
+        });
         doc.end();
-        console.log("after result")
+        console.log("PDF generation completed.");
 
-        const folderPath = path.join(__dirname, "..", "public", "invoice");
-        const filePath = path.join(folderPath, `${order._id}.pdf`);
+        pdfStream.on('finish', async () => {
+            console.log("PDF generation completed.");
 
-        // fs.mkdirSync(folderPath, { recursive: true });
-        // fs.writeFileSync(filePath, result.pdf, "base64");
+            order.invoice = outputFilePath;
+            await order.save();
+        });
 
-        order.invoice = filePath;
-        await order.save();
-    
+        return { success: true };
+    } catch (error) {
+        console.log("Error in generateInvoice function:", error);
+        return { error: error.message };
+    }
 };
 
 // To repayment the order if the payment is failed
