@@ -10,85 +10,87 @@
       <div class="container">
         <div class="row mb-3">
 
-          <div class="product-card col-md-8 shadow mt-4 p-3">
-            <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
-              <h4 class="fw-bold mb-0">Your Shopping Cart</h4>
-              <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                title="Review the products you've added to your cart. You can increase or decrease the quantity of each item, or remove items you no longer want. When you're ready, proceed to checkout to complete your purchase.">
-                <i class="fas fa-question-circle text-muted"></i>
-              </a>
-            </div>
-            <hr>
-            <% if(cartItems && cartItems.length !==0){ %>
-              <% cartItems.forEach((product,index)=>{ %>
-                <div class="product-card-each d-flex">
-                  <div class="col-4 d-flex align-items-center justify-content-center">
-                    <a href="/productDetail/" style="cursor: pointer;">
-                      <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
-                        class="product-img">
-                    </a>
-                  </div>
-                  <div class="col-8 mx-2 p-3">
-                    <p class="mt-2">
-                      <span class="product-brand">
-                        <%= product.product.brand.name %>
-                      </span>
-                      <br>
-                      <span class="product-name">
-                        <%= product.product.name %>
-                      </span>
-                      <br>
-                      <span class="product-desc">
-                        <%= product.product.description %>
-                      </span>
-                      <br>
-                      <span class="product-offerPrice text-success">
-                        ₹ <%= product.price %>
-                      </span>
-                      <br>
-                      <% if(product.product.noOfStock < 5){ %>
-                        <span class="product-stock text-danger">Only few left!</span>
-                        <% }else{ %>
-                          <span class="product-stock">In stock</span>
-                          <% } %>
-                            <br>
-                            <span class="item-added-date">Item added to your cart on <span
-                                class="item-added-date"></span>
-                              <%= product.addedAt.toDateString() %>
-                            </span></span>
-                    </p>
-                    <div class="buttons mb-3 d-flex">
-                      <div class="quantity-input">
-                        <button class="quantity-btn" data-product-id="<%= product.product._id %>"
-                          onclick="decreaseQuantity(this)">-</button>
-                        <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
-                        <button class="quantity-btn" data-product-id="<%= product.product._id %>"
-                          onclick="increaseQuantity(this)">+</button>
+          <div class="col-md-8">
+            <div class="product-card shadow mt-4 p-3">
+              <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
+                <h4 class="fw-bold mb-0">Your Shopping Cart</h4>
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                  title="Review the products you've added to your cart. You can increase or decrease the quantity of each item, or remove items you no longer want. When you're ready, proceed to checkout to complete your purchase.">
+                  <i class="fas fa-question-circle text-muted"></i>
+                </a>
+              </div>
+              <hr>
+              <% if(cartItems && cartItems.length !==0){ %>
+                <% cartItems.forEach((product,index)=>{ %>
+                  <div class="product-card-each d-flex">
+                    <div class="col-4 d-flex align-items-center justify-content-center">
+                      <a href="/productDetail/" style="cursor: pointer;">
+                        <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
+                          class="product-img">
+                      </a>
+                    </div>
+                    <div class="col-8 mx-2 p-3">
+                      <p class="mt-2">
+                        <span class="product-brand">
+                          <%= product.product.brand.name %>
+                        </span>
+                        <br>
+                        <span class="product-name">
+                          <%= product.product.name %>
+                        </span>
+                        <br>
+                        <span class="product-desc">
+                          <%= product.product.description %>
+                        </span>
+                        <br>
+                        <span class="product-offerPrice text-success">
+                          ₹ <%= product.price %>
+                        </span>
+                        <br>
+                        <% if(product.product.noOfStock < 5){ %>
+                          <span class="product-stock text-danger">Only few left!</span>
+                          <% }else{ %>
+                            <span class="product-stock">In stock</span>
+                            <% } %>
+                              <br>
+                              <span class="item-added-date">Item added to your cart on <span
+                                  class="item-added-date"></span>
+                                <%= product.addedAt.toDateString() %>
+                              </span></span>
+                      </p>
+                      <div class="buttons mb-3 d-flex">
+                        <div class="quantity-input">
+                          <button class="quantity-btn" data-product-id="<%= product.product._id %>"
+                            onclick="decreaseQuantity(this)">-</button>
+                          <input type="text" class="quantity-value" value="<%= product.quantity %>" readonly>
+                          <button class="quantity-btn" data-product-id="<%= product.product._id %>"
+                            onclick="increaseQuantity(this)">+</button>
+                        </div>
+                        <button class="btn btn-danger btn-sm mx-2" data-product-id="<%= product.product._id %>"
+                          onclick="deleteProduct(this)">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <button class="btn btn-secondary btn-sm mx-2" data-product-id="<%= product.product._id %>"
+                          onclick="saveForLater(this)">
+                          Save for later
+                        </button>
                       </div>
-                      <button class="btn btn-danger btn-sm mx-2" data-product-id="<%= product.product._id %>"
-                        onclick="deleteProduct(this)">
-                        <i class="fa fa-trash"></i>
-                      </button>
-                      <button class="btn btn-secondary btn-sm mx-2" data-product-id="<%= product.product._id %>"
-                        onclick="saveForLater(this)">
-                        Save for later
-                      </button>
                     </div>
                   </div>
+                  <hr>
+                <% }) %>
+              <% }else{ %>
+                <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
+                  role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                  <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
+                  <div>
+                    <strong>Your cart is empty!</strong><br>
+                      Browse our products and add items to your cart.
+                  </div>
                 </div>
-                <hr>
-              <% }) %>
-            <% }else{ %>
-              <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
-                role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
-                <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
-                <div>
-                  <strong>Your cart is empty!</strong><br>
-                    Browse our products and add items to your cart.
-                </div>
-              </div>
-              <button class="btn btn-primary" onclick="goToShop()">Continue shopping</button>
-            <% } %>
+                <button class="btn btn-primary" onclick="goToShop()">Continue shopping</button>
+              <% } %>
+            </div>
           </div>
 
           <div class="product-subtotal col-12 col-md-4">
@@ -121,213 +123,217 @@
             </div>
           </div>
 
-          <div class="saveForLaterCart col-md-8 col-12 shadow p-3 mt-3">
-            <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
-              <h4 class="fw-bold mb-0">Saved for later</h4>
-              <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                title="The saved products quantity will be changed to 0, you can change it when you add te product again to your cart.">
-                <i class="fas fa-question-circle text-muted"></i>
-              </a>
-            </div>
-            <hr>
-            <% if(!saveForLaterCart || saveForLaterCart.items.length === 0){ %>
-              <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded" role="alert"
-                style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
-                <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
-                <div>
-                  <strong>Your save for list is empty!</strong><br>
-                  Save products for later shopping.
-                </div>
+          <div class="col-md-8 col-12">
+            <div class="saveForLaterCart shadow p-3 mt-3">
+              <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
+                <h4 class="fw-bold mb-0">Saved for later</h4>
+                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
+                  title="The saved products quantity will be changed to 0, you can change it when you add te product again to your cart.">
+                  <i class="fas fa-question-circle text-muted"></i>
+                </a>
               </div>
-            <% }else{ %>
-              <% saveForLaterCart.items.forEach((product, index)=> { %>
-                <div class="product-card-each d-flex flex-wrap">
-                  <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0">
-                    <a href="/productDetail/" style="cursor: pointer;">
-                      <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
-                        class="img-fluid w-50">
-                    </a>
-                  </div>
-                  <div class="col-md-8 d-flex flex-column justify-content-center p-2">
-                    <div class="product-data mb-3">
-                      <p class="mb-0">
-                        <span class="product-brand">
-                          <strong>
-                            Product <%= index+1 %>
-                          </strong>
-                        </span>
-                        <span>
-                          <% if(product.product.noOfStock === 0){%>
-                            <span class="mx-2 text-danger">Out of stock</span>
-                            <% }else if(product.product.noOfStock > 0 && product.product.noOfStock < 5){ %>
-                              <span class="mx-2 text-danger">Only <%= product.product.noOfStock %> left!</span>
-                            <% } %>
-                        </span>
-                        <br>
-                        <span class="product-brand">
-                          <%= product.product.brand.name %>
-                          <%= product.product.name %>
-                        </span>
-                        <span class="product-name">
-                          <%= product.product.description.slice(0,75) %>........
-                        </span>
-                      </p>
-                    </div>
-                    <div class="buttons d-flex">
-                      <button class="btn btn-secondary btn-sm mx-2 flex-fill"
-                        data-product-id="<%= product.product._id %>" onclick="moveToCart(this)">
-                        Move to cart
-                      </button>
-                      <button class="btn btn-danger btn-sm mx-2 flex-fill"
-                        data-product-id="<%= product.product._id %>" onclick="deleteProductFromSaveForLater(this)">
-                        <i class="fa fa-trash"></i> Delete
-                      </button>
-                    </div>
+              <hr>
+              <% if(!saveForLaterCart || saveForLaterCart.items.length === 0){ %>
+                <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded" role="alert"
+                  style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                  <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
+                  <div>
+                    <strong>Your save for later list is empty!</strong><br>
+                    Save products for later shopping.
                   </div>
                 </div>
-              <% }) %>
-            <% } %>
+              <% }else{ %>
+                <% saveForLaterCart.items.forEach((product, index)=> { %>
+                  <div class="product-card-each d-flex flex-wrap">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0">
+                      <a href="/productDetail/" style="cursor: pointer;">
+                        <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
+                          class="img-fluid w-50">
+                      </a>
+                    </div>
+                    <div class="col-md-8 d-flex flex-column justify-content-center p-2">
+                      <div class="product-data mb-3">
+                        <p class="mb-0">
+                          <span class="product-brand">
+                            <strong>
+                              Product <%= index+1 %>
+                            </strong>
+                          </span>
+                          <span>
+                            <% if(product.product.noOfStock === 0){%>
+                              <span class="mx-2 text-danger">Out of stock</span>
+                              <% }else if(product.product.noOfStock > 0 && product.product.noOfStock < 5){ %>
+                                <span class="mx-2 text-danger">Only <%= product.product.noOfStock %> left!</span>
+                              <% } %>
+                          </span>
+                          <br>
+                          <span class="product-brand">
+                            <%= product.product.brand.name %>
+                            <%= product.product.name %>
+                          </span>
+                          <span class="product-name">
+                            <%= product.product.description.slice(0,75) %>........
+                          </span>
+                        </p>
+                      </div>
+                      <div class="buttons d-flex">
+                        <button class="btn btn-secondary btn-sm mx-2 flex-fill"
+                          data-product-id="<%= product.product._id %>" onclick="moveToCart(this)">
+                          Move to cart
+                        </button>
+                        <button class="btn btn-danger btn-sm mx-2 flex-fill"
+                          data-product-id="<%= product.product._id %>" onclick="deleteProductFromSaveForLater(this)">
+                          <i class="fa fa-trash"></i> Delete
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                <% }) %>
+              <% } %>
+            </div>
           </div>
 
-          <div class="instruction-faq col-md-8 col-12 shadow mt-4 p-3">
-            <div class="instructions">
-              <h3>Cart Review Instructions:</h3>
-              <p>"Review the products in your cart to ensure you have everything you need."</p>
-              <p>"Check the quantity of each item and make any necessary adjustments."</p>
-              <hr>
-              <h3>Quantity Adjustment Instructions:</h3>
-              <p>"Increase or decrease the quantity of any product in your cart."</p>
-              <p>"Ensure that the quantity reflects what you want to purchase."</p>
-              <hr>
-              <h3>Item Removal Instructions:</h3>
-              <p>"If you no longer wish to purchase a product, remove it from your cart."</p>
-              <p>"Click the delete icon next to the item to remove it."</p>
-            </div>
-            <div class="accordion" id="cartFaqAccordion">
-              <h4 class="mx-3">FAQ's</h4>
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq1">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
-                    How do I review the products in my cart?
-                  </button>
-                </h2>
-                <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="faq1"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    You can see all the products you've added to your cart on this page. Review the list to ensure you
-                    have selected everything you want to purchase.
+          <div class="col-md-8 col-12">
+            <div class="instruction-faq shadow mt-4 p-3">
+              <div class="instructions">
+                <h3>Cart Review Instructions:</h3>
+                <p>"Review the products in your cart to ensure you have everything you need."</p>
+                <p>"Check the quantity of each item and make any necessary adjustments."</p>
+                <hr>
+                <h3>Quantity Adjustment Instructions:</h3>
+                <p>"Increase or decrease the quantity of any product in your cart."</p>
+                <p>"Ensure that the quantity reflects what you want to purchase."</p>
+                <hr>
+                <h3>Item Removal Instructions:</h3>
+                <p>"If you no longer wish to purchase a product, remove it from your cart."</p>
+                <p>"Click the delete icon next to the item to remove it."</p>
+              </div>
+              <div class="accordion" id="cartFaqAccordion">
+                <h4 class="mx-3">FAQ's</h4>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq1">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse1" aria-expanded="false" aria-controls="collapse1">
+                      How do I review the products in my cart?
+                    </button>
+                  </h2>
+                  <div id="collapse1" class="accordion-collapse collapse" aria-labelledby="faq1"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      You can see all the products you've added to your cart on this page. Review the list to ensure you
+                      have selected everything you want to purchase.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq2">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                    Can I change the quantity of items in my cart?
-                  </button>
-                </h2>
-                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    Yes, you can adjust the quantity of any item by using the "+" and "-" buttons next to the product in
-                    your cart.
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq2">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
+                      Can I change the quantity of items in my cart?
+                    </button>
+                  </h2>
+                  <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      Yes, you can adjust the quantity of any item by using the "+" and "-" buttons next to the product in
+                      your cart.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq3">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                    What if I accidentally add the wrong product?
-                  </button>
-                </h2>
-                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    No worries! Simply click the delete icon next to the product to remove it from your cart.
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq3">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
+                      What if I accidentally add the wrong product?
+                    </button>
+                  </h2>
+                  <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      No worries! Simply click the delete icon next to the product to remove it from your cart.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq4">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                    How do I remove an item from my cart?
-                  </button>
-                </h2>
-                <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    To remove an item, click on the delete icon next to the product. This will remove the item from your
-                    cart immediately.
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq4">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
+                      How do I remove an item from my cart?
+                    </button>
+                  </h2>
+                  <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      To remove an item, click on the delete icon next to the product. This will remove the item from your
+                      cart immediately.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq6">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
-                    What if I want to add more items after reviewing my cart?
-                  </button>
-                </h2>
-                <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    You can continue shopping and add more items to your cart. Your current selections will remain in
-                    the cart until you're ready to checkout.
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq6">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse6" aria-expanded="false" aria-controls="collapse6">
+                      What if I want to add more items after reviewing my cart?
+                    </button>
+                  </h2>
+                  <div id="collapse6" class="accordion-collapse collapse" aria-labelledby="faq6"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      You can continue shopping and add more items to your cart. Your current selections will remain in
+                      the cart until you're ready to checkout.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq8">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
-                    How do I proceed to checkout?
-                  </button>
-                </h2>
-                <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="faq8"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    Once you're satisfied with your cart, click the "Proceed to Checkout" button to begin the checkout
-                    process.
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq8">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse8" aria-expanded="false" aria-controls="collapse8">
+                      How do I proceed to checkout?
+                    </button>
+                  </h2>
+                  <div id="collapse8" class="accordion-collapse collapse" aria-labelledby="faq8"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      Once you're satisfied with your cart, click the "Proceed to Checkout" button to begin the checkout
+                      process.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq9">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
-                    Can I apply a discount code to my cart?
-                  </button>
-                </h2>
-                <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="faq9"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    You can usually apply a discount code during the payment process. Look for the coupons in the home
-                    page.
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq9">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse9" aria-expanded="false" aria-controls="collapse9">
+                      Can I apply a discount code to my cart?
+                    </button>
+                  </h2>
+                  <div id="collapse9" class="accordion-collapse collapse" aria-labelledby="faq9"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      You can usually apply a discount code during the payment process. Look for the coupons in the home
+                      page.
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div class="accordion-item">
-                <h2 class="accordion-header" id="faq10">
-                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
-                    What if I encounter an issue with my cart?
-                  </button>
-                </h2>
-                <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="faq10"
-                  data-bs-parent="#cartFaqAccordion">
-                  <div class="accordion-body">
-                    If you experience any problems with your cart, try refreshing the page or clearing your browser's
-                    cache. If the issue persists, contact customer support for assistance.
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="faq10">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                      data-bs-target="#collapse10" aria-expanded="false" aria-controls="collapse10">
+                      What if I encounter an issue with my cart?
+                    </button>
+                  </h2>
+                  <div id="collapse10" class="accordion-collapse collapse" aria-labelledby="faq10"
+                    data-bs-parent="#cartFaqAccordion">
+                    <div class="accordion-body">
+                      If you experience any problems with your cart, try refreshing the page or clearing your browser's
+                      cache. If the issue persists, contact customer support for assistance.
+                    </div>
                   </div>
                 </div>
               </div>

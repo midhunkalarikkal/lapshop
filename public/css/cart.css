@@ -183,6 +183,9 @@
 }
 
 .product-card-each,
+.product-card,
+.saveForLaterCart,
+.instruction-faq,
 .subtotal {
     border-radius: 10px;
 }
