@@ -414,103 +414,88 @@ const generateInvoice = async (orderId, outputFilePath) => {
             price: item.totalPrice
         }));
 
-        console.log("order : ",order)
-        console.log("orderedItems : ",orderedItems)
-
         const doc = new PDFDocument({size : 'A4'});
         const imagePath = path.join(__dirname, '..', 'public', 'images', 'Bg', 'desktop', 'Lapshoplogo.png');
         doc.pipe(fs.createWriteStream(outputFilePath));
 
-        // Header Section with Smaller Logo and Company Name
-    doc.image(imagePath, 40, 40, { width: 50 })
-    .fontSize(12)
-    .text('LapShop Ecommerce', 110, 70);
+        doc.image(imagePath, 40, 40, { width: 50 })
+        .fontSize(12)
+        .text('LapShop Ecommerce', 110, 70);
 
-// Invoice Title and Company Address
-doc.fontSize(10)
-    .text('Invoice', 450, 40, { align: 'right' })
-    .text('LapShop', 450, 55, { align: 'right' })
-    .text('1234 Main Street', 440, 70, { align: 'right' })
-    .text('Banglore, 676767', 440, 85, { align: 'right' });
+        doc.fontSize(10)
+            .text('Invoice', 450, 40, { align: 'right' })
+            .text('LapShop', 450, 55, { align: 'right' })
+            .text('1234 Main Street', 440, 70, { align: 'right' })
+            .text('Banglore, 676767', 440, 85, { align: 'right' });
 
-// Horizontal Line
-doc.moveTo(40, 120)
-    .lineTo(550, 120)
-    .stroke();
+        // Horizontal Line
+        doc.moveTo(40, 120)
+            .lineTo(550, 120)
+            .stroke();
 
-// Client Information & Order Details
-doc.fontSize(10)
-    .text(`Client Name: ${order.userId.fullname}`, 40, 140)
-    .text(`Address: ${order.address.addressLine}`, 40, 155)
-    .text(`${order.address.city}, ${order.address.district}`, 40, 170)
-    .text(`${order.address.state}, ${order.address.pincode}`, 40, 185);
+        // Client Information & Order Details
+        doc.fontSize(10)
+            .text(`Client Name: ${order.userId.fullname}`, 40, 140)
+            .text(`Address: ${order.address.addressLine}`, 40, 155)
+            .text(`${order.address.city}, ${order.address.district}`, 40, 170)
+            .text(`${order.address.state}, ${order.address.pincode}`, 40, 185);
 
-doc.text(`Order ID: ${order.orderId}`, 330, 140, { align: 'right' });
+        doc.text(`Order ID: ${order.orderId}`, 330, 140, { align: 'right' });
 
-// Table Header
-const startY = 220;
-doc.fontSize(10)
-    .text('Product', 40, startY)
-    .text('Quantity', 250, startY)
-    .text('Price (Rs)', 350, startY)
-    .text('Total (Rs)', 450, startY);
+        const startY = 220;
+        doc.fontSize(10)
+            .text('Product', 40, startY)
+            .text('Quantity', 250, startY)
+            .text('Price (Rs)', 350, startY)
+            .text('Total (Rs)', 450, startY);
 
-// Horizontal Line under Table Header
-doc.moveTo(40, startY + 15)
-    .lineTo(550, startY + 15)
-    .stroke();
+        doc.moveTo(40, startY + 15)
+            .lineTo(550, startY + 15)
+            .stroke();
 
-// Ordered Items
-let currentY = startY + 30;
-orderedItems.forEach(item => {
-    doc.text(item.description, 40, currentY)
-        .text(item.quantity, 250, currentY)
-        .text(`${item.price}`, 350, currentY)
-        .text(`${item.price}`, 450, currentY);
-    currentY += 20;
-});
+        let currentY = startY + 30;
+        orderedItems.forEach(item => {
+            doc.text(item.description, 40, currentY)
+                .text(item.quantity, 250, currentY)
+                .text(`${item.price}`, 350, currentY)
+                .text(`${item.price}`, 450, currentY);
+            currentY += 20;
+        });
 
-const marginLeft = 40;
-const column1X = 350; // X-coordinate for labels
-const column2X = 390; // X-coordinate for values
-const currentYStart = currentY + 20; // Starting Y-coordinate
+        const marginLeft = 40;
+        const column1X = 350; 
+        const column2X = 390; 
+        const currentYStart = currentY + 20; 
 
-// Draw Horizontal Line under Items
-currentY = currentYStart;
-currentY += 10;
-doc.moveTo(marginLeft, currentY)
-    .lineTo(550, currentY)
-    .stroke();
+        currentY = currentYStart;
+        currentY += 10;
+        doc.moveTo(marginLeft, currentY)
+            .lineTo(550, currentY)
+            .stroke();
 
-// Subtotal Section
-currentY += 15;
-doc.fontSize(10)
-    .text('Subtotal:', column1X, currentY, { align: 'left' })  // Align left for labels
-    .text(`Rs ${order.orderTotal}`, column2X, currentY, { align: 'right' });  // Align right for values
+        currentY += 15;
+        doc.fontSize(10)
+            .text('Subtotal:', column1X, currentY, { align: 'left' })  
+            .text(`Rs ${order.orderTotal}`, column2X, currentY, { align: 'right' });
 
-// Delivery Fee Section
-currentY += 15;
-doc.text('Delivery:', column1X, currentY, { align: 'left' })
-    .text('FREE', column2X, currentY, { align: 'right' });
+        currentY += 15;
+        doc.text('Delivery:', column1X, currentY, { align: 'left' })
+            .text('FREE', column2X, currentY, { align: 'right' });
 
-// Draw Horizontal Line under Delivery Fee
-currentY += 15;
-doc.moveTo(marginLeft, currentY)
-    .lineTo(550, currentY)
-    .stroke();
+        currentY += 15;
+        doc.moveTo(marginLeft, currentY)
+            .lineTo(550, currentY)
+            .stroke();
 
-// Total Amount
-currentY += 15;
-doc.fontSize(12)
-    .text('Total:', column1X, currentY, { align: 'left' })
-    .text(`Rs ${order.orderTotal}`, column2X, currentY, { align: 'right' });
+        currentY += 15;
+        doc.fontSize(12)
+            .text('Total:', column1X, currentY, { align: 'left' })
+            .text(`Rs ${order.orderTotal}`, column2X, currentY, { align: 'right' });
 
-// Footer Section (Optional)
-doc.fontSize(10)
-    .text('Thank you for your purchase!', 40, 750, { align: 'center', valign: 'bottom' });
+        doc.fontSize(10)
+            .text('Thank you for your purchase!', 40, 750, { align: 'center', valign: 'bottom' });
 
-// Finalize the PDF
-doc.end();
+        doc.end();
 
         pdfStream.on('finish', async () => {
             order.invoice = outputFilePath;
