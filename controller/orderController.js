@@ -6,8 +6,6 @@ const Wallet = require('../models/walletModel')
 const PDFDocument = require('pdfkit')
 const path = require('path')
 const fs = require('fs')
-const moment = require("moment")
-const easyinvoice = require('easyinvoice')
 const Counter = require('../models/counterModel');
 
 //To generate an unique sequential order id

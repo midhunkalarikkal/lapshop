@@ -1,4 +1,3 @@
-
 const Razorpay = require("razorpay");
 
 const{KEY_ID, KEY_SECRET}= process.env;
