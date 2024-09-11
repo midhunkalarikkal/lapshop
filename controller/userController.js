@@ -1086,6 +1086,82 @@ const getErrorPage = async(req,res)=>{
     }
 }
 
+
+
+// Edit 
+// Google login success handler
+const successGoogleLogin = async (req, res) => {
+    if (!req.user) {
+        return res.redirect('/failure');
+    }
+
+    const googleEmail = req.user.emails[0].value;
+
+    try {
+        const existingUser = await User.findOne({ email: googleEmail });
+
+        if (existingUser) {
+            req.login(existingUser, (err) => {
+                if (err) return res.redirect('/failure');
+                return res.redirect('/dashboard');
+            });
+        } else {
+            return res.redirect(`/register?email=${googleEmail}`);
+        }
+    } catch (err) {
+        console.error("Error during Google login:", err);
+        return res.redirect('/failure');
+    }
+};
+
+// Google login failure handler
+const failureGoogleLogin = (req, res) => {
+    console.log("Login error");
+    res.send("Error during login");
+};
+
+// Show registration form with pre-filled Google email
+const getRegisterGoogle = (req, res) => {
+    const emailFromGoogle = req.query.email;
+    res.render('register', { email: emailFromGoogle || '' });
+};
+
+// Handle new user registration
+const postRegisterGoogle = async (req, res) => {
+    const { email, password, username } = req.body;
+    
+    // Use bcrypt to hash password
+    const bcrypt = require('bcrypt');
+    const saltRounds = 10;
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.redirect('/login');
+        }
+
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        const newUser = new User({
+            email,
+            password: hashedPassword,
+            username,
+        });
+
+        await newUser.save();
+
+        req.login(newUser, (err) => {
+            if (err) return res.redirect('/failure');
+            return res.redirect('/');
+        });
+    } catch (err) {
+        console.error("Error during registration:", err);
+        return res.redirect('/register');
+    }
+};
+// Edit 
+
+
 module.exports = {
     getHome,
     getLogin,
@@ -1121,6 +1197,10 @@ module.exports = {
     getPaymentPage,
     getPaymentSuccess,
     getContactPage,
-    getErrorPage
+    getErrorPage,
+    successGoogleLogin,
+    failureGoogleLogin,
+    getRegisterGoogle,
+    postRegisterGoogle
 }
 

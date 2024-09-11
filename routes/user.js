@@ -4,6 +4,8 @@ const bodyParser = require('body-parser')
 const uploadProfileImage = require('../middleware/userProfile')
 const userAuth = require('../middleware/isUserLoggedIn')
 
+const passport = require('passport');
+
 userRouter.use(bodyParser.json());
 userRouter.use(bodyParser.urlencoded({extended:true}));
 
@@ -142,7 +144,6 @@ userRouter.post('/applyCoupon',userAuth.isLoggedIn,userAuth.isBlocked,couponCont
 //To cancel applied coupon from payment page
 userRouter.post('/cancelCoupon',userAuth.isLoggedIn,userAuth.isBlocked,couponController.cancelCoupon)
 
-
 //To place order with wallet and razorpay
 userRouter.post('/orderConfirmWithWalletAndRazorpay',userAuth.isLoggedIn,userAuth.isBlocked,orderController.orderConfirmWithWalletAndRazorpay)
 //To get the wallet page
@@ -150,5 +151,42 @@ userRouter.get('/wallet',userAuth.isLoggedIn,userAuth.isBlocked,walletController
 
 //To get the 505 error page
 userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userController.getErrorPage)
+
+
+// Edit
+// Google OAuth login route
+// router.get('/auth/google',
+//     passport.authenticate('google', { scope: ['profile', 'email'] })
+// );
+userRouter.get('/auth/google',
+    (req, res, next) => {
+        console.log('Redirecting to Google for authentication...');
+        next();
+    },
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+// Google OAuth callback route
+userRouter.get('/auth/google/callback', 
+    passport.authenticate('google', { failureRedirect: '/login' }),
+    (req, res) => {
+        console.log("User authenticated:", req.user); // Add this line to debug
+        res.redirect('/dashboard');
+    }
+);
+
+// Registration form (pre-filled with Google email)
+userRouter.get('/register', userController.getRegisterGoogle);
+
+// Post registration form (after Google login)
+userRouter.post('/register', userController.postRegisterGoogle);
+
+// Logout route
+userRouter.get('/logout', (req, res) => {
+    req.logout();
+    res.redirect('/');
+}); 
+// Edit
+
 
 module.exports = userRouter
