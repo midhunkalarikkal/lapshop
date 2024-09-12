@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
     },
     referalCode : {
         type : String,
-        required :  true
+        required : false
     },
     loggedIn : {
         type : Boolean,
@@ -43,7 +43,8 @@ const userSchema = new mongoose.Schema({
     googleId : { 
         type: String,
         default : null,
-        unique : true
+        unique : true,
+        required : false
     }
 })
 
