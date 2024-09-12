@@ -158,9 +158,14 @@ userRouter.get('/auth/google', passport.authenticate('google', { scope: ['email'
 userRouter.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function(req, res) {
-        req.session.user = user;
-        req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
-        user.loggedIn = true
+        // req.session.user = req.user;
+        // req.session.userNC = { userName : req.user.fullname , cartItemCount , userId : req.user._id}
+        // user.loggedIn = true
+        console.log("request : ",req)
+        console.log("req.user : ",req.user)
+        console.log("userid : ",req.user._id)
+        // console.log("user session id : ",req.session.user._id)
+        console.log("cartItemCount : ",req.user.cartItemCount)
         res.redirect('/');
     }
 );

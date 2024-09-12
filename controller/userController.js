@@ -201,9 +201,9 @@ const postLogin = async (req, res) => {
         }
 
         const userId = user._id
-        const cart = await Cart.find({ userId : userId})
-        if(cart != ""){
-            cartItemCount = cart[0].items.length
+        const cart = await Cart.findOne({ userId : userId})
+        if(cart){
+            cartItemCount = cart.items.length
         }
         
         const password  = req.body.password

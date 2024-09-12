@@ -1,6 +1,7 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/userModel');
+const Cart = require('../models/cartModel')
 
 module.exports = function () {
     passport.use(new GoogleStrategy({
@@ -15,6 +16,15 @@ module.exports = function () {
 
             if (user) {
                 console.log("user already exist")
+                console.log("passportConfig")
+                console.log("user : ",user)
+                const cart = await Cart.findOne({ userId : user._id})
+                let cartItemCount = 0
+                if(cart){
+                    cartItemCount = cart.items.length
+                }
+                console.log("cartItemCount : ",cartItemCount)
+                user.cartItemCount = cartItemCount;
                 return done(null, user);
             } else {
                 const newUser = new User({
