@@ -155,19 +155,22 @@ userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userControlle
 userRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 // Google Auth callback route
-userRouter.get('/auth/google/callback',
-    passport.authenticate('google', { failureRedirect: '/login' }),
-    function(req, res) {
-        // req.session.user = req.user;
-        // req.session.userNC = { userName : req.user.fullname , cartItemCount , userId : req.user._id}
-        // user.loggedIn = true
-        console.log("request : ",req)
-        console.log("req.user : ",req.user)
-        console.log("userid : ",req.user._id)
-        // console.log("user session id : ",req.session.user._id)
-        console.log("cartItemCount : ",req.user.cartItemCount)
+// userRouter.get('/auth/google/callback',
+//     passport.authenticate('google', { failureRedirect: '/login' }),
+//     userController.googleCallback
+// );
+
+userRouter.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+    req.session.user = req.user;
+    
+    req.session.save((err) => {
+        if (err) {
+            console.error('Error saving session after Google Auth:', err);
+            return res.redirect('/login');
+        }
+        console.log('Session saved successfully:', req.session);
         res.redirect('/');
-    }
-);
+    });
+});
 
 module.exports = userRouter

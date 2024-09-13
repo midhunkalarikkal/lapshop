@@ -272,6 +272,10 @@ const getLogout = async(req,res)=>{
 //To get the user home
 const getHome = async (req, res) => {
     try {
+        console.log("first get home api")
+        console.log("req.session : ",req.session)
+        console.log("req.session.user : ",req.session.user)
+        console.log("req.sessions.user.NC : ",req.session.user.NC)
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
@@ -324,6 +328,10 @@ const getHome = async (req, res) => {
         let newValidCoupons = []
         let userDetails = req.session.userNC
         if (req.session.user) {
+            console.log("getHome inside")
+            console.log("req.session : ",req.session)
+            console.log("req.session.user : ",req.session.user)
+            console.log("req.session.userNC : ",req.session.userNC)
             const user = req.session.user;
         
             coupon.forEach((c, i) => {
@@ -1086,6 +1094,47 @@ const getErrorPage = async(req,res)=>{
     }
 }
 
+const googleCallback = async (req, res) => {
+    try {
+        
+        if (req.user) {
+            // console.log("googleCallback")
+            // console.log("before adding")
+            // console.log("req.session : ", req.session);
+            // console.log("req.user : ", req.user);
+            // console.log("after adding")
+            // req.session.user = req.user;
+            req.session.userNC = { 
+                userName: req.user.fullname, 
+                cartItemCount: 0, 
+                userId: req.user._id 
+            };
+            // console.log("req.session : ", req.session);
+            // console.log("req.user : ", req.user);
+            // Optionally check if the user has a cart and set cartItemCount
+            const cart = await Cart.findOne({ userId: req.user._id });
+            if (cart) {
+                req.session.userNC.cartItemCount = cart.items.length;
+            }
+
+            req.session.save((err) => {
+                if (err) {
+                    console.error('Error saving session:', err);
+                    return res.redirect('/login');
+                }
+
+                console.log('Session saved successfully:', req.session);
+                res.redirect('/');
+            });
+        } else {
+            res.redirect('/login');  // In case something went wrong with authentication
+        }
+    } catch (error) {
+        console.error('Error during Google callback:', error);
+        res.redirect('/login'); 
+    }
+};
+
 
 module.exports = {
     getHome,
@@ -1122,6 +1171,7 @@ module.exports = {
     getPaymentPage,
     getPaymentSuccess,
     getContactPage,
-    getErrorPage
+    getErrorPage,
+    googleCallback
 }
 

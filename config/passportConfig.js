@@ -1,7 +1,6 @@
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const User = require('../models/userModel');
-const Cart = require('../models/cartModel')
 
 module.exports = function () {
     passport.use(new GoogleStrategy({
@@ -11,20 +10,10 @@ module.exports = function () {
     },
     async function(accessToken, refreshToken, profile, done) {
         try {
-            console.log("profile : ",profile)
             let user = await User.findOne({ email: profile.emails[0].value });
 
             if (user) {
                 console.log("user already exist")
-                console.log("passportConfig")
-                console.log("user : ",user)
-                const cart = await Cart.findOne({ userId : user._id})
-                let cartItemCount = 0
-                if(cart){
-                    cartItemCount = cart.items.length
-                }
-                console.log("cartItemCount : ",cartItemCount)
-                user.cartItemCount = cartItemCount;
                 return done(null, user);
             } else {
                 const newUser = new User({
@@ -42,16 +31,17 @@ module.exports = function () {
         }
     }));
 
-    passport.serializeUser(function(user, done) {
-        done(null, user.id);
+    passport.serializeUser((user, done) => {
+        done(null, user._id); // Save user ID to the session
     });
-
-    passport.deserializeUser(async function(id, done) {
+    
+    passport.deserializeUser(async (id, done) => {
         try {
-            const user = await User.findById(id);
+            const user = await User.findById(id); // Retrieve full user details from the database
             done(null, user);
         } catch (err) {
-            done(err, false);
+            done(err, null);
         }
     });
+    
 };
