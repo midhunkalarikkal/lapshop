@@ -13,6 +13,7 @@ const Coupon = require('../models/couponModel')
 const Order = require('../models/orderModel')
 const Wallet = require('../models/walletModel')
 const nodemailer = require('nodemailer')
+const passport = require('passport')
 const crypto = require("crypto")
 const path = require('path')
 const fs = require('fs')
@@ -1094,47 +1095,28 @@ const getErrorPage = async(req,res)=>{
     }
 }
 
-const googleCallback = async (req, res) => {
-    try {
-        
-        if (req.user) {
-            // console.log("googleCallback")
-            // console.log("before adding")
-            // console.log("req.session : ", req.session);
-            // console.log("req.user : ", req.user);
-            // console.log("after adding")
-            // req.session.user = req.user;
-            req.session.userNC = { 
-                userName: req.user.fullname, 
-                cartItemCount: 0, 
-                userId: req.user._id 
-            };
-            // console.log("req.session : ", req.session);
-            // console.log("req.user : ", req.user);
-            // Optionally check if the user has a cart and set cartItemCount
-            const cart = await Cart.findOne({ userId: req.user._id });
-            if (cart) {
-                req.session.userNC.cartItemCount = cart.items.length;
-            }
+//Google auth
+const googleSignIn = passport.authenticate('google', { scope: ['email', 'profile'] });
 
-            req.session.save((err) => {
-                if (err) {
-                    console.error('Error saving session:', err);
-                    return res.redirect('/login');
-                }
-
-                console.log('Session saved successfully:', req.session);
-                res.redirect('/');
-            });
-        } else {
-            res.redirect('/login');  // In case something went wrong with authentication
+const googleCallback = (req, res, next) => {
+    passport.authenticate('google', (err, user, info) => {
+        if (err) {
+            return next(err);
         }
-    } catch (error) {
-        console.error('Error during Google callback:', error);
-        res.redirect('/login'); 
-    }
+        if (!user) {
+            return res.redirect('/auth/failure');
+        }
+       console.log("before req.session : ",req.session)
+       console.log("user : ",user)
+        req.session.user = user;
+        console.log("after req.session : ",req.session)
+        return res.redirect('/');
+    })(req, res, next);
 };
 
+const authFailure = (req, res) => {
+    res.send('Something went wrong..');
+};
 
 module.exports = {
     getHome,
@@ -1172,6 +1154,8 @@ module.exports = {
     getPaymentSuccess,
     getContactPage,
     getErrorPage,
-    googleCallback
+    googleSignIn,
+    googleCallback,
+    authFailure
 }
 

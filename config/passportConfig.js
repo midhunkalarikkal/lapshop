@@ -1,47 +1,40 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const passport = require('passport')
 const User = require('../models/userModel');
 
-module.exports = function () {
-    passport.use(new GoogleStrategy({
-        clientID: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        callbackURL: "/auth/google/callback"
-    },
-    async function(accessToken, refreshToken, profile, done) {
-        try {
-            let user = await User.findOne({ email: profile.emails[0].value });
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
-            if (user) {
-                console.log("user already exist")
-                return done(null, user);
-            } else {
-                const newUser = new User({
-                    googleId: profile.id,
-                    email: profile.emails[0].value,
-                    fullname: profile.displayName
-                });
-                await newUser.save();
-                console.log("new user saving : ",newUser)
-                return done(null, newUser);
-            }
-        } catch (err) {
-            console.log("Catch error : ",err)
-            return done(err, false);
-        }
-    }));
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET
+passport.use(new GoogleStrategy({
+  clientID: GOOGLE_CLIENT_ID,
+  clientSecret: GOOGLE_CLIENT_SECRET,
+  callbackURL: "http://localhost:8001/google/callback",
+  passReqToCallback: true
+},
+  async function (request, accessToken, refreshToken, profile, done) {
+    try {
+        console.log("profile : ",profile)
+      let user = await User.findOneAndUpdate(
+        { email: profile.emails[0].value },
+        {
+          $set: {
+            fullname: profile.displayName,
+          }
+        },
+        { upsert: true, new: true }
+      );
+      return done(null, user);
+    } catch (err) {
+      console.error("Error updating/inserting user:", err);
+      return done(err);
+    }
+  }
 
-    passport.serializeUser((user, done) => {
-        done(null, user._id); // Save user ID to the session
-    });
-    
-    passport.deserializeUser(async (id, done) => {
-        try {
-            const user = await User.findById(id); // Retrieve full user details from the database
-            done(null, user);
-        } catch (err) {
-            done(err, null);
-        }
-    });
-    
-};
+));
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+})
+passport.deserializeUser(function (user, done) {
+  done(null, user);
+})

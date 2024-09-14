@@ -3,7 +3,7 @@ const userRouter = express.Router()
 const bodyParser = require('body-parser')
 const uploadProfileImage = require('../middleware/userProfile')
 const userAuth = require('../middleware/isUserLoggedIn')
-const passport = require('passport');
+require('../config/passportConfig')
 
 userRouter.use(bodyParser.json());
 userRouter.use(bodyParser.urlencoded({extended:true}));
@@ -152,25 +152,8 @@ userRouter.get('/wallet',userAuth.isLoggedIn,userAuth.isBlocked,walletController
 userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userController.getErrorPage)
 
 // Google Auth route
-userRouter.get('/auth/google', passport.authenticate('google', { scope: ['email', 'profile'] }));
-
-// Google Auth callback route
-// userRouter.get('/auth/google/callback',
-//     passport.authenticate('google', { failureRedirect: '/login' }),
-//     userController.googleCallback
-// );
-
-userRouter.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-    req.session.user = req.user;
-    
-    req.session.save((err) => {
-        if (err) {
-            console.error('Error saving session after Google Auth:', err);
-            return res.redirect('/login');
-        }
-        console.log('Session saved successfully:', req.session);
-        res.redirect('/');
-    });
-});
+userRouter.get('/googleSignIn', userController.googleSignIn)
+userRouter.get('/google/callback', userController.googleCallback);
+userRouter.get('/auth/failure', userController.authFailure);
 
 module.exports = userRouter

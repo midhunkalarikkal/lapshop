@@ -5,6 +5,7 @@ const morgan = require('morgan')
 const path = require('path')
 const app = express()
 const config = require('./config/config')
+const passport = require('passport');
 
 require('dotenv').config()
 config.mongooseConnection();
@@ -28,11 +29,8 @@ app.use((req, res, next) => {
     next();
 });
 
-const passport = require('passport');
-const passportConfig = require('./config/passportConfig');
 app.use(passport.initialize());
 app.use(passport.session());
-passportConfig();  
 
 // middlewares for the url parsing
 app.use(express.urlencoded({ extended: true }))
