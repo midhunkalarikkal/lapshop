@@ -13,12 +13,12 @@ passport.use(new GoogleStrategy({
 },
   async function (request, accessToken, refreshToken, profile, done) {
     try {
-        console.log("profile : ",profile)
+      console.log("profile : ", profile)
       let user = await User.findOneAndUpdate(
         { email: profile.emails[0].value },
         {
           $set: {
-            fullname: profile.displayName,
+            fullname: profile.displayName, loggedIn : true
           }
         },
         { upsert: true, new: true }
