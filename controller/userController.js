@@ -1096,27 +1096,40 @@ const getErrorPage = async(req,res)=>{
 }
 
 //Google auth
-const googleSignIn = passport.authenticate('google', { scope: ['email', 'profile'] });
 
-const googleCallback = (req, res, next) => {
-    passport.authenticate('google', (err, user, info) => {
-        if (err) {
-            return next(err);
+const successGoogleLogin = async(req , res) => { 
+	try{
+        if(!req.user) {
+            res.redirect('/failure'); 
         }
-        if (!user) {
-            return res.redirect('/auth/failure');
-        }
-       console.log("before req.session : ",req.session)
-       console.log("user : ",user)
-        req.session.user = user;
-        console.log("after req.session : ",req.session)
-        return res.redirect('/');
-    })(req, res, next);
-};
+        let cartItemCount = 0
+        console.log("successGoogleLogin api")
+        console.log("req.user : ",req.user);
+        console.log("req.session : ",req.session)
+        console.log("adding user to session")
+        let user = await UserActivation.findOneUpdate({
+            email : req.user.emails[0].value
+        },{
+            $set : {
+                fullname : req.user.displayName
+            }
+        },{
+            upsert : true, new : true
+        })
+        req.session.user = user
+        req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
+        console.log("req.session.user : ",req.session.user)
+        console.log("req.session.userNC : ",req.session.userNC)
+        res.redirect('/')
+        res.send("Welcome " + req.user.email); 
+    }catch(error){
+        console.log("error : ",error)
+    }
+}
 
-const authFailure = (req, res) => {
-    res.send('Something went wrong..');
-};
+const failureGoogleLogin = (req , res) => { 
+	res.send("Error"); 
+}
 
 module.exports = {
     getHome,
@@ -1154,8 +1167,7 @@ module.exports = {
     getPaymentSuccess,
     getContactPage,
     getErrorPage,
-    googleSignIn,
-    googleCallback,
-    authFailure
+    successGoogleLogin,
+    failureGoogleLogin
 }
 

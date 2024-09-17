@@ -2,6 +2,9 @@ const User = require('../models/userModel')
 
 const isLoggedIn = async (req, res, next) => {
     try {
+        console.log("isLoggedIn middleware")
+        console.log("req.session : ",req.session)
+        console.log("req.session.user : ",req.session.user)
         if (req.session && req.session.user) {
             next();
         } else {

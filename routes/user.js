@@ -152,8 +152,25 @@ userRouter.get('/wallet',userAuth.isLoggedIn,userAuth.isBlocked,walletController
 userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userController.getErrorPage)
 
 // Google Auth route
-userRouter.get('/googleSignIn', userController.googleSignIn)
-userRouter.get('/google/callback', userController.googleCallback);
-userRouter.get('/auth/failure', userController.authFailure);
+const passport = require('passport'); 
+require('../config/passportConfig');
+
+userRouter.use(passport.initialize()); 	
+userRouter.use(passport.session());
+
+userRouter.get('/googleSignIn' , passport.authenticate('google', { scope: 
+	[ 'email', 'profile' ] 
+})); 
+
+userRouter.get( '/auth/google/callback', 
+	passport.authenticate( 'google', { 
+		successRedirect: '/success', 
+		failureRedirect: '/failure'
+}));
+
+userRouter.get('/success' , userController.successGoogleLogin); 
+
+userRouter.get('/failure' , userController.failureGoogleLogin);
 
 module.exports = userRouter
+

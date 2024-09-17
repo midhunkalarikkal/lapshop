@@ -1,11 +1,10 @@
 const express = require('express')
+const app = express()
 const session = require('express-session')
 const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
 const path = require('path')
-const app = express()
 const config = require('./config/config')
-const passport = require('passport');
 
 require('dotenv').config()
 config.mongooseConnection();
@@ -28,9 +27,6 @@ app.use((req, res, next) => {
     res.set('Cache-Control', 'no-store');
     next();
 });
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 // middlewares for the url parsing
 app.use(express.urlencoded({ extended: true }))
