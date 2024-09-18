@@ -4,8 +4,7 @@ const isLoggedIn = async (req, res, next) => {
     try {
         console.log("isLoggedIn middleware")
         console.log("req.session : ",req.session)
-        console.log("req.session.user : ",req.session.user)
-        if (req.session && req.session.user) {
+        if (req.session && (req.session.user || (req.session.passport && req.session.passport.user))) {
             next();
         } else {
             const message = "Session expired, please login"
@@ -13,7 +12,8 @@ const isLoggedIn = async (req, res, next) => {
             res.redirect(`/login?message=${encodeURIComponent(message)}&type=${type}`);
         }
     } catch (error) {
-        return res.redirect('errorPage')
+        console.log("error : ",error)
+        return res.redirect('/errorPage')
     }
 };
 

@@ -273,10 +273,6 @@ const getLogout = async(req,res)=>{
 //To get the user home
 const getHome = async (req, res) => {
     try {
-        console.log("first get home api")
-        console.log("req.session : ",req.session)
-        console.log("req.session.user : ",req.session.user)
-        console.log("req.sessions.user.NC : ",req.session.user.NC)
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const category = await Category.find({isBlocked : false})
         const coupon = await Coupon.find({ isBlocked : false})
@@ -329,14 +325,20 @@ const getHome = async (req, res) => {
         let newValidCoupons = []
         let userDetails = req.session.userNC
         if (req.session.user) {
-            console.log("getHome inside")
-            console.log("req.session : ",req.session)
-            console.log("req.session.user : ",req.session.user)
-            console.log("req.session.userNC : ",req.session.userNC)
-            const user = req.session.user;
+            let user = req.session.user;
         
             coupon.forEach((c, i) => {
-                const valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
+                let valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
+                if (!valid) {
+                    newValidCoupons.push(c)
+                }
+            });
+            validCoupons = newValidCoupons
+        }else if(req.session.passport.user){
+            let user = req.session.user;
+        
+            coupon.forEach((c, i) => {
+                let valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
                 if (!valid) {
                     newValidCoupons.push(c)
                 }
@@ -1097,38 +1099,48 @@ const getErrorPage = async(req,res)=>{
 
 //Google auth
 
-const successGoogleLogin = async(req , res) => { 
-	try{
-        if(!req.user) {
-            res.redirect('/failure'); 
+const googleSignIn = passport.authenticate('google', { scope: ['email', 'profile'] });
+
+const googleCallback = (req, res, next) => {
+    passport.authenticate('google', (err, user, info) => {
+        if (err) {
+            return next(err);
         }
+        if (!user) {
+            return res.redirect('/auth/failure');
+        }
+
+        console.log("googleCallback start")
         let cartItemCount = 0
-        console.log("successGoogleLogin api")
-        console.log("req.user : ",req.user);
-        console.log("req.session : ",req.session)
-        console.log("adding user to session")
-        let user = await UserActivation.findOneUpdate({
-            email : req.user.emails[0].value
-        },{
-            $set : {
-                fullname : req.user.displayName
-            }
-        },{
-            upsert : true, new : true
-        })
-        req.session.user = user
-        req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
+        console.log('Authenticated user:', user);
+        user.loggedIn = true
+        req.session.user = user;
+        req.session.userNC = { userName : user.fullname , cartItemCount , userId : user._id}
         console.log("req.session.user : ",req.session.user)
         console.log("req.session.userNC : ",req.session.userNC)
+        console.log("googleCallback end")
+        res.redirect('/googleAuthUser');
+        // res.redirect('/')
+    })(req, res, next);
+};
+
+const authFailure = (req, res) => {
+    res.send('Something went wrong..');
+};
+
+const googleAuthUser = async(req,res)=>{
+    try{
+        console.log("googelAuthUser start")
+        console.log("req.session.user : ",req.session.user)
+        console.log("req.session.userNC : ",req.session.userNC)
+        console.log("googleAuthUser end")
         res.redirect('/')
-        res.send("Welcome " + req.user.email); 
+       
+        // res.redirect('/auth/failure');
+
     }catch(error){
         console.log("error : ",error)
     }
-}
-
-const failureGoogleLogin = (req , res) => { 
-	res.send("Error"); 
 }
 
 module.exports = {
@@ -1167,7 +1179,9 @@ module.exports = {
     getPaymentSuccess,
     getContactPage,
     getErrorPage,
-    successGoogleLogin,
-    failureGoogleLogin
+    googleSignIn,
+    googleCallback,
+    authFailure,
+    googleAuthUser
 }
 

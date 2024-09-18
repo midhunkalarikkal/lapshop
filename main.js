@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser')
 const morgan = require('morgan')
 const path = require('path')
 const config = require('./config/config')
+const passport = require('passport');
 
 require('dotenv').config()
 config.mongooseConnection();
@@ -21,6 +22,9 @@ app.use(session({
         sameSite: true,
     }
 }))
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 //Cache control
 app.use((req, res, next) => {
