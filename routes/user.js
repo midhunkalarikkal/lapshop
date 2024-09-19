@@ -155,7 +155,6 @@ userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userControlle
 require('../config/passportConfig')
 userRouter.get('/googleSignIn', userController.googleSignIn)
 userRouter.get('/google/callback', userController.googleCallback);
-userRouter.get('/googleAuthUser',userController.googleAuthUser)
 userRouter.get('/auth/failure', userController.authFailure);
 
 module.exports = userRouter

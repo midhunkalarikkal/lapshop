@@ -1119,8 +1119,7 @@ const googleCallback = (req, res, next) => {
         console.log("req.session.user : ",req.session.user)
         console.log("req.session.userNC : ",req.session.userNC)
         console.log("googleCallback end")
-        res.redirect('/googleAuthUser');
-        // res.redirect('/')
+        res.redirect('/');
     })(req, res, next);
 };
 
@@ -1128,20 +1127,7 @@ const authFailure = (req, res) => {
     res.send('Something went wrong..');
 };
 
-const googleAuthUser = async(req,res)=>{
-    try{
-        console.log("googelAuthUser start")
-        console.log("req.session.user : ",req.session.user)
-        console.log("req.session.userNC : ",req.session.userNC)
-        console.log("googleAuthUser end")
-        res.redirect('/')
-       
-        // res.redirect('/auth/failure');
 
-    }catch(error){
-        console.log("error : ",error)
-    }
-}
 
 module.exports = {
     getHome,
@@ -1181,7 +1167,6 @@ module.exports = {
     getErrorPage,
     googleSignIn,
     googleCallback,
-    authFailure,
-    googleAuthUser
+    authFailure
 }
 
