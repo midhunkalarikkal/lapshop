@@ -49,7 +49,7 @@
                                         <a data-bs-toggle="modal" data-bs-target="#verifyModal" class="prf-btn">
                                             <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
                                                 <i class="fas fa-lock icon mb-2"></i>
-                                                <p class="text-uppercase font-weight-bold">Password</p>
+                                                <p class="text-uppercase font-weight-bold">Change  password</p>
                                             </div>
                                         </a>
                                     </div>
@@ -259,7 +259,7 @@
                                         <a data-bs-toggle="modal" data-bs-target="#verifyModal" class="prf-btn">
                                             <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
                                                 <i class="fas fa-lock icon mb-2"></i>
-                                                <p class="text-uppercase font-weight-bold">Password</p>
+                                                <p class="text-uppercase font-weight-bold">Change  password</p>
                                             </div>
                                         </a>
                                     </div>
@@ -746,6 +746,17 @@
                 phone: document.getElementById('phone').value,
                 userId: document.getElementById('userId').value
             };
+            
+            if(!formData.userName || !formData.phone){
+                swal.fire({
+                    icon: "info",
+                    title: "Empty field",
+                    text: "Please fill the fields.",
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
+                })
+                return false
+            }      
 
             if(!validateName() || !validatePhone()){
                 swal.fire({
@@ -962,6 +973,17 @@
             const email = document.getElementById('email').value;
             const userId = document.getElementById('userId').value;
             const userEmail = document.getElementById('userEmail').value;
+
+            if(!email){
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Empty field',
+                    text: 'Please enter your email..',
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
+                });
+                return;
+            }
 
             if(!validateEmail()){
                 Swal.fire({
