@@ -1,5 +1,5 @@
 ////// To go to shop page \\\\\\
-document.querySelectorAll('.shop-btn').forEach(function (button) {
+document.querySelectorAll('#shop-btn').forEach(function (button) {
     button.addEventListener("click", function () {
         window.location.href = "/shop";
     });

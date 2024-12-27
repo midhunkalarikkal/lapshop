@@ -89,6 +89,16 @@
             formData.append("homeCarouselImage", homeCarouselImage);
 
             try {
+                if(!homeCarouselTagline || !homeCarouselDescription){
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Empty field',
+                        text: 'Tagline and Description should not be empty.',
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
+                    })
+                    return;
+                }
                 const response = await fetch("/admin/updateHomeCarousel", {
                     method: "POST",
                     body: formData

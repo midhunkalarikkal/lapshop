@@ -8,6 +8,7 @@ const Order = require('../models/orderModel')
 const Coupon = require('../models/couponModel')
 const fs = require('fs')
 const path = require('path')
+require('dotenv').config();
 
 
 // To get the admin login page
@@ -25,8 +26,8 @@ const postAdminlogin = async (req, res) => {
         const email = req.body.email;
         const password = req.body.password;
         const adminData = {
-            email: "admin@gmail.com",
-            password: "Admin,./"
+            email: process.env.ADMIN_EMAIL || "admin@gmail.com",
+            password: process.env.ADMIN_PASSWORD || "Admin,./"
         };
         if (email == adminData.email && password == adminData.password) {
             req.session.adminData = adminData
