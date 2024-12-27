@@ -116,7 +116,6 @@ const postCartProductQtyInc = async(req,res)=>{
         return res.status(200).json({ success : true , message : "Quantity incremented"})
   
     }catch(error){
-        console.log(error)
         res.redirect('/errorPage')
     }
 }

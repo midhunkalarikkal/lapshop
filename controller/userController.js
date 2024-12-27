@@ -1,22 +1,22 @@
-require('dotenv').config()
-const bcrypt = require('bcrypt')
-const User = require('../models/userModel')
-const Product = require('../models/productModel')
-const Address = require('../models/addressModel')
-const Brand = require('../models/brandModel')
-const Category = require('../models/categoryModel')
-const HomeCarousel = require('../models/homeCarousel')
-const AdCarousel = require('../models/adCarousel')
-const Wishlist = require('../models/wishlistModel')
-const Cart = require('../models/cartModel')
-const Coupon = require('../models/couponModel')
-const Order = require('../models/orderModel')
-const Wallet = require('../models/walletModel')
-const nodemailer = require('nodemailer')
-const passport = require('passport')
-const crypto = require("crypto")
-const path = require('path')
-const fs = require('fs')
+const HomeCarousel = require('../models/homeCarousel');
+const Category = require('../models/categoryModel');
+const Wishlist = require('../models/wishlistModel');
+const AdCarousel = require('../models/adCarousel');
+const Product = require('../models/productModel');
+const Address = require('../models/addressModel');
+const Coupon = require('../models/couponModel');
+const Wallet = require('../models/walletModel');
+const Order = require('../models/orderModel');
+const Brand = require('../models/brandModel');
+const User = require('../models/userModel');
+const Cart = require('../models/cartModel');
+const nodemailer = require('nodemailer');
+const passport = require('passport');
+const bcrypt = require('bcrypt');
+const crypto = require("crypto");
+const path = require('path');
+require('dotenv').config();
+const fs = require('fs');
 
 //for storing otp
 let registerOtp;
@@ -101,6 +101,87 @@ const sendOtpMail = async(email,otp,subject,message)=>{
         return false;
     }
   }
+
+  //To get the user home
+const getHome = async (req, res) => {
+    try {
+        const homeCarousel = await HomeCarousel.find({ isBlocked: false });
+        const category = await Category.find({isBlocked : false})
+        const coupon = await Coupon.find({ isBlocked : false})
+        const brands = await Brand.find({ isBlocked : false})
+
+        const bestSellingProducts = await Order.aggregate([
+            { 
+                $match: { status: "Delivered" }
+            },
+            {
+                $unwind: "$orderedItems"
+            },
+            {
+                $group: {
+                    _id: "$orderedItems.product",
+                    totalOrdered: { $sum: "$orderedItems.quantity" } 
+                }
+            },
+            {
+                $sort: { totalOrdered: -1 } 
+            },
+            {
+                $lookup: {
+                    from: "products", 
+                    localField: "_id",
+                    foreignField: "_id",
+                    as: "product" 
+                }
+            },
+            {
+                $unwind: "$product" 
+            },
+            {
+                $addFields: {
+                    firstImage: { $arrayElemAt: ["$product.images", 0] }
+                }
+            },
+            {
+                $project: {
+                    _id: "$product._id",
+                    name: "$product.name",
+                    discount: "$product.discountPercentage",
+                    totalOrdered: "$totalOrdered",
+                    imagePath: { $concat: ["/static/images/ProductImages/", "$firstImage"] }
+                }
+            }
+        ])
+
+        let validCoupons = coupon
+        let newValidCoupons = []
+        let userDetails = req.session.userNC
+        if (req.session.user) {
+            let user = req.session.user;
+        
+            coupon.forEach((c, i) => {
+                let valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
+                if (!valid) {
+                    newValidCoupons.push(c)
+                }
+            });
+            validCoupons = newValidCoupons
+        }
+        return res.render('user/home',{userDetails , homeCarousel , bestSellingProducts , category  , coupon : validCoupons , brands})
+    } catch (error) {
+        return res.redirect('/errorPage')
+    }
+}
+
+//To get the user register page
+const getRegister = async (req, res) => {
+    try {
+        let userDetails = req.session.userNC
+        return res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
+    } catch (error) {
+        return res.redirect('/errorPage')
+    }
+}
 
 //Sending the register data to otp validation page
 const postRegister = async (req, res) => {
@@ -192,6 +273,22 @@ const postRegisterOtp = async (req, res) => {
     }
 }
 
+// To get the user login page
+const getLogin = async (req, res) => {
+    try {
+        if(req.session && req.session.user && req.session.user !== null){
+            res.redirect('/')
+        }else{
+            let userDetails = '';
+            let type = req.query.type || '';
+            let message = req.query.message || '';
+            return res.render('user/login',{type, message, userDetails})
+        }
+    } catch (error) {
+        return res.redirect('/errorPage')
+    }
+}
+
 //Checking the email and password for user from login page
 const postLogin = async (req, res) => {
     try {
@@ -231,22 +328,6 @@ const postLogin = async (req, res) => {
     }
 }
 
-// To get the user login page
-const getLogin = async (req, res) => {
-    try {
-        if(req.session && req.session.user && req.session.user !== null){
-            res.redirect('/')
-        }else{
-            let userDetails = '';
-            let type = req.query.type || '';
-            let message = req.query.message || '';
-            return res.render('user/login',{type, message, userDetails})
-        }
-    } catch (error) {
-        return res.redirect('/errorPage')
-    }
-}
-
 
 //To get the user logout function
 const getLogout = async(req,res)=>{
@@ -269,98 +350,6 @@ const getLogout = async(req,res)=>{
     }
 }
 
-
-//To get the user home
-const getHome = async (req, res) => {
-    try {
-        const homeCarousel = await HomeCarousel.find({ isBlocked: false });
-        const category = await Category.find({isBlocked : false})
-        const coupon = await Coupon.find({ isBlocked : false})
-        const brands = await Brand.find({ isBlocked : false})
-
-        const bestSellingProducts = await Order.aggregate([
-            { 
-                $match: { status: "Delivered" }
-            },
-            {
-                $unwind: "$orderedItems"
-            },
-            {
-                $group: {
-                    _id: "$orderedItems.product",
-                    totalOrdered: { $sum: "$orderedItems.quantity" } 
-                }
-            },
-            {
-                $sort: { totalOrdered: -1 } 
-            },
-            {
-                $lookup: {
-                    from: "products", 
-                    localField: "_id",
-                    foreignField: "_id",
-                    as: "product" 
-                }
-            },
-            {
-                $unwind: "$product" 
-            },
-            {
-                $addFields: {
-                    firstImage: { $arrayElemAt: ["$product.images", 0] }
-                }
-            },
-            {
-                $project: {
-                    _id: "$product._id",
-                    name: "$product.name",
-                    discount: "$product.discountPercentage",
-                    totalOrdered: "$totalOrdered",
-                    imagePath: { $concat: ["/static/images/ProductImages/", "$firstImage"] }
-                }
-            }
-        ])
-
-        let validCoupons = coupon
-        let newValidCoupons = []
-        let userDetails = req.session.userNC
-        if (req.session.user) {
-            let user = req.session.user;
-        
-            coupon.forEach((c, i) => {
-                let valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
-                if (!valid) {
-                    newValidCoupons.push(c)
-                }
-            });
-            validCoupons = newValidCoupons
-        }else if(req.session.passport.user){
-            let user = req.session.user;
-        
-            coupon.forEach((c, i) => {
-                let valid = c.appliedUsers.map(u => u._id.toString()).includes(user._id.toString());
-                if (!valid) {
-                    newValidCoupons.push(c)
-                }
-            });
-            validCoupons = newValidCoupons
-        }
-        return res.render('user/home',{userDetails , homeCarousel , bestSellingProducts , category  , coupon : validCoupons , brands})
-
-    } catch (error) {
-        return res.redirect('/errorPage')
-    }
-}
-
-//To get the user register page
-const getRegister = async (req, res) => {
-    try {
-        let userDetails = req.session.userNC
-        return res.render('user/registration', { type: "", message: "" , userDetails , cartItemCount})
-    } catch (error) {
-        return res.redirect('/errorPage')
-    }
-}
 
 // For sending the otp
 const sendOtp = async(req,res)=>{
@@ -857,7 +846,6 @@ const postForgotPasswordEmail = async(req,res)=>{
             return res.status(400).json({ success :false, message : "Email is not registered" })
         }else{
             fpOtp = generateOtp();
-            console.log("fpotp : ",fpOtp)
 
             function clearSaveOtp() {
                 fpOtp = "";
@@ -1097,38 +1085,6 @@ const getErrorPage = async(req,res)=>{
     }
 }
 
-//Google auth
-
-const googleSignIn = passport.authenticate('google', { scope: ['email', 'profile'] });
-
-const googleCallback = (req, res, next) => {
-    passport.authenticate('google', (err, user, info) => {
-        if (err) {
-            return next(err);
-        }
-        if (!user) {
-            return res.redirect('/auth/failure');
-        }
-
-        console.log("googleCallback start")
-        let cartItemCount = 0
-        console.log('Authenticated user:', user);
-        user.loggedIn = true
-        req.session.user = user;
-        req.session.userNC = { userName : user.fullname , cartItemCount , userId : user._id}
-        console.log("req.session.user : ",req.session.user)
-        console.log("req.session.userNC : ",req.session.userNC)
-        console.log("googleCallback end")
-        res.redirect('/');
-    })(req, res, next);
-};
-
-const authFailure = (req, res) => {
-    res.send('Something went wrong..');
-};
-
-
-
 module.exports = {
     getHome,
     getLogin,
@@ -1164,9 +1120,6 @@ module.exports = {
     getPaymentPage,
     getPaymentSuccess,
     getContactPage,
-    getErrorPage,
-    googleSignIn,
-    googleCallback,
-    authFailure
+    getErrorPage
 }
 

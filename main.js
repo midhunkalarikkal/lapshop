@@ -1,13 +1,13 @@
-const express = require('express')
-const app = express()
-const session = require('express-session')
-const cookieParser = require('cookie-parser')
-const morgan = require('morgan')
-const path = require('path')
-const config = require('./config/config')
+const express = require('express');
+const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const config = require('./config/config');
 const passport = require('passport');
+const morgan = require('morgan');
+const path = require('path');
+const app = express();
 
-require('dotenv').config()
+require('dotenv').config();
 config.mongooseConnection();
 
 app.use(cookieParser())

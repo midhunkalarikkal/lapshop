@@ -3,7 +3,6 @@ const userRouter = express.Router()
 const bodyParser = require('body-parser')
 const uploadProfileImage = require('../middleware/userProfile')
 const userAuth = require('../middleware/isUserLoggedIn')
-require('../config/passportConfig')
 
 userRouter.use(bodyParser.json());
 userRouter.use(bodyParser.urlencoded({extended:true}));
@@ -151,11 +150,6 @@ userRouter.get('/wallet',userAuth.isLoggedIn,userAuth.isBlocked,walletController
 //To get the 505 error page
 userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userController.getErrorPage)
 
-// Google Auth route
-require('../config/passportConfig')
-userRouter.get('/googleSignIn', userController.googleSignIn)
-userRouter.get('/google/callback', userController.googleCallback);
-userRouter.get('/auth/failure', userController.authFailure);
 
 module.exports = userRouter
 

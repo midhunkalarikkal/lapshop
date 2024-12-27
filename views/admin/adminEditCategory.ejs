@@ -83,11 +83,6 @@
             const categoryDesc = document.getElementById("CategoryDescription").value;
             const categoryImage = document.getElementById("categoryImage").files[0];
 
-            console.log("category id : ",categoryId)
-            console.log("categoryName : ",categoryName)
-            console.log("categoryDesc : ",categoryDesc)
-            console.log("categoryImage : ",categoryImage)
-
             const formData = new FormData();
             formData.append("categoryId", categoryId);
             formData.append("categoryName", categoryName);

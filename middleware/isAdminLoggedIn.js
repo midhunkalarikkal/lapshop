@@ -15,7 +15,6 @@ const isAdminLogout = async(req,res,next)=>{
         if(req.session.adminData){
             res.redirect('/admin/home')
         }else{
-            console.log("Logoutting one")
             next()
         }
     } catch (error) {

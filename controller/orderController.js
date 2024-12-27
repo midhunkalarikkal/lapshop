@@ -376,7 +376,6 @@ const downloadInvoice = async(req,res)=>{
             res.contentType("application/pdf");
             return res.sendFile(outputFilePath, (err) => {
                 if (err) {
-                    console.log("Error sending file:", err);
                     return res.redirect('/errorPage');
                 }
             });
@@ -388,7 +387,6 @@ const downloadInvoice = async(req,res)=>{
 
 const generateInvoice = async (orderId, outputFilePath) => {
     try {
-        console.log("generateInvoice function starting");
         const order = await Order.findById(orderId)
             .populate({
                 path: "orderedItems",

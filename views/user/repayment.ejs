@@ -180,7 +180,6 @@
             let userAddressId = document.getElementById("userAddressId").value;
             let subTotal = document.getElementById('subTotal').innerText;
             let orderId = document.getElementById("orderId").value
-            console.log("paymentMethod : ",paymentMethod)
 
             if (subTotal == 0) {
                 Swal.fire({
@@ -216,7 +215,6 @@
                 }
             })
             .then(data => {
-                console.log("data : ",data)
                 if (data.success) {
                     var options = {
                         key: "" + data.key_id + "",

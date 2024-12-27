@@ -335,14 +335,6 @@ const getAdminHome = async (req, res) => {
         ])
 
         const revenue = totalRevenue.length > 0 ? totalRevenue[0].totalRevenue : 0
-        
-        console.log("totalUsers : ",totalUsers)
-        console.log("Current traffic : ",currentTraffic)
-        console.log("totalOrders : ",totalOrders)
-        console.log("totalCategories : ",totalCategories)
-        console.log("totalBrands : ",totalBrands)
-        console.log("totalCoupons : ",totalCoupons)
-        console.log("totalRevenue : ",revenue)
 
         let razorpayCount = 0;
         let codCount = 0;
@@ -591,8 +583,6 @@ const getCategoryForEditing = async (req, res) => {
 const updateCategory = async (req, res) => {
     try {
         const { categoryId, categoryName, categoryDesc } = req.body;
-        console.log("req.body :",req.body)
-        console.log("req.file :",req.file)
         if (!categoryId || !categoryName || !categoryDesc) {
             return res.status(400).json({ success: false, message: "Form data fetching error." });
         }
