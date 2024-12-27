@@ -110,6 +110,16 @@
             formData.append('categoryImg', categoryImg);
 
             try {
+                if(!categoryName || !categoryDesc || !categoryImg){
+                    Swal.fire({
+                        icon: 'info',
+                        title: 'Empty field',
+                        text: "Fill out the empty fields",
+                        showConfirmButton: true,
+                        confirmButtonText: 'OK'
+                    })
+                    return;
+                }
                 const response = await fetch("/admin/addCategory", {
                     method: "POST",
                     body: formData
