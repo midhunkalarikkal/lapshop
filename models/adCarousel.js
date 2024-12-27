@@ -13,12 +13,7 @@ const adCarouselSchema = new mongoose.Schema({
         type : Boolean,
         required : true,
         default : false
-    },
-    created : {
-        type : Date,
-        requird : true,
-        default : Date.now
     }
-})
+},{timestamps : true})
 
 module.exports = mongoose.model('AdCarousel',adCarouselSchema)

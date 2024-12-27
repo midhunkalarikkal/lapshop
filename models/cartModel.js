@@ -48,6 +48,8 @@ const cartSchema = new mongoose.Schema({
     couponCode: {
         type: String,
     }
+},{
+    timestamps : true
 })
 
 module.exports = mongoose.model("Cart",cartSchema)
