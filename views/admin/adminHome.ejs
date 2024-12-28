@@ -124,75 +124,71 @@
             </div>
 
             <div class="third mt-3 shadow p-3">
-                <h4>Best selling</h4>
-                <div class="d-flex flex-column flex-md-row justify-content-md-around">
-                    <div id="productList" class="col-md-4">
-                        <table class="table text-center table-light table-hover table-bordered">
-                            <thead>
+                <div class="d-flex flex-column flex-md-row justify-content-md-around mt-4">
+                    <!-- Best Selling Products -->
+                    <div id="productList" class="col-md-4 p-2">
+                        <h5 class="text-center bg-primary text-white py-2 rounded">Best Selling Products</h5>
+                        <table class="table text-center table-light table-hover table-bordered mt-3 shadow-sm rounded">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Product Name</th>
                                     <th>Count</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% bsProds.forEach(product=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= product.name %>
-                                        </td>
-                                        <td>
-                                            <%= product.count %>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
+                                <% bsProds.forEach(product => { %>
+                                <tr>
+                                    <td><%= product.name %></td>
+                                    <td><%= product.count %></td>
+                                </tr>
+                                <% }) %>
                             </tbody>
                         </table>
                     </div>
-                    <div id="categoryList" class="col-md-4">
-                        <table class="table text-center table-light table-hover table-bordered">
-                            <thead>
+                
+                    <!-- Best Selling Categories -->
+                    <div id="categoryList" class="col-md-4 p-2">
+                        <h5 class="text-center bg-info text-white py-2 rounded">Best Selling Categories</h5>
+                        <table class="table text-center table-light table-hover table-bordered mt-3 shadow-sm rounded">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Category Name</th>
                                     <th>Count</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% bsCats.forEach(product=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= product.category %>
-                                        </td>
-                                        <td>
-                                            <%= product.count %>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
+                                <% bsCats.forEach(product => { %>
+                                <tr>
+                                    <td><%= product.category %></td>
+                                    <td><%= product.count %></td>
+                                </tr>
+                                <% }) %>
                             </tbody>
                         </table>
                     </div>
-                    <div id="brandList" class="col-md-4">
-                        <table class="table text-center table-light table-hover table-bordered">
-                            <thead>
+                
+                    <!-- Best Selling Brands -->
+                    <div id="brandList" class="col-md-4 p-2">
+                        <h5 class="text-center bg-secondary text-white py-2 rounded">Best Selling Brands</h5>
+                        <table class="table text-center table-light table-hover table-bordered mt-3 shadow-sm rounded">
+                            <thead class="thead-dark">
                                 <tr>
                                     <th>Brand Name</th>
                                     <th>Count</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% bsBrands.forEach(product=> { %>
-                                    <tr>
-                                        <td>
-                                            <%= product.brand %>
-                                        </td>
-                                        <td>
-                                            <%= product.count %>
-                                        </td>
-                                    </tr>
-                                    <% }) %>
+                                <% bsBrands.forEach(product => { %>
+                                <tr>
+                                    <td><%= product.brand %></td>
+                                    <td><%= product.count %></td>
+                                </tr>
+                                <% }) %>
                             </tbody>
                         </table>
                     </div>
                 </div>
+                
             </div>
 
             <div class="four shadow p-3 mt-3">
