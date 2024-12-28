@@ -6,52 +6,44 @@
         <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
     </head>
         <section class="view">
-            <div class="container d-flex align-items-center justify-content-center">
-                <div class="main">
+            <div class="container d-flex align-items-center justify-content-center min-vh-100 bg-light">
+                <div class="main shadow rounded p-4 bg-white" style="width: 100%; max-width: 600px;">
                     <form action="" method="POST" id="submit-form">
-                        <div class="p-5">
-                            <h4 class=" fs-3 text-dark">Send your response to us</h4>
-                            <h6 class=" text-center text-success mb-2">www.lapshop.online</h6>
-                            <div class="input-box d-md-flex">
-                                <div class="col-12">
-                                    <div class="mb-3">
-                                        <label for="Name" class="form-label">Name</label>
-                                        <input type="text" class="form-control" name="name" id="name" required
-                                            oninput="validateName()">
-                                        <span id="nameError" class="text-danger"></span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="Email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" name="email" id="email" required
-                                            oninput="validateEmail()">
-                                        <span id="emailError" class="text-danger"></span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="Phone" class="form-label">Phone</label>
-                                        <input type="text" class="form-control" name="phone" id="phone" required
-                                            oninput="validatePhone()">
-                                        <span id="phoneError" class="text-danger"></span>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="Message" class="form-label">Message</label>
-                                        <textarea class="form-control" name="message" id="message" rows="2"
-                                            required oninput="validateMessage()"></textarea>
-                                        <span id="messageError" class="text-danger"></span>
-                                    </div>
-                                    <div class="mt-5 d-md-block d-none">
-                                        <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                                        <button type="submit" id="submitButton" class="btn btn-success"><i class="fa-regular fa-paper-plane"></i> Send</button>
-                                    </div>
+                        <div class="text-center mb-4">
+                            <h4 class="fs-4 text-dark fw-bold">Send Your Response</h4>
+                            <h6 class="text-success">www.lapshop.online</h6>
+                        </div>
+                        <div class="input-box">
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label for="Name" class="form-label fw-semibold">Name</label>
+                                    <input type="text" class="form-control" name="name" id="name" required oninput="validateName()">
+                                    <span id="nameError" class="text-danger small"></span>
                                 </div>
-                                <div class="mt-4 d-block d-md-none">
-                                    <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">Cancel</button>
-                                    <button type="submit" id="submitButton" class="btn btn-success btn-sm"><i class="fa-regular fa-paper-plane"></i> Send</button>
+                                <div class="mb-3">
+                                    <label for="Email" class="form-label fw-semibold">Email</label>
+                                    <input type="email" class="form-control" name="email" id="email" required oninput="validateEmail()">
+                                    <span id="emailError" class="text-danger small"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Phone" class="form-label fw-semibold">Phone</label>
+                                    <input type="text" class="form-control" name="phone" id="phone" required oninput="validatePhone()">
+                                    <span id="phoneError" class="text-danger small"></span>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="Message" class="form-label fw-semibold">Message</label>
+                                    <textarea class="form-control" name="message" id="message" rows="4" required oninput="validateMessage()"></textarea>
+                                    <span id="messageError" class="text-danger small"></span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center mt-4">
+                                    <button type="button" class="btn btn-secondary px-4" onclick="goBack()">Cancel</button>
+                                    <button type="submit" id="submitButton" class="btn btn-success px-4"><i class="fa-regular fa-paper-plane"></i> Send</button>
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
+            </div>            
         </section>
 
 
@@ -175,7 +167,7 @@
                         confirmButtonText: "Ok"
                     })
                     .then(()=>{
-                        window.location.href = '/shop'
+                        document.getElementById('submit-form').reset();
                     })
                 },
                 error:function (err){

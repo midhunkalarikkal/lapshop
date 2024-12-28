@@ -20,6 +20,7 @@ h1,h2,h3,h4,h5,h6,span,a{
     --fourth-color: #f82b50;
     --fifth-color: #38ed77;
     --sixth-color: #e4e4e4;
+    --seventh-color: #b7b7b7;
     --offerprice-color: #22a751;
     --realprice-color: #3c3c3c;
     --discount-color: #d73131;
@@ -83,33 +84,33 @@ h1,h2,h3,h4,h5,h6,span,a{
 
 
 .input {
-    height: 35px;
-    width: 100%;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--secondary-color);
-    outline: none;
-    margin-bottom: 20px;
-    color: var(--secondary-color);
+  height: 35px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--secondary-color);
+  outline: none;
+  margin-bottom: 20px;
+  color: var(--secondary-color);
 }
 
 .input-box .input-field label {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    pointer-events: none;
-    transition: .5s;
-    color: var(--secondary-color);
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  pointer-events: none;
+  transition: .5s;
+  color: var(--seventh-color);
 }
 
 .input-field input:focus~label {
-    top: -10px;
-    font-size: 13px;
+  top: -10px;
+  font-size: 13px;
 }
 
 .input-field input:valid~label {
-    top: -10px;
-    font-size: 13px;
+  top: -10px;
+  font-size: 13px;
 }
 
 .input-field .input:focus,

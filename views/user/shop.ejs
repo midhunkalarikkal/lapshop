@@ -220,7 +220,7 @@
                                         <div class="card-body">
                                             <h6 class="product-name text-center mb-2">
                                                 <%= product.name %>
-                                                <% if (isNewProduct){ %>                         
+                                                <% if(!isNewProduct){ %>                         
                                                     <span class="badge">New</span>
                                                 <% } %> <br>
                                                 <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
@@ -470,6 +470,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                console.log(data)
                 let productData = data.productData
                 let totalPages = data.totalPages
                 let prodId = data.prodId
@@ -605,7 +606,7 @@
             })
             .catch(error => {
                 Swal.fire({
-                    icon: 'error',
+                    icon: 'info',
                     title: 'Error!',
                     text: 'Internal server error',
                     timer: 3000,
