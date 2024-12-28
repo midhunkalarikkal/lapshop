@@ -33,6 +33,7 @@ label,
     padding: 0 20px 0 20px;
     min-height: 100vh;
     display: flex;
+    background-image: linear-gradient(100deg,rgb(77, 89, 89) 40%,rgb(59, 62, 64) 60%);
 }
 
 /*======> Div main <======*/

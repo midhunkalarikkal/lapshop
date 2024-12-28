@@ -69,7 +69,7 @@
 @media (max-width: 576px) {
 
     .box-two {
-        height: 8rem;
+        height: 9rem;
         width: 8rem;
     }
 
@@ -404,5 +404,5 @@
 
 /*======> same category products <======*/
 .small-card{
-    background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+    background-image: linear-gradient(120deg, #ebf4f5 0%, #ebedee 100%);
 }
