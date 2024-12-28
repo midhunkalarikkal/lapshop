@@ -11,7 +11,6 @@ const Brand = require('../models/brandModel');
 const User = require('../models/userModel');
 const Cart = require('../models/cartModel');
 const nodemailer = require('nodemailer');
-const passport = require('passport');
 const bcrypt = require('bcrypt');
 const crypto = require("crypto");
 const path = require('path');

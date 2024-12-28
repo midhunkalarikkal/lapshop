@@ -2,7 +2,6 @@ const express = require('express');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const config = require('./config/config');
-const passport = require('passport');
 const morgan = require('morgan');
 const path = require('path');
 const app = express();
@@ -22,9 +21,6 @@ app.use(session({
         sameSite: true,
     }
 }))
-
-app.use(passport.initialize());
-app.use(passport.session());
 
 //Cache control
 app.use((req, res, next) => {
