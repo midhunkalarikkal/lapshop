@@ -61,9 +61,10 @@
                         <h6 class="product-desc col-lg-10">
                             <%= productData.description %>
                         </h6>
+                        <hr>
                         <div class="d-flex align-items-end my-lg-auto">
                             <h4 class="offer-price">
-                                ₹<%= productData.offerPrice %>
+                                <span class="text-black fs-6 text-muted">M.R.P</span> ₹<%= productData.offerPrice %>
                             </h4>
                             <h4 class="discount-perc mx-3">
                                 -<%= productData.discountPercentage %>%
@@ -73,6 +74,7 @@
                         <h6 class="text-muted">
                             M.R.P <del class="real-price">₹<%= productData.realPrice %></del>
                         </h6>
+                        <hr>
                         <div class="product-extra-details my-lg-auto">
                             <p class="mb-2"><span class="extra-detail-span">Colors :</span>
                                 <span class="mx-3">
@@ -85,7 +87,7 @@
                                 </span>
                             </p>
                             <p class="mb-2">
-                                <span class="extra-detail-span">In stock :</span>
+                                <span class="extra-detail-span">Stock :</span>
                                 <% if(productData.noOfStock < 10){ %>
                                     <span class="mx-3 text-danger">
                                         <%= productData.noOfStock %> <span class="hurry-up">Hurry up</span>
@@ -97,6 +99,7 @@
                                 <% } %>
                             </p>
                         </div>
+                        <hr>
                         <div class="d-flex align-items-center my-lg-auto">
                             <% if (cartProdId !="" ) { %>
                                 <% for(let i=0; i < cartProdId.length; i++){ %>
