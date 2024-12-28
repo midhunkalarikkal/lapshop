@@ -7,42 +7,56 @@
 </head>
 
 <section class="view">
-    <div class="container input-box col-8 col-md-6 col-lg-12">
-        <div class="form-box">
-            <header class="my-4 fs-4 title text-center">Enter OTP</header>
-            <form>
-                <div class="d-flex">
-                    <div class="input-field">
-                        <input type="text" class="input otp-input" id="otp" name="otp" required>
+    <div class="container input-box d-flex flex-md-row flex-column align-items-center justify-content-around">
+        <div class="col-12 col-md-6 col-lg-4 d-none d-lg-block">
+            <h1 class="left-text-one"><span class="left-text-one-sapn"></span></h1>
+            <div class="animated-text">
+                I'm a <span></span>
+            </div>
+            <p class="left-text-two font-italic">
+                Empowering your <span class="text-pr">tech journey</span>, one click at a time.
+            </p>
+            <p class="left-text-three mt-3">
+                Your one-stop destination for the latest <span class="text-pr">laptops</span>, accessories, and more. Shop with confidence and discover the perfect gadget for you!
+            </p>
+        </div>
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="form-box">
+                <header class="my-4 fs-4 title text-center">Enter OTP</header>
+                <form>
+                    <div class="d-flex">
+                        <div class="input-field">
+                            <input type="text" class="input otp-input" id="otp" name="otp" required>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" class="input otp-input" id="otp" name="otp2" required>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" class="input otp-input" id="otp" name="otp3" required>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" class="input otp-input" id="otp" name="otp4" required>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" class="input otp-input" id="otp" name="otp5" required>
+                        </div>
+                        <div class="input-field">
+                            <input type="text" class="input otp-input" id="otp" name="otp6" required>
+                        </div>
                     </div>
                     <div class="input-field">
-                        <input type="text" class="input otp-input" id="otp" name="otp2" required>
+                        <button class="btn" id="submit">Verify otp</button>
                     </div>
-                    <div class="input-field">
-                        <input type="text" class="input otp-input" id="otp" name="otp3" required>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" class="input otp-input" id="otp" name="otp4" required>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" class="input otp-input" id="otp" name="otp5" required>
-                    </div>
-                    <div class="input-field">
-                        <input type="text" class="input otp-input" id="otp" name="otp6" required>
-                    </div>
+                </form>
+                <button class="btn col-12" onclick="sendotp()" id="sendOtp">Send OTP</button>
+                <div class="signin mb-2">
+                    <span id="otpTimeView"></span>
+                    <% if(message){ %>
+                        <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
+                            <strong> <%= message %> </strong>
+                        </div>
+                    <% } %>
                 </div>
-                <div class="input-field">
-                    <button class="btn" id="submit">Verify otp</button>
-                </div>
-            </form>
-            <button class="btn col-12" onclick="sendotp()" id="sendOtp">Send OTP</button>
-            <div class="signin mb-2">
-                <span id="otpTimeView"></span>
-                <% if(message){ %>
-                    <div class="alert alert-dismissible fade show alert-<%=type%>" role="alert" id="myAlert" style="padding: 5px; font-size: 14px;">
-                        <strong> <%= message %> </strong>
-                    </div>
-                <% } %>
             </div>
         </div>
     </div>

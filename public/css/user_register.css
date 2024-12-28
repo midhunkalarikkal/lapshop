@@ -55,6 +55,83 @@ font-family: 'Saira Semi Condensed', sans-serif;
   width: 100%;
 }
 
+.left-text-one {
+  font-size: 50px;
+  color: white
+}
+
+.text-pr {
+  color: #50c878;
+}
+
+.left-text-one{
+  font-weight: 600;
+}
+
+.left-text-one span{
+  position: relative;
+}
+
+.left-text-one span::before{
+  content: "LapShop";
+  color: #50c878;
+  animation: words 20s infinite;
+}
+
+.left-text-one span::after{
+  content: "";
+  position: absolute;
+  width: calc(100% + 8px);
+  height: 100%;
+  background-color:rgb(27, 27, 27);
+  border-left: 2px solid #50c878;
+  right: -8px;
+  animation: cursor .8s infinite, typing 20s steps(14) infinite;
+}
+
+@keyframes cursor {
+  to{
+      border-left: 2px solid #ff7f5000;
+  }
+}
+
+@keyframes words {
+  0%, 20% {
+    content: "LapShop";
+  }
+  21%, 40% {
+    content: "LapTops";
+  }
+  41%, 60% {
+    content: "GAMING LAPTOPS";
+  }
+  61%, 80% {
+    content: "ULTRABOOKS";
+  }
+  81%, 100% {
+    content: "2 IN 1";
+  }
+}
+
+@keyframes typing {
+  10%,15%,30%,35%,50%,55%,70%,75%,90%,95%{
+      width: 0;
+  }
+  5%,20%,25%,40%,45%,60%,65%,80%,85%{
+      width: calc(100% + 8px);
+  }
+}
+
+.left-text-two {
+  font-size: 30px;
+  color: white
+}
+
+.left-text-three {
+  font-size: 20px;
+  color: white
+}
+
 /*======> Class form-box <======*/
 .form-box {
   background-color: var(--third-color);
