@@ -384,7 +384,7 @@
             return false;
         }
 
-        if (subTotal >= 40000) {
+        if (paymentMethod === "razorpay" && subTotal >= 40000) {
             Swal.fire({
                 icon: 'info',
                 title: "Online paymnent!",
