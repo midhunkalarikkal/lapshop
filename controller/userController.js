@@ -185,9 +185,7 @@ const getRegister = async (req, res) => {
 //Sending the register data to otp validation page
 const postRegister = async (req, res) => {
     try {
-        let userDetails = req.session.userNC
         registerOtp = generateOtp()
-
         function clearSaveOtp() {
             registerOtp = ""; 
         }
@@ -202,17 +200,34 @@ const postRegister = async (req, res) => {
         const userEmail =  await User.findOne({email:enteredEmail}); 
         const userPhone = await User.findOne({phone : enteredPhone})
 
+        let referrel;
+        if(enteredReferal && enteredReferal !== "" && enteredReferal !== null){
+            referrel = await User.findOne({referalCode : enteredReferal})
+            if(!referrel){
+                return res.status(401).json({ success : false, message : "Please check the Referrel.."});
+            }
+        }
+
         if (!userEmail){
             if(!userPhone){
-                return res.render('user/otpValidation', { type: "", message: "", userDetails})
+                return res.status(200).json({ success : true, message : "Redirecting to verification.", redirectUrl : "/getOtpPage"});
             }else{
-                return res.render('user/registration', { type: "danger", message: "Phone number already registered.", userDetails})                
+                return res.status(401).json({ success : false, message : "Phone number is aleary in use."});
             }
         } else {
-            return res.render('user/registration', { type: "danger", message: "Email already registered.", userDetails})
+            return res.status(401).json({ success : false, message : "Email is aleary in use."});
         }
     } catch (error) {
         return res.redirect('/errorPage')
+    }
+}
+
+const getOtpPage = async(req,res) => {
+    try{
+        let userDetails = req.session.userNC
+        return res.render('user/otpValidation', { type: "", message: "", userDetails});
+    }catch(error){
+        return res.redirect('/errorPage');
     }
 }
 
@@ -291,7 +306,6 @@ const getLogin = async (req, res) => {
 //Checking the email and password for user from login page
 const postLogin = async (req, res) => {
     try {
-        let userDetails = req.session.userNC
         const user = await User.findOne({ email: req.body.email });
         if(!user || user === null){
             return res.status(401).json({
@@ -1133,6 +1147,7 @@ module.exports = {
     getPaymentPage,
     getPaymentSuccess,
     getContactPage,
-    getErrorPage
+    getErrorPage,
+    getOtpPage
 }
 

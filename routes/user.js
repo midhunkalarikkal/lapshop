@@ -24,6 +24,8 @@ userRouter.post('/login',userController.postLogin)
 userRouter.get('/register',userController.getRegister)
 //To post user registered data to otp page
 userRouter.post('/register',userController.postRegister)
+//To get otp page
+userRouter.get('/getOtpPage',userController.getOtpPage);
 //To verify otp and get the login page
 userRouter.post('/otpverify',userController.postRegisterOtp)
 //To logout user

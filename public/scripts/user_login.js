@@ -60,6 +60,8 @@ loginForm.addEventListener('submit', async (e) => {
     try {
         Swal.fire({
             title: 'Authenticating...',
+            background: '#333', 
+            color: '#ffffff', 
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
@@ -86,7 +88,7 @@ loginForm.addEventListener('submit', async (e) => {
                 timerProgressBar: true, 
                 showConfirmButton: false, 
                 background: '#333', 
-                color: '#fff', 
+                color: '#ffffff', 
                 willClose: () => {
                     window.location.href = data.redirectUrl || '/';
                 }
@@ -95,7 +97,12 @@ loginForm.addEventListener('submit', async (e) => {
             Swal.fire({
                 icon: 'error',
                 title: 'Login Failed',
-                text: data.message || 'Invalid credentials. Please try again.'
+                text: data.message || 'Invalid credentials. Please try again.',
+                timer: 2000, 
+                timerProgressBar: true, 
+                showConfirmButton: false, 
+                background: '#333', 
+                color: '#ffffff', 
             });
         }
     } catch (error) {
@@ -103,7 +110,12 @@ loginForm.addEventListener('submit', async (e) => {
         Swal.fire({
             icon: 'error',
             title: 'Error',
-            text: 'An unexpected error occurred. Please try again later.'
+            text: 'An unexpected error occurred. Please try again later.',
+            timer: 2000, 
+            timerProgressBar: true, 
+            showConfirmButton: false, 
+            background: '#333', 
+            color: '#ffffff', 
         });
     }
 });
