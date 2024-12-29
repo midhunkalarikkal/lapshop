@@ -1134,7 +1134,45 @@ const getUserEditAddressFromCheckout = async(req,res)=>{
 //To update the address from checkout page
 const updateAddressFromCheckout = async(req,res)=>{
     try{
-        const addressId = req.params.addressId
+        const addressId = req.params.addressId;
+        if(!addressId){
+            return res.status(400).json({ success : false, message : "Address not found." });
+        }
+
+        if(!/^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/.test(req.body.name)){
+            return res.status(400).json({ success : false, message : "Invalid name." });
+        }
+        
+        if(!/^\d{10}$/.test(req.body.phone)){
+            return res.status(400).json({ success : false, message : "Invalid phone number." });
+        }
+        
+        if(req.body.addressLine.length < 5){
+            return res.status(400).json({ success : false, message : "Address should be a propper one." });
+        }else if(req.body.addressLine.length > 40){
+            return res.status(400).json({ success : false, message : "Address charater limit exceeds." });
+        }
+        
+        if(!/^[1-9]\d{5}$/.test(req.body.pincode)){
+            return res.status(400).json({ success : false, message : "Invalid pincode." });
+        }
+        
+        if(!/^[a-zA-Z\s]+$/.test(req.body.city)){
+            return res.status(400).json({ success : false, message : "Invalid city." });
+        }
+        
+        if(!/^[a-zA-Z\s]+$/.test(req.body.district)){
+            return res.status(400).json({ success : false, message : "Invalid district name." });
+        }else if(req.body.district.length < 4 || req.body.district.length > 15){
+            return res.status(400).json({ success : false, message : "Invalid district name." });
+        }
+
+        if(!/^[a-zA-Z\s]+$/.test(req.body.state)){
+            return res.status(400).json({ success : false, message : "Invalid state name." });
+        }else if(req.body.state.length < 3 || req.body.state.length > 15){
+            return res.status(400).json({ success : false, message : "Invalid state name." });
+        }
+        
         const newaddress = {
             name: req.body.name,
             addressLine: req.body.addressLine,
@@ -1153,9 +1191,9 @@ const updateAddressFromCheckout = async(req,res)=>{
         );
 
         if (updatedAddress) {
-            return res.status(200).json({ message: "Address updated successfully" });
+            return res.status(200).json({ success : true, message: "Address updated successfully" });
         } else {
-            return res.status(500).json({ message: "Failed to update address" });
+            return res.status(500).json({ success : false, message: "Failed to update address" });
         }
     }catch(error){
         return res.redirect('/errorPage')
