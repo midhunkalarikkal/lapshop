@@ -681,31 +681,65 @@ const getUserNewAddress = async(req,res)=>{
 //To add user address
 const postUserAddress = async(req,res)=>{
     try{
-        const { name, addressLine, phone, city, district, state, pincode, country} = req.body
-        const userId = req.params.userId
+        const { name, addressLine, phone, city, district, state, pincode, country} = req.body;
+        const userId = req.params.userId;
 
-        const user = await User.findById(userId)
-        if(!user){
-            return res.status(400).json({ message : "User not found"})
+        if(!/^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/.test(name)){
+            return res.status(400).json({ success : false, message : "Invalid name." });
         }
         
-            const newAddress = new Address({
-                userId: userId,
-                name: name,
-                addressLine: addressLine,
-                phone: phone,
-                city: city,
-                district: district,
-                state: state,
-                pincode: pincode,
-                country: country
-            })
-            await newAddress.save()
-            return res.status(200).json({ message: "Address added successfully" })
-        } catch (error) {
-            return res.redirect('/errorPage')
+        if(!/^\d{10}$/.test(phone)){
+            return res.status(400).json({ success : false, message : "Invalid phone number." });
         }
+        
+        if(addressLine.length < 5){
+            return res.status(400).json({ success : false, message : "Address should be a propper one." });
+        }else if(addressLine.length > 40){
+            return res.status(400).json({ success : false, message : "Address charater limit exceeds." });
+        }
+        
+        if(!/^[1-9]\d{5}$/.test(pincode)){
+            return res.status(400).json({ success : false, message : "Invalid pincode." });
+        }
+        
+        if(!/^[a-zA-Z\s]+$/.test(city)){
+            return res.status(400).json({ success : false, message : "Invalid city." });
+        }
+        
+        if(!/^[a-zA-Z\s]+$/.test(district)){
+            return res.status(400).json({ success : false, message : "Invalid district name." });
+        }else if(district.length < 4 || district.length > 15){
+            return res.status(400).json({ success : false, message : "Invalid district name." });
+        }
+
+        if(!/^[a-zA-Z\s]+$/.test(state)){
+            return res.status(400).json({ success : false, message : "Invalid state name." });
+        }else if(state.length < 3 || state.length > 15){
+            return res.status(400).json({ success : false, message : "Invalid state name." });
+        }
+
+        const user = await User.findById(userId);
+        if(!user){
+            return res.status(400).json({ success : false, message : "User not found" });
+        }
+        
+        const newAddress = new Address({
+            userId: userId,
+            name: name,
+            addressLine: addressLine,
+            phone: phone,
+            city: city,
+            district: district,
+            state: state,
+            pincode: pincode,
+            country: country
+        })
+        await newAddress.save();
+        return res.status(200).json({ success : true,  message: "Address added successfully" });
+    } catch (error) {
+        return res.redirect('/errorPage');
     }
+}
 
 //To delete address from user profile
 const postAddressDelete = async (req, res) => {
