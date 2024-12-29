@@ -294,7 +294,10 @@ const postLogin = async (req, res) => {
         let userDetails = req.session.userNC
         const user = await User.findOne({ email: req.body.email });
         if(!user || user === null){
-            return res.render("user/login", {type: "danger", message: "No user found with this email.", userDetails , cartItemCount})
+            return res.status(401).json({
+                success : false,
+                message: "Invalid credentials",
+            })
         }
 
         const userId = user._id
@@ -306,20 +309,33 @@ const postLogin = async (req, res) => {
         const password  = req.body.password
 
         if (user.isblocked) {
-            return res.render("user/login", { type: "danger", message: "Account is blocked, please contact us", userDetails})
+            return res.status(401).json({
+                success : false,
+                message: "Your account is blocked, Please contact our support team.",
+            })
         }
             
         bcrypt.compare(password, user.password, function (err, result) {
             if (err) {
-                return res.status(500).send('An error occurred while comparing the passwords.');
+                return res.status(500).json({
+                    success : false,
+                    message: "Server busy, please try again.",
+                })
             } if (result) {
                 req.session.user = user;
                 req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
                 user.loggedIn = true
                 user.save()
-                res.redirect('/')
+                return res.status(200).json({
+                    success : true,
+                    message: "Login successfull.",
+                    redirectUrl: "/"
+                })
             } else {  
-                return res.render("user/login", {type: "danger", message: "Incorrect password", userDetails})
+                return res.status(401).json({
+                    success : false,
+                    message: "Invalid credentials",
+                })
             }
         });
     } catch (error) {

@@ -46,3 +46,65 @@ function showpassword() {
         passwordInput.type = "password";
     }
 }
+
+const loginForm = document.getElementById('loginForm');
+
+loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault(); 
+
+    const formData = {
+        email: document.getElementById('email').value,
+        password: document.getElementById('password').value
+    };
+
+    console.log("formData : ",formData);
+    try {
+        Swal.fire({
+            title: 'Authenticating...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json' 
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        Swal.close();
+
+        if (data.success) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful',
+                text: 'Welcome back!',
+                timer: 2000, 
+                timerProgressBar: true, 
+                showConfirmButton: false, 
+                background: '#333', 
+                color: '#fff', 
+                willClose: () => {
+                    window.location.href = data.redirectUrl || '/';
+                }
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Failed',
+                text: data.message || 'Invalid credentials. Please try again.'
+            });
+        }
+    } catch (error) {
+        Swal.close();
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred. Please try again later.'
+        });
+    }
+});
