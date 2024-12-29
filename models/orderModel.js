@@ -72,6 +72,30 @@ const orderSchema = new mongoose.Schema({
     statusDate : {
         type : Date
     },
+    trackArray: [
+        {
+            status: {
+                type: String,
+                required: true,
+                enum: ["Processing" , "Shipped" , "Delivered" , "Admin cancelled","Request return","Return accepted", "Return rejected" , "Cancelled" ],
+                default: "Processing"
+            },
+            updatedAt: {
+                type: Date,
+                required: true,
+                default: Date.now,
+            },
+            paymentStatus: {
+                type: String,
+                required: false,
+                default: false
+            },
+            note: {
+                type: String,
+                required: false
+            }
+        },
+    ],
     invoice : {
         type : String
     }

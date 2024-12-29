@@ -80,7 +80,14 @@ const placeOrder = async(req,res)=>{
             orderDate: new Date(),
             couponApplied: couponApplied,
             paymentStatus: paymentStatus,
-            statusDate: new Date()
+            statusDate: new Date(),
+            trackArray: [
+                {
+                    status : "Processing",
+                    paymentStatus : paymentStatus,
+                    note : paymentMethod
+                }
+            ]
         })
     
         const orderSaved = await newOrder.save()
@@ -247,6 +254,8 @@ const userCancelOrder = async(req,res)=>{
             orderTotal = order.orderTotal + order.walletDebitedAmount
         }
 
+        let track = {};
+
         if(order.paymentStatus === true){
             const wallet = new Wallet({
                 user: userId,
@@ -255,8 +264,14 @@ const userCancelOrder = async(req,res)=>{
                 updatedAt : new Date()
             });
         await wallet.save();
+        track.note = "Order amount credited to your wallet"
         }
-        order.status = "Cancelled"
+        order.status = "Cancelled";
+
+        track.status = "Cancelled",
+        track.paymentStatus = order.paymentStatus
+        order.trackArray.push(track);
+
 
         const orderedItemsLength = order.orderedItems.length
         for(let i =0; i< orderedItemsLength; i++){
@@ -303,21 +318,28 @@ const adminGetOrderDetail = async(req,res)=>{
 // To change order status from admin
 const changeOrderStatus = async(req,res)=>{
     try{
-        const orderId = req.body.orderId
-        const selectedStatus = req.body.selectedStatus
+        const orderId = req.body.orderId;
+        const selectedStatus = req.body.selectedStatus;
 
-        const order = await Order.findById(orderId)
+        const order = await Order.findById(orderId);
 
         if(selectedStatus === order.status){
-            return res.status(400).json({ success : false , message : "Order status is same."})
+            return res.status(400).json({ success : false , message : "Order status is same."});
         }else if(selectedStatus === "Delivered" && order.paymentMethod === "cod"){
-            order.paymentStatus = true
+            order.paymentStatus = true;
         }
-            order.status = selectedStatus
-            order.statusDate = new Date()
-            await order.save()
-            return res.status(200).json({ success : true , message : `Order status changed to ${selectedStatus}`})
-        
+            order.status = selectedStatus;
+            order.statusDate = new Date();
+            
+            order.trackArray.push(
+                {
+                    status : selectedStatus,
+                    paymentStatus : order.paymentStatus,
+                }
+            )
+            
+            await order.save();
+            return res.status(200).json({ success : true , message : `Order status changed to ${selectedStatus}`});
     }catch(error){
         return res.redirect('/admin/adminErrorPage')
     }
@@ -336,6 +358,7 @@ const adminCancelOrder = async(req,res)=>{
             orderTotal = order.orderTotal + order.walletDebitedAmount
         }
 
+        let track = {};
         if(order.paymentStatus === true){
             const wallet = new Wallet({
                 user: userId,
@@ -343,7 +366,8 @@ const adminCancelOrder = async(req,res)=>{
                 amount: orderTotal,
                 updatedAt : new Date()
             });
-        await wallet.save();
+            await wallet.save();
+            track.note = "Order amount credited to your wallet.";
         }
 
         const orderedItemsLength = order.orderedItems.length
@@ -354,6 +378,10 @@ const adminCancelOrder = async(req,res)=>{
         }
 
         order.status = "Admin cancelled"
+        track.status = "Admin cancelled",
+        track.paymentStatus = order.paymentStatus
+        order.trackArray.push(track)
+        
         await order.save()
         return res.status(200).json({ success : true , message : "Order cancel successfull."})
     }catch(error){
@@ -583,6 +611,14 @@ const userReturnOrder = async(req,res)=>{
         const order = await Order.findById(orderId)
         order.status = "Request return"
         order.statusDate = new Date()
+        order.trackArray.push(
+            {
+                status : "Request return",
+                paymentStatus : order.paymentStatus,
+                note : "Reviewing"
+            }
+        )
+
         const updateOrder = await order.save()
         if(updateOrder){
             return res.status(200).json({ success : true , message : "Order return requested."})
@@ -603,6 +639,14 @@ const adminAcceptReturn = async(req,res)=>{
         const amount = order.orderTotal
         if(order){
             order.status = "Return accepted"
+            order.trackArray.push(
+                {
+                    status : "Return accepted",
+                    paymentStatus : order.paymentStatus,
+                    note : "Order amount credited to your wallet."
+                }
+            )
+            
             order.statusDate = new Date()
             const updateOrder = await order.save()
             if(updateOrder){
@@ -613,38 +657,45 @@ const adminAcceptReturn = async(req,res)=>{
                     updatedAt : new Date()
                 });
                 await wallet.save();
-                return res.status(200).json({ success : true , message : "Return request accepted" })
+                return res.status(200).json({ success : true , message : "Return request accepted" });
             }else{                
-                return res.status(400).json({ success : false , message : "Return request accepting error." })
+                return res.status(400).json({ success : false , message : "Return request accepting error." });
             }
         }else{
-            return res.status(400).json({ success : false , message : "No order found." })
+            return res.status(400).json({ success : false , message : "No order found." });
         }
     }catch(error){
-        return res.redirect('/admin/adminErrorPage')
+        return res.redirect('/admin/adminErrorPage');
     }
 }
 
 //To reject an order return request in admin from user
 const adminRejectReturn = async(req,res)=>{
     try{
-        const orderId = req.body.orderId
-        const order = await Order.findById(orderId)
-        const amount = order.orderTotal
+        const orderId = req.body.orderId;
+        const order = await Order.findById(orderId);
         if(order){
             order.status = "Return rejected"
             order.statusDate = new Date()
+            order.trackArray.push(
+                {
+                    status : "Return rejected",
+                    paymentStatus : order.paymentStatus,
+                    note : "Sorry for the inconvenience."
+                }
+            )
+            
             const updateOrder = await order.save()
             if(updateOrder){
-                return res.status(200).json({ success : true , message : "Return request rejected" })
+                return res.status(200).json({ success : true , message : "Return request rejected" });
             }else{                
-                return res.status(400).json({ success : false , message : "Return request rejecting error." })
+                return res.status(400).json({ success : false , message : "Return request rejecting error." });
             }
         }else{
-            return res.status(400).json({ success : false , message : "No order found." })
+            return res.status(400).json({ success : false , message : "No order found." });
         }
     }catch(error){
-        return res.redirect('/admin/adminErrorPage')
+        return res.redirect('/admin/adminErrorPage');
     }
 }
 
