@@ -57,7 +57,6 @@ loginForm.addEventListener('submit', async (e) => {
         password: document.getElementById('password').value
     };
 
-    console.log("formData : ",formData);
     try {
         Swal.fire({
             title: 'Authenticating...',

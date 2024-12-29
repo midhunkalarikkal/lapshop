@@ -339,7 +339,7 @@ const postLogin = async (req, res) => {
             }
         });
     } catch (error) {
-        return res.redirect('/errorPage')
+        return res.redirect('/errorPage');
     }
 }
 
@@ -1092,11 +1092,10 @@ const getContactPage = async(req,res)=>{
 
 //To get the error page
 const getErrorPage = async(req,res)=>{
-    try{
-        return res.render('user/errorPage')
-    }catch(error){
-        console.log(error.message)
-    }
+    res.render('user/errorPage', {
+        status: 500,
+        message: "An unexpected error occurred.",
+    });
 }
 
 module.exports = {
