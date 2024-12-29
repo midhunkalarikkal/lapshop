@@ -13,7 +13,7 @@ function validateName() {
     }
     if (!namePattern.test(name)) {
         nameInput.classList.add('is-invalid');
-        nameError.textContent = 'Name must contain only alphabets and spaces.';
+        nameError.textContent = 'Name must start and end with an alphabet, contain only alphabets and spaces.';
         return false;
     } else if (name.length < 5 || name.length > 25) {
         nameInput.classList.add('is-invalid');
@@ -145,8 +145,8 @@ function validateDistrict() {
         districtError.textContent = 'District must contain only alphabets and spaces';
         return false;
     } else if (district.length < 4 || district.length > 15) {
-        districtInput.classList.add('is-invalid');
-        districtError.textContent = 'Name must be between 4 and 15 characters long';
+        nameInput.classList.add('is-invalid');
+        nameError.textContent = 'Name must be between 4 and 15 characters long';
         return false;
     } else {
         districtInput.classList.remove('is-invalid');
@@ -183,8 +183,6 @@ function validateState() {
     }
 }
 
-
-
 ////// To submit the form \\\\\\
 function validateForm() {
     const isValidName = validateName();
@@ -202,7 +200,7 @@ document.getElementById('submitButton').addEventListener('click', async function
     event.preventDefault();
 
     if (validateForm()) {
-        const form = document.querySelector('form');
+        const form = document.getElementById('updateFrom');
         const formData = {
             name: document.getElementById('name').value,
             addressLine: document.getElementById('addressLine').value,
@@ -213,10 +211,9 @@ document.getElementById('submitButton').addEventListener('click', async function
             pincode: document.getElementById('pincode').value,
             country: document.getElementById('country').value
         };
-
         try{
             Swal.fire({
-                title: "Adding new address.",
+                title: "Updating your address.",
                 text: "Please wait",
                 background: "#333",
                 color: "#ffffff",
@@ -225,73 +222,79 @@ document.getElementById('submitButton').addEventListener('click', async function
                     Swal.showLoading();
                 },
             });
-        
-        const response = await fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
 
-        const contentType = response.headers.get('content-type');
-        let data;
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-        } else {
-            window.location.href = `/login`;
-        }
-
-        if (data.success) {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success',
-                text: data.message || 'New address added successfully.',
-                background: "#333",
-                color: "#ffffff",
-                showConfirmButton: true
-            }).then(() => {
-                window.location.href = '/userProfile';
+            const response = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
             });
-        } else {
+
+            const contentType = response.headers.get('content-type');
+            let data;
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+                Swal.close();
+            } else {
+                window.location.href = `/login`;
+                return;
+            }
+
+            if (data.success) {
+                swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: data.message || 'Address updated successfully!',
+                    background: "#333",
+                    color: "#ffffff",
+                    showConfirmButton: true,
+                    confirmButtonText: "Ok"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/userProfile';
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message || 'Failed to update address.',
+                    background: "#333",
+                    color: "#ffffff",
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+        }catch(error){
+            Swal.close();
             Swal.fire({
             icon: 'error',
             title: 'Error!',
-            text: data.message || 'New address adding error.',
-            timer: 3000,
+            text: "Internal server error.",
             background: "#333",
             color: "#ffffff",
-            timerProgressBar: true,
-            showConfirmButton: false
-        });
-        }
-    }catch(error){
-        Swal.close();
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Internal server error',
             timer: 3000,
-            background: "#333",
-            color: "#ffffff",
             timerProgressBar: true,
             showConfirmButton: false
         });
         }
     } else {
         Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Fix the errors in the form.',
-            timer: 3000,
+            icon: 'warning',
+            title: 'Form fields',
+            text: "Please check all fields are correct.",
             background: "#333",
             color: "#ffffff",
+            timer: 3000,
             timerProgressBar: true,
             showConfirmButton: false
         });
     }
 });
+
 ////// Cancel button goBack function \\\\\\
 function goBack() {
-    window.location.href = "/userProfile"
+    window.location.href = '/userProfile'
 }
