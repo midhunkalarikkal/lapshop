@@ -35,6 +35,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                     Swal.fire({
                         title: "Success",
                         text: data.message,
+                        background: "#333",
+                        color: "#ffffff",
                         icon: "success",
                         timer: 2000,
                         timerProgressBar: true,
@@ -47,6 +49,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                     Swal.fire({
                         title: "Info",
                         text: data.message,
+                        background: "#333",
+                        color: "#ffffff",
                         icon: "info",
                         timer: 2000,
                         timerProgressBar: true,
@@ -89,6 +93,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                     Swal.fire({
                         title: "Success",
                         text: data.message,
+                        background: "#333",
+                        color: "#ffffff",
                         icon: "success",
                         timer: 2000,
                         timerProgressBar: true,
@@ -101,6 +107,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                     Swal.fire({
                         title: "Info",
                         text: data.message,
+                        background: "#333",
+                        color: "#ffffff",
                         icon: "info",
                         timer: 2000,
                         timerProgressBar: true,
@@ -119,6 +127,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                 icon: 'info',
                 title: "NO PAYMENT METHOD",
                 text: "Please select your payment method.",
+                background: "#333",
+                color: "#ffffff",
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false
@@ -136,6 +146,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                 icon: 'info',
                 title: "Empty cart",
                 text: "Your cart is empty!",
+                background: "#333",
+                color: "#ffffff",
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false
@@ -148,6 +160,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                 icon: 'info',
                 title: "Online paymnent!",
                 text: "Online payments are currently limitted to 39999. We appologize for any inconvenience and appreciate your understanding.",
+                background: "#333",
+                color: "#ffffff",
                 showConfirmButton: true,
                 confirmButtonText: "Ok"
             });
@@ -159,6 +173,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                 icon: 'info',
                 title: "NOT APPLICABLE",
                 text: "Orders above 1000 rs are not applicable for cash on delivery.",
+                background: "#333",
+                color: "#ffffff",
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false
@@ -247,6 +263,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                             `,
                             showCancelButton: true,
                             confirmButtonText: 'Place order',
+                            background: "#333",
+                            color: "#ffffff",
                             confirmButton: true
                         }).then((result) => {
                             if (result.isConfirmed) {
@@ -259,6 +277,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                             swal.fire({
                                 icon: "info",
                                 title : "Wallet balance is 0.",
+                                background: "#333",
+                                color: "#ffffff",
                                 timerProgressBar : 3000
                             })
                             return false;
@@ -266,6 +286,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                         swal.fire({
                             title: "Not enough wallet balance.",
                             text: "Are you sure want to place this order with wallet with Online payment ?",
+                            background: "#333",
+                            color: "#ffffff",
                             showCancelButton: true,
                             confirmButtonText: "Yes",
                             confirmButton: true,
@@ -281,6 +303,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                                     `,
                                     showCancelButton: true,
                                     confirmButtonText: 'pay with wallet',
+                                    background: "#333",
+                                    color: "#ffffff",
                                     confirmButton: true
                                 }).then((result) => {
                                     if (result.isConfirmed) {
@@ -339,6 +363,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                                                     icon: "error",
                                                     title: "Payment gateway error.",
                                                     text: "Please try again.",
+                                                    background: "#333",
+                                                    color: "#ffffff",
                                                     timerProgressBar: 3000
                                                 })
                                             }
@@ -354,6 +380,8 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                     icon: 'error',
                     title: "Internal server error",
                     text: data.message,
+                    background: "#333",
+                    color: "#ffffff",
                     timer: 2000,
                     timerProgressBar: true,
                     showConfirmButton: false
