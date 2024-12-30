@@ -163,6 +163,11 @@
                                             <% } %>
                                         </p>
                                         <button class="btn btn-secondary btn-sm" id="prod-detail" onclick="goToOrderDetail(this)" data-orderId="<%= order[i]._id %>">Details</button>
+                                        <% if(order[i].status !== "Cancelled" || order[i].status !== "Admin cancelled" || order[i].status !== "Return accepted" || order[i].status !== "Return rejected"){ %>
+                                            <button class="btn btn-sm btn-warning" onclick="goToTrackOrder(this)" data-orderId="<%= order[i]._id %>">Order history</button>
+                                        <% }else{ %>
+                                            <button class="btn btn-sm btn-warning" onclick="goToTrackOrder(this)" data-orderId="<%= order[i]._id %>">Track order</button>
+                                        <% } %>
                                         <% if(order[i].status === "Delivered"){ %>
                                             <button class="btn btn-danger btn-sm" id="prod-cancel" onclick="returnOrder(this)" data-orderId="<%= order[i]._id %>">Return</button>
                                         <% }else if(order[i].status === "Processing" || order[i].status === "Shipped"){ %>
