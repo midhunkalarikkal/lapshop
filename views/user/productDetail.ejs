@@ -136,6 +136,20 @@
                                     class="fa fa-shopping-cart mr-1"></i> Add to cart
                                 </button>
                             <% } %>
+                            <% if (wishlistProdId !="" ) { %>
+                                <% for(let i=0; i < wishlistProdId.length; i++){ %>
+                                    <% if(wishlistProdId[i] == productData._id.toString()){ %>
+                                        <button class="btn addtocart-btn px-3 shadow d-none d-lg-block"
+                                            onclick="getWishlist()"><i
+                                            class="fa fa-heart mr-1"></i> Wishlist
+                                        </button>
+                                        <button class="btn addtocart-btn px-3 btn-sm shadow d-block d-lg-none"
+                                            onclick="getWishlist(this)"><i
+                                            class="fa fa-heart mr-1"></i> Wishlist
+                                        </button>
+                                    <% } %>
+                                <% } %>
+                            <% } %>
                         </div>
                     </div>
                     
@@ -196,7 +210,12 @@
 
             ////// To get the cart page \\\\\\
             function toGetCart(){
-                window.location.href = "/cart"
+                window.location.href = "/cart";
+            }
+
+            ////// To get the wishlist page \\\\\\
+            function getWishlist(){
+                window.location.href = "/wishlist";
             }
 
             ////// Funciton to add product to cart \\\\\\

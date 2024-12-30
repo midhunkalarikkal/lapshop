@@ -1018,7 +1018,8 @@ const postForgotPasswordNewPass = async (req, res) => {
 //To get the product detail page
 const getProductDetail = async(req,res)=>{
     try{
-        let cartProdId = []
+        let cartProdId = [];
+        let wishlistProdId = [];
         const productId = req.params.productId
         const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}])
         const productCategory = productData.category
@@ -1029,8 +1030,16 @@ const getProductDetail = async(req,res)=>{
             let cart = await Cart.find({ userId : userId})
             cartProdId = cart[0].items.map(item => item.product)
         }
+
+        if(req.session.user){
+            const user = req.session.user;
+            const wishlist = await Wishlist.find({ userId : user._id})
+            if(wishlist != ""){
+                wishlistProdId = wishlist[0].products.map(item => item.product);
+            }
+        }
         
-        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId})
+        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId})
     }catch(error){
         return res.redirect('/errorPage')
     }
