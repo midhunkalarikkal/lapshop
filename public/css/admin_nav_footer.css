@@ -11,6 +11,7 @@ html,
 body {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
+    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
 }
 
 /*======> Hide scrollbar for WebKit browsers <======*/
@@ -254,6 +255,42 @@ p,
     border: 0;
 }
 
-.top-box , .second , .third , .four{
+.top-box , .third , .four, .second-one, .second-two{
     background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    border-radius: 10px;
+}
+
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.metric-card {
+    background-image: linear-gradient(to top, #dfe9f3 0%, white 100%);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    padding: 20px;
+    transition: transform 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px);
+}
+
+.icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.label {
+    font-size: 1rem;
+    color: #666;
+}
+
+.value {
+    font-size: 1.5rem;
+    font-weight: bold;
 }
