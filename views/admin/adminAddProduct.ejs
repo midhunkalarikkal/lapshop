@@ -148,7 +148,7 @@
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>    
     <script>
 
         ////// For the croping and saving the images \\\\\\
@@ -338,6 +338,17 @@
                 })
             return false
             }
+
+            Swal.fire({
+                title: "Adding product.",
+                text: "Please wait",
+                background: "#333",
+                color: "#ffffff",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+                });
             
             fetch("/admin/addProduct", {
                 method: "POST",
@@ -345,6 +356,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                Swal.close();
                 if (data.success) {
                     Swal.fire({
                         title: 'Success!',
@@ -367,6 +379,7 @@
                 }
             })
             .catch(error => {
+                Swal.close();
                 Swal.fire({
                     title: 'Error!',
                     text: 'An error occurred while adding the product.',

@@ -11,7 +11,6 @@ html,
 body {
     scrollbar-width: none; /* Firefox */
     -ms-overflow-style: none; /* IE and Edge */
-    background-image: linear-gradient(to top, #e6e9f0 0%, #eef1f5 100%);
 }
 
 /*======> Hide scrollbar for WebKit browsers <======*/
