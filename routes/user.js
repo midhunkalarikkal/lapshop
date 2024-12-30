@@ -143,6 +143,8 @@ userRouter.post('/cancelOrder',userAuth.isLoggedIn,userAuth.isBlocked,orderContr
 userRouter.post('/applyCoupon',userAuth.isLoggedIn,userAuth.isBlocked,couponController.applyCoupon)
 //To cancel applied coupon from payment page
 userRouter.post('/cancelCoupon',userAuth.isLoggedIn,userAuth.isBlocked,couponController.cancelCoupon)
+// To get track order page
+userRouter.get('/trackOrder/:orderId',userAuth.isLoggedIn,userAuth.isBlocked,orderController.getTractOrder);
 
 //To place order with wallet and razorpay
 userRouter.post('/orderConfirmWithWalletAndRazorpay',userAuth.isLoggedIn,userAuth.isBlocked,orderController.orderConfirmWithWalletAndRazorpay)
