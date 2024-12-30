@@ -1028,7 +1028,9 @@ const getProductDetail = async(req,res)=>{
         if(userDetails && userDetails !== undefined && userDetails !== ""){
             let userId = userDetails.userId
             let cart = await Cart.find({ userId : userId})
-            cartProdId = cart[0].items.map(item => item.product)
+            if(cart.length > 0){
+                cartProdId = cart[0].items.map(item => item.product)   
+            }
         }
 
         if(req.session.user){
@@ -1041,6 +1043,7 @@ const getProductDetail = async(req,res)=>{
         
         return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId})
     }catch(error){
+        console.log("error : ",error);
         return res.redirect('/errorPage')
     }
 }

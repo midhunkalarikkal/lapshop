@@ -196,7 +196,7 @@
                                     <div class="card product-item mb-4 product-card shadow">
                                         <a href="/productDetail/<%= product._id %>" class="product-outline">
                                             <div class="card-header product-img position-relative overflow-hidden  p-0">
-                                                <img class="img-fluid product-image w-100" src=" /static/images/ProductImages/<%= product.images[0] %>" alt="">
+                                                <img class="img-fluid product-image w-100" src="/static/images/ProductImages/<%= product.images[0] %>" alt="">
                                                 <% if (wishlistProdId !="" ) { %>
                                                     <% for(let i=0; i < wishlistProdId.length; i++){ %>
                                                         <% if(wishlistProdId[i]==product._id.toString()){ %>
@@ -221,11 +221,11 @@
                                             <div class="p-2">
                                                 <div class="align-items-center justify-content-between d-flex">
                                                     <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
-                                                    <span class="real-price price">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></span>
+                                                    <span class="real-price price">M.R.P ₹<del class="text-danger"><%= product.realPrice %></del></span>
                                                 </div>
                                                 <div class="align-items-center justify-content-between d-flex">
                                                     <span class="product-name"><%= product.name %></span>
-                                                    <span class="offer-price price">M.R.P ₹<%= product.offerPrice %></span>
+                                                    <span class="offer-price price fw-bold">M.R.P ₹<%= product.offerPrice %></span>
                                                 </div>
                                                 <div class="align-items-center justify-content-between d-flex">
                                                     <% if (cartProdId !="" ) { %>
@@ -292,41 +292,28 @@
                                                     <i class="fa-regular fa-heart wish-btn"></i>
                                                 </a>                    
                                             </div>
-                                            <div class="col-8 card-body p-3">
-                                                <h6 class="product-name mb-1">
-                                                    <%= product.brand.name.toUpperCase() %>
-                                                    <%= product.name %>
-                                                    <% if (isNewProduct){ %>                         
+                                            <div class="col-8 card-body px-1 py-2">
+                                                <span>
+                                                    <span class="product-name"><%= product.name %></span>
+                                                    <% if (!isNewProduct){ %>                         
                                                         <span class="badge">New</span>
                                                     <% } %>
-                                                </h6>
-                                                <p class="small product-desc mb-1">
-                                                    <%= product.description.slice(0,75) %>....
-                                                </p>
-                                                <span class="d-flex product-price ">                         
-                                                    <h6 class="discount-percentage price">-<%= product.discountPercentage %>%</h6>
-                                                    <h5 class="offer-price price mx-2">₹<%= product.offerPrice %></h5>
-                                                    <h6 class="real-price small price">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></h6>
-                                                </span>    
+                                                    <br>
+                                                    <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
+                                                    <br>
+                                                    <span class="text-muted" style="font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: wrap;"><%= product.description.slice(0,100) %>....</span>
+                                                    <br>
+                                                    <span class="offer-price mt-4">₹ <%= product.offerPrice %></span>
+                                                    <span class="real-price ">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></span>
+                                                    <span class="mx-2 mt-2">(<span class="discount-percentage text-danger">-<%= product.discountPercentage %>%</span>)</span>
+                                                </span>
                                                 <div class="align-items-center justify-content-between d-flex">
                                                     <% if (cartProdId !="" ) { %>
                                                         <% for(let i=0; i < cartProdId.length; i++){ %>
                                                             <% if(cartProdId[i] == product._id.toString()){ %>
-                                                                <span class="product-brand" style="color: rgb(255, 198, 9);" role="button" onclick="goToCart()">Already in your cart</span>
-                                                                <span class="offer-price price">
-                                                                    <% if(!isNewProduct){ %>                         
-                                                                        <span class="badge bg-warning text-white" role="button" onclick="goToCart()">Cart</span>
-                                                                    <% } %>
-                                                                </span>
+                                                                <span class="product-brand" style="color: rgb(233, 178, 0);" role="button" onclick="goToCart()">Already in your cart</span>
                                                                 <% break; %>
-                                                            <% }else{ %>
-                                                                <span class="product-brand">Available</span>
-                                                                <span class="offer-price price">
-                                                                    <% if(!isNewProduct){ %>                         
-                                                                        <span class="badge">New</span>
-                                                                    <% } %>
-                                                                </span>
-                                                            <% } %>                                                
+                                                            <% } %>                                                                
                                                         <% } %>
                                                     <% } %>
                                                 </div>         
