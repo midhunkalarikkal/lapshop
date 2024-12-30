@@ -62,6 +62,10 @@ const productSchema = new mongoose.Schema({
         type : String,
         required : false
     },
+    cpuSpeed : {
+        type : String,
+        required : false
+    },
     ramSize : {
         type : String,
         required : false
@@ -74,12 +78,29 @@ const productSchema = new mongoose.Schema({
         type : String,
         required : false
     },
-    about : [
-        {
-            type : String,
-            required : false
-        }
-    ]
+    about: {
+        aboutOne: { type: String, required: false },
+        aboutTwo: { type: String, required: false },
+        aboutThree: { type: String, required: false },
+        aboutFour: { type: String, required: false },
+        aboutFive: { type: String, required: false },
+      },
+    battery : {
+        type : String,
+        required : false
+    },
+    batteryEnergy : {
+        type : String,
+        required : false
+    },
+    voltage : {
+        type : String,
+        required : false
+    },
+    weight : {
+        type : String,
+        required : false
+    }
 },{
     timestamps : true
 })

@@ -49,9 +49,6 @@
                                     <textarea class="form-control" name="productDescription" id="productDescription" rows="5"  required oninput="validateDesc()" style="resize : vertical"><%= product.description %></textarea>
                                     <span id="productDescError" class="text-danger"></span>
                                 </div>
-                            </div>
-                        
-                            <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productColour" class="form-label">Product colour</label>
                                     <input type="text" class="form-control" name="productColour" id="productColour" value="<%= product.colour %>" required oninput="validateColor()">
@@ -77,6 +74,194 @@
                                     <input type="number" class="form-control" name="productDiscountPercentage" id="productDiscountPercentage" value="<%= product.discountPercentage %>" required oninput="validateDiscount()">
                                     <span id="productDiscountError" class="text-danger"></span>
                                 </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productScreenSize" class="form-label">Product screen size</label>
+                                    <select class="form-control" name="productScreenSize" id="productScreenSize" required oninput="validateScreenSize()">
+                                        <option value="" <%= !product.screenSize ? "selected" : "" %>><%= product.screenSize || "Select screen size" %></option>
+                                        <option value="11.6" <%= product.screenSize === "11.6" ? "selected" : "" %>>11.6 inches</option>
+                                        <option value="12.5" <%= product.screenSize === "12.5" ? "selected" : "" %>>12.5 inches</option>
+                                        <option value="13.3" <%= product.screenSize === "13.3" ? "selected" : "" %>>13.3 inches</option>
+                                        <option value="14" <%= product.screenSize === "14" ? "selected" : "" %>>14 inches</option>
+                                        <option value="15.6" <%= product.screenSize === "15.6" ? "selected" : "" %>>15.6 inches</option>
+                                        <option value="16" <%= product.screenSize === "16" ? "selected" : "" %>>16 inches</option>
+                                        <option value="17.3" <%= product.screenSize === "17.3" ? "selected" : "" %>>17.3 inches</option>
+                                    </select>
+                                    <span id="productScreenSizeError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productHardDiscSize" class="form-label">Product hard disc size</label>
+                                    <select class="form-control" name="productHardDiscSize" id="productHardDiscSize" required oninput="validateHardDiscSize()">
+                                        <option value="" <%= !product.hdSize ? "selected" : "" %>><%= product.hdSize || "Select hard disc size" %></option>
+                                        <option value="128GB" <%= product.hdSize === "128GB" ? "selected" : "" %>>128GB</option>
+                                        <option value="256GB" <%= product.hdSize === "256GB" ? "selected" : "" %>>256GB</option>
+                                        <option value="512GB" <%= product.hdSize === "512GB" ? "selected" : "" %>>512GB</option>
+                                        <option value="1TB" <%= product.hdSize === "1TB" ? "selected" : "" %>>1TB</option>
+                                        <option value="2TB" <%= product.hdSize === "2TB" ? "selected" : "" %>>2TB</option>
+                                        <option value="4TB" <%= product.hdSize === "4TB" ? "selected" : "" %>>4TB</option>
+                                    </select>
+                                    <span id="productHardDiscSizeError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productCpuModel" class="form-label">Product CPU model</label>
+                                    <select class="form-control" name="productCpuModel" id="productCpuModel" required oninput="validateCpuModel()">
+                                        <option value="" <%= !product.cpuModel ? "selected" : "" %>><%= product.cpuModel || "Select CPU model" %></option>
+                                        <option value="Intel Core i3" <%= product.cpuModel === "Intel Core i3" ? "selected" : "" %>>Intel Core i3</option>
+                                        <option value="Intel Core i5" <%= product.cpuModel === "Intel Core i5" ? "selected" : "" %>>Intel Core i5</option>
+                                        <option value="Intel Core i7" <%= product.cpuModel === "Intel Core i7" ? "selected" : "" %>>Intel Core i7</option>
+                                        <option value="Intel Core i9" <%= product.cpuModel === "Intel Core i9" ? "selected" : "" %>>Intel Core i9</option>
+                                        <option value="AMD Ryzen 3" <%= product.cpuModel === "AMD Ryzen 3" ? "selected" : "" %>>AMD Ryzen 3</option>
+                                        <option value="AMD Ryzen 5" <%= product.cpuModel === "AMD Ryzen 5" ? "selected" : "" %>>AMD Ryzen 5</option>
+                                        <option value="AMD Ryzen 7" <%= product.cpuModel === "AMD Ryzen 7" ? "selected" : "" %>>AMD Ryzen 7</option>
+                                        <option value="AMD Ryzen 9" <%= product.cpuModel === "AMD Ryzen 9" ? "selected" : "" %>>AMD Ryzen 9</option>
+                                        <option value="Apple M1" <%= product.cpuModel === "Apple M1" ? "selected" : "" %>>Apple M1</option>
+                                        <option value="Apple M2" <%= product.cpuModel === "Apple M2" ? "selected" : "" %>>Apple M2</option>
+                                    </select>
+                                    <span id="productCpuModelError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productCpuSpeed" class="form-label">CPU Speed (GHz)</label>
+                                    <select class="form-control" name="productCpuSpeed" id="productCpuSpeed" required oninput="validateCpuSpeed()">
+                                        <option value="" <%= !product.cpuSpeed ? "selected" : "" %>><%= product.cpuSpeed || "Select CPU speed" %></option>
+                                        <% ["1.0 GHz", "1.2 GHz", "1.5 GHz", "1.8 GHz", "2.0 GHz", "2.2 GHz", "2.5 GHz", "2.8 GHz", "3.0 GHz", "3.2 GHz", "3.4 GHz", "3.5 GHz", "3.8 GHz", "4.0 GHz", "4.2 GHz", "4.4 GHz", "4.6 GHz", "4.8 GHz"].forEach(speed => { %>
+                                            <option value="<%= speed %>" <%= product.cpuSpeed === speed ? "selected" : "" %>><%= speed %></option>
+                                        <% }) %>
+                                    </select>
+                                    <span id="productCpuSpeedError" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3 col-md-10">
+                                    <label for="productRamSize" class="form-label">Product RAM Size</label>
+                                    <select class="form-control" name="productRamSize" id="productRamSize" required oninput="validateRamSize()">
+                                        <option value="" <%= !product.ramSize ? 'selected' : '' %>>Select RAM Size</option>
+                                        <option value="4GB" <%= product.ramSize === '4GB' ? 'selected' : '' %>>4GB</option>
+                                        <option value="8GB" <%= product.ramSize === '8GB' ? 'selected' : '' %>>8GB</option>
+                                        <option value="16GB" <%= product.ramSize === '16GB' ? 'selected' : '' %>>16GB</option>
+                                        <option value="32GB" <%= product.ramSize === '32GB' ? 'selected' : '' %>>32GB</option>
+                                        <option value="64GB" <%= product.ramSize === '64GB' ? 'selected' : '' %>>64GB</option>
+                                        <option value="128GB" <%= product.ramSize === '128GB' ? 'selected' : '' %>>128GB</option>
+                                    </select>
+                                    <span id="productRamSizeError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productOperatingSystem" class="form-label">Product Operating System</label>
+                                    <select class="form-control" name="productOperatingSystem" id="productOperatingSystem" required oninput="validateOperatingSystem()">
+                                        <option value="" <%= !product.os ? 'selected' : '' %>>Select Operating System</option>
+                                        <option value="Windows" <%= product.os === 'Windows' ? 'selected' : '' %>>Windows</option>
+                                        <option value="macOS" <%= product.os === 'macOS' ? 'selected' : '' %>>macOS</option>
+                                        <option value="Linux" <%= product.os === 'Linux' ? 'selected' : '' %>>Linux</option>
+                                        <option value="Ubuntu" <%= product.os === 'Ubuntu' ? 'selected' : '' %>>Ubuntu</option>
+                                        <option value="Fedora" <%= product.os === 'Fedora' ? 'selected' : '' %>>Fedora</option>
+                                        <option value="FreeBSD" <%= product.os === 'FreeBSD' ? 'selected' : '' %>>FreeBSD</option>
+                                        <option value="ChromeOS" <%= product.os === 'ChromeOS' ? 'selected' : '' %>>ChromeOS</option>
+                                    </select>
+                                    <span id="productOperatingSystemError" class="text-danger"></span>
+                                </div>
+                                                             
+                                <div class="mb-3 col-md-10">
+                                    <label for="productGraphicsCard" class="form-label">Product graphics card</label>
+                                    <input type="text" class="form-control" name="productGraphicsCard" id="productGraphicsCard" value="<%= product.gpu %>" required oninput="validateGraphicsCard()">
+                                    <span id="productGraphicsCardError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productBattery" class="form-label">Product Battery</label>
+                                    <select class="form-control" name="productBattery" id="productBattery" required oninput="validateProductBattery()">
+                                        <option value="Li-ion" <%= product.battery === "Li-ion" ? "selected" : "" %>>Li-ion</option>
+                                        <option value="Li-polymer" <%= product.battery === "Li-polymer" ? "selected" : "" %>>Li-polymer</option>
+                                        <option value="NiMH" <%= product.battery === "NiMH" ? "selected" : "" %>>NiMH</option>
+                                        <option value="NiCd" <%= product.battery === "NiCd" ? "selected" : "" %>>NiCd</option>
+                                    </select>
+                                    <span id="productBatteryError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productBatteryEnergy" class="form-label">Product Battery Energy</label>
+                                    <select class="form-control" name="productBatteryEnergy" id="productBatteryEnergy" required oninput="validateProductBatteryEnergy()">
+                                        <option value="" <%= !product.batteryEnergy ? 'selected' : '' %>>Select Battery Energy</option>
+                                        <option value="30 Watt Hours" <%= product.batteryEnergy === '30 Watt Hours' ? 'selected' : '' %>>30 Watt Hours</option>
+                                        <option value="32 Watt Hours" <%= product.batteryEnergy === '32 Watt Hours' ? 'selected' : '' %>>32 Watt Hours</option>
+                                        <option value="34 Watt Hours" <%= product.batteryEnergy === '34 Watt Hours' ? 'selected' : '' %>>34 Watt Hours</option>
+                                        <option value="36 Watt Hours" <%= product.batteryEnergy === '36 Watt Hours' ? 'selected' : '' %>>36 Watt Hours</option>
+                                        <option value="38 Watt Hours" <%= product.batteryEnergy === '38 Watt Hours' ? 'selected' : '' %>>38 Watt Hours</option>
+                                        <option value="40 Watt Hours" <%= product.batteryEnergy === '40 Watt Hours' ? 'selected' : '' %>>40 Watt Hours</option>
+                                        <option value="41 Watt Hours" <%= product.batteryEnergy === '41 Watt Hours' ? 'selected' : '' %>>41 Watt Hours</option>
+                                        <option value="45 Watt Hours" <%= product.batteryEnergy === '45 Watt Hours' ? 'selected' : '' %>>45 Watt Hours</option>
+                                        <option value="50 Watt Hours" <%= product.batteryEnergy === '50 Watt Hours' ? 'selected' : '' %>>50 Watt Hours</option>
+                                        <option value="55 Watt Hours" <%= product.batteryEnergy === '55 Watt Hours' ? 'selected' : '' %>>55 Watt Hours</option>
+                                        <option value="60 Watt Hours" <%= product.batteryEnergy === '60 Watt Hours' ? 'selected' : '' %>>60 Watt Hours</option>
+                                        <option value="65 Watt Hours" <%= product.batteryEnergy === '65 Watt Hours' ? 'selected' : '' %>>65 Watt Hours</option>
+                                        <option value="70 Watt Hours" <%= product.batteryEnergy === '70 Watt Hours' ? 'selected' : '' %>>70 Watt Hours</option>
+                                        <option value="75 Watt Hours" <%= product.batteryEnergy === '75 Watt Hours' ? 'selected' : '' %>>75 Watt Hours</option>
+                                        <option value="80 Watt Hours" <%= product.batteryEnergy === '80 Watt Hours' ? 'selected' : '' %>>80 Watt Hours</option>
+                                        <option value="85 Watt Hours" <%= product.batteryEnergy === '85 Watt Hours' ? 'selected' : '' %>>85 Watt Hours</option>
+                                        <option value="90 Watt Hours" <%= product.batteryEnergy === '90 Watt Hours' ? 'selected' : '' %>>90 Watt Hours</option>
+                                        <option value="100 Watt Hours" <%= product.batteryEnergy === '100 Watt Hours' ? 'selected' : '' %>>100 Watt Hours</option>
+                                    </select>
+                                    <span id="productBatteryEnergyError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productVoltage" class="form-label">Product Voltage</label>
+                                    <select class="form-control" name="productVoltage" id="productVoltage" required oninput="validateProductVoltage()">
+                                        <option value="" <%= !product.voltage ? 'selected' : '' %>>Select Voltage</option>
+                                        <option value="160 Volts" <%= product.voltage === '160 Volts' ? 'selected' : '' %>>160 Volts</option>
+                                        <option value="180 Volts" <%= product.voltage === '180 Volts' ? 'selected' : '' %>>180 Volts</option>
+                                        <option value="200 Volts" <%= product.voltage === '200 Volts' ? 'selected' : '' %>>200 Volts</option>
+                                        <option value="210 Volts" <%= product.voltage === '210 Volts' ? 'selected' : '' %>>210 Volts</option>
+                                        <option value="220 Volts" <%= product.voltage === '220 Volts' ? 'selected' : '' %>>220 Volts</option>
+                                        <option value="230 Volts" <%= product.voltage === '230 Volts' ? 'selected' : '' %>>230 Volts</option>
+                                        <option value="240 Volts" <%= product.voltage === '240 Volts' ? 'selected' : '' %>>240 Volts</option>
+                                        <option value="260 Volts" <%= product.voltage === '260 Volts' ? 'selected' : '' %>>260 Volts</option>
+                                    </select>
+                                    <span id="productVoltageError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productWeight" class="form-label">Product Weight</label>
+                                    <select class="form-control" name="productWeight" id="productWeight" required oninput="validateProductWeight()">
+                                        <option value="" <%= !product.weight ? 'selected' : '' %>>Select Weight</option>
+                                        <option value="1.0 kg" <%= product.weight === '1.0 kg' ? 'selected' : '' %>>1.0 kg</option>
+                                        <option value="1.2 kg" <%= product.weight === '1.2 kg' ? 'selected' : '' %>>1.2 kg</option>
+                                        <option value="1.5 kg" <%= product.weight === '1.5 kg' ? 'selected' : '' %>>1.5 kg</option>
+                                        <option value="1.8 kg" <%= product.weight === '1.8 kg' ? 'selected' : '' %>>1.8 kg</option>
+                                        <option value="2.0 kg" <%= product.weight === '2.0 kg' ? 'selected' : '' %>>2.0 kg</option>
+                                        <option value="2.2 kg" <%= product.weight === '2.2 kg' ? 'selected' : '' %>>2.2 kg</option>
+                                        <option value="2.5 kg" <%= product.weight === '2.5 kg' ? 'selected' : '' %>>2.5 kg</option>
+                                        <option value="2.8 kg" <%= product.weight === '2.8 kg' ? 'selected' : '' %>>2.8 kg</option>
+                                        <option value="3.0 kg" <%= product.weight === '3.0 kg' ? 'selected' : '' %>>3.0 kg</option>
+                                    </select>
+                                    <span id="productWeightError" class="text-danger"></span>
+                                </div>
+                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutOne" class="form-label">Product about one</label>
+                                    <input type="text" class="form-control" name="productAboutOne" id="productAboutOne" value="<%= product.about.aboutOne %>" required oninput="validateProductAbout('productAboutOne')">
+                                    <span id="productAboutOneError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutTwo" class="form-label">Product about two</label>
+                                    <input type="text" class="form-control" name="productAboutTwo" id="productAboutTwo" value="<%= product.about.aboutTwo %>" required oninput="validateProductAbout('productAboutTwo')">
+                                    <span id="productAboutTwoError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutThree" class="form-label">Product about three</label>
+                                    <input type="text" class="form-control" name="productAboutThree" id="productAboutThree" value="<%= product.about.aboutThree %>" required oninput="validateProductAbout('productAboutThree')">
+                                    <span id="productAboutThreeError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutFour" class="form-label">Product about four</label>
+                                    <input type="text" class="form-control" name="productAboutFour" id="productAboutFour" value="<%= product.about.aboutFour %>" required oninput="validateProductAbout('productAboutFour')">
+                                    <span id="productAboutFourError" class="text-danger"></span>
+                                </div>   
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutFive" class="form-label">Product about five</label>
+                                    <input type="text" class="form-control" name="productAboutFive" id="productAboutFive" value="<%= product.about.aboutFive %>" required oninput="validateProductAbout('productAboutFive')">
+                                    <span id="productAboutFiveError" class="text-danger"></span>
+                                </div>              
                             </div>
                         </div>
                         <div>
@@ -160,6 +345,7 @@
     
     <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/static/scripts/admin_productValidation.js"></script>
     <script>
 
         ////// For the croping and saving the images \\\\\\
@@ -348,15 +534,31 @@
             return false;
         }
 
-            const productName = document.getElementById("productName").value
-            const productBrand = document.getElementById("productBrand").value
-            const productCategory = document.getElementById("productCategory").value
-            const productDescription = document.getElementById("productDescription").value
-            const productColour = document.getElementById("productColour").value
-            const productStock = document.getElementById("productStock").value
-            const productRealPrice = document.getElementById("productRealPrice").value
-            const productOfferPrice = document.getElementById("productOfferPrice").value
-            const productDiscountPercentage = document.getElementById("productDiscountPercentage").value
+            const productName = document.getElementById("productName").value;
+            const productBrand = document.getElementById("productBrand").value;
+            const productCategory = document.getElementById("productCategory").value;
+            const productDescription = document.getElementById("productDescription").value;
+            const productColour = document.getElementById("productColour").value;
+            const productStock = document.getElementById("productStock").value;
+            const productRealPrice = document.getElementById("productRealPrice").value;
+            const productOfferPrice = document.getElementById("productOfferPrice").value;
+            const productDiscountPercentage = document.getElementById("productDiscountPercentage").value;
+            const productScreenSize = document.getElementById('productScreenSize').value;
+            const productHardDiscSize = document.getElementById('productHardDiscSize').value;
+            const productCpuModel = document.getElementById('productCpuModel').value;
+            const productCpuSpeed = document.getElementById('productCpuSpeed').value;
+            const productRamSize = document.getElementById('productRamSize').value;
+            const productGraphicsCard = document.getElementById('productGraphicsCard').value;
+            const productOperatingSystem = document.getElementById('productOperatingSystem').value;
+            const productBattery = document.getElementById('productBattery').value;
+            const productBatteryEnergy = document.getElementById('productBatteryEnergy').value;
+            const productVoltage = document.getElementById('productVoltage').value;
+            const productWeight = document.getElementById('productWeight').value;
+            const productAboutOne = document.getElementById('productAboutOne').value;
+            const productAboutTwo = document.getElementById('productAboutTwo').value;
+            const productAboutThree = document.getElementById('productAboutThree').value;
+            const productAboutFour = document.getElementById('productAboutFour').value;
+            const productAboutFive = document.getElementById('productAboutFive').value;
             
             const formData = new FormData()
             formData.append("productName",productName)            
@@ -368,6 +570,22 @@
             formData.append("productRealPrice",productRealPrice)            
             formData.append("productOfferPrice",productOfferPrice)            
             formData.append("productDiscountPercentage",productDiscountPercentage)
+            formData.append("productScreenSize", productScreenSize);
+            formData.append("productHardDiscSize", productHardDiscSize);
+            formData.append("productCpuModel", productCpuModel);
+            formData.append("productCpuSpeed", productCpuSpeed);
+            formData.append("productRamSize", productRamSize);
+            formData.append("productGraphicsCard", productGraphicsCard);
+            formData.append("productOperatingSystem", productOperatingSystem);
+            formData.append("productBattery", productBattery);
+            formData.append("productBatteryEnergy", productBatteryEnergy);
+            formData.append("productVoltage", productVoltage);
+            formData.append("productWeight", productWeight);
+            formData.append("productAboutOne", productAboutOne);
+            formData.append("productAboutTwo", productAboutTwo);
+            formData.append("productAboutThree", productAboutThree);
+            formData.append("productAboutFour", productAboutFour);
+            formData.append("productAboutFive", productAboutFive);
             
             imageArray.forEach((imageDataUrl, index) => {
                 let byteString = atob(imageDataUrl.split(',')[1]);
@@ -442,175 +660,7 @@
             })
         }
 
-        ////// Validate product name \\\\\\
-        function validateProductName() {
-            const productNameInput = document.getElementById('productName');
-            const productName = productNameInput.value.trim();
-            const productNameError = document.getElementById('productNameError');
-
-            const productNamePattern = /^[a-zA-Z0-9\s]+$/;
-
-            if (productName === "") {
-                productNameError.textContent = '';
-                productNameInput.classList.remove('is-invalid');
-                return false;
-            }
-
-            if (productName.length < 5 || productName.length > 20) {
-                productNameInput.classList.add('is-invalid');
-                productNameError.textContent = 'Name must be between 5 and 20 characters long.';
-                return false;
-            }
-
-            if (!productNamePattern.test(productName)) {
-                productNameInput.classList.add('is-invalid');
-                productNameError.textContent = 'Name must contain only alphabets, digits, and spaces.';
-                return false;
-            } else { 
-                productNameInput.classList.remove('is-invalid');
-                productNameError.textContent = '';
-                return true;
-            }
-        }
-
-        ////// Validate product description \\\\\\
-        function validateDesc() {
-            const productDescInput = document.getElementById('productDescription');
-            const productDesc = productDescInput.value.trim();
-            const productDescError = document.getElementById('productDescError');
-
-            if (productDesc === "") {
-                productDescInput.classList.remove('is-invalid');
-                productDescError.textContent = '';
-                return false;
-            }
-            if (productDesc.length < 20 || productDesc.length > 200) {
-                productDescInput.classList.add('is-invalid');
-                productDescError.textContent = 'Description must between 20 and 200 characters long';
-                return false;
-            } else {
-                productDescInput.classList.remove('is-invalid');
-                productDescError.textContent = '';
-                return true;
-            }
-        }
-
-        ////// Validate product color \\\\\\
-        function validateColor() {
-            const productColorInput = document.getElementById('productColour');
-            const productColor = productColorInput.value.trim();
-            const productColorError = document.getElementById('productColorError');
-
-            const productColorPattern = /^[a-zA-Z\s]{3,15}$/;
-
-            if (productColor === "") {
-                productColorInput.classList.remove('is-invalid');
-                productColorError.textContent = '';
-                return false;
-            }
-            if (productColor.length < 3 || productColor.length > 15) {
-                productColorInput.classList.add('is-invalid');
-                productColorError.textContent = 'Name must between 3 and 15 characters long';
-                return false;
-            }
-            if (!productColorPattern.test(productColor)) {
-                productColorInput.classList.add('is-invalid');
-                productColorError.textContent = 'Name must contain only alphabets.';
-                return false;
-            } else {
-                productColorInput.classList.remove('is-invalid');
-                productColorError.textContent = '';
-                return true;
-            }
-        }
-
-        ////// Validate product stock \\\\\\
-        function validateStock() {
-            const productStockInput = document.getElementById('productStock');
-            const productStock = productStockInput.value.trim();
-            const productStockError = document.getElementById('productStockError');
-
-            if (productStock === "") {
-                productStockInput.classList.remove('is-invalid');
-                productStockError.textContent = '';
-                return false;
-            }
-            if (productStock < 1 || productStock > 10000) {
-                productStockInput.classList.add('is-invalid');
-                productStockError.textContent = 'Stock must between 1 and 10000.';
-                return false;
-            } else {
-                productStockInput.classList.remove('is-invalid');
-                productStockError.textContent = '';
-                return true;
-            }
-        }
-
-        ////// Validate product real price \\\\\\
-        function validateRealPrice() {
-            const productRealPriceInput = document.getElementById('productRealPrice');
-            const productRealPrice = productRealPriceInput.value.trim();
-            const productRealPriceError = document.getElementById('productRealPriceError');
-
-            if (productRealPrice === "") {
-                productRealPriceInput.classList.remove('is-invalid');
-                productRealPriceError.textContent = '';
-                return false;
-            }
-            if (productRealPrice < 500 || productRealPrice > 200000) {
-                productRealPriceInput.classList.add('is-invalid');
-                productRealPriceError.textContent = 'Real price must between 500 and 200000.';
-                return false;
-            } else {
-                productRealPriceInput.classList.remove('is-invalid');
-                productRealPriceError.textContent = '';
-                return true;
-            }
-        }
-
-        ////// Validate product offer price \\\\\\
-        function validateOfferPrice() {
-            const productOfferPriceInput = document.getElementById('productOfferPrice');
-            const productOfferPrice = productOfferPriceInput.value.trim();
-            const productOfferPriceError = document.getElementById('productOfferPriceError');
-
-            if (productOfferPrice === "") {
-                productOfferPriceInput.classList.remove('is-invalid');
-                productOfferPriceError.textContent = '';
-                return false;
-            }
-            if (productOfferPrice < 400 || productOfferPrice > 200000) {
-                productOfferPriceInput.classList.add('is-invalid');
-                productOfferPriceError.textContent = 'Offer price must between 400 and 200000.';
-                return false;
-            } else {
-                productOfferPriceInput.classList.remove('is-invalid');
-                productOfferPriceError.textContent = '';
-                return true;
-            }
-        }
-
-        ////// Validate product discount percentage \\\\\\
-        function validateDiscount() {
-            const productDiscountInput = document.getElementById('productDiscountPercentage');
-            const productDiscount = productDiscountInput.value.trim();
-            const productDiscountError = document.getElementById('productDiscountError');
-
-            if (productDiscount === "") {
-                productDiscountInput.classList.remove('is-invalid');
-                productDiscountError.textContent = '';
-                return false;
-            }
-            if (productDiscount < 1 || productDiscount >= 100) {
-                productDiscountInput.classList.add('is-invalid');
-                productDiscountError.textContent = 'Discount percentage must between 1 and 99.';
-                return false;
-            } else {
-                productDiscountInput.classList.remove('is-invalid');
-                productDiscountError.textContent = '';
-                return true;
-            }
-        }
+        
 
         ////// Cancel button goBack function \\\\\\
         function goBack(event) {

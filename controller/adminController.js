@@ -630,12 +630,10 @@ const adminBlockCategory = async (req, res) => {
       category.isBlocked = req.body.blockStatus === "block";
       const saveCategory = await category.save();
       if (saveCategory) {
-        return res
-          .status(200)
-          .json({
-            success: true,
-            message: "Category status changed successfully.",
-          });
+        return res.status(200).json({
+          success: true,
+          message: "Category status changed successfully.",
+        });
       } else {
         return res
           .status(500)
@@ -749,13 +747,19 @@ const postAdminAddProduct = async (req, res) => {
       productScreenSize,
       productHardDiscSize,
       productCpuModel,
+      productCpuSpeed,
       productRamSize,
       productGraphicsCard,
       productOperatingSystem,
+      productBattery,
+      productBatteryEnergy,
+      productVoltage,
+      productWeight,
       productAboutOne,
       productAboutTwo,
       productAboutThree,
       productAboutFour,
+      productAboutFive,
     } = req.body;
 
     const existingProduct = await Product.findOne({
@@ -776,7 +780,7 @@ const postAdminAddProduct = async (req, res) => {
         } catch (error) {
           return res
             .status(400)
-            .json({ success: false, message: "Image deletion error." });
+            .json({ success: false, message: "Product already exist error." });
         }
       }
       return res
@@ -797,15 +801,21 @@ const postAdminAddProduct = async (req, res) => {
         screenSize: productScreenSize,
         hdSize: productHardDiscSize,
         cpuModel: productCpuModel,
+        cpuSpeed: productCpuSpeed,
         ramSize: productRamSize,
         os: productOperatingSystem,
         gpu: productGraphicsCard,
-        about: [
-            productAboutOne,
-            productAboutTwo,
-            productAboutThree,
-            productAboutFour,
-        ]
+        about: {
+            aboutOne: productAboutOne,
+            aboutTwo: productAboutTwo,
+            aboutThree: productAboutThree,
+            aboutFour: productAboutFour,
+            aboutFive: productAboutFive,
+          },
+        battery: productBattery,
+        batteryEnergy: productBatteryEnergy,
+        voltage: productVoltage,
+        weight: productWeight,
       });
 
       await newProduct.save();
@@ -921,9 +931,25 @@ const adminUpdateProduct = async (req, res) => {
       productStock,
       productRealPrice,
       productOfferPrice,
-      productDiscountPercentage,
       productCategory,
       productDescription,
+      productDiscountPercentage,
+      productScreenSize,
+      productHardDiscSize,
+      productCpuModel,
+      productCpuSpeed,
+      productRamSize,
+      productGraphicsCard,
+      productOperatingSystem,
+      productBattery,
+      productBatteryEnergy,
+      productVoltage,
+      productWeight,
+      productAboutOne,
+      productAboutTwo,
+      productAboutThree,
+      productAboutFour,
+      productAboutFive,
     } = req.body;
 
     product.name = productName;
@@ -933,8 +959,24 @@ const adminUpdateProduct = async (req, res) => {
     product.noOfStock = productStock;
     product.realPrice = productRealPrice;
     product.offerPrice = productOfferPrice;
-    product.discountPercentage = productDiscountPercentage;
     product.category = productCategory;
+    product.discountPercentage = productDiscountPercentage;
+    product.screenSize = productScreenSize;
+    product.hdSize = productHardDiscSize;
+    product.cpuModel = productCpuModel;
+    product.cpuSpeed = productCpuSpeed;
+    product.ramSize = productRamSize;
+    product.os = productOperatingSystem;
+    product.gpu = productGraphicsCard;
+    product.battery = productBattery;
+    product.batteryEnergy = productBatteryEnergy;
+    product.voltage = productVoltage;
+    product.weight = productWeight;
+    product.about.aboutOne = productAboutOne || product.about.aboutOne;
+    product.about.aboutTwo = productAboutTwo || product.about.aboutTwo;
+    product.about.aboutThree = productAboutThree || product.about.aboutThree;
+    product.about.aboutFour = productAboutFour || product.about.aboutFour;
+    product.about.aboutFive = productAboutFive || product.about.aboutFive;
 
     if (req.files) {
       req.files.forEach((file) => {
@@ -988,12 +1030,10 @@ const postAdminHomeCarousel = async (req, res) => {
       image: req.file.filename,
     });
     const savedHomeCarousel = await newHomeCarousel.save();
-    return res
-      .status(201)
-      .json({
-        message: "home Carousel added successfully",
-        data: savedHomeCarousel,
-      });
+    return res.status(201).json({
+      message: "home Carousel added successfully",
+      data: savedHomeCarousel,
+    });
   } catch (error) {
     return res.redirect("/admin/adminErrorPage");
   }
@@ -1073,13 +1113,11 @@ const adminUpdateHomeCarousel = async (req, res) => {
         existingHomeCarousel.desc === homeCarouselDescription &&
         !req.file
       ) {
-        return res
-          .status(404)
-          .json({
-            success: false,
-            info: true,
-            message: "No updations made yet.",
-          });
+        return res.status(404).json({
+          success: false,
+          info: true,
+          message: "No updations made yet.",
+        });
       }
       existingHomeCarousel.tagline = homeCarouselTagline;
       existingHomeCarousel.desc = homeCarouselDescription;
@@ -1093,12 +1131,10 @@ const adminUpdateHomeCarousel = async (req, res) => {
         existingHomeCarousel.image = req.file.filename;
       }
       await existingHomeCarousel.save();
-      res
-        .status(200)
-        .json({
-          success: true,
-          message: "Home Carousel updated successfully.",
-        });
+      res.status(200).json({
+        success: true,
+        message: "Home Carousel updated successfully.",
+      });
     }
   } catch (error) {
     return res.redirect("/admin/adminErrorPage");
@@ -1182,20 +1218,16 @@ const adminBlockAdCarousel = async (req, res) => {
       adCarousel.isBlocked = req.body.blockStatus === "block";
       const savedAdCarousel = await adCarousel.save();
       if (savedAdCarousel) {
-        return res
-          .status(200)
-          .json({
-            success: true,
-            message:
-              "Advertisement Carousel block status has been updated successfully.",
-          });
+        return res.status(200).json({
+          success: true,
+          message:
+            "Advertisement Carousel block status has been updated successfully.",
+        });
       } else {
-        return res
-          .status(500)
-          .json({
-            success: false,
-            message: "Failed to update advertisement carousel block status.",
-          });
+        return res.status(500).json({
+          success: false,
+          message: "Failed to update advertisement carousel block status.",
+        });
       }
     }
   } catch (error) {
@@ -1222,19 +1254,15 @@ const adminDeleteAdCarousel = async (req, res) => {
           adCarousel.image
         );
         fs.unlinkSync(imagePath);
-        return res
-          .status(200)
-          .json({
-            success: true,
-            message: "Advertisement carousel deleted successfully",
-          });
+        return res.status(200).json({
+          success: true,
+          message: "Advertisement carousel deleted successfully",
+        });
       } else {
-        return res
-          .status(500)
-          .json({
-            success: false,
-            message: "Advertisement carousel deleted successfully",
-          });
+        return res.status(500).json({
+          success: false,
+          message: "Advertisement carousel deleted successfully",
+        });
       }
     }
   } catch (error) {

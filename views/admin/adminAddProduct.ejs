@@ -54,7 +54,7 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDescription" class="form-label">Product description</label>
-                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="1" required oninput="validateDesc()" style="resize: vertical;"   ></textarea>
+                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="5" required oninput="validateDesc()" style="resize: vertical;"   ></textarea>
                                     <span id="productDescError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
@@ -96,9 +96,6 @@
                                     </select>
                                     <span id="productScreenSizeError" class="text-danger"></span>
                                 </div>
-                            </div>
-
-                            <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productHardDiscSize" class="form-label">Product hard disc size</label>
                                     <select class="form-control" name="productHardDiscSize" id="productHardDiscSize" required oninput="validateHardDiscSize()">
@@ -130,6 +127,33 @@
                                     <span id="productCpuModelError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
+                                    <label for="productCpuSpeed" class="form-label">CPU Speed (GHz)</label>
+                                    <select class="form-control" name="productCpuSpeed" id="productCpuSpeed" required oninput="validateCpuSpeed()">
+                                        <option value="">Select CPU Speed</option>
+                                        <option value="1.0 GHz">1.0 GHz</option>
+                                        <option value="1.2 GHz">1.2 GHz</option>
+                                        <option value="1.5 GHz">1.5 GHz</option>
+                                        <option value="1.8 GHz">1.8 GHz</option>
+                                        <option value="2.0 GHz">2.0 GHz</option>
+                                        <option value="2.2 GHz">2.2 GHz</option>
+                                        <option value="2.5 GHz">2.5 GHz</option>
+                                        <option value="2.8 GHz">2.8 GHz</option>
+                                        <option value="3.0 GHz">3.0 GHz</option>
+                                        <option value="3.2 GHz">3.2 GHz</option>
+                                        <option value="3.4 GHz">3.4 GHz</option>
+                                        <option value="3.5 GHz">3.5 GHz</option>
+                                        <option value="3.8 GHz">3.8 GHz</option>
+                                        <option value="4.0 GHz">4.0 GHz</option>
+                                        <option value="4.2 GHz">4.2 GHz</option>
+                                        <option value="4.4 GHz">4.4 GHz</option>
+                                        <option value="4.6 GHz">4.6 GHz</option>
+                                        <option value="4.8 GHz">4.8 GHz</option>
+                                    </select>
+                                    <span id="productCpuSpeedError" class="text-danger"></span>
+                                </div>        
+                            </div>
+                            <div class="col-12 col-md-6">                        
+                                <div class="mb-3 col-md-10">
                                     <label for="productRamSize" class="form-label">Product ram size</label>
                                     <select class="form-control" name="productRamSize" id="productRamSize" required oninput="validateRamSize()">
                                         <option value="">Select RAM Size</option>
@@ -158,28 +182,100 @@
                                 </div>                                
                                 <div class="mb-3 col-md-10">
                                     <label for="productGraphicsCard" class="form-label">Product graphics card</label>
-                                    <input type="text" class="form-control" min="1" name="productGraphicsCard" id="productGraphicsCard" value="" required oninput="validateGraphicsCard()">
-                                    <span id="productGraphicsCard" class="text-danger"></span>
+                                    <input type="text" class="form-control" name="productGraphicsCard" id="productGraphicsCard" value="" required oninput="validateGraphicsCard()">
+                                    <span id="productGraphicsCardError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productBattery" class="form-label">Product Battery</label>
+                                    <select class="form-control" name="productBattery" id="productBattery" required oninput="validateProductBattery()">
+                                        <option value="">Select Battery Type</option>
+                                        <option value="Li-ion">Li-ion</option>
+                                        <option value="Li-polymer">Li-polymer</option>
+                                        <option value="NiMH">NiMH</option>
+                                        <option value="NiCd">NiCd</option>
+                                    </select>
+                                    <span id="productBatteryError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productBatteryEnergy" class="form-label">Product Battery Energy</label>
+                                    <select class="form-control" name="productBatteryEnergy" id="productBatteryEnergy" required oninput="validateProductBatteryEnergy()">
+                                        <option value="">Select Battery Energy</option>
+                                        <option value="30 Watt Hours">30 Watt Hours</option>
+                                        <option value="32 Watt Hours">32 Watt Hours</option>
+                                        <option value="34 Watt Hours">34 Watt Hours</option>
+                                        <option value="36 Watt Hours">36 Watt Hours</option>
+                                        <option value="38 Watt Hours">38 Watt Hours</option>
+                                        <option value="40 Watt Hours">40 Watt Hours</option>
+                                        <option value="41 Watt Hours">41 Watt Hours</option>
+                                        <option value="45 Watt Hours">45 Watt Hours</option>
+                                        <option value="50 Watt Hours">50 Watt Hours</option>
+                                        <option value="55 Watt Hours">55 Watt Hours</option>
+                                        <option value="60 Watt Hours">60 Watt Hours</option>
+                                        <option value="65 Watt Hours">65 Watt Hours</option>
+                                        <option value="70 Watt Hours">70 Watt Hours</option>
+                                        <option value="75 Watt Hours">75 Watt Hours</option>
+                                        <option value="80 Watt Hours">80 Watt Hours</option>
+                                        <option value="85 Watt Hours">85 Watt Hours</option>
+                                        <option value="90 Watt Hours">90 Watt Hours</option>
+                                        <option value="100 Watt Hours">100 Watt Hours</option>
+                                    </select>
+                                    <span id="productBatteryEnergyError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productVoltage" class="form-label">Product Voltage</label>
+                                    <select class="form-control" name="productVoltage" id="productVoltage" required oninput="validateProductVoltage()">
+                                        <option value="">Select Voltage</option>
+                                        <option value="160 Volts">160 Volts</option>
+                                        <option value="180 Volts">180 Volts</option>
+                                        <option value="200 Volts">200 Volts</option>
+                                        <option value="210 Volts">210 Volts</option>
+                                        <option value="220 Volts">220 Volts</option>
+                                        <option value="230 Volts">230 Volts</option>
+                                        <option value="240 Volts">240 Volts</option>
+                                        <option value="260 Volts">260 Volts</option>
+                                    </select>
+                                    <span id="productVoltageError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productWeight" class="form-label">Product Weight</label>
+                                    <select class="form-control" name="productWeight" id="productWeight" required oninput="validateProductWeight()">
+                                        <option value="">Select Weight</option>
+                                        <option value="1.0 kg">1.0 kg</option>
+                                        <option value="1.2 kg">1.2 kg</option>
+                                        <option value="1.5 kg">1.5 kg</option>
+                                        <option value="1.8 kg">1.8 kg</option>
+                                        <option value="2.0 kg">2.0 kg</option>
+                                        <option value="2.2 kg">2.2 kg</option>
+                                        <option value="2.5 kg">2.5 kg</option>
+                                        <option value="2.8 kg">2.8 kg</option>
+                                        <option value="3.0 kg">3.0 kg</option>
+                                    </select>
+                                    <span id="productWeightError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productAboutOne" class="form-label">Product about one</label>
-                                    <input type="text" class="form-control" min="1" name="productAboutOne" id="productAboutOne" value="" required oninput="validateProductAbout('productAboutOne')">
+                                    <input type="text" class="form-control" name="productAboutOne" id="productAboutOne" value="" required oninput="validateProductAbout('productAboutOne')">
                                     <span id="productAboutOneError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productAboutTwo" class="form-label">Product about two</label>
-                                    <input type="text" class="form-control" min="1" name="productAboutTwo" id="productAboutTwo" value="" required oninput="validateProductAbout('productAboutTwo')">
+                                    <input type="text" class="form-control" name="productAboutTwo" id="productAboutTwo" value="" required oninput="validateProductAbout('productAboutTwo')">
                                     <span id="productAboutTwoError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productAboutThree" class="form-label">Product about three</label>
-                                    <input type="text" class="form-control" min="1" name="productAboutThree" id="productAboutThree" value="" required oninput="validateProductAbout('productAboutThree')">
+                                    <input type="text" class="form-control" name="productAboutThree" id="productAboutThree" value="" required oninput="validateProductAbout('productAboutThree')">
                                     <span id="productAboutThreeError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productAboutFour" class="form-label">Product about four</label>
-                                    <input type="text" class="form-control" min="1" name="productAboutFour" id="productAboutFour" value="" required oninput="validateProductAbout('productAboutFour')">
+                                    <input type="text" class="form-control" name="productAboutFour" id="productAboutFour" value="" required oninput="validateProductAbout('productAboutFour')">
                                     <span id="productAboutFourError" class="text-danger"></span>
+                                </div>                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutFive" class="form-label">Product about five</label>
+                                    <input type="text" class="form-control" name="productAboutFive" id="productAboutFive" value="" required oninput="validateProductAbout('productAboutFive')">
+                                    <span id="productAboutFiveError" class="text-danger"></span>
                                 </div>                                
                             </div>
                         </div>
@@ -244,7 +340,8 @@
         </div>
     </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>   
+    <script src="/static/scripts/admin_productValidation.js"></script>
     <script>
 
         ////// For the croping and saving the images \\\\\\
@@ -378,6 +475,7 @@
         ////// fetch to send the form data \\\\\\
         function addProduct(e){
             e.preventDefault()
+            console.log("add product");
 
             if (!validateProductName() || !validateDesc() || !validateColor() || !validateStock() || !validateRealPrice() || !validateOfferPrice() || !validateDiscount()) {
             Swal.fire({
@@ -402,13 +500,19 @@
             const productScreenSize = document.getElementById('productScreenSize').value
             const productHardDiscSize = document.getElementById('productHardDiscSize').value;
             const productCpuModel = document.getElementById('productCpuModel').value;
+            const productCpuSpeed = document.getElementById('productCpuSpeed').value;
             const productRamSize = document.getElementById('productRamSize').value;
             const productGraphicsCard = document.getElementById('productGraphicsCard').value;
             const productOperatingSystem = document.getElementById('productOperatingSystem').value;
+            const productBattery = document.getElementById('productBattery').value;
+            const productBatteryEnergy = document.getElementById('productBatteryEnergy').value;
+            const productVoltage = document.getElementById('productVoltage').value;
+            const productWeight = document.getElementById('productWeight').value;
             const productAboutOne = document.getElementById('productAboutOne').value;
             const productAboutTwo = document.getElementById('productAboutTwo').value;
             const productAboutThree = document.getElementById('productAboutThree').value;
             const productAboutFour = document.getElementById('productAboutFour').value;
+            const productAboutFive = document.getElementById('productAboutFive').value;
 
 
             
@@ -425,13 +529,19 @@
             formData.append("productScreenSize", productScreenSize);
             formData.append("productHardDiscSize", productHardDiscSize);
             formData.append("productCpuModel", productCpuModel);
+            formData.append("productCpuSpeed", productCpuSpeed);
             formData.append("productRamSize", productRamSize);
             formData.append("productGraphicsCard", productGraphicsCard);
             formData.append("productOperatingSystem", productOperatingSystem);
+            formData.append("productBattery", productBattery);
+            formData.append("productBatteryEnergy", productBatteryEnergy);
+            formData.append("productVoltage", productVoltage);
+            formData.append("productWeight", productWeight);
             formData.append("productAboutOne", productAboutOne);
             formData.append("productAboutTwo", productAboutTwo);
             formData.append("productAboutThree", productAboutThree);
             formData.append("productAboutFour", productAboutFour);
+            formData.append("productAboutFive", productAboutFive);
 
             imageArray.forEach((imageDataUrl, index) => {
                 let byteString = atob(imageDataUrl.split(',')[1]);
@@ -514,310 +624,396 @@
             window.location.href = '/admin/products'
         }
 
+
         ////// Validate product name \\\\\\
-        function validateProductName() {
-            const productNameInput = document.getElementById('productName');
-            const productName = productNameInput.value.trim();
-            const productNameError = document.getElementById('productNameError');
+function validateProductName() {
+    const productNameInput = document.getElementById('productName');
+    const productName = productNameInput.value.trim();
+    const productNameError = document.getElementById('productNameError');
 
-            const productNamePattern = /^[a-zA-Z0-9\s]+$/;
+    const productNamePattern = /^[a-zA-Z0-9\s]+$/;
 
-            if (productName === "") {
-                productNameError.textContent = '';
-                productNameInput.classList.remove('is-invalid');
-                return false;
-            }
+    if (productName === "") {
+        productNameError.textContent = '';
+        productNameInput.classList.remove('is-invalid');
+        return false;
+    }
 
-            if (productName.length < 5 || productName.length > 20) {
-                productNameInput.classList.add('is-invalid');
-                productNameError.textContent = 'Name must be between 5 and 20 characters long.';
-                return false;
-            }
+    if (productName.length < 5 || productName.length > 20) {
+        productNameInput.classList.add('is-invalid');
+        productNameError.textContent = 'Name must be between 5 and 20 characters long.';
+        return false;
+    }
 
-            if (!productNamePattern.test(productName)) {
-                productNameInput.classList.add('is-invalid');
-                productNameError.textContent = 'Name must contain only alphabets, digits, and spaces.';
-                return false;
-            } else { 
-                productNameInput.classList.remove('is-invalid');
-                productNameError.textContent = '';
-                return true;
-            }
-        }
+    if (!productNamePattern.test(productName)) {
+        productNameInput.classList.add('is-invalid');
+        productNameError.textContent = 'Name must contain only alphabets, digits, and spaces.';
+        return false;
+    } else { 
+        productNameInput.classList.remove('is-invalid');
+        productNameError.textContent = '';
+        return true;
+    }
+}
 
-        ////// Validate product description \\\\\\
-        function validateDesc() {
-            const productDescInput = document.getElementById('productDescription');
-            const productDesc = productDescInput.value.trim();
-            const productDescError = document.getElementById('productDescError');
+////// Validate product description \\\\\\
+function validateDesc() {
+    const productDescInput = document.getElementById('productDescription');
+    const productDesc = productDescInput.value.trim();
+    const productDescError = document.getElementById('productDescError');
 
-            if (productDesc === "") {
-                productDescInput.classList.remove('is-invalid');
-                productDescError.textContent = '';
-                return false;
-            }
-            if (productDesc.length < 20 || productDesc.length > 200) {
-                productDescInput.classList.add('is-invalid');
-                productDescError.textContent = 'Description must between 20 and 200 characters long';
-                return false;
-            } else {
-                productDescInput.classList.remove('is-invalid');
-                productDescError.textContent = '';
-                return true;
-            }
-        }
+    if (productDesc === "") {
+        productDescInput.classList.remove('is-invalid');
+        productDescError.textContent = '';
+        return false;
+    }
+    if (productDesc.length < 20 || productDesc.length > 200) {
+        productDescInput.classList.add('is-invalid');
+        productDescError.textContent = 'Description must between 20 and 200 characters long';
+        return false;
+    } else {
+        productDescInput.classList.remove('is-invalid');
+        productDescError.textContent = '';
+        return true;
+    }
+}
 
-        ////// Validate product color \\\\\\
-        function validateColor() {
-            const productColorInput = document.getElementById('productColour');
-            const productColor = productColorInput.value.trim();
-            const productColorError = document.getElementById('productColorError');
+////// Validate product color \\\\\\
+function validateColor() {
+    const productColorInput = document.getElementById('productColour');
+    const productColor = productColorInput.value.trim();
+    const productColorError = document.getElementById('productColorError');
 
-            const productColorPattern = /^[a-zA-Z\s]{3,15}$/;
+    const productColorPattern = /^[a-zA-Z\s]{3,15}$/;
 
-            if (productColor === "") {
-                productColorInput.classList.remove('is-invalid');
-                productColorError.textContent = '';
-                return false;
-            }
-            if (productColor.length < 3 || productColor.length > 15) {
-                productColorInput.classList.add('is-invalid');
-                productColorError.textContent = 'Name must between 3 and 15 characters long';
-                return false;
-            }
-            if (!productColorPattern.test(productColor)) {
-                productColorInput.classList.add('is-invalid');
-                productColorError.textContent = 'Name must contain only alphabets.';
-                return false;
-            } else {
-                productColorInput.classList.remove('is-invalid');
-                productColorError.textContent = '';
-                return true;
-            }
-        }
+    if (productColor === "") {
+        productColorInput.classList.remove('is-invalid');
+        productColorError.textContent = '';
+        return false;
+    }
+    if (productColor.length < 3 || productColor.length > 15) {
+        productColorInput.classList.add('is-invalid');
+        productColorError.textContent = 'Name must between 3 and 15 characters long';
+        return false;
+    }
+    if (!productColorPattern.test(productColor)) {
+        productColorInput.classList.add('is-invalid');
+        productColorError.textContent = 'Name must contain only alphabets.';
+        return false;
+    } else {
+        productColorInput.classList.remove('is-invalid');
+        productColorError.textContent = '';
+        return true;
+    }
+}
 
-        ////// Validate product stock \\\\\\
-        function validateStock() {
-            const productStockInput = document.getElementById('productStock');
-            const productStock = productStockInput.value.trim();
-            const productStockError = document.getElementById('productStockError');
+////// Validate product stock \\\\\\
+function validateStock() {
+    const productStockInput = document.getElementById('productStock');
+    const productStock = productStockInput.value.trim();
+    const productStockError = document.getElementById('productStockError');
 
-            if (productStock === "") {
-                productStockInput.classList.remove('is-invalid');
-                productStockError.textContent = '';
-                return false;
-            }
-            if (productStock < 1 || productStock > 10000) {
-                productStockInput.classList.add('is-invalid');
-                productStockError.textContent = 'Stock must between 1 and 10000.';
-                return false;
-            } else {
-                productStockInput.classList.remove('is-invalid');
-                productStockError.textContent = '';
-                return true;
-            }
-        }
+    if (productStock === "") {
+        productStockInput.classList.remove('is-invalid');
+        productStockError.textContent = '';
+        return false;
+    }
+    if (productStock < 1 || productStock > 10000) {
+        productStockInput.classList.add('is-invalid');
+        productStockError.textContent = 'Stock must between 1 and 10000.';
+        return false;
+    } else {
+        productStockInput.classList.remove('is-invalid');
+        productStockError.textContent = '';
+        return true;
+    }
+}
 
-        ////// Validate product real price \\\\\\
-        function validateRealPrice() {
-            const productRealPriceInput = document.getElementById('productRealPrice');
-            const productRealPrice = productRealPriceInput.value.trim();
-            const productRealPriceError = document.getElementById('productRealPriceError');
+////// Validate product real price \\\\\\
+function validateRealPrice() {
+    const productRealPriceInput = document.getElementById('productRealPrice');
+    const productRealPrice = productRealPriceInput.value.trim();
+    const productRealPriceError = document.getElementById('productRealPriceError');
 
-            if (productRealPrice === "") {
-                productRealPriceInput.classList.remove('is-invalid');
-                productRealPriceError.textContent = '';
-                return false;
-            }
-            if (productRealPrice < 500 || productRealPrice > 200000) {
-                productRealPriceInput.classList.add('is-invalid');
-                productRealPriceError.textContent = 'Real price must between 500 and 200000.';
-                return false;
-            } else {
-                productRealPriceInput.classList.remove('is-invalid');
-                productRealPriceError.textContent = '';
-                return true;
-            }
-        }
+    if (productRealPrice === "") {
+        productRealPriceInput.classList.remove('is-invalid');
+        productRealPriceError.textContent = '';
+        return false;
+    }
+    if (productRealPrice < 500 || productRealPrice > 200000) {
+        productRealPriceInput.classList.add('is-invalid');
+        productRealPriceError.textContent = 'Real price must between 500 and 200000.';
+        return false;
+    } else {
+        productRealPriceInput.classList.remove('is-invalid');
+        productRealPriceError.textContent = '';
+        return true;
+    }
+}
 
-        ////// Validate product offer price \\\\\\
-        function validateOfferPrice() {
-            const productOfferPriceInput = document.getElementById('productOfferPrice');
-            const productOfferPrice = productOfferPriceInput.value.trim();
-            const productOfferPriceError = document.getElementById('productOfferPriceError');
+////// Validate product offer price \\\\\\
+function validateOfferPrice() {
+    const productOfferPriceInput = document.getElementById('productOfferPrice');
+    const productOfferPrice = productOfferPriceInput.value.trim();
+    const productOfferPriceError = document.getElementById('productOfferPriceError');
 
-            if (productOfferPrice === "") {
-                productOfferPriceInput.classList.remove('is-invalid');
-                productOfferPriceError.textContent = '';
-                return false;
-            }
-            if (productOfferPrice < 400 || productOfferPrice > 200000) {
-                productOfferPriceInput.classList.add('is-invalid');
-                productOfferPriceError.textContent = 'Offer price must between 400 and 200000.';
-                return false;
-            } else {
-                productOfferPriceInput.classList.remove('is-invalid');
-                productOfferPriceError.textContent = '';
-                return true;
-            }
-        }
+    if (productOfferPrice === "") {
+        productOfferPriceInput.classList.remove('is-invalid');
+        productOfferPriceError.textContent = '';
+        return false;
+    }
+    if (productOfferPrice < 400 || productOfferPrice > 200000) {
+        productOfferPriceInput.classList.add('is-invalid');
+        productOfferPriceError.textContent = 'Offer price must between 400 and 200000.';
+        return false;
+    } else {
+        productOfferPriceInput.classList.remove('is-invalid');
+        productOfferPriceError.textContent = '';
+        return true;
+    }
+}
 
-        ////// Validate product discount percentage \\\\\\
-        function validateDiscount() {
-            const productDiscountInput = document.getElementById('productDiscountPercentage');
-            const productDiscount = productDiscountInput.value.trim();
-            const productDiscountError = document.getElementById('productDiscountError');
+////// Validate product discount percentage \\\\\\
+function validateDiscount() {
+    const productDiscountInput = document.getElementById('productDiscountPercentage');
+    const productDiscount = productDiscountInput.value.trim();
+    const productDiscountError = document.getElementById('productDiscountError');
 
-            if (productDiscount === "") {
-                productDiscountInput.classList.remove('is-invalid');
-                productDiscountError.textContent = '';
-                return false;
-            }
-            if (productDiscount < 1 || productDiscount >= 100) {
-                productDiscountInput.classList.add('is-invalid');
-                productDiscountError.textContent = 'Discount percentage must between 1 and 99.';
-                return false;
-            } else {
-                productDiscountInput.classList.remove('is-invalid');
-                productDiscountError.textContent = '';
-                return true;
-            }
-        }
+    if (productDiscount === "") {
+        productDiscountInput.classList.remove('is-invalid');
+        productDiscountError.textContent = '';
+        return false;
+    }
+    if (productDiscount < 1 || productDiscount >= 100) {
+        productDiscountInput.classList.add('is-invalid');
+        productDiscountError.textContent = 'Discount percentage must between 1 and 99.';
+        return false;
+    } else {
+        productDiscountInput.classList.remove('is-invalid');
+        productDiscountError.textContent = '';
+        return true;
+    }
+}
 
-        // Validate product screen size
-        function validateScreenSize() {
-            const screenSizeSelect = document.getElementById('productScreenSize');
-            const screenSizeValue = screenSizeSelect.value;
-            const screenSizeError = document.getElementById('productScreenSizeError');
+// Validate product screen size
+function validateScreenSize() {
+    const screenSizeSelect = document.getElementById('productScreenSize');
+    const screenSizeValue = screenSizeSelect.value;
+    const screenSizeError = document.getElementById('productScreenSizeError');
 
-            if (screenSizeValue === "") {
-                screenSizeSelect.classList.add('is-invalid');
-                screenSizeError.textContent = 'Please select a valid screen size.';
-                return false;
-            } else {
-                screenSizeSelect.classList.remove('is-invalid');
-                screenSizeError.textContent = '';
-                return true;
-            }
-        }
+    if (screenSizeValue === "") {
+        screenSizeSelect.classList.add('is-invalid');
+        screenSizeError.textContent = 'Please select a valid screen size.';
+        return false;
+    } else {
+        screenSizeSelect.classList.remove('is-invalid');
+        screenSizeError.textContent = '';
+        return true;
+    }
+}
 
 
 // Validate product hard disc size
 function validateHardDiscSize() {
-    const hardDiscSizeSelect = document.getElementById('productHardDiscSize');
-    const hardDiscSizeValue = hardDiscSizeSelect.value;
-    const hardDiscSizeError = document.getElementById('productHardDiscSizeError');
+const hardDiscSizeSelect = document.getElementById('productHardDiscSize');
+const hardDiscSizeValue = hardDiscSizeSelect.value;
+const hardDiscSizeError = document.getElementById('productHardDiscSizeError');
 
-    if (hardDiscSizeValue === "") {
-        hardDiscSizeSelect.classList.add('is-invalid');
-        hardDiscSizeError.textContent = 'Please select a valid hard disc size.';
-        return false;
-    } else {
-        hardDiscSizeSelect.classList.remove('is-invalid');
-        hardDiscSizeError.textContent = '';
-        return true;
-    }
+if (hardDiscSizeValue === "") {
+hardDiscSizeSelect.classList.add('is-invalid');
+hardDiscSizeError.textContent = 'Please select a valid hard disc size.';
+return false;
+} else {
+hardDiscSizeSelect.classList.remove('is-invalid');
+hardDiscSizeError.textContent = '';
+return true;
+}
 }
 
 
 // Validate product CPU model
 function validateCpuModel() {
-    const cpuModelSelect = document.getElementById('productCpuModel');
-    const cpuModelValue = cpuModelSelect.value;
-    const cpuModelError = document.getElementById('productCpuModelError');
+const cpuModelSelect = document.getElementById('productCpuModel');
+const cpuModelValue = cpuModelSelect.value;
+const cpuModelError = document.getElementById('productCpuModelError');
 
-    if (cpuModelValue === "") {
-        cpuModelSelect.classList.add('is-invalid');
-        cpuModelError.textContent = 'Please select a valid CPU model.';
-        return false;
-    } else {
-        cpuModelSelect.classList.remove('is-invalid');
-        cpuModelError.textContent = '';
-        return true;
-    }
+if (cpuModelValue === "") {
+cpuModelSelect.classList.add('is-invalid');
+cpuModelError.textContent = 'Please select a valid CPU model.';
+return false;
+} else {
+cpuModelSelect.classList.remove('is-invalid');
+cpuModelError.textContent = '';
+return true;
+}
+}
+
+// Validate CPU Speed
+function validateCpuSpeed() {
+const cpuSpeedSelect = document.getElementById('productCpuSpeed');
+const cpuSpeedValue = cpuSpeedSelect.value;
+const cpuSpeedError = document.getElementById('productCpuSpeedError');
+
+if (cpuSpeedValue === "") {
+cpuSpeedSelect.classList.add('is-invalid');
+cpuSpeedError.textContent = 'Please select a valid CPU speed.';
+return false;
+} else {
+cpuSpeedSelect.classList.remove('is-invalid');
+cpuSpeedError.textContent = '';
+return true;
+}
 }
 
 
 // Validate product RAM size
 function validateRamSize() {
-    const ramSizeSelect = document.getElementById('productRamSize');
-    const ramSizeValue = ramSizeSelect.value;
-    const ramSizeError = document.getElementById('productRamSizeError');
+const ramSizeSelect = document.getElementById('productRamSize');
+const ramSizeValue = ramSizeSelect.value;
+const ramSizeError = document.getElementById('productRamSizeError');
 
-    if (ramSizeValue === "") {
-        ramSizeSelect.classList.add('is-invalid');
-        ramSizeError.textContent = 'Please select a valid RAM size.';
-        return false;
-    } else {
-        ramSizeSelect.classList.remove('is-invalid');
-        ramSizeError.textContent = '';
-        return true;
-    }
+if (ramSizeValue === "") {
+ramSizeSelect.classList.add('is-invalid');
+ramSizeError.textContent = 'Please select a valid RAM size.';
+return false;
+} else {
+ramSizeSelect.classList.remove('is-invalid');
+ramSizeError.textContent = '';
+return true;
+}
 }
 
 // Validate product operating system
 function validateOperatingSystem() {
-    const osSelect = document.getElementById('productOperatingSystem');
-    const osValue = osSelect.value;
-    const osError = document.getElementById('productOperatingSystemError');
+const osSelect = document.getElementById('productOperatingSystem');
+const osValue = osSelect.value;
+const osError = document.getElementById('productOperatingSystemError');
 
-    if (osValue === "") {
-        osSelect.classList.add('is-invalid');
-        osError.textContent = 'Please select a valid operating system.';
-        return false;
-    } else {
-        osSelect.classList.remove('is-invalid');
-        osError.textContent = '';
-        return true;
-    }
+if (osValue === "") {
+osSelect.classList.add('is-invalid');
+osError.textContent = 'Please select a valid operating system.';
+return false;
+} else {
+osSelect.classList.remove('is-invalid');
+osError.textContent = '';
+return true;
+}
 }
 
 // Validate product graphics card
 function validateGraphicsCard() {
-    const graphicsCardInput = document.getElementById('productGraphicsCard');
-    const graphicsCard = graphicsCardInput.value.trim();
-    const graphicsCardError = document.getElementById('productGraphicsCardError');
-    const regex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=~`{}\[\]:;"'<>,.?/\\|]{4,30}$/;
+const graphicsCardInput = document.getElementById('productGraphicsCard');
+const graphicsCard = graphicsCardInput.value.trim();
+const graphicsCardError = document.getElementById('productGraphicsCardError');
+const regex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=~`{}\[\]:;"'<>,.?/\\|]{4,30}$/;
 
-    if (graphicsCard === "") {
-        graphicsCardInput.classList.remove('is-invalid');
-        graphicsCardError.textContent = '';
-        return false;
-    }
-    if (!regex.test(graphicsCard)) {
-        graphicsCardInput.classList.add('is-invalid');
-        graphicsCardError.textContent = 'Graphics card must be between 4 and 30 characters and can include letters, numbers, spaces, and special characters.';
-        return false;
-    } else {
-        graphicsCardInput.classList.remove('is-invalid');
-        graphicsCardError.textContent = '';
-        return true;
-    }
+if (graphicsCard === "") {
+graphicsCardInput.classList.remove('is-invalid');
+graphicsCardError.textContent = '';
+return false;
+}
+if (!regex.test(graphicsCard)) {
+graphicsCardInput.classList.add('is-invalid');
+graphicsCardError.textContent = 'Graphics card must be between 4 and 30 characters and can include letters, numbers, spaces, and special characters.';
+return false;
+} else {
+graphicsCardInput.classList.remove('is-invalid');
+graphicsCardError.textContent = '';
+return true;
+}
 }
 
 // Validate product about fields dynamically
 function validateProductAbout(inputId) {
-    const aboutInput = document.getElementById(inputId);
-    const aboutValue = aboutInput.value.trim();
-    const aboutError = document.getElementById(`${inputId}Error`);
-    const regex = /^[\s\S]{20,250}$/; // Matches any character, between 20 and 250 characters.
+const aboutInput = document.getElementById(inputId);
+const aboutValue = aboutInput.value.trim();
+const aboutError = document.getElementById(`${inputId}Error`);
+const regex = /^[\s\S]{20,250}$/; // Matches any character, between 20 and 250 characters.
 
-    if (aboutValue === "") {
-        aboutInput.classList.remove('is-invalid');
-        aboutError.textContent = '';
-        return false;
-    }
-    if (!regex.test(aboutValue)) {
-        aboutInput.classList.add('is-invalid');
-        aboutError.textContent = 'Product about must be between 20 and 250 characters.';
-        return false;
-    } else {
-        aboutInput.classList.remove('is-invalid');
-        aboutError.textContent = '';
-        return true;
-    }
+if (aboutValue === "") {
+aboutInput.classList.remove('is-invalid');
+aboutError.textContent = '';
+return false;
+}
+if (!regex.test(aboutValue)) {
+aboutInput.classList.add('is-invalid');
+aboutError.textContent = 'Product about must be between 20 and 250 characters.';
+return false;
+} else {
+aboutInput.classList.remove('is-invalid');
+aboutError.textContent = '';
+return true;
+}
 }
 
+// Validate Product Battery
+function validateProductBattery() {
+const batterySelect = document.getElementById('productBattery');
+const batteryValue = batterySelect.value;
+const batteryError = document.getElementById('productBatteryError');
+
+if (batteryValue === "") {
+batterySelect.classList.add('is-invalid');
+batteryError.textContent = 'Please select a valid battery type.';
+return false;
+} else {
+batterySelect.classList.remove('is-invalid');
+batteryError.textContent = '';
+return true;
+}
+}
+
+// Validate Product Battery Energy
+function validateProductBatteryEnergy() {
+const batteryEnergySelect = document.getElementById('productBatteryEnergy');
+const batteryEnergyValue = batteryEnergySelect.value;
+const batteryEnergyError = document.getElementById('productBatteryEnergyError');
+
+if (batteryEnergyValue === "") {
+batteryEnergySelect.classList.add('is-invalid');
+batteryEnergyError.textContent = 'Please select a valid battery energy.';
+return false;
+} else {
+batteryEnergySelect.classList.remove('is-invalid');
+batteryEnergyError.textContent = '';
+return true;
+}
+}
+
+// Validate Product Voltage
+function validateProductVoltage() {
+const voltageSelect = document.getElementById('productVoltage');
+const voltageValue = voltageSelect.value;
+const voltageError = document.getElementById('productVoltageError');
+
+if (voltageValue === "") {
+voltageSelect.classList.add('is-invalid');
+voltageError.textContent = 'Please select a valid voltage.';
+return false;
+} else {
+voltageSelect.classList.remove('is-invalid');
+voltageError.textContent = '';
+return true;
+}
+}
+
+// Validate Product Weight
+function validateProductWeight() {
+const weightSelect = document.getElementById('productWeight');
+const weightValue = weightSelect.value;
+const weightError = document.getElementById('productWeightError');
+
+if (weightValue === "") {
+weightSelect.classList.add('is-invalid');
+weightError.textContent = 'Please select a valid weight.';
+return false;
+} else {
+weightSelect.classList.remove('is-invalid');
+weightError.textContent = '';
+return true;
+}
+}
+        
 
 
         
