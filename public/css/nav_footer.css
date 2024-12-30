@@ -101,13 +101,9 @@ p,
     color: var(--primary-color);
 }
 
-.dropdown-menu{
-    background-image: var(--btn-color);
-}
-
 .dropdown-menu .dropdown-item:hover{
     color: var(--third-color);
-    background-image: var(--btnHover-color);
+    background: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
 .search-input {
