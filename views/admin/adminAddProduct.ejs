@@ -54,12 +54,9 @@
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="productDescription" class="form-label">Product description</label>
-                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="5" required oninput="validateDesc()" style="resize: vertical;"   ></textarea>
+                                    <textarea class="form-control" name="productDescription" id="productDescription" rows="1" required oninput="validateDesc()" style="resize: vertical;"   ></textarea>
                                     <span id="productDescError" class="text-danger"></span>
                                 </div>
-                            </div>
-
-                            <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="productColour" class="form-label">Product colour</label>
                                     <input type="text" class="form-control" name="productColour" id="productColour" value="" required oninput="validateColor()">
@@ -85,6 +82,105 @@
                                     <input type="number" class="form-control" min="1" name="productDiscountPercentage" id="productDiscountPercentage" value="" required oninput="validateDiscount()">
                                     <span id="productDiscountError" class="text-danger"></span>
                                 </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productScreenSize" class="form-label">Product screen size</label>
+                                    <select class="form-control" name="productScreenSize" id="productScreenSize" required oninput="validateScreenSize()">
+                                        <option value="">Select a Screen Size</option>
+                                        <option value="11.6">11.6 inches</option>
+                                        <option value="12.5">12.5 inches</option>
+                                        <option value="13.3">13.3 inches</option>
+                                        <option value="14">14 inches</option>
+                                        <option value="15.6">15.6 inches</option>
+                                        <option value="16">16 inches</option>
+                                        <option value="17.3">17.3 inches</option>
+                                    </select>
+                                    <span id="productScreenSizeError" class="text-danger"></span>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3 col-md-10">
+                                    <label for="productHardDiscSize" class="form-label">Product hard disc size</label>
+                                    <select class="form-control" name="productHardDiscSize" id="productHardDiscSize" required oninput="validateHardDiscSize()">
+                                        <option value="">Select a Hard Disc Size</option>
+                                        <option value="128GB">128GB</option>
+                                        <option value="256GB">256GB</option>
+                                        <option value="512GB">512GB</option>
+                                        <option value="1TB">1TB</option>
+                                        <option value="2TB">2TB</option>
+                                        <option value="4TB">4TB</option>
+                                    </select>
+                                    <span id="productHardDiscSizeError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productCpuModel" class="form-label">Product CPU model</label>
+                                    <select class="form-control" name="productCpuModel" id="productCpuModel" required oninput="validateCpuModel()">
+                                        <option value="">Select a CPU Model</option>
+                                        <option value="Intel Core i3">Intel Core i3</option>
+                                        <option value="Intel Core i5">Intel Core i5</option>
+                                        <option value="Intel Core i7">Intel Core i7</option>
+                                        <option value="Intel Core i9">Intel Core i9</option>
+                                        <option value="AMD Ryzen 3">AMD Ryzen 3</option>
+                                        <option value="AMD Ryzen 5">AMD Ryzen 5</option>
+                                        <option value="AMD Ryzen 7">AMD Ryzen 7</option>
+                                        <option value="AMD Ryzen 9">AMD Ryzen 9</option>
+                                        <option value="Apple M1">Apple M1</option>
+                                        <option value="Apple M2">Apple M2</option>
+                                    </select>
+                                    <span id="productCpuModelError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productRamSize" class="form-label">Product ram size</label>
+                                    <select class="form-control" name="productRamSize" id="productRamSize" required oninput="validateRamSize()">
+                                        <option value="">Select RAM Size</option>
+                                        <option value="4GB">4GB</option>
+                                        <option value="8GB">8GB</option>
+                                        <option value="16GB">16GB</option>
+                                        <option value="32GB">32GB</option>
+                                        <option value="64GB">64GB</option>
+                                        <option value="128GB">128GB</option>
+                                    </select>
+                                    <span id="productRamSizeError" class="text-danger"></span>
+                                </div>                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productOperatingSystem" class="form-label">Product operating system</label>
+                                    <select class="form-control" name="productOperatingSystem" id="productOperatingSystem" required oninput="validateOperatingSystem()">
+                                        <option value="">Select an Operating System</option>
+                                        <option value="Windows">Windows</option>
+                                        <option value="macOS">macOS</option>
+                                        <option value="Linux">Linux</option>
+                                        <option value="Ubuntu">Ubuntu</option>
+                                        <option value="Fedora">Fedora</option>
+                                        <option value="FreeBSD">FreeBSD</option>
+                                        <option value="ChromeOS">ChromeOS</option>
+                                    </select>
+                                    <span id="productOperatingSystemError" class="text-danger"></span>
+                                </div>                                
+                                <div class="mb-3 col-md-10">
+                                    <label for="productGraphicsCard" class="form-label">Product graphics card</label>
+                                    <input type="text" class="form-control" min="1" name="productGraphicsCard" id="productGraphicsCard" value="" required oninput="validateGraphicsCard()">
+                                    <span id="productGraphicsCard" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutOne" class="form-label">Product about one</label>
+                                    <input type="text" class="form-control" min="1" name="productAboutOne" id="productAboutOne" value="" required oninput="validateProductAbout('productAboutOne')">
+                                    <span id="productAboutOneError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutTwo" class="form-label">Product about two</label>
+                                    <input type="text" class="form-control" min="1" name="productAboutTwo" id="productAboutTwo" value="" required oninput="validateProductAbout('productAboutTwo')">
+                                    <span id="productAboutTwoError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutThree" class="form-label">Product about three</label>
+                                    <input type="text" class="form-control" min="1" name="productAboutThree" id="productAboutThree" value="" required oninput="validateProductAbout('productAboutThree')">
+                                    <span id="productAboutThreeError" class="text-danger"></span>
+                                </div>
+                                <div class="mb-3 col-md-10">
+                                    <label for="productAboutFour" class="form-label">Product about four</label>
+                                    <input type="text" class="form-control" min="1" name="productAboutFour" id="productAboutFour" value="" required oninput="validateProductAbout('productAboutFour')">
+                                    <span id="productAboutFourError" class="text-danger"></span>
+                                </div>                                
                             </div>
                         </div>
 
@@ -303,6 +399,18 @@
             const productRealPrice = document.getElementById("productRealPrice").value
             const productOfferPrice = document.getElementById("productOfferPrice").value
             const productDiscountPercentage = document.getElementById("productDiscountPercentage").value
+            const productScreenSize = document.getElementById('productScreenSize').value
+            const productHardDiscSize = document.getElementById('productHardDiscSize').value;
+            const productCpuModel = document.getElementById('productCpuModel').value;
+            const productRamSize = document.getElementById('productRamSize').value;
+            const productGraphicsCard = document.getElementById('productGraphicsCard').value;
+            const productOperatingSystem = document.getElementById('productOperatingSystem').value;
+            const productAboutOne = document.getElementById('productAboutOne').value;
+            const productAboutTwo = document.getElementById('productAboutTwo').value;
+            const productAboutThree = document.getElementById('productAboutThree').value;
+            const productAboutFour = document.getElementById('productAboutFour').value;
+
+
             
             const formData = new FormData()
             formData.append("productName",productName)            
@@ -314,6 +422,16 @@
             formData.append("productRealPrice",productRealPrice)            
             formData.append("productOfferPrice",productOfferPrice)            
             formData.append("productDiscountPercentage",productDiscountPercentage)
+            formData.append("productScreenSize", productScreenSize);
+            formData.append("productHardDiscSize", productHardDiscSize);
+            formData.append("productCpuModel", productCpuModel);
+            formData.append("productRamSize", productRamSize);
+            formData.append("productGraphicsCard", productGraphicsCard);
+            formData.append("productOperatingSystem", productOperatingSystem);
+            formData.append("productAboutOne", productAboutOne);
+            formData.append("productAboutTwo", productAboutTwo);
+            formData.append("productAboutThree", productAboutThree);
+            formData.append("productAboutFour", productAboutFour);
 
             imageArray.forEach((imageDataUrl, index) => {
                 let byteString = atob(imageDataUrl.split(',')[1]);
@@ -565,6 +683,143 @@
                 return true;
             }
         }
+
+        // Validate product screen size
+        function validateScreenSize() {
+            const screenSizeSelect = document.getElementById('productScreenSize');
+            const screenSizeValue = screenSizeSelect.value;
+            const screenSizeError = document.getElementById('productScreenSizeError');
+
+            if (screenSizeValue === "") {
+                screenSizeSelect.classList.add('is-invalid');
+                screenSizeError.textContent = 'Please select a valid screen size.';
+                return false;
+            } else {
+                screenSizeSelect.classList.remove('is-invalid');
+                screenSizeError.textContent = '';
+                return true;
+            }
+        }
+
+
+// Validate product hard disc size
+function validateHardDiscSize() {
+    const hardDiscSizeSelect = document.getElementById('productHardDiscSize');
+    const hardDiscSizeValue = hardDiscSizeSelect.value;
+    const hardDiscSizeError = document.getElementById('productHardDiscSizeError');
+
+    if (hardDiscSizeValue === "") {
+        hardDiscSizeSelect.classList.add('is-invalid');
+        hardDiscSizeError.textContent = 'Please select a valid hard disc size.';
+        return false;
+    } else {
+        hardDiscSizeSelect.classList.remove('is-invalid');
+        hardDiscSizeError.textContent = '';
+        return true;
+    }
+}
+
+
+// Validate product CPU model
+function validateCpuModel() {
+    const cpuModelSelect = document.getElementById('productCpuModel');
+    const cpuModelValue = cpuModelSelect.value;
+    const cpuModelError = document.getElementById('productCpuModelError');
+
+    if (cpuModelValue === "") {
+        cpuModelSelect.classList.add('is-invalid');
+        cpuModelError.textContent = 'Please select a valid CPU model.';
+        return false;
+    } else {
+        cpuModelSelect.classList.remove('is-invalid');
+        cpuModelError.textContent = '';
+        return true;
+    }
+}
+
+
+// Validate product RAM size
+function validateRamSize() {
+    const ramSizeSelect = document.getElementById('productRamSize');
+    const ramSizeValue = ramSizeSelect.value;
+    const ramSizeError = document.getElementById('productRamSizeError');
+
+    if (ramSizeValue === "") {
+        ramSizeSelect.classList.add('is-invalid');
+        ramSizeError.textContent = 'Please select a valid RAM size.';
+        return false;
+    } else {
+        ramSizeSelect.classList.remove('is-invalid');
+        ramSizeError.textContent = '';
+        return true;
+    }
+}
+
+// Validate product operating system
+function validateOperatingSystem() {
+    const osSelect = document.getElementById('productOperatingSystem');
+    const osValue = osSelect.value;
+    const osError = document.getElementById('productOperatingSystemError');
+
+    if (osValue === "") {
+        osSelect.classList.add('is-invalid');
+        osError.textContent = 'Please select a valid operating system.';
+        return false;
+    } else {
+        osSelect.classList.remove('is-invalid');
+        osError.textContent = '';
+        return true;
+    }
+}
+
+// Validate product graphics card
+function validateGraphicsCard() {
+    const graphicsCardInput = document.getElementById('productGraphicsCard');
+    const graphicsCard = graphicsCardInput.value.trim();
+    const graphicsCardError = document.getElementById('productGraphicsCardError');
+    const regex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=~`{}\[\]:;"'<>,.?/\\|]{4,30}$/;
+
+    if (graphicsCard === "") {
+        graphicsCardInput.classList.remove('is-invalid');
+        graphicsCardError.textContent = '';
+        return false;
+    }
+    if (!regex.test(graphicsCard)) {
+        graphicsCardInput.classList.add('is-invalid');
+        graphicsCardError.textContent = 'Graphics card must be between 4 and 30 characters and can include letters, numbers, spaces, and special characters.';
+        return false;
+    } else {
+        graphicsCardInput.classList.remove('is-invalid');
+        graphicsCardError.textContent = '';
+        return true;
+    }
+}
+
+// Validate product about fields dynamically
+function validateProductAbout(inputId) {
+    const aboutInput = document.getElementById(inputId);
+    const aboutValue = aboutInput.value.trim();
+    const aboutError = document.getElementById(`${inputId}Error`);
+    const regex = /^[\s\S]{20,250}$/; // Matches any character, between 20 and 250 characters.
+
+    if (aboutValue === "") {
+        aboutInput.classList.remove('is-invalid');
+        aboutError.textContent = '';
+        return false;
+    }
+    if (!regex.test(aboutValue)) {
+        aboutInput.classList.add('is-invalid');
+        aboutError.textContent = 'Product about must be between 20 and 250 characters.';
+        return false;
+    } else {
+        aboutInput.classList.remove('is-invalid');
+        aboutError.textContent = '';
+        return true;
+    }
+}
+
+
+
         
     </script>
 
