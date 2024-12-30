@@ -71,6 +71,11 @@
     color: var(--offerprice-color);
 }
 
+.badge2{
+    background-color: var(--badgeBg-color);
+    color: var(--offerprice-color);
+}
+
 .offer-price{
     color: var(--offerprice-color);
     font-size: 18px;
@@ -202,6 +207,22 @@
     .submenu li a{
         font-size: 12px;
     }
+}
+
+.product-brand{
+    font-size: 13px;
+}
+
+.discount-percentage{
+    font-size: 13px;
+}
+
+.product-name{
+    font-size: 15px;
+}
+
+.offer-price{
+    font-size: 15px;
 }
 
 .card-body{
