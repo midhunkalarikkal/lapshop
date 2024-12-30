@@ -634,6 +634,17 @@
             
             event.preventDefault();
 
+            Swal.fire({
+                title: "Deleting image.",
+                text: "Please wait",
+                background: "#333",
+                color: "#ffffff",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
             fetch('/admin/deleteProductImage', {
                 method: 'POST',
                 headers: {
@@ -643,6 +654,7 @@
             })
             .then(response => response.json())
             .then(data => {
+                Swal.close();
                 if (data.success) {
                     check()
                     let thumbnail = document.getElementById(imageId);
