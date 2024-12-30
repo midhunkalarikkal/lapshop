@@ -49,7 +49,37 @@ const productSchema = new mongoose.Schema({
         type : Boolean,
         required : true,
         default : false
-    }
+    },
+    screenSize : {
+        type : String,
+        required : false
+    },
+    hdSize : {
+        type : String,
+        required : false
+    },
+    cpuModel : {
+        type : String,
+        required : false
+    },
+    ramSize : {
+        type : String,
+        required : false
+    },
+    os : {
+        type : String,
+        required : false
+    },
+    gpu : {
+        type : String,
+        required : false
+    },
+    about : [
+        {
+            type : String,
+            required : false
+        }
+    ]
 },{
     timestamps : true
 })
