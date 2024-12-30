@@ -303,36 +303,7 @@
                                                     <h6 class="discount-percentage price">-<%= product.discountPercentage %>%</h6>
                                                     <h5 class="offer-price price mx-2">₹<%= product.offerPrice %></h5>
                                                     <h6 class="real-price small price">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></h6>
-                                                </span>
-                                                <div class="cart-button">
-                                                    <% if (cartProdId !="" ) { %>
-                                                        <% for(let i=0; i < cartProdId.length; i++){ %>
-                                                            <% if(cartProdId[i] == product._id.toString()){ %>
-                                                                <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" onclick="goToCart()">
-                                                                    <span class="d-flex flex-row align-items-center justiy-content-center">
-                                                                        <i class="fas fa-shopping-cart"></i> <span class="mx-1">Go to cart</span>
-                                                                    </span>
-                                                                </button>
-                                                            <% break; %>
-                                                            <% } %>
-                                                            <!-- If it's the last iteration and no match is found -->
-                                                            <% if(i===cartProdId.length - 1){ %>
-                                                                <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" data-prod-id="<%= product._id %>" onclick="addToCart(this)">
-                                                                    <span class="d-flex flex-row align-items-center justiy-content-center small">
-                                                                        <i class="fas fa-shopping-cart"></i> <span class="mx-1">Add to cart</span>
-                                                                    </span>
-                                                                </button>
-                                                            <% } %>
-                                                        <% } %>
-                                                    <% } else { %>
-                                                        <!-- Render "Add to cart" button if cartProdId is empty -->
-                                                        <button class="d-flex justify-content-center align-items-center btn btn-sm card-footer-btn" data-prod-id="<%= product._id %>" onclick="addToCart(this)">
-                                                            <span class="d-flex flex-row align-items-center justiy-content-center small">
-                                                                <i class="fas fa-shopping-cart"></i> <span class="mx-1">Add to cart</span>
-                                                            </span>
-                                                        </button>
-                                                    <% } %>
-                                                </div>
+                                                </span>             
                                             </div>    
                                         </a>                                
                                     </div>
