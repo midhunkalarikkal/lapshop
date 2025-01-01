@@ -548,7 +548,7 @@ const getUserShop = async(req,res)=>{
         }
 
         const page = parseInt(req.query.page) || 1;  
-        const limit = 6; 
+        const limit = 9; 
         return res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId, totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
