@@ -14,12 +14,16 @@
     --btnHover-color: linear-gradient(120deg, #fdfbfb 0%, #989a9c 100%);
 }
 
+a, h1,h2,h3,h4,h5,h6{
+    text-decoration: none;
+}
+
 /*======> Very small devices <======*/
 @media (max-width: 576px) {
 
     .box-two {
-        height: 8rem;
-        width: 8rem;
+        height: auto;
+        width: 13rem;
     }
 
     .box-two .img {
@@ -33,30 +37,12 @@
         height: 100%;
     }
 
-    .box-two .name {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-    }
-
-    .name h5 {
-        font-size: 12px;
-    }
-
-    .offer h6 {
+    .box-desc, .box-name{
         font-size: 10px;
-        margin-top: 3px;
     }
 
-    .box-two .offer {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-        color: var(--offerprice-color);
-    }
-
-    .box-two .offer h6 {
-        font-size: 8px;
+    .box-price{
+        font-size: 11px;
     }
 
     .scroll-arrow {
@@ -69,8 +55,8 @@
 @media (max-width: 576px) {
 
     .box-two {
-        height: 9rem;
-        width: 8rem;
+        height: auto;
+        width: 14rem;
     }
 
     .box-two .img {
@@ -84,30 +70,12 @@
         height: 100%;
     }
 
-    .box-two .name {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-    }
-
-    .name h5 {
-        font-size: 12px;
-    }
-
-    .offer h6 {
+    .box-desc, .box-name{
         font-size: 10px;
-        margin-top: 3px;
     }
 
-    .box-two .offer {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-        color: var(--offerprice-color);
-    }
-
-    .box-two .offer h6 {
-        font-size: 10px;
+    .box-price{
+        font-size: 11px;
     }
 
     .scroll-arrow {
@@ -119,8 +87,8 @@
 @media (min-width: 576px) and (max-width: 767px) {
 
     .box-two {
-        height: 8rem;
-        width: 8rem;
+        height: auto;
+        width: 15rem;
     }
 
     .box-two .img {
@@ -134,30 +102,12 @@
         height: 100%;
     }
 
-    .box-two .name {
-        height: 10%;
-        width: 100%;
-        text-align: center;
+    .box-desc, .box-name{
+        font-size: 11px;
     }
 
-    .name h5 {
+    .box-price{
         font-size: 12px;
-    }
-
-    .offer h6 {
-        font-size: 10px;
-        margin-top: 3px;
-    }
-
-    .box-two .offer {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-        color: var(--offerprice-color);
-    }
-
-    .box-two .offer h6 {
-        font-size: 10px;
     }
 
     .scroll-arrow {
@@ -175,8 +125,8 @@
     }
 
     .box-two {
-        height: 12rem;
-        width: 10rem;
+        height: auto;
+        width: 17rem;
     }
 
     .box-two .img {
@@ -190,25 +140,12 @@
         height: 100%;
     }
 
-    .box-two .name {
-        height: 10%;
-        width: 100%;
-        text-align: center;
+    .box-desc, .box-name{
+        font-size: 13px;
     }
 
-    .name h5 {
-        font-size: 16px;
-    }
-
-    .box-two .offer {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-        color: var(--offerprice-color);
-    }
-
-    .box-two .offer h6 {
-        font-size: 12px;
+    .box-price{
+        font-size: 14px;
     }
 
     .scroll-arrow {
@@ -222,8 +159,8 @@
 @media (min-width: 992px) and (max-width: 1199px) {
 
     .box-two {
-        height: 14rem;
-        width: 12rem;
+        height: auto;
+        width: 17rem;
     }
 
     .box-two .img {
@@ -237,25 +174,12 @@
         height: 100%;
     }
 
-    .box-two .name {
-        height: 10%;
-        width: 100%;
-        text-align: center;
+    .box-desc, .box-name{
+        font-size: 13px;
     }
 
-    .name h5 {
-        font-size: 16px;
-    }
-
-    .box-two .offer {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-        color: var(--offerprice-color);
-    }
-
-    .box-two .offer h6 {
-        font-size: 14px;
+    .box-price{
+        font-size: 15px;
     }
 
     .scroll-arrow {
@@ -274,8 +198,8 @@
     }
 
     .box-two {
-        height: 14rem;
-        width: 12rem;
+        height: auto;
+        width: 18rem;
     }
 
     .box-two .img {
@@ -289,25 +213,12 @@
         height: 100%;
     }
 
-    .box-two .name {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-    }
-
-    .name h5 {
-        font-size: 16px;
-    }
-
-    .box-two .offer {
-        height: 10%;
-        width: 100%;
-        text-align: center;
-        color: var(--offerprice-color);
-    }
-
-    .box-two .offer h6 {
+    .box-desc, .box-name{
         font-size: 14px;
+    }
+
+    .box-price{
+        font-size: 16px;
     }
 
     .scroll-arrow {
@@ -400,7 +311,23 @@
     position: relative; 
 }
 
-/*======> same category products <======*/
-.small-card{
-    background-image: linear-gradient(120deg, #ebf4f5 0%, #ebedee 100%);
+.card-body {
+    line-height: 1.2; 
+}
+
+.card-text {
+    margin-bottom: 4px !important; 
+}
+
+.card-title {
+    font-size: 14px; 
+    font-weight: bold;
+}
+
+.icon-style {
+    border: 2px solid green; /* Green border */
+    border-radius: 50%; /* Round shape */
+    padding: 10px; /* Space between the icon and border */
+    font-size: 24px; /* Adjust size if necessary */
+    color: green; /* Change icon color to green */
 }

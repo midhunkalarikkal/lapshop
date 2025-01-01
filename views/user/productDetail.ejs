@@ -7,10 +7,10 @@
     </head>
 
     <section class="view">
-        <div class="mx-5 mt-5 d-flex">
+        <div class="mx-2 mx-md-5 mt-5 d-md-flex mb-2">
             <% if(productData !="" ){ %>
                 <!-- images container and image container -->
-                <div class="col-6">
+                <div class="col-md-6">
                     <div class="d-flex justify-content-center">
                         <div class="divOne col-2 shadow side-img d-none d-lg-block " style="height: 450px; overflow-y: scroll;">
                             <% productData.images.forEach((image, index)=> { %>
@@ -51,7 +51,7 @@
                             </div>
                         </div>    
                     </div>
-                    <div class="mt-5 col-8">
+                    <div class="mt-5 col-8 d-none d-md-block">
                         <h5>Technical details</h5>
                         <table class="table table-bordered table-hover shadow-sm">
                             <tbody>
@@ -121,44 +121,43 @@
                 </div>
 
                 <!-- Details div -->
-                <div class="col-6">                    
-                    <div class="divFour col-12 shadow"  id="second" style="height: 450px">
-                        
-                    </div>
-
-                    <div class="divFive col-8 d-flex flex-column mt-4 mt-md-0 px-4" id="product-detail">
-                        <h6 class="product-desc col-lg-10 fs-5">
+                <div class="divFour col-6 shadow px-4"  id="second" style="height: 450px">
+                    
+                </div>
+                <div class="col-md-4">                    
+                    <div class="divFive col-12 d-flex flex-column mt-4 mt-md-0 px-md-4" id="product-detail">
+                        <h6 class="product-desc fs-5 mb-1">
                             <%= productData.description %>
                         </h6>
-                        <hr>
-                        <div class="d-flex align-items-end my-lg-auto">
-                            <h4 class="discount-perc">
+                        <hr class="my-1">
+                        <div class="d-flex align-items-end my-0">
+                            <h4 class="discount-perc mb-0">
                                 -<%= productData.discountPercentage %>%
                             </h4>
-                            <h4 class="offer-price mx-2">
+                            <h4 class="offer-price mx-2 mb-0">
                                 ₹<%= productData.offerPrice %>
                             </h4>
                         </div>
-                        <h6 class="text-muted">
+                        <h6 class="text-muted mb-1">
                             M.R.P <del class="real-price text-muted">₹<%= productData.realPrice %></del>
                         </h6>
-                        <p class="text-muted">Inclusive of all taxes</p>
+                        <p class="text-muted mb-0">Inclusive of all taxes</p>                        
                         <hr>
                         <div class="d-flex justify-content-between align-items-start align-items-md-center p-3">
                             <div class="d-flex flex-column align-items-center align-self-stretch text-center col-4">
-                                <i class="fas fa-tools text-primary mb-2 fs-5"></i>
+                                <i class="fas fa-tools text-danger mb-2 fs-5 icon-style"></i>
                                 <p class="mb-0 text-dark fw-medium small">7 Days Service Center Replacement</p>
                             </div>
-                        
+                            
                             <div class="d-flex flex-column align-items-center align-self-stretch text-center col-4">
-                                <i class="fas fa-truck text-primary mb-2 fs-5"></i>
+                                <i class="fas fa-truck text-dark mb-2 fs-5 icon-style"></i>
                                 <p class="mb-0 text-dark fw-medium small">Free Delivery</p>
                             </div>
-                        
+                            
                             <div class="d-flex flex-column align-items-center align-self-stretch text-center col-4">
-                                <i class="fas fa-shield-alt text-primary mb-2 fs-5"></i>
+                                <i class="fas fa-shield-alt text-success mb-2 fs-5 icon-style"></i>
                                 <p class="mb-0 text-dark fw-medium small">1 Year Warranty</p>
-                            </div>
+                            </div>                            
                         </div>
                         <hr>
                         <div class="d-flex align-items-center my-lg-auto">
@@ -188,7 +187,7 @@
                                     <% } %>
                                 <% } %>
                             <% } else { %>
-                                <button class="btn btn-warning px-3 d-none d-lg-block"
+                                <button class="btn addtocart-btn px-3 d-none d-lg-block"
                                     data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
                                     class="fa fa-shopping-cart mr-1"></i> Add to cart
                                 </button>
@@ -240,11 +239,132 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-2 p-1 d-none d-md-block" id="product-detail" style="background-color: rgb(243, 243, 243);">
+                    <h6 class="fw-bold p-2"> Most popular</h6>
+                    <% if (sameCategoryProduct !== "") { %>
+                        <% sameCategoryProduct.forEach((product) => { %>
+                            <a href="/productDetail/<%= product._id %>">
+                                <div class="card mb-2 p-1">
+                                    <img src="/static/images/ProductImages/<%= product.images[0] %>" class="card-img-top" alt="<%= product.name %>">
+                                    <div class="card-body p-2">
+                                        <h6 class="card-title mb-1"><%= product.name %></h6>
+                                        <p class="card-text mb-1"><small>Brand: <strong><%= product.brand.name %></strong></small></p>
+                                        <p class="card-text mb-1 text-danger">
+                                            <small>- <%= product.discountPercentage %>%  <span class="text-success">₹<%= product.realPrice %></span></small>
+                                        </p>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    <% } %>
+                </div>
             <% }else{ %>
 
             <% } %>
         </div>
 
+        <!-- Technical details for small devices -->
+        <div class="px-2 d-block d-md-none">
+            <h5>Technical details</h5>
+            <table class="table table-bordered table-hover shadow-sm">
+                <tbody>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Name</td>
+                        <td class="px-3 py-2"><%= productData.name %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Brand</td>
+                        <td class="px-3 py-2"><%= productData.brand.name %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Category</td>
+                        <td class="px-3 py-2"><%= productData.category.name %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Colour</td>
+                        <td class="px-3 py-2"><%= productData.colour %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Screen Size</td>
+                        <td class="px-3 py-2"><%= productData.screenSize %> Inch</td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Hard Drive Size</td>
+                        <td class="px-3 py-2"><%= productData.hdSize %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Model</td>
+                        <td class="px-3 py-2"><%= productData.cpuModel %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Speed</td>
+                        <td class="px-3 py-2"><%= productData.cpuSpeed %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">RAM Size</td>
+                        <td class="px-3 py-2"><%= productData.ramSize %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Operating System</td>
+                        <td class="px-3 py-2"><%= productData.os %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Graphics Card</td>
+                        <td class="px-3 py-2"><%= productData.gpu %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery</td>
+                        <td class="px-3 py-2"><%= productData.battery %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery energy</td>
+                        <td class="px-3 py-2"><%= productData.batteryEnergy %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Voltage</td>
+                        <td class="px-3 py-2"><%= productData.voltage %></td>
+                    </tr>
+                    <tr>
+                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Weight</td>
+                        <td class="px-3 py-2"><%= productData.weight %></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Same category products -->
+        <div class="container-fluid py-5 mt-2">
+            <h5 class="section-title my-2 mx-3 fw-bold">Same category products</h5>
+            <section class="mt-2" id="sectiontwo">
+                <div class="col-12">
+                    <div class="scroll-container">
+                        <div class="d-flex overflow-auto p-2">
+                            <% if(sameCategoryProduct !="" ){ %>
+                                <% sameCategoryProduct.forEach((product , index)=>{ %>
+                                    <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                        <div class="box-two mx-2 border-0 small-card p-2" style="flex: 0 0 auto;background-color: rgb(243, 243, 243);">
+                                            <div class="img">
+                                                <img src="/static/images/ProductImages/<%= product.images[0] %>"
+                                                    alt="No image">
+                                            </div>
+                                            <div class="p-2">
+                                                <h5 class="box-desc text-dark"><%= product.description %></h5>
+                                                <div class="box-price">
+                                                    <span class="text-danger">Min <%= product.discountPercentage %> off</span>
+                                                    <span class="mx-2 text-success fw-bold"> ₹<%= product.realPrice %></span>
+                                                </div>
+                                                <h5 class="box-name text-dark"><%= product.name %></h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                <% }) %>
+                            <% }else{ %>
+                                <h3 class="text-center bg-warning">No same category Product found</h3>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </section>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
