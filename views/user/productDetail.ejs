@@ -7,54 +7,126 @@
     </head>
 
     <section class="view">
-        <div class="container-fluid mt-5 d-flex flex-row justify-content-center ">
+        <div class="mx-5 mt-5 d-flex">
             <% if(productData !="" ){ %>
-                <div class="container mt-5 row d-flex justify-content-center">
-
-                    <div class="divOne col-lg-2 shadow p-4 side-img d-none d-lg-block" style="height: 400px; overflow-y: scroll;">
-                        <% productData.images.forEach((image, index)=> { %>
-                            <div class="each-img m-3" data-img-id="<%= image %>" data-index="<%= index %>" onclick="changeimage(this)">
-                                <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image">
-                            </div>
-                        <% }) %>
-                    </div>
-
-                    <div class="divTwo col-md-6 col-lg-5 product-image d-none d-md-block" style="overflow:hidden">
-                        <% productData.images.forEach((image, index) => { %>
-                            <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
-                                <span id="lens"></span>
-                                <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
-                            </div>
-                        <% }); %>
-                    </div>
-
-                    <div class="divThree col-md-6 col-lg-5 product-image d-block d-md-none">
-                        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-                            <div class="carousel-inner shadow">
-                                <% productData.images.forEach((image, index) => { %>
-                                    <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
-                                        <span id="lens"></span>
-                                        <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
-                                    </div>
-                                <% }); %>
-                            </div>
-                            <button class="carousel-control-prev" type="button" id="carousel-btnOne"
-                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                            </button>
-                            <button class="carousel-control-next" type="button" id="carousel-btnTwo"
-                                data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </button>
+                <!-- images container and image container -->
+                <div class="col-6">
+                    <div class="d-flex justify-content-center">
+                        <div class="divOne col-2 shadow side-img d-none d-lg-block " style="height: 450px; overflow-y: scroll;">
+                            <% productData.images.forEach((image, index)=> { %>
+                                <div class="each-img m-3" data-img-id="<%= image %>" data-index="<%= index %>" onclick="changeimage(this)">
+                                    <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image">
+                                </div>
+                            <% }) %>
                         </div>
+                        <div class="divTwo col-10 product-image d-none d-md-block p-4 shadow" style="overflow:hidden">
+                            <% productData.images.forEach((image, index) => { %>
+                                <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
+                                    <span id="lens"></span>
+                                    <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
+                                </div>
+                            <% }); %>
+                        </div>
+                        
+                        <div class="divThree col-md-6 col-lg-5 product-image d-block d-md-none">
+                            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                                <div class="carousel-inner shadow">
+                                    <% productData.images.forEach((image, index) => { %>
+                                        <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
+                                            <span id="lens"></span>
+                                            <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
+                                        </div>
+                                    <% }); %>
+                                </div>
+                                <button class="carousel-control-prev" type="button" id="carousel-btnOne"
+                                    data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Previous</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" id="carousel-btnTwo"
+                                    data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">Next</span>
+                                </button>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="mt-5 col-8">
+                        <h5>Technical details</h5>
+                        <table class="table table-bordered table-hover shadow-sm">
+                            <tbody>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Name</td>
+                                    <td class="px-3 py-2"><%= productData.name %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Brand</td>
+                                    <td class="px-3 py-2"><%= productData.brand.name %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Category</td>
+                                    <td class="px-3 py-2"><%= productData.category.name %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Colour</td>
+                                    <td class="px-3 py-2"><%= productData.colour %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Screen Size</td>
+                                    <td class="px-3 py-2"><%= productData.screenSize %> Inch</td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Hard Drive Size</td>
+                                    <td class="px-3 py-2"><%= productData.hdSize %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Model</td>
+                                    <td class="px-3 py-2"><%= productData.cpuModel %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Speed</td>
+                                    <td class="px-3 py-2"><%= productData.cpuSpeed %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">RAM Size</td>
+                                    <td class="px-3 py-2"><%= productData.ramSize %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Operating System</td>
+                                    <td class="px-3 py-2"><%= productData.os %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Graphics Card</td>
+                                    <td class="px-3 py-2"><%= productData.gpu %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery</td>
+                                    <td class="px-3 py-2"><%= productData.battery %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery energy</td>
+                                    <td class="px-3 py-2"><%= productData.batteryEnergy %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Voltage</td>
+                                    <td class="px-3 py-2"><%= productData.voltage %></td>
+                                </tr>
+                                <tr>
+                                    <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Weight</td>
+                                    <td class="px-3 py-2"><%= productData.weight %></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Details div -->
+                <div class="col-6">                    
+                    <div class="divFour col-12 shadow"  id="second" style="height: 450px">
+                        
                     </div>
 
-                    <div class="divFour col-5 shadow"  id="second">
-                    </div>
-
-                    <div class="divFive col-md-5 d-flex flex-column mt-4 mt-md-0" id="product-detail">
+                    <div class="divFive col-8 d-flex flex-column mt-4 mt-md-0 px-4" id="product-detail">
                         <h6 class="product-desc col-lg-10 fs-5">
                             <%= productData.description %>
                         </h6>
@@ -151,7 +223,7 @@
                             <ul class="list-unstyled mx-4">
                                 <li><span class=""><%= productData.brand.name %></span></li>
                                 <li><span class=""><%= productData.name %></span></li>
-                                <li><span class=""><%= productData.screenSize %></span></li>
+                                <li><span class=""><%= productData.screenSize %> Inch</span></li>
                                 <li><span class=""><%= productData.colour %></span></li>
                             </ul>
                         </div>
@@ -167,59 +239,17 @@
                             </ul>
                         </div>
                     </div>
-                    
-                    <div class="col-md-6 shadow mt-2 side-img d-none d-md-block d-lg-none" style=" width: 90%; overflow-x: scroll; white-space: nowrap;">
-                        <% productData.images.forEach((image, index)=> { %>
-                            <div class="each-img d-inline-block m-3" data-img-id="<%= image %>" data-index="<%= index %>" onclick="changeimage(this)" style="width: 100px;">
-                                <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image">
-                            </div>
-                        <% }) %>
-                    </div>              
-                    
                 </div>
             <% }else{ %>
-                <h3 class="text-center bg-warning">No Product found</h3>
+
             <% } %>
         </div>
 
-        <div class="container-fluid py-5 mt-5">
-            <div class="mb-4">
-                <h3 class="section-title px-5"><span class="px-2">Same category products</span></h3>
-            </div>
-            <section class="mt-2" id="sectiontwo">
-                <div class="col-12">
-                    <div class="scroll-container">
-                        <div class="d-flex overflow-auto p-2">
-                            <% if(sameCategoryProduct !="" ){ %>
-                                <% sameCategoryProduct.forEach((product , index)=>{ %>
-                                    <a href="/productDetail/<%= product._id %>" class="product-outline">
-                                        <div class="box-two mx-2 text-center border-0 small-card p-2" style="flex: 0 0 auto;">
-                                            <div class="img">
-                                                <img src="/static/images/ProductImages/<%= product.images[0] %>"
-                                                    alt="No image">
-                                            </div>
-                                            <div class="name">
-                                                <h5><%= product.name %></h5>
-                                            </div>
-                                            <div class="offer">
-                                                <h6>Min <%= product.discountPercentage %> off</h6>
-                                            </div>
-                                        </div>
-                                    </a>
-                                <% }) %>
-                            <% }else{ %>
-                                <h3 class="text-center bg-warning">No same category Product found</h3>
-                            <% } %>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </div>
     </section>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <!-- Script for sweet alert -->
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Script for sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
         <script>
 
@@ -309,6 +339,7 @@
                 var targetImage = document.querySelector("#target-image");
                 
                 var second = document.getElementById("second")
+                console.log(second)
                 if (targetImage) {
                     second.style.backgroundImage = `url(${targetImage.src})` 
                 }
