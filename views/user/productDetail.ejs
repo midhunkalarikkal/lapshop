@@ -239,10 +239,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-2 p-1 d-none d-md-block" id="product-detail" style="background-color: rgb(243, 243, 243);">
+                <% if(mostPopular.length > 0) { %>
+                    <div class="col-2 p-1 d-none d-md-block" id="product-detail" style="background-color: rgb(243, 243, 243);">
                     <h6 class="fw-bold p-2"> Most popular</h6>
-                    <% if (sameCategoryProduct !== "") { %>
-                        <% sameCategoryProduct.forEach((product) => { %>
+                        <% mostPopular.forEach((product) => { %>
                             <a href="/productDetail/<%= product._id %>">
                                 <div class="card mb-2 p-1">
                                     <img src="/static/images/ProductImages/<%= product.images[0] %>" class="card-img-top" alt="<%= product.name %>">
@@ -256,115 +256,123 @@
                                 </div>
                             </a>
                         <% }) %>
-                    <% } %>
-                </div>
+                    </div>
+                <% } %>
             <% }else{ %>
-
-            <% } %>
-        </div>
-
-        <!-- Technical details for small devices -->
-        <div class="px-2 d-block d-md-none">
-            <h5>Technical details</h5>
-            <table class="table table-bordered table-hover shadow-sm">
-                <tbody>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Name</td>
-                        <td class="px-3 py-2"><%= productData.name %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Brand</td>
-                        <td class="px-3 py-2"><%= productData.brand.name %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Category</td>
-                        <td class="px-3 py-2"><%= productData.category.name %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Colour</td>
-                        <td class="px-3 py-2"><%= productData.colour %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Screen Size</td>
-                        <td class="px-3 py-2"><%= productData.screenSize %> Inch</td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Hard Drive Size</td>
-                        <td class="px-3 py-2"><%= productData.hdSize %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Model</td>
-                        <td class="px-3 py-2"><%= productData.cpuModel %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Speed</td>
-                        <td class="px-3 py-2"><%= productData.cpuSpeed %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">RAM Size</td>
-                        <td class="px-3 py-2"><%= productData.ramSize %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Operating System</td>
-                        <td class="px-3 py-2"><%= productData.os %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Graphics Card</td>
-                        <td class="px-3 py-2"><%= productData.gpu %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery</td>
-                        <td class="px-3 py-2"><%= productData.battery %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery energy</td>
-                        <td class="px-3 py-2"><%= productData.batteryEnergy %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Voltage</td>
-                        <td class="px-3 py-2"><%= productData.voltage %></td>
-                    </tr>
-                    <tr>
-                        <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Weight</td>
-                        <td class="px-3 py-2"><%= productData.weight %></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <!-- Same category products -->
-        <div class="container-fluid py-5 mt-2">
-            <h5 class="section-title my-2 mx-3 fw-bold">Same category products</h5>
-            <section class="mt-2" id="sectiontwo">
-                <div class="col-12">
-                    <div class="scroll-container">
-                        <div class="d-flex overflow-auto p-2">
-                            <% if(sameCategoryProduct !="" ){ %>
-                                <% sameCategoryProduct.forEach((product , index)=>{ %>
-                                    <a href="/productDetail/<%= product._id %>" class="product-outline">
-                                        <div class="box-two mx-2 border-0 small-card p-2" style="flex: 0 0 auto;background-color: rgb(243, 243, 243);">
-                                            <div class="img">
-                                                <img src="/static/images/ProductImages/<%= product.images[0] %>"
-                                                    alt="No image">
-                                            </div>
-                                            <div class="p-2">
-                                                <h5 class="box-desc text-dark"><%= product.description %></h5>
-                                                <div class="box-price">
-                                                    <span class="text-danger">Min <%= product.discountPercentage %> off</span>
-                                                    <span class="mx-2 text-success fw-bold"> ₹<%= product.realPrice %></span>
-                                                </div>
-                                                <h5 class="box-name text-dark"><%= product.name %></h5>
-                                            </div>
-                                        </div>
-                                    </a>
-                                <% }) %>
-                            <% }else{ %>
-                                <h3 class="text-center bg-warning">No same category Product found</h3>
-                            <% } %>
+                <div class="container my-4">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-md-8 text-center p-4 border border-warning rounded bg-light shadow-sm">
+                            <i class="fas fa-info-circle text-warning mb-3" style="font-size: 40px;"></i>
+                            <h4 class="text-muted">Product Details Are Not Available</h4>
+                            <p class="text-muted">Sorry, we couldn't find the details for this product. Please check back later.</p>
                         </div>
                     </div>
                 </div>
-            </section>
+            <% } %>
         </div>
+
+        <% if(productData !="" ){ %>
+            <!-- Technical details for small devices -->
+            <div class="px-2 d-block d-md-none">
+                <h5>Technical details</h5>
+                <table class="table table-bordered table-hover shadow-sm">
+                    <tbody>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Name</td>
+                            <td class="px-3 py-2"><%= productData.name %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Brand</td>
+                            <td class="px-3 py-2"><%= productData.brand.name %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Category</td>
+                            <td class="px-3 py-2"><%= productData.category.name %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Colour</td>
+                            <td class="px-3 py-2"><%= productData.colour %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Screen Size</td>
+                            <td class="px-3 py-2"><%= productData.screenSize %> Inch</td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Hard Drive Size</td>
+                            <td class="px-3 py-2"><%= productData.hdSize %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Model</td>
+                            <td class="px-3 py-2"><%= productData.cpuModel %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Speed</td>
+                            <td class="px-3 py-2"><%= productData.cpuSpeed %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">RAM Size</td>
+                            <td class="px-3 py-2"><%= productData.ramSize %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Operating System</td>
+                            <td class="px-3 py-2"><%= productData.os %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Graphics Card</td>
+                            <td class="px-3 py-2"><%= productData.gpu %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery</td>
+                            <td class="px-3 py-2"><%= productData.battery %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery energy</td>
+                            <td class="px-3 py-2"><%= productData.batteryEnergy %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Voltage</td>
+                            <td class="px-3 py-2"><%= productData.voltage %></td>
+                        </tr>
+                        <tr>
+                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Weight</td>
+                            <td class="px-3 py-2"><%= productData.weight %></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Same category products -->
+            <% if(productData != "" && sameCategoryProduct !="" ){ %>
+            <div class="container-fluid py-5 mt-2">
+                <h5 class="section-title my-2 mx-3 fw-bold">Same category products</h5>
+                <section class="mt-2" id="sectiontwo">
+                    <div class="col-12">
+                        <div class="scroll-container">
+                            <div class="d-flex overflow-auto p-2">
+                                    <% sameCategoryProduct.forEach((product , index)=>{ %>
+                                        <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                            <div class="box-two mx-2 border-0 small-card p-2" style="flex: 0 0 auto;background-color: rgb(243, 243, 243);">
+                                                <div class="img">
+                                                    <img src="/static/images/ProductImages/<%= product.images[0] %>"
+                                                        alt="No image">
+                                                </div>
+                                                <div class="p-2">
+                                                    <h5 class="box-desc text-dark"><%= product.description %></h5>
+                                                    <div class="box-price">
+                                                        <span class="text-danger">Min <%= product.discountPercentage %> off</span>
+                                                        <span class="mx-2 text-success fw-bold"> ₹<%= product.realPrice %></span>
+                                                    </div>
+                                                    <h5 class="box-name text-dark"><%= product.name %></h5>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            <% } %>
+        <% } %>
     </section>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

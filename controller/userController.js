@@ -1023,7 +1023,8 @@ const getProductDetail = async(req,res)=>{
         const productId = req.params.productId
         const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}])
         const productCategory = productData.category
-        const sameCategoryProduct = await Product.find({category : productCategory._id})
+        const sameCategoryProduct = await Product.find({category : productCategory._id});
+        const mostPopular = await Product.find({category : productCategory.id, noOfStock : {$lt : 10}}).limit(5);
         let userDetails = req.session.userNC
         if(userDetails && userDetails !== undefined && userDetails !== ""){
             let userId = userDetails.userId
@@ -1041,7 +1042,7 @@ const getProductDetail = async(req,res)=>{
             }
         }
         
-        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId})
+        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId, mostPopular})
     }catch(error){
         console.log("error : ",error);
         return res.redirect('/errorPage')
