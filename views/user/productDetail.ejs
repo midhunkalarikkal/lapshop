@@ -426,7 +426,11 @@
                     <% if(reviews && reviews.length > 0) { %>
                         <% reviews.forEach((review, index) => { %>
                             <div class="d-flex mb-4 flex-column flex-md-row align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
-                                <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                <% if(review.userId.profileimage && review.userId.profileimage != "" ){ %>
+                                    <img src="/static/images/UserProfile/<%= review.userId.profileimage %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                <% }else{ %>
+                                    <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                <% } %>
                                 <div class="mx-3">
                                     <p class="fw-bold mb-1"><%= review.userId.fullname %></p>
                                     <p class="mb-1"><%= review.reviewText %></p>
@@ -440,21 +444,34 @@
                                             <% } %>
                                         <% } %>
                                     </div>
-                            
-                                    <div class="d-flex align-items-center">
-                                        <button class="btn btn-outline-success btn-sm me-2" type="button">
-                                            <i class="fas fa-thumbs-up"></i> Useful <% if(review.likes > 0){%> <%= review.likes %> <% } %>
-                                        </button>
-                                        <button class="btn btn-outline-danger btn-sm" type="button">
-                                            <i class="fas fa-thumbs-down"></i> Dislike <% if(review.dislikes > 0){%> <%= review.dislikes %> <% } %>
-                                        </button>
-                                    </div>
+                                    
+                                    <% if(userDetails){ %>
+                                        <% if(userDetails.userId.toString() !== review.userId._id.toString()) { %>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-outline-success btn-sm me-2 btn-like" type="button" data-review-id="<%= review._id %>">
+                                                <i class="fas fa-thumbs-up"></i> Useful <% if (review.likes > 0) { %> <%= review.likes %> <% } %>
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm btn-dislike" type="button" data-review-id="<%= review._id %>">
+                                                <i class="fas fa-thumbs-down"></i> Dislike <% if (review.dislikes > 0) { %> <%= review.dislikes %> <% } %>
+                                            </button>
+                                        </div>
+                                        <% } %>
+                                    <% }else{ %>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-outline-success btn-sm me-2 btn-like" type="button" data-review-id="<%= review._id %>">
+                                                <i class="fas fa-thumbs-up"></i> Useful <% if (review.likes > 0) { %> <%= review.likes %> <% } %>
+                                            </button>
+                                            <button class="btn btn-outline-danger btn-sm btn-dislike" type="button" data-review-id="<%= review._id %>">
+                                                <i class="fas fa-thumbs-down"></i> Dislike <% if (review.dislikes > 0) { %> <%= review.dislikes %> <% } %>
+                                            </button>
+                                        </div>
+                                    <% } %>
                                 </div>
                             </div>
                         <% }) %>
                     <% } else { %>
-                        <div class="d-flex mb-4 flex-column flex-md-row align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
-                            <h6 class="text-center w-100">No reviews</h6>
+                        <div class="d-flex justify-content-center align-items-center border rounded m-3 p-3" style="background-color: rgb(243, 243, 243); min-height: 100px;">
+                            <h6 class="text-center text-muted">No reviews yet. Be the first to write one!</h6>
                         </div>
                     <% } %>
                 </div>   
@@ -644,20 +661,6 @@
                     return;   
                 }
 
-                if(!productId || !reviewText || !rating){
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: 'Something went wrong.',
-                        timer: 2000, 
-                        timerProgressBar: true, 
-                        showConfirmButton: false, 
-                        background: '#333', 
-                        color: '#ffffff', 
-                    });
-                    return;
-                }
-
                 if(!reviewText || !rating){
                     Swal.fire({
                         icon: 'warning',
@@ -687,18 +690,6 @@
                 }
 
                 try {
-                    Swal.fire({
-                        title: 'Saving...',
-                        background: '#333', 
-                        color: '#ffffff', 
-                        allowOutsideClick: false,
-                        didOpen: () => {
-                            Swal.showLoading();
-                        }
-                    });
-                    
-                    console.log("Adding review");
-                    console.log("data : ",reviewText , rating);
                     const response = await fetch(`/addProductReview/${productId}/review`, {
                         method: 'POST',
                         headers: {
@@ -711,7 +702,6 @@
                     let data;
                     if (contentType && contentType.includes('application/json')) {
                         data = await response.json();
-                        Swal.close();
                     } else {
                         window.location.href = `/login`;
                     }
@@ -753,6 +743,81 @@
                 }
             }
 
+           ////// To like or dislike the review \\\\\\
+           document.addEventListener('DOMContentLoaded', () => {
+            const likeButtons = document.querySelectorAll('.btn-like');
+            const dislikeButtons = document.querySelectorAll('.btn-dislike');
+
+            const handleReviewAction = async (reviewId, action) => {
+                try {
+                const response = await fetch(`/review/${reviewId}/like-dislike`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action }),
+                });
+
+                const contentType = response.headers.get('content-type');
+                let data;
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                    Swal.close();
+                } else {
+                    window.location.href = `/login`;
+                }
+
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: data.message,
+                        timer: 2000,
+                        timerProgressBar: true,
+                        showConfirmButton: false,
+                        background: '#333',
+                        color: '#ffffff',
+                    }).then(() => {
+                        location.reload();
+                    })
+                } else {
+                    Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message,
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#333',
+                    color: '#ffffff',
+                    });
+                }
+                } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Something went wrong. Please try again.',
+                    timer: 2000,
+                    timerProgressBar: true,
+                    showConfirmButton: false,
+                    background: '#333',
+                    color: '#ffffff',
+                });
+                }
+            };
+
+            likeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                const reviewId = button.getAttribute('data-review-id');
+                handleReviewAction(reviewId, 'like');
+                });
+            });
+
+            dislikeButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                const reviewId = button.getAttribute('data-review-id');
+                handleReviewAction(reviewId, 'dislike');
+                });
+            });
+            });
 
         </script>
 

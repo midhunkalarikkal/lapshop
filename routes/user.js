@@ -154,6 +154,8 @@ userRouter.get('/wallet',userAuth.isLoggedIn,userAuth.isBlocked,walletController
 
 //To add a review
 userRouter.post('/addProductReview/:productId/review', userAuth.isLoggedIn, userAuth.isBlocked, reviewController.addReview);
+//To like or dislike review
+userRouter.post('/review/:reviewId/like-dislike',userAuth.isLoggedIn, userAuth.isBlocked, reviewController.likeOrDislikeReview);
 
 //To get the 505 error page
 userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userController.getErrorPage)
