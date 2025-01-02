@@ -47,7 +47,7 @@
                                             </td>
                                             <td class="col-2">
                                                 <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
-                                                    <a href="/productDetail/" style="cursor: pointer;">
+                                                    <a href="/productDetail/<%= order[i].orderedItems[j].product._id %> " style="cursor: pointer;">
                                                         <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>"
                                                             alt="" class="product-img">
                                                     </a>
@@ -135,8 +135,8 @@
                             <div class="mt-4 mb-3 d-flex align-items-center justify-content-around p-3 bg-light border product-card">   
                                 <div class="image col-3">
                                     <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
-                                    <a href="/productDetail/" style="cursor: pointer;">
-                                        <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>" alt="" class="img-fluid">
+                                    <a href="/productDetail/<%= order[i].orderedItems[j].product._id %>" style="cursor: pointer;">
+                                        <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>" alt="Product image" class="img-fluid">
                                     </a>
                                     <% } %>
                                     <span class="product-price">Order id : <%= order[i]._id.toString().slice(-6)  %></span><br>

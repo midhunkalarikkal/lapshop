@@ -62,21 +62,23 @@
                                         <div class="items-wrap d-md-flex p-3">
                                             <div class="item-img col-md-4">
                                                 <span class="heads mx-3">Shipment <%= j+1 %> of <%= order[i].orderedItems.length %></span>
-                                                <a href="/productDetail/" style="cursor: pointer;">
+                                                <a href="/productDetail/<%= order[i].orderedItems[j].product._id %>" style="cursor: pointer;">
                                                     <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>"
                                                     alt="image loading" class="product-img shadow mt-2">
                                                 </a>
                                             </div>
                                             <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center mt-3 mt-md-0">
-                                                <span class="product-brand"><span class="heads">Brand : </span><%= order[i].orderedItems[j].product.brand.name %></span>
-                                                <span class="product-name"><span class="heads">Model : </span><%= order[i].orderedItems[j].product.name %></span>
-                                                <span class="product-name"><span class="heads">Descroiption : </span><%= order[i].orderedItems[j].product.description %></span>
+                                                <span class="product-brand"><span class="heads fw-bold">Brand : </span><%= order[i].orderedItems[j].product.brand.name %></span>
+                                                <span class="product-name"><span class="heads fw-bold">Model : </span><%= order[i].orderedItems[j].product.name %></span>
+                                                <span class="product-name"><span class="heads fw-bold">Descroiption : </span><%= order[i].orderedItems[j].product.description %></span>
                                             </div>
                                             <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center">
-                                                <span class="product-name"><span class="heads">Category : </span><%= order[i].orderedItems[j].product.category.name %></span>
-                                            <span class="product-name"><span class="heads">Black : </span><%= order[i].orderedItems[j].product.colour %></span>
-                                            <span class="product-name"><span class="heads">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
-                                            <span class="product-name"><span class="heads">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
+                                                <span class="product-name"><span class="heads fw-bold">Category : </span><%= order[i].orderedItems[j].product.category.name %></span>
+                                            <span class="product-name"><span class="heads fw-bold">Black : </span><%= order[i].orderedItems[j].product.colour %></span>
+                                            <span class="product-name"><span class="heads fw-bold">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
+                                            <span class="product-name"><span class="heads fw-bold">RAM Size : </span><%= order[i].orderedItems[j].ramSize %></span>
+                                            <span class="product-name"><span class="heads fw-bold">Weight : </span><%= order[i].orderedItems[j].weight %></span>
+                                            <span class="product-name"><span class="heads fw-bold">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
                                         </div>
                                     </div>
                                     <% } %>
