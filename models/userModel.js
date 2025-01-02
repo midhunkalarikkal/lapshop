@@ -24,7 +24,8 @@ const userSchema = new mongoose.Schema({
     },
     profileimage : {
         type : String,
-        requird : true
+        requird : true,
+        default : ''
     },
     referalCode : {
         type : String,

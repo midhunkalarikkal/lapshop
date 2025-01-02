@@ -338,7 +338,7 @@ const postLogin = async (req, res) => {
                 })
             } if (result) {
                 req.session.user = user;
-                req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id}
+                req.session.userNC = { userName : user.fullname , cartItemCount , userId : req.session.user._id, userProfile : user.profileimage}
                 user.loggedIn = true
                 user.save()
                 return res.status(200).json({
@@ -1021,6 +1021,7 @@ const getProductDetail = async(req,res)=>{
     try{
         let cartProdId = [];
         let wishlistProdId = [];
+        let productDelivered = false;
         const productId = req.params.productId;
         const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}]);
         const productCategory = productData.category
@@ -1036,10 +1037,9 @@ const getProductDetail = async(req,res)=>{
             }
         }
 
-        let productDelivered = false;
         if(req.session.user){
             const user = req.session.user;
-            const wishlist = await Wishlist.find({ userId : user._id})
+            const wishlist = await Wishlist.find({ userId : user._id});
             if(wishlist != ""){
                 wishlistProdId = wishlist[0].products.map(item => item.product);
             }
