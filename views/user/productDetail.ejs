@@ -199,11 +199,11 @@
                             <% if (wishlistProdId !="" ) { %>
                                 <% for(let i=0; i < wishlistProdId.length; i++){ %>
                                     <% if(wishlistProdId[i] == productData._id.toString()){ %>
-                                        <button class="btn addtocart-btn px-3 shadow d-none d-lg-block"
+                                        <button class="btn addtocart-btn px-3 d-none d-lg-block mx-2"
                                             onclick="getWishlist()"><i
                                             class="fa fa-heart mr-1"></i> Wishlist
                                         </button>
-                                        <button class="btn addtocart-btn px-3 btn-sm shadow d-block d-lg-none"
+                                        <button class="btn addtocart-btn px-3 btn-sm d-block d-lg-none mx-2"
                                             onclick="getWishlist(this)"><i
                                             class="fa fa-heart mr-1"></i> Wishlist
                                         </button>
@@ -340,9 +340,69 @@
                     </tbody>
                 </table>
             </div>
+
+            <!-- Add review -->
+            <div class="container-fluid py-3 mt-2 mx-5">
+                <h5 class="section-title my-2 mx-3 fw-bold">Add Your Review</h5>
+                <div class="d-flex mb-4 flex-column flex-md-row align-items-start bg-light p-3 border rounded col-md-6">
+                    <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                    <div class="mx-3 w-100">
+                        <label for="userName" class="mx-2 fw-bold">User name</label>
+                        <textarea class="form-control mb-2" rows="4" placeholder="Write your review..." id="reviewText"></textarea>            
+                        <div class="mb-2 col-6">
+                            <label for="rating" class="form-label">Rating</label>
+                            <select class="form-select" id="rating">
+                                <option value="1">1 Star</option>
+                                <option value="2">2 Stars</option>
+                                <option value="3">3 Stars</option>
+                                <option value="4">4 Stars</option>
+                                <option value="5">5 Stars</option>
+                            </select>
+                        </div>            
+                        <button class="btn btn-primary btn-sm" type="button" id="submitReview">
+                            Submit Review
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+
+            <!-- reviews -->
+            <div class="container-fluid py-3 mt-2 mx-5">
+                <h5 class="section-title my-1 mx-3 fw-bold">Reviews</h5>
+                <div class="reviews align-items-start p-3">
+                    <!-- users reviews -->
+                    <div class="d-flex mb-4 flex-column flex-md-row align-items-start col-md-6">
+                        <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                        <div class="mx-3">
+                            <p class="fw-bold mb-1">User Name</p>
+                            <p class="mb-1">Review about the product...</p>
+                            
+                            <div class="mb-2">
+                                <span class="text-warning">&#9733;</span>
+                                <span class="text-warning">&#9733;</span>
+                                <span class="text-warning">&#9733;</span>
+                                <span class="text-warning">&#9733;</span>
+                                <span class="text-muted">&#9733;</span>
+                            </div>
+            
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-outline-success btn-sm me-2" type="button">
+                                    <i class="fas fa-thumbs-up"></i> Useful
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" type="button">
+                                    <i class="fas fa-thumbs-down"></i> Dislike
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+
             <!-- Same category products -->
             <% if(productData != "" && sameCategoryProduct !="" ){ %>
-            <div class="container-fluid py-5 mt-2">
+            <div class="container-fluid py-5 mt-2 mx-5">
                 <h5 class="section-title my-2 mx-3 fw-bold">Same category products</h5>
                 <section class="mt-2" id="sectiontwo">
                     <div class="col-12">

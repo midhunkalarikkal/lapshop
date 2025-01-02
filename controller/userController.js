@@ -1,4 +1,5 @@
 const HomeCarousel = require('../models/homeCarousel');
+const Review = require('../models/reviewModel');
 const Category = require('../models/categoryModel');
 const Wishlist = require('../models/wishlistModel');
 const AdCarousel = require('../models/adCarousel');
@@ -1025,6 +1026,7 @@ const getProductDetail = async(req,res)=>{
         const productCategory = productData.category
         const sameCategoryProduct = await Product.find({category : productCategory._id});
         const mostPopular = await Product.find({category : productCategory.id, noOfStock : {$lt : 10}}).limit(5);
+        const reviews = await Review.find({ productId }).populate('userId','name').sort({ createdAt : -1});
         let userDetails = req.session.userNC
         if(userDetails && userDetails !== undefined && userDetails !== ""){
             let userId = userDetails.userId
@@ -1042,7 +1044,7 @@ const getProductDetail = async(req,res)=>{
             }
         }
         
-        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId, mostPopular})
+        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId, mostPopular, reviews})
     }catch(error){
         console.log("error : ",error);
         return res.redirect('/errorPage')
