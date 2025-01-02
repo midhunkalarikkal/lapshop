@@ -1,12 +1,30 @@
 <!-- User navbar -->
 <%-include("../userpartials/navbar.ejs")%>
-
+<head>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+      </style>
+</head>
     <section class="view">
         <div class="cart-wrap mt-5">
             <div class="container">
+                <canvas id="confettiCanvas"></canvas>
                 <div class="row d-flex justify-content-center">
-                    <div class="col-md-8">    
-                        <div class="product-card-each mt-4 shadow p-5 mb-4">
+                    <div class="col-12">    
+                        <div class="product-card-each mt-4 p-5 mb-4">
                             <div class="head d-flex flex-column flex-md-row align-items-center justify-content-center">
                                 <lord-icon
                                     src="https://cdn.lordicon.com/guqkthkk.json"
@@ -18,26 +36,36 @@
                                 <h4 class="text-center">Your order has been placed.</h4>
                             </div>
                             <div class="thankyounote">
-                                <p class="text-center">Thank you for your purchase from LapShop! Your order is confirmed. Happy shopping!</p>
+                                <% if(data.paymentStatus === true){ %>
+                                    <p class="text-center">Thank you for your purchase from LapShop! Your order is confirmed. Happy shopping!</p>
+                                <% }else{ %>
+                                    <p class="text-center">Thank you for your purchase from LapShop! Your order has been saved. Once you complete the payment, your order will be confirmed.</p>
+                                <% } %>
                             </div>
                             <div class="center d-flex flex-column flex-md-row">
                                 <div class="left col-md-6">
                                     <div class="Order details mt-4">
                                         <% if(data && data !== ""){ %>
-                                        <h6>Expected delivery : <span> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
-                                        <h6>Payment : <%= data.paymentMethod %></h6>
+                                        <h6 class="fw-bold">Expected delivery : <span class="fw-normal"> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
+                                        <h6 class="fw-bold">Payment : <span class="fw-normal"><%= data.paymentMethod %></span></h6>
                                         <% if(data.paymentStatus === true){ %>
-                                            <h6>Payment status : Success</h6>
+                                            <h6 class="fw-bold">Payment status : <span class="fw-normal">Success</span></h6>
                                         <% }else{ %>
-                                            <h6>Payment status : Pending</h6>
-                                            <p class="p-small">Your order will ship after completing the payent.</p>
+                                            <h6 class="fw-bold">Payment status : <span class="fw-normal">Pending</span></h6>
+                                            <p class="p-small">To proceed with your order, please complete the payment. You can find the payment option available in your Orders list.</p>
                                         <% } %>
-                                        <h6>Amount : ₹ <span class="text-success"><%= data.orderTotal %></span></h6>
+                                        <h6 class="fw-bold">Amount : ₹ <span class="text-success fw-normal"><%= data.orderTotal %></span></h6>
                                         <% if(data.walletDebitedAmount > 0){ %>
-                                            <h6>Wallet debited : ₹ <span class="text-success"><%= data.walletDebitedAmount %></span></h6>
+                                            <h6 class="fw-bold">Wallet debited : ₹ <span class="text-success fw-normal"><%= data.walletDebitedAmount %></span></h6>
                                         <% } %>
-                                        <h6>Deliverying to :</h6>
-                                        <p class=""><%= data.address.name %>, <%= data.address.addressLine %>, Phone : <%= data.address.phone %>, <%= data.address.city %>, <%= data.address.distrcit %>, <%= data.address.state %>, <%= data.address.pincode %>, <%= data.address.country %></p>
+                                        <h6 class="fw-bold mt-4">Deliverying to :</h6>
+                                        <p class="fw-normal">
+                                            <%= data.address.name %>, <br>
+                                            <%= data.address.addressLine %>, <br>
+                                            Phone : <%= data.address.phone %>,<br>
+                                             <%= data.address.city %>, <%= data.address.distrcit %>, <br>
+                                             <%= data.address.state %>, <%= data.address.pincode %>, <br>
+                                             <%= data.address.country %></p>
                                         <% } %>
                                     </div>
                                 </div>
@@ -48,6 +76,7 @@
                                         state="loop-cycle"
                                         style="width:250px;height:250px">
                                     </lord-icon>
+                                    
                                 </div>
                             </div>
                             <div class="buttons d-flex mt-3 d-flex justify-content-center">
@@ -74,6 +103,56 @@
             window.location.href = "/shop"
         }
 
+        const canvas = document.getElementById('confettiCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Resize canvas to fit screen
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    // Create confetti particles
+    const confettiParticles = [];
+    for (let i = 0; i < 200; i++) {
+      confettiParticles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height - canvas.height,
+        r: Math.random() * 4 + 1,
+        d: Math.random() * 10 + 5,
+        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+        tilt: Math.random() * 10 - 5,
+        tiltAngleIncrement: Math.random() * 0.1 + 0.05,
+        tiltAngle: 0
+      });
+    }
+
+    // Animate confetti
+    function drawConfetti() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      confettiParticles.forEach(p => {
+        ctx.beginPath();
+        ctx.lineWidth = p.r;
+        ctx.strokeStyle = p.color;
+        ctx.moveTo(p.x + p.tilt + p.r, p.y);
+        ctx.lineTo(p.x + p.tilt, p.y + p.r * 2);
+        ctx.stroke();
+
+        // Update particle position
+        p.y += p.d;
+        p.tiltAngle += p.tiltAngleIncrement;
+        p.tilt = Math.sin(p.tiltAngle) * 10;
+
+        // Reset position if out of bounds
+        if (p.y > canvas.height) {
+          p.x = Math.random() * canvas.width;
+          p.y = -20;
+          p.tilt = Math.random() * 10 - 5;
+        }
+      });
+
+      requestAnimationFrame(drawConfetti);
+    }
+
+    drawConfetti();
     </script>
 
     <!-- User footer -->

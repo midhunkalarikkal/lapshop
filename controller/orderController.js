@@ -92,20 +92,20 @@ const placeOrder = async(req,res)=>{
     
         const orderSaved = await newOrder.save()
         if (orderSaved) {
-                await Promise.all(cart[0].items.map(async (item) => {
-                    const product = await Product.findById(item.product);
-                    product.noOfStock -= item.quantity;
-                    await product.save();
-                }));
-                cart[0].items = [];
-                cart[0].totalCartPrice = 0;
-                cart[0].totalCartDiscountPrice = 0;
-                cart[0].couponApplied = false
-                cart[0].couponAmount = 0
-                cart[0].couponCode = ""
-                req.session.userNC.cartItemCount = cart[0].items.length
-                await cart[0].save()
-            return res.redirect('/paymentSuccess');
+            await Promise.all(cart[0].items.map(async (item) => {
+                const product = await Product.findById(item.product);
+                product.noOfStock -= item.quantity;
+                await product.save();
+            }));
+            cart[0].items = [];
+            cart[0].totalCartPrice = 0;
+            cart[0].totalCartDiscountPrice = 0;
+            cart[0].couponApplied = false
+            cart[0].couponAmount = 0
+            cart[0].couponCode = ""
+            req.session.userNC.cartItemCount = cart[0].items.length
+            await cart[0].save()
+            return res.redirect('/paymentSuccess');    
         } 
     }catch(error){
         return res.redirect('/errorPage')
