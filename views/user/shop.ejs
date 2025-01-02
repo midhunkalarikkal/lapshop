@@ -228,25 +228,34 @@
                                                     <span class="offer-price price fw-bold">M.R.P ₹<%= product.offerPrice %></span>
                                                 </div>
                                                 <div class="align-items-center justify-content-between d-flex">
-                                                    <% if (cartProdId !="" ) { %>
-                                                        <% for(let i=0; i < cartProdId.length; i++){ %>
-                                                            <% if(cartProdId[i] == product._id.toString()){ %>
+                                                    <% if (cartProdId != "" && cartProdId.length > 0) { %>
+                                                        <% let isInCart = false; %>
+                                                        <% for (let i = 0; i < cartProdId.length; i++) { %>
+                                                            <% if (cartProdId[i] == product._id.toString()) { %>
                                                                 <span class="product-brand" style="color: rgb(255, 198, 9);" role="button" onclick="goToCart()">Already in your cart</span>
-                                                                <span class="offer-price price">
-                                                                    <% if(!isNewProduct){ %>                         
-                                                                        <span class="badge bg-warning text-white" role="button" onclick="goToCart()">Cart</span>
-                                                                    <% } %>
+                                                                <span class="offer-price price">                  
+                                                                    <span class="badge bg-warning text-white" role="button" onclick="goToCart()">Cart</span>
                                                                 </span>
+                                                                <% isInCart = true; %>
                                                                 <% break; %>
-                                                            <% }else{ %>
-                                                                <span class="product-brand">Available</span>
-                                                                <span class="offer-price price">
-                                                                    <% if(!isNewProduct){ %>                         
-                                                                        <span class="badge">New</span>
-                                                                    <% } %>
-                                                                </span>
-                                                            <% } %>                                                
+                                                            <% } %>
                                                         <% } %>
+                                                    
+                                                        <% if (!isInCart) { %>
+                                                            <span class="product-brand">Available</span>
+                                                            <span class="offer-price price">
+                                                                <% if (!isNewProduct) { %>                         
+                                                                    <span class="badge">New</span>
+                                                                <% } %>
+                                                            </span>
+                                                        <% } %>
+                                                    <% } else { %>
+                                                        <span class="product-brand">Available</span>
+                                                        <span class="offer-price price">
+                                                            <% if (!isNewProduct) { %>                         
+                                                                <span class="badge">New</span>
+                                                            <% } %>
+                                                        </span>
                                                     <% } %>
                                                 </div>
                                             </div>
@@ -454,7 +463,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                console.log("data : ",data);
                 let productData = data.productData
                 let totalPages = data.totalPages
                 let prodId = data.prodId
@@ -464,10 +473,10 @@
                 const currentDate = new Date();
                 const fiveDaysAgo = new Date(currentDate);
                 fiveDaysAgo.setDate(currentDate.getDate() - 5);
-
+                
                 ////// Emptying the child elements of the productCardRow div \\\\\\
                 $("#productCardRow").empty()
-
+                
                 productData.forEach((product) => {
                     const isNewProduct = new Date(product.created) >= fiveDaysAgo;
                     const productDiv = $(
@@ -476,64 +485,30 @@
                                 <a href='/productDetail/${product._id}' class='product-outline'>
                                     <div class='card-header product-img position-relative overflow-hidden  p-0'>
                                         <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
-                                        
                                     </div>
-                                    <div class='card-body'>
-                                        <h6 class='product-name text-center mb-2'> 
-                                            ${product.name}
-                                            `+
-                                            (isNewProduct ? `<span class='badge'>New</span>` : '')
-                                            +` <br>
-                                            <span class="product-brand">${product.brand.name.toUpperCase()}</span>
-                                        </h6>
-                                        <div class='d-flex align-items-center justify-content-center'>
-                                            <h6 class='offer-price text-danger mx-2'>₹${product.discountPercentage}%</h6>
-                                            <h5 class='offer-price'>₹${product.offerPrice}</h5>
-                                            <h6 class='real-price small price mx-2 d-none d-md-block'>M.R.P ₹<del class='real-price'>${product.realPrice}</del></h6>
+                                    <div class='card-body' style="border-top: 1px solid rgb(218, 216, 216);">
+                                        <div class="p-2 card-details">
+                                            <div class="align-items-center justify-content-between d-flex">
+                                                <span class="product-brand">${product.brand.name.toUpperCase()}</span>
+                                                <span class="real-price price">M.R.P ₹<del class="text-danger">${product.realPrice}</del></span>
+                                            </div>
+                                            <div class="align-items-center justify-content-between d-flex">
+                                                <span class="product-name">${product.name}</span>
+                                                <span class="offer-price price fw-bold">M.R.P ₹${product.offerPrice}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </a>
-                                
                             </div>
                         </div>`
                     );
 
                     ////// Dynamically adding the wishlist button to the product \\\\\\
-                    const productCardHeader = productDiv.find('.card-header.product-img');
-                    if (prodId != "") {
-                        for (let i = 0; i < prodId.length; i++) {
-                            if (prodId[i] == product._id.toString()) {
-                                const wishlistButton = $(`
-                                    <a href="#" class="position-absolute" style="top: 8px; right: 10px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
-                                        <i class="fa-solid fa-heart wish-btn"></i> 
-                                    </a>
-                                `);
-                                productCardHeader.append(wishlistButton);
-                            }
-                        }
-                    }
-
-                    const defaultWishlistButton = $(`
-                        <a href="#" class="position-absolute" style="top: 8px; right: 10px; z-index: 1;" data-product-id="${product._id}" onclick="addToWishlist(this)">
-                            <i class="fa-regular fa-heart wish-btn"></i> 
-                        </a>
-                    `);
-                    productCardHeader.append(defaultWishlistButton);
-
-                    ////// Dynamically adding the add to cart / go to cart button to the product \\\\\\
-                    const productCardFooter = productDiv.find('.card.product-item');
-                    let defaultAddToCartButton = $(`
-                        <button class="card-footer d-flex justify-content-center"
-                            data-prod-id="${product._id}"
-                            onclick="addToCart(this)">
-                            <span class="d-flex flex-row align-items-center justiy-content-center">
-                                <i class="fas fa-shopping-cart"></i> <span class="mx-1">Add to cart</span>
-                            </span>
-                        </button>
-                    `);
+                    const productCardFooter = productDiv.find('.card-details');
 
                     if (cartProdId != "") {
                         let isInCart = false;
+
                         for (let i = 0; i < cartProdId.length; i++) {
                             if (cartProdId[i] == product._id.toString()) {
                                 isInCart = true;
@@ -541,33 +516,41 @@
                             }
                         }
 
+                        // If the product is in the cart, show "Already in your cart"
                         if (isInCart) {
-                            ////// If product is in cart, create the go to cart button \\\\\\
                             const goToCartButton = $(`
-                                <button class="card-footer d-flex justify-content-center" onclick="goToCart()">
-                                    <span class="d-flex flex-row align-items-center justiy-content-center">
-                                        <i class="fas fa-shopping-cart"></i> <span class="mx-1">Go to cart</span>
+                                <div class="align-items-center justify-content-between d-flex">
+                                    <span class="product-brand" style="color: rgb(255, 198, 9);" role="button" onclick="goToCart()">Already in your cart</span>
+                                    <span class="offer-price price">
+                                        <span class="badge bg-warning text-white" role="button" onclick="goToCart()">Cart</span>
                                     </span>
-                                </button>
+                                </div>
                             `);
-                            defaultAddToCartButton = goToCartButton
-                            productCardFooter.append(defaultAddToCartButton);
+                            productCardFooter.append(goToCartButton);
                         } else {
-                            ////// If product is not in cart, create the add to cart button \\\\\\
+                            // If not in the cart, show "Available" and "New" badge (if applicable)
                             const addToCartButton = $(`
-                                <button class="card-footer d-flex justify-content-center"
-                                    data-prod-id="${product._id}"
-                                    onclick="addToCart(this)">
-                                    <span class="d-flex flex-row align-items-center justiy-content-center">
-                                        <i class="fas fa-shopping-cart"></i> <span class="mx-1">Add to cart</span>
+                                <div class="align-items-center justify-content-between d-flex">
+                                    <span class="product-brand">Available</span>
+                                    <span class="offer-price price">
+                                        ${!isNewProduct ? `<span class="badge">New</span>` : ""}
                                     </span>
-                                </button>
+                                </div>
                             `);
-                            defaultAddToCartButton = addToCartButton
-                            productCardFooter.append(defaultAddToCartButton);
+                            productCardFooter.append(addToCartButton);
                         }
-                    }
-                    productCardFooter.append(defaultAddToCartButton);
+                    } else {
+                        // Handle case when `cartProdId` is empty
+                        const addToCartButton = $(`
+                            <div class="align-items-center justify-content-between d-flex">
+                                <span class="product-brand">Available</span>
+                                <span class="offer-price price">
+                                    ${!isNewProduct ? `<span class="badge">New</span>` : ""}
+                                </span>
+                            </div>
+                        `);
+                        productCardFooter.append(addToCartButton);
+}
                        
 
                     ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
@@ -589,6 +572,7 @@
                 }
             })
             .catch(error => {
+                console.log("error : ",error);
                 Swal.fire({
                     icon: 'info',
                     title: 'Error!',
