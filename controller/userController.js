@@ -1036,15 +1036,25 @@ const getProductDetail = async(req,res)=>{
             }
         }
 
+        let deliveredProducts;
         if(req.session.user){
             const user = req.session.user;
             const wishlist = await Wishlist.find({ userId : user._id})
             if(wishlist != ""){
                 wishlistProdId = wishlist[0].products.map(item => item.product);
             }
+
+            const deliveredOrders = await Order.find(
+                { userId: user._id, status: "Delivered" },
+                { orderedItems: 1 } 
+            );
+            
+            deliveredProducts = deliveredOrders
+                .flatMap(order => order.orderedItems.map(item => item.product)) 
+                .filter((value, index, self) => self.indexOf(value) === index);          
         }
         
-        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId, mostPopular, reviews})
+        return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId, mostPopular, reviews, deliveredProducts})
     }catch(error){
         console.log("error : ",error);
         return res.redirect('/errorPage')
