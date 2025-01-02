@@ -248,12 +248,15 @@
                             <a href="/productDetail/<%= product._id %>">
                                 <div class="card mb-2 p-1">
                                     <img src="/static/images/ProductImages/<%= product.images[0] %>" class="card-img-top" alt="<%= product.name %>">
-                                    <div class="card-body p-2">
-                                        <h6 class="card-title mb-1"><%= product.name %></h6>
-                                        <p class="card-text mb-1"><small>Brand: <strong><%= product.brand.name %></strong></small></p>
-                                        <p class="card-text mb-1 text-danger">
-                                            <small>- <%= product.discountPercentage %>%  <span class="text-success">₹<%= product.realPrice %></span></small>
-                                        </p>
+                                    <div class="card-body p-2" style="border-top: 1px solid rgb(218, 216, 216);">
+                                        <div class="align-items-center justify-content-between d-flex">
+                                            <span class="small text-muted"><%= product.brand.name %></span>
+                                            <span class="small fw-bold"><%= product.name %></span>
+                                        </div>
+                                        <div class="align-items-center justify-content-between d-flex">
+                                            <span class="text-danger small">- <%= product.discountPercentage %>%</span>
+                                            <span class="text-success">₹<%= product.realPrice %></span>
+                                        </div>
                                     </div>
                                 </div>
                             </a>
@@ -379,24 +382,26 @@
 
             <!-- Review -->
             <div class="d-md-flex">
-                <div class="col-6">
+                <div class="col-md-6">
                     <!-- Add review -->
                     <% if(productData != ""){ %>
                         <input type="hidden" value="<%= productData._id %>" id="reviewProductId">
                         <input type="hidden" value="<%= productDelivered %>" id="productDelivered">
-                        <% } %>
-                        <h5 class="section-title my-2 mx-3 fw-bold">Add your review</h5>
-                    <div class="d-flex mb-4 flex-column flex-md-row align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
-                        <% if(userDetails){ %>
-                            <% if(userDetails.userProfile !== ""){ %>
-                                <img src="/static/images/UserProfile/<%= userDetails.userProfile %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                    <% } %>
+                    <h5 class="section-title my-2 mx-3 fw-bold">Add your review</h5>
+                    <div class="d-flex mb-4 align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
+                        <div class="profile-image col-1">
+                            <% if(userDetails){ %>
+                                <% if(userDetails.userProfile !== ""){ %>
+                                    <img src="/static/images/UserProfile/<%= userDetails.userProfile %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                <% }else{ %>
+                                    <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                <% } %>
                             <% }else{ %>
                                 <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
                             <% } %>
-                        <% }else{ %>
-                            <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
-                        <% } %>
-                        <div class="mx-3 w-100">
+                        </div>
+                        <div class="mx-3 col-11">
                             <% if(userDetails){ %>
                                 <label for="userName" class="mx-2 fw-bold"><%= userDetails.userName %></label>
                                 <% }else{ %>
@@ -420,18 +425,20 @@
                     </div>
                 </div>
 
-                <div class="col-6">
+                <div class="col-md-6">
                     <!-- reviews -->
                     <h5 class="section-title my-2 mx-3 fw-bold">Top reviews</h5>
                     <% if(reviews && reviews.length > 0) { %>
                         <% reviews.forEach((review, index) => { %>
-                            <div class="d-flex mb-4 flex-column flex-md-row align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
-                                <% if(review.userId.profileimage && review.userId.profileimage != "" ){ %>
-                                    <img src="/static/images/UserProfile/<%= review.userId.profileimage %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
-                                <% }else{ %>
-                                    <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
-                                <% } %>
-                                <div class="mx-3">
+                            <div class="d-flex mb-2 border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
+                                <div class="profile-image col-1">
+                                    <% if(review.userId.profileimage && review.userId.profileimage != "" ){ %>
+                                        <img src="/static/images/UserProfile/<%= review.userId.profileimage %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <% }else{ %>
+                                        <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                    <% } %>
+                                </div>
+                                <div class="mx-3 col-11">
                                     <p class="fw-bold mb-1"><%= review.userId.fullname %></p>
                                     <p class="mb-1"><%= review.reviewText %></p>
                                             
