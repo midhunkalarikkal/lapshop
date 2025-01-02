@@ -239,6 +239,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!--  Most popular products  -->
                 <% if(mostPopular.length > 0) { %>
                     <div class="col-2 p-1 d-none d-md-block" id="product-detail" style="background-color: rgb(243, 243, 243);">
                     <h6 class="fw-bold p-2"> Most popular</h6>
@@ -258,6 +260,76 @@
                         <% }) %>
                     </div>
                 <% } %>
+                
+                <!--  Technical details table for small devices -->
+                <div class="px-2 d-block d-md-none">
+                    <h5>Technical details</h5>
+                    <table class="table table-bordered table-hover shadow-sm">
+                        <tbody>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Name</td>
+                                <td class="px-3 py-2"><%= productData.name %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Brand</td>
+                                <td class="px-3 py-2"><%= productData.brand.name %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Category</td>
+                                <td class="px-3 py-2"><%= productData.category.name %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Colour</td>
+                                <td class="px-3 py-2"><%= productData.colour %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Screen Size</td>
+                                <td class="px-3 py-2"><%= productData.screenSize %> Inch</td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Hard Drive Size</td>
+                                <td class="px-3 py-2"><%= productData.hdSize %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Model</td>
+                                <td class="px-3 py-2"><%= productData.cpuModel %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Speed</td>
+                                <td class="px-3 py-2"><%= productData.cpuSpeed %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">RAM Size</td>
+                                <td class="px-3 py-2"><%= productData.ramSize %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Operating System</td>
+                                <td class="px-3 py-2"><%= productData.os %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Graphics Card</td>
+                                <td class="px-3 py-2"><%= productData.gpu %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery</td>
+                                <td class="px-3 py-2"><%= productData.battery %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery energy</td>
+                                <td class="px-3 py-2"><%= productData.batteryEnergy %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Voltage</td>
+                                <td class="px-3 py-2"><%= productData.voltage %></td>
+                            </tr>
+                            <tr>
+                                <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Weight</td>
+                                <td class="px-3 py-2"><%= productData.weight %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
             <% }else{ %>
                 <div class="container my-4">
                     <div class="row justify-content-center">
@@ -271,143 +343,15 @@
             <% } %>
         </div>
 
-        <% if(productData !="" ){ %>
-            <!-- Technical details for small devices -->
-            <div class="px-2 d-block d-md-none">
-                <h5>Technical details</h5>
-                <table class="table table-bordered table-hover shadow-sm">
-                    <tbody>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Name</td>
-                            <td class="px-3 py-2"><%= productData.name %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Brand</td>
-                            <td class="px-3 py-2"><%= productData.brand.name %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Category</td>
-                            <td class="px-3 py-2"><%= productData.category.name %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Colour</td>
-                            <td class="px-3 py-2"><%= productData.colour %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Screen Size</td>
-                            <td class="px-3 py-2"><%= productData.screenSize %> Inch</td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Hard Drive Size</td>
-                            <td class="px-3 py-2"><%= productData.hdSize %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Model</td>
-                            <td class="px-3 py-2"><%= productData.cpuModel %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">CPU Speed</td>
-                            <td class="px-3 py-2"><%= productData.cpuSpeed %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">RAM Size</td>
-                            <td class="px-3 py-2"><%= productData.ramSize %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Operating System</td>
-                            <td class="px-3 py-2"><%= productData.os %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Graphics Card</td>
-                            <td class="px-3 py-2"><%= productData.gpu %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery</td>
-                            <td class="px-3 py-2"><%= productData.battery %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Battery energy</td>
-                            <td class="px-3 py-2"><%= productData.batteryEnergy %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Voltage</td>
-                            <td class="px-3 py-2"><%= productData.voltage %></td>
-                        </tr>
-                        <tr>
-                            <td class="table-left-bg font-weight-bold px-3 py-2" style="width: 30%; background-color: rgb(204, 204, 204);">Weight</td>
-                            <td class="px-3 py-2"><%= productData.weight %></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <!-- Add review -->
-            <div class="container-fluid py-3 mt-2 mx-5">
-                <h5 class="section-title my-2 mx-3 fw-bold">Add Your Review</h5>
-                <div class="d-flex mb-4 flex-column flex-md-row align-items-start bg-light p-3 border rounded col-md-6">
-                    <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
-                    <div class="mx-3 w-100">
-                        <label for="userName" class="mx-2 fw-bold">User name</label>
-                        <textarea class="form-control mb-2" rows="4" placeholder="Write your review..." id="reviewText"></textarea>            
-                        <div class="mb-2 col-6">
-                            <label for="rating" class="form-label">Rating</label>
-                            <select class="form-select" id="rating">
-                                <option value="1">1 Star</option>
-                                <option value="2">2 Stars</option>
-                                <option value="3">3 Stars</option>
-                                <option value="4">4 Stars</option>
-                                <option value="5">5 Stars</option>
-                            </select>
-                        </div>            
-                        <button class="btn btn-primary btn-sm" type="button" id="submitReview">
-                            Submit Review
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-
-            <!-- reviews -->
-            <div class="container-fluid py-3 mt-2 mx-5">
-                <h5 class="section-title my-1 mx-3 fw-bold">Reviews</h5>
-                <div class="reviews align-items-start p-3">
-                    <!-- users reviews -->
-                    <div class="d-flex mb-4 flex-column flex-md-row align-items-start col-md-6">
-                        <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
-                        <div class="mx-3">
-                            <p class="fw-bold mb-1">User Name</p>
-                            <p class="mb-1">Review about the product...</p>
-                            
-                            <div class="mb-2">
-                                <span class="text-warning">&#9733;</span>
-                                <span class="text-warning">&#9733;</span>
-                                <span class="text-warning">&#9733;</span>
-                                <span class="text-warning">&#9733;</span>
-                                <span class="text-muted">&#9733;</span>
-                            </div>
-            
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-outline-success btn-sm me-2" type="button">
-                                    <i class="fas fa-thumbs-up"></i> Useful
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm" type="button">
-                                    <i class="fas fa-thumbs-down"></i> Dislike
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-
+        <div class="mx-md-5">
             <!-- Same category products -->
             <% if(productData != "" && sameCategoryProduct !="" ){ %>
-            <div class="container-fluid py-5 mt-2 mx-5">
-                <h5 class="section-title my-2 mx-3 fw-bold">Same category products</h5>
-                <section class="mt-2" id="sectiontwo">
-                    <div class="col-12">
-                        <div class="scroll-container">
-                            <div class="d-flex overflow-auto p-2">
+                <div class="container-fluid py-5 mt-2">
+                    <h5 class="section-title my-2 mx-3 fw-bold">Same category products</h5>
+                    <section class="mt-2" id="sectiontwo">
+                        <div class="col-12">
+                            <div class="scroll-container">
+                                <div class="d-flex overflow-auto p-2">
                                     <% sameCategoryProduct.forEach((product , index)=>{ %>
                                         <a href="/productDetail/<%= product._id %>" class="product-outline">
                                             <div class="box-two mx-2 border-0 small-card p-2" style="flex: 0 0 auto;background-color: rgb(243, 243, 243);">
@@ -432,7 +376,65 @@
                     </section>
                 </div>
             <% } %>
-        <% } %>
+
+            <!-- Review -->
+            <div class="d-md-flex">
+                <div class="col-6">
+                    <!-- Add review -->
+                    <h5 class="section-title my-2 mx-3 fw-bold">Add your review</h5>
+                    <div class="d-flex mb-4 flex-column flex-md-row align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
+                        <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                        <div class="mx-3 w-100">
+                            <label for="userName" class="mx-2 fw-bold">User name</label>
+                            <textarea class="form-control mb-2" rows="4" placeholder="Write your review..." id="reviewText"></textarea>            
+                            <div class="mb-2 col-6">
+                                <label for="rating" class="form-label">Rating</label>
+                                <select class="form-select" id="rating">
+                                    <option value="1">1 Star</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="5">5 Stars</option>
+                                </select>
+                            </div>            
+                            <button class="btn btn-primary btn-sm" type="button" id="submitReview">
+                                Submit Review
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <!-- reviews -->
+                    <h5 class="section-title my-2 mx-3 fw-bold">Top reviews</h5>
+                    <div class="d-flex mb-4 flex-column flex-md-row align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
+                        <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                        <div class="mx-3">
+                            <p class="fw-bold mb-1">User Name</p>
+                            <p class="mb-1">Review about the product...</p>
+                                    
+                                <div class="mb-2">
+                                    <span class="text-warning">&#9733;</span>
+                                    <span class="text-warning">&#9733;</span>
+                                    <span class="text-warning">&#9733;</span>
+                                    <span class="text-warning">&#9733;</span>
+                                    <span class="text-muted">&#9733;</span>
+                                </div>
+                    
+                            <div class="d-flex align-items-center">
+                                <button class="btn btn-outline-success btn-sm me-2" type="button">
+                                    <i class="fas fa-thumbs-up"></i> Useful
+                                </button>
+                                <button class="btn btn-outline-danger btn-sm" type="button">
+                                    <i class="fas fa-thumbs-down"></i> Dislike
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>   
+            </div>
+
+        </div>
     </section>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
