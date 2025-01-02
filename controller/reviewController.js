@@ -10,13 +10,11 @@ const addReview = async (req,res) => {
         const { productId } = req.params;
         const userId = req.session.user._id;
 
-        // Validate product
         const product = await Product.findById(productId);
         if (!product) {
             return res.status(404).json({ success: false, message: 'Product not found' });
         }
 
-        // Save the review
         const newReview = new Review({
             productId,
             userId,
@@ -25,10 +23,8 @@ const addReview = async (req,res) => {
         });
 
         const review = await newReview.save();
-        console.log("review : ",review)
         res.status(201).json({ success: true, message: 'Review added successfully' });
     }catch(error){
-        console.log("error : ",error);
         return redirect('/errorPage');
     }
 }

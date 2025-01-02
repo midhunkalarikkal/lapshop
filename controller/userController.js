@@ -1027,7 +1027,7 @@ const getProductDetail = async(req,res)=>{
         const productCategory = productData.category
         const sameCategoryProduct = await Product.find({category : productCategory._id});
         const mostPopular = await Product.find({category : productCategory.id, noOfStock : {$lt : 10}}).limit(5);
-        const reviews = await Review.find({ productId }).populate('userId','name').sort({ createdAt : -1});
+        const reviews = await Review.find({ productId }).populate([ {path : "userId" } ]).sort({ createdAt : -1});
         let userDetails = req.session.userNC
         if(userDetails && userDetails !== undefined && userDetails !== ""){
             let userId = userDetails.userId
