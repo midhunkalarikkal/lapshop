@@ -381,19 +381,26 @@
             <div class="d-md-flex">
                 <div class="col-6">
                     <!-- Add review -->
+                    <% if(productData != ""){ %>
+                        <input type="hidden" value="<%= productData._id %>" id="reviewProductId">
+                    <% } %>
                     <h5 class="section-title my-2 mx-3 fw-bold">Add your review</h5>
                     <div class="d-flex mb-4 flex-column flex-md-row align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
                         <% if(userDetails){ %>
                             <% if(userDetails.userProfile !== ""){ %>
                                 <img src="/static/images/UserProfile/<%= userDetails.userProfile %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
                             <% }else{ %>
-                                <img src="/public/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                                <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
                             <% } %>
                         <% }else{ %>
-                            <img src="/public/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
+                            <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
                         <% } %>
                         <div class="mx-3 w-100">
-                            <label for="userName" class="mx-2 fw-bold">User name</label>
+                            <% if(userDetails){ %>
+                                <label for="userName" class="mx-2 fw-bold"><%= userDetails.userName %></label>
+                                <% }else{ %>
+                                <label for="userName" class="mx-2 fw-bold">User name</label>
+                            <% } %>
                             <textarea class="form-control mb-2" rows="2" placeholder="Write your review..." id="reviewText"></textarea>            
                             <div class="mb-2 col-6">
                                 <label for="rating" class="form-label">Rating</label>
@@ -405,7 +412,7 @@
                                     <option value="5">5 Stars</option>
                                 </select>
                             </div>            
-                            <button class="btn btn-primary btn-sm" type="button" id="submitReview">
+                            <button class="btn btn-primary btn-sm" type="button" id="submitReview" onclick="submitReview()">
                                 Submit Review
                             </button>
                         </div>
@@ -537,7 +544,6 @@
                 var targetImage = document.querySelector("#target-image");
                 
                 var second = document.getElementById("second")
-                console.log(second)
                 if (targetImage) {
                     second.style.backgroundImage = `url(${targetImage.src})` 
                 }
@@ -605,6 +611,122 @@
                     productDetail.classList.remove("d-none")
                 });
             }
+
+            ////// Add a review \\\\\\
+            async function submitReview() {
+                const productId = document.getElementById('reviewProductId').value;
+                const reviewText = document.getElementById('reviewText').value;
+                const rating = document.getElementById('rating').value;
+
+                if(!productId || !reviewText || !rating){
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'Something went wrong.',
+                        timer: 2000, 
+                        timerProgressBar: true, 
+                        showConfirmButton: false, 
+                        background: '#333', 
+                        color: '#ffffff', 
+                    });
+                    return;
+                }
+
+                if(!reviewText || !rating){
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Review form',
+                        text: 'Please check the review From.',
+                        timer: 2000, 
+                        timerProgressBar: true, 
+                        showConfirmButton: false, 
+                        background: '#333', 
+                        color: '#ffffff', 
+                    });
+                    return;
+                }
+
+                if(reviewText.length > 200){
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Review form',
+                        text: 'Review text length exceeds',
+                        timer: 2000, 
+                        timerProgressBar: true, 
+                        showConfirmButton: false, 
+                        background: '#333', 
+                        color: '#ffffff', 
+                    });
+                    return;
+                }
+
+                try {
+                    Swal.fire({
+                        title: 'Saving...',
+                        background: '#333', 
+                        color: '#ffffff', 
+                        allowOutsideClick: false,
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+                    
+                    console.log("Adding review");
+                    console.log("data : ",reviewText , rating);
+                    const response = await fetch(`/addProductReview/${productId}/review`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ rating, reviewText })
+                    });
+
+                    const contentType = response.headers.get('content-type');
+                    let data;
+                    if (contentType && contentType.includes('application/json')) {
+                        data = await response.json();
+                        Swal.close();
+                    } else {
+                        window.location.href = `/login`;
+                    }
+
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success.',
+                            text: data.message || 'Review added successfully...',
+                            background: "#333",
+                            color: "#ffffff",
+                            showConfirmButton: true
+                        }).then(() => {
+                            location.reload();
+                        })
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: data.message || 'Review adding error.',
+                            timer: 3000,
+                            background: "#333",
+                            color: "#ffffff",
+                            timerProgressBar: true,
+                            showConfirmButton: false
+                        });
+                    }
+                } catch (error) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message || 'Something went wrong.',
+                        timer: 3000,
+                        background: "#333",
+                        color: "#ffffff",
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                }
+            }
+
 
         </script>
 

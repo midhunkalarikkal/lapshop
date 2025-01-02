@@ -13,6 +13,7 @@ const wishlistController = require('../controller/wishlistController')
 const orderController = require('../controller/orderController')
 const couponController = require('../controller/couponController')
 const walletController = require('../controller/walletController')
+const reviewController = require('../controller/reviewController')
 
 //To get home page
 userRouter.get('/',userController.getHome)
@@ -150,6 +151,9 @@ userRouter.get('/trackOrder/:orderId',userAuth.isLoggedIn,userAuth.isBlocked,ord
 userRouter.post('/orderConfirmWithWalletAndRazorpay',userAuth.isLoggedIn,userAuth.isBlocked,orderController.orderConfirmWithWalletAndRazorpay)
 //To get the wallet page
 userRouter.get('/wallet',userAuth.isLoggedIn,userAuth.isBlocked,walletController.getUserWallet)
+
+//To add a review
+userRouter.post('/addProductReview/:productId/review', userAuth.isLoggedIn, userAuth.isBlocked, reviewController.addReview);
 
 //To get the 505 error page
 userRouter.get('/errorPage',userAuth.isLoggedIn,userAuth.isBlocked,userController.getErrorPage)
