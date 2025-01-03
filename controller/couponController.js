@@ -13,7 +13,7 @@ async function deleteExpiredCoupons() {
 }
 
 const intervalInMilliseconds = 24 * 60 * 60 * 1000;
-setInterval(deleteExpiredCoupons, intervalInMilliseconds);
+setInterval(deleteExpiredCoupons, 3600000);
 
 // To get the admin coupon page
 const getAdminCoupon = async (req, res) => {

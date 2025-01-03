@@ -148,6 +148,7 @@ const getHome = async (req, res) => {
                     name: "$product.name",
                     discount: "$product.discountPercentage",
                     totalOrdered: "$totalOrdered",
+                    realPrice: "$product.realPrice",
                     imagePath: { $concat: ["/static/images/ProductImages/", "$firstImage"] }
                 }
             }

@@ -94,7 +94,7 @@ p,
 
   /* Best offer css start */
   .box-two {
-    height: 8rem;
+    height: auto;
     width: 8rem;
   }
 
@@ -109,31 +109,13 @@ p,
     height: 100%;
   }
 
-  .box-two .name {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-  }
-
-  .name h5 {
-    font-size: 12px;
-  }
-
-  .offer h6 {
+  .box-desc, .box-name{
     font-size: 10px;
-    margin-top: 3px;
-  }
+}
 
-  .box-two .offer {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-    color: var(--offerprice-color);
-  }
-
-  .box-two .offer h6 {
-    font-size: 8px;
-  }
+.box-price{
+    font-size: 11px;
+}
 
   .scroll-arrow {
     font-size: 14px;
@@ -219,7 +201,7 @@ p,
 
   /* Best offer css start */
   .box-two {
-    height: 8rem;
+    height: auto;
     width: 8rem;
   }
 
@@ -234,31 +216,13 @@ p,
     height: 100%;
   }
 
-  .box-two .name {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-  }
+  .box-desc, .box-name{
+    font-size: 11px;
+}
 
-  .name h5 {
+.box-price{
     font-size: 12px;
-  }
-
-  .offer h6 {
-    font-size: 10px;
-    margin-top: 3px;
-  }
-
-  .box-two .offer {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-    color: var(--offerprice-color);
-  }
-
-  .box-two .offer h6 {
-    font-size: 10px;
-  }
+}
 
   .scroll-arrow {
     font-size: 16px;
@@ -342,7 +306,7 @@ p,
 
   /* Best offer css start */
   .box-two {
-    height: 12rem;
+    height: auto;
     width: 10rem;
   }
 
@@ -357,26 +321,13 @@ p,
     height: 100%;
   }
 
-  .box-two .name {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-  }
+  .box-desc, .box-name{
+    font-size: 13px;
+}
 
-  .name h5 {
-    font-size: 16px;
-  }
-
-  .box-two .offer {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-    color: var(--offerprice-color);
-  }
-
-  .box-two .offer h6 {
-    font-size: 12px;
-  }
+.box-price{
+    font-size: 14px;
+}
 
   .scroll-arrow {
     font-size: 18px;
@@ -461,7 +412,7 @@ p,
 
   /* Best offer css start */
   .box-two {
-    height: 14rem;
+    height: auto;
     width: 12rem;
   }
 
@@ -476,26 +427,13 @@ p,
     height: 100%;
   }
 
-  .box-two .name {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-  }
+  .box-desc, .box-name{
+    font-size: 13px;
+}
 
-  .name h5 {
-    font-size: 16px;
-  }
-
-  .box-two .offer {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-    color: var(--offerprice-color);
-  }
-
-  .box-two .offer h6 {
-    font-size: 14px;
-  }
+.box-price{
+    font-size: 15px;
+}
 
   .scroll-arrow {
     font-size: 22px;
@@ -579,7 +517,7 @@ p,
 
   /* Best offer css start */
   .box-two {
-    height: 16rem;
+    height: auto;
     width: 15rem;
   }
 
@@ -594,26 +532,13 @@ p,
     height: 100%;
   }
 
-  .box-two .name {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-  }
-
-  .name h5 {
-    font-size: 16px;
-  }
-
-  .box-two .offer {
-    height: 10%;
-    width: 100%;
-    text-align: center;
-    color: var(--offerprice-color);
-  }
-
-  .box-two .offer h6 {
+  .box-desc, .box-name{
     font-size: 14px;
-  }
+}
+
+.box-price{
+    font-size: 16px;
+}
 
   .scroll-arrow {
     font-size: 24px;
@@ -898,3 +823,83 @@ p,
   width: 100px;
   overflow: hidden;
 }
+
+
+.btn {
+  --color: #50c878;
+  --color2: rgb(10, 25, 30);
+  padding: 0.8em 1.75em;
+  background-color: transparent;
+  border-radius: 6px;
+  border: .3px solid var(--color);
+  transition: .5s;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 1;
+  font-weight: 300;
+  font-size: 17px;
+  font-family: 'Roboto', 'Segoe UI', sans-serif;
+  text-transform: uppercase;
+  color: var(--color);
+  }
+
+  .btn::after, .btn::before {
+  content: '';
+  display: block;
+  height: 100%;
+  width: 100%;
+  transform: skew(90deg) translate(-50%, -50%);
+  position: absolute;
+  inset: 50%;
+  left: 25%;
+  z-index: -1;
+  transition: .5s ease-out;
+  background-color: var(--color);
+  }
+
+  .btn::before {
+  top: -50%;
+  left: -25%;
+  transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+  }
+
+  .btn:hover::before {
+  transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+  }
+
+  .btn:hover::after {
+    font-weight: bold;
+  transform: skew(45deg) translate(-50%, -50%);
+  }
+
+  .btn:hover {
+  color: var(--color2);
+  }
+
+  .btn:active {
+  filter: brightness(.7);
+  transform: scale(.98);
+  }
+
+.custom-shape-divider-bottom-1735926811 {
+position: absolute;
+bottom: 0;
+left: 0;
+width: 100%;
+overflow: hidden;
+line-height: 0;
+transform: rotate(180deg);
+}
+
+.custom-shape-divider-bottom-1735926811 svg {
+position: relative;
+display: block;
+width: calc(178% + 1.3px);
+height: 146px;
+}
+
+.custom-shape-divider-bottom-1735926811 .shape-fill {
+fill: #000000;
+}   
+
