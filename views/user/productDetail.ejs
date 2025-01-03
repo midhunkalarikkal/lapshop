@@ -389,8 +389,8 @@
                         <input type="hidden" value="<%= productDelivered %>" id="productDelivered">
                     <% } %>
                     <h5 class="section-title my-2 mx-3 fw-bold">Add your review</h5>
-                    <div class="d-flex mb-4 align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
-                        <div class="profile-image col-1">
+                    <div class="d-flex justify-content-between mb-4 align-items-start border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
+                        <div class="profile-image col-2 col-lg-1 d-flex justify-content-center mb-3 mb-md-0">
                             <% if(userDetails){ %>
                                 <% if(userDetails.userProfile !== ""){ %>
                                     <img src="/static/images/UserProfile/<%= userDetails.userProfile %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
@@ -401,14 +401,15 @@
                                 <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
                             <% } %>
                         </div>
-                        <div class="mx-3 col-11">
+                        <div class="mx-3 col-9 col-lg-10">
                             <% if(userDetails){ %>
                                 <label for="userName" class="mx-2 fw-bold"><%= userDetails.userName %></label>
-                                <% }else{ %>
+                            <% }else{ %>
                                 <label for="userName" class="mx-2 fw-bold">User name</label>
                             <% } %>
-                            <textarea class="form-control mb-2" rows="2" placeholder="Write your review..." id="reviewText"></textarea>            
-                            <div class="mb-2 col-6">
+                            <textarea class="form-control mb-3" rows="3" placeholder="Write your review..." id="reviewText"></textarea>
+                            
+                            <div class="mb-3">
                                 <label for="rating" class="form-label">Rating</label>
                                 <select class="form-select" id="rating">
                                     <option value="1">1 Star</option>
@@ -417,12 +418,12 @@
                                     <option value="4">4 Stars</option>
                                     <option value="5">5 Stars</option>
                                 </select>
-                            </div>            
-                            <button class="btn btn-primary btn-sm" type="button" id="submitReview" onclick="submitReview()">
-                                Submit Review
-                            </button>
+                            </div>
+                    
+                            <button class="btn btn-primary btn-sm" type="button" id="submitReview" onclick="submitReview()">Submit Review</button>
                         </div>
                     </div>
+                    
                 </div>
 
                 <div class="col-md-6">
@@ -430,15 +431,15 @@
                     <h5 class="section-title my-2 mx-3 fw-bold">Top reviews</h5>
                     <% if(reviews && reviews.length > 0) { %>
                         <% reviews.forEach((review, index) => { %>
-                            <div class="d-flex mb-2 border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
-                                <div class="profile-image col-1">
+                            <div class="d-flex justify-content-between mb-2 border rounded m-3 p-3" style="background-color: rgb(243, 243, 243);">
+                                <div class="profile-image col-2 collg--1">
                                     <% if(review.userId.profileimage && review.userId.profileimage != "" ){ %>
                                         <img src="/static/images/UserProfile/<%= review.userId.profileimage %>" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
                                     <% }else{ %>
                                         <img src="/static/images/icons/No profile image.jpg" class="rounded-circle" alt="User Profile" style="width: 50px; height: 50px; object-fit: cover;">
                                     <% } %>
                                 </div>
-                                <div class="mx-3 col-11">
+                                <div class="mx-3 col-9 col-lg-10">
                                     <p class="fw-bold mb-1"><%= review.userId.fullname %></p>
                                     <p class="mb-1"><%= review.reviewText %></p>
                                             
