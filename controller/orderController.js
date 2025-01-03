@@ -701,12 +701,9 @@ const adminRejectReturn = async(req,res)=>{
 
 const getTractOrder = async (req,res) => {
     try{
-        console.log("track order controller");
         const userDetails = req.session.userNC;
         const orderId = req.params.orderId;
-        console.log("orderId : ",orderId);
         const order = await Order.findById(orderId);
-        console.log("order : ",order);
         return res.render('user/trackOrder',{userDetails , order});
     }catch(error){
         return res.redirect('/errorPage');

@@ -6,9 +6,7 @@ function goToOrderDetail(button) {
 
 ////// To got order tracking page \\\\\\
 function goToTrackOrder(button) {
-    console.log("function track order");
     const orderId = button.getAttribute('data-orderId');
-    console.log("orderId : ",orderId);
     window.location.href = `/trackOrder/${orderId}`;
 }
 

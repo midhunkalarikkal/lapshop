@@ -475,7 +475,6 @@
         ////// fetch to send the form data \\\\\\
         function addProduct(e){
             e.preventDefault()
-            console.log("add product");
 
             if (!validateProductName() || !validateDesc() || !validateColor() || !validateStock() || !validateRealPrice() || !validateOfferPrice() || !validateDiscount()) {
             Swal.fire({

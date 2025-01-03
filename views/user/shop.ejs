@@ -463,7 +463,6 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log("data : ",data);
                 let productData = data.productData
                 let totalPages = data.totalPages
                 let prodId = data.prodId
@@ -572,7 +571,6 @@
                 }
             })
             .catch(error => {
-                console.log("error : ",error);
                 Swal.fire({
                     icon: 'info',
                     title: 'Error!',

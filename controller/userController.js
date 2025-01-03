@@ -1053,7 +1053,6 @@ const getProductDetail = async(req,res)=>{
         
         return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId, mostPopular, reviews, productDelivered})
     }catch(error){
-        console.log("error : ",error);
         return res.redirect('/errorPage')
     }
 }
