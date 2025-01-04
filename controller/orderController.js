@@ -449,8 +449,8 @@ const generateInvoice = async (orderId, outputFilePath) => {
         doc.fontSize(10)
             .text('Invoice', 450, 40, { align: 'right' })
             .text('LapShop', 450, 55, { align: 'right' })
-            .text('1234 Main Street', 440, 70, { align: 'right' })
-            .text('Banglore, 676767', 440, 85, { align: 'right' });
+            .text('678 Main Street', 440, 70, { align: 'right' })
+            .text('India, 676767', 440, 85, { align: 'right' });
 
         // Horizontal Line
         doc.moveTo(40, 120)
