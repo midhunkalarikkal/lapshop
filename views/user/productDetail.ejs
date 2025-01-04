@@ -440,7 +440,12 @@
                                     <% } %>
                                 </div>
                                 <div class="mx-3 col-9 col-lg-10">
-                                    <p class="fw-bold mb-1"><%= review.userId.fullname %></p>
+                                    <p class="fw-bold mb-1"><%= review.userId.fullname %> <span class="small mx-2 text-muted"><%= new Date(review.createdAt).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                      }) %></span>
+                                    </p>
                                     <p class="mb-1"><%= review.reviewText %></p>
                                             
                                     <div class="mb-2">
