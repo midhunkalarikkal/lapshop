@@ -594,37 +594,54 @@ p,
 
 /*======> Category cards start <======*/
 
-.category-head {
-  color: var(--secondary-color);
-}
-
-.card-body {
-  border-radius: 5px;
+.category-card {
+  border-radius: 8px;
   overflow: hidden;
   position: relative;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card-body .card-text {
-  opacity: 0;
+.category-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 
-.card-body:hover .card-title {
-  opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+.category-card .card-body {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  position: relative;
+  background-blend-mode: overlay;
+  background-color: rgba(0, 0, 0, 0.5); 
 }
 
-.card-body .card-title {
+.category-card .card-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  z-index: 2;
+  color: #fff;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
   opacity: 1;
   transition: opacity 0.5s ease-in-out;
 }
 
-.card-body:hover .card-text {
-  opacity: 1;
+.category-card .card-text {
+  font-size: 1rem;
+  opacity: 0;
+  z-index: 2;
+  color: #fff;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
   transition: opacity 0.5s ease-in-out;
 }
 
-.card-title {
-  color: var(--secondary-color);
+.category-card:hover .card-title {
+  opacity: 0;
+}
+
+.category-card:hover .card-text {
+  opacity: 1;
 }
 
 /*======> Category cards end <======*/
