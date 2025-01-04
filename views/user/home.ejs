@@ -55,7 +55,7 @@
     
     
 
-    <% if (category.length > 0 && brands.length > 0) { %>
+    <% if (category.length > 0) { %>
       <div class="caba">
         <% if(category){ %>
           <section class="parallax-one p-3">
@@ -80,44 +80,13 @@
             </div>
           </section>
         <% } %>
-
-        <% if(brands !="" ){ %>
-          <section class="py-5 container" id="sectiontwo">
-            <h2 class="text-center section-title">Our trusted brands</h2>
-            <div class="col-12">
-              <div class="scroll-container">
-                <div class="d-flex overflow-auto p-3 scroll-container-two">
-                  <% brands.forEach((brand , index)=>{ %>
-                    <div class="box-two brand-box mx-2 text-center" style="flex: 0 0 auto;">
-                      <div class="img d-flex align-items-center justify-content-center">
-                        <img src="/static/images/BrandImages/<%= brand.image %>" alt="No image"
-                          class="w-50 h-50 brand-img">
-                      </div>
-                    </div>
-                  <% }) %>
-
-                  <% brands.forEach((brand, index) => { %>
-                    <div class="box-two brand-box mx-2 text-center" style="flex: 0 0 auto;">
-                      <div class="img d-flex align-items-center justify-content-center">
-                        <img src="/static/images/BrandImages/<%= brand.image %>" alt="No image"
-                             class="w-50 h-50 brand-img">
-                      </div>
-                    </div>
-                  <% }) %>
-
-                  
-                </div>
-              </div>
-            </div>
-          </section>
-        <% } %>
       </div>
     <% } %>
 
     <div class="bsac">
       <% if(bestSellingProducts !="" ){ %>
-        <section class="py-5 container" id="sectiontwo">
-          <h2 class="text-center section-title">Best selling products</h2>
+        <section class="py-2 py-md-5 container" id="sectiontwo">
+          <h2 class="text-center fw-bold fs-2">Best selling products</h2>
           <div class="col-12">
             <div class="scroll-container">
               <div class="d-flex overflow-auto p-3">
@@ -127,16 +96,16 @@
                       <div class="img">
                           <img src="<%= product.imagePath %>"
                               alt="product-image">
-                            </div>
-                            <div class="p-2">
-                              <h5 class="box-name text-dark"><%= product.name %></h5>
-                              <div class="box-price d-flex justify-content-between">
-                                <span class="text-danger">Min <%= product.discount %> off</span>
-                                <span class="mx-2 text-success fw-bold"> ₹<%= product.realPrice %></span>
-                              </div>
-                            </div>
+                        </div>
+                        <div class="p-2">
+                          <h5 class="box-name text-dark"><%= product.name %></h5>
+                          <div class="box-price d-flex justify-content-between">
+                            <span class="text-danger">Min <%= product.discount %> off</span>
+                            <span class="mx-2 text-success fw-bold"> ₹<%= product.realPrice %></span>
                           </div>
-                        </a>
+                        </div>
+                      </div>
+                    </a>
                 <% }) %>
               </div>
             </div>
@@ -148,14 +117,14 @@
         <section class="coupon-section">
           <div class="container">
             <% if(coupon.length > 1){ %>
-              <h2 class="text-center mb-5 section-title">Available Coupons</h2>
+              <h2 class="text-center fw-bold fs-2">Available Coupons</h2>
             <% }else{ %>
-              <h2 class="text-center mb-5 section-title">Available Coupon</h2>
+              <h2 class="text-center fw-bold fs-2">Available Coupon</h2>
             <% } %>
             <div class="coupon-container">
               <% for(let i=0; i < coupon.length; i++ ){ %>
                 <div class="coupon">
-                  <div class="coupon-title">
+                  <div class="coupon-title fw-bold fs-4 fs-md-2">
                     <%= coupon[i].couponName %>
                   </div>
                   <% if(coupon[i].couponAmount <=100){ %>
@@ -186,11 +155,24 @@
       <% } %>
     </div>
 
+    <% if(brands !="" ){ %>
+      <section class="py-5 container" id="sectiontwo">
+        <h2 class="text-center fw-bold fs-2">Our trusted brands</h2>
+          <div class="d-flex flex-wrap align-items-center justify-content-center col-12">
+            <% brands.forEach((brand , index)=>{ %>
+              <div class="image col-3 col-md-2 d-flex align-items-center justify-content-center">
+                <img src="/static/images/BrandImages/<%= brand.image %>" alt="No-image" class="img-fluid w-75 w-md-50">
+              </div>
+            <% }) %>
+          </div>
+      </section>
+    <% } %>
+
     <section class="ourPromise py-5">
       <div class="container">
-        <div class="row text-center mb-5">
+        <div class="row text-center mb-2 mb-md-5">
           <div class="col-12">
-            <h2 class="section-title display-4">Our Promises</h2>
+            <h2 class="display-4 fw-bold fs-2">Our Promises</h2>
             <p class="section-subtitle lead">Why We Are Your Best Choice for Laptop Needs</p>
           </div>
         </div>
