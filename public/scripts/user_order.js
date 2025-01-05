@@ -19,6 +19,8 @@ function cancelOrder(button){
         text: 'This cancel cannot be undone!',
         icon: 'warning',
         showCancelButton: true,
+        background: "#333",
+        color: "#ffffff",
         confirmButtonText: 'Yes, cancel it!',
         cancelButtonText: 'No, keep it'
     }).then((result) => {

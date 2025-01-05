@@ -25,6 +25,8 @@ cpnBtns.forEach(function(btn) {
                 icon: 'error',
                 title: 'Error',
                 text: "Code copying failed.",
+                background: "#333",
+                color: "#ffffff",
                 timer: 2000,
                 timerProgressBar: true,
                 showConfirmButton: false
