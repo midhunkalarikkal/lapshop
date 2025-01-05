@@ -302,9 +302,9 @@ a, h1,h2,h3,h4,h5,h6{
 #lens{
     width: 100px;
     height: 100px;
-    background: rgba(0,0,0,.4);
+    background:rgba(62, 174, 226, 0.55);
     position: absolute;
-    border: 3px solid black;
+    border: 1px solid black;
     transform:  translateY(-50% , -50%);
     pointer-events: none;
     display: none;
