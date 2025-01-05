@@ -1028,9 +1028,9 @@ const getProductDetail = async(req,res)=>{
         let productDelivered = false;
         const productId = req.params.productId;
         const productData = await Product.findById(productId).populate([ {path : "category"},{path : "brand"}]);
-        const productCategory = productData.category
-        const sameCategoryProduct = await Product.find({category : productCategory._id});
-        const mostPopular = await Product.find({category : productCategory.id, noOfStock : {$lt : 10}}).populate([{path : "brand"}]).limit(5);
+        const productCategory = productData.category;
+        const sameCategoryProduct = await Product.find({category : productCategory._id, _id : {$ne : productId }});
+        const mostPopular = await Product.find({category : productCategory.id, noOfStock : {$gt : 0}, _id : {$ne : productId}}).populate([{path : "brand"}]).limit(5);
         const reviews = await Review.find({ productId }).populate([ {path : "userId" } ]).sort({ createdAt : -1});
         let userDetails = req.session.userNC
         if(userDetails && userDetails !== undefined && userDetails !== ""){
@@ -1054,7 +1054,6 @@ const getProductDetail = async(req,res)=>{
                 "orderedItems.product": productId,
             });        
         }
-        
         return res.render('user/productDetail',{userDetails , productData , sameCategoryProduct , cartProdId, wishlistProdId, mostPopular, reviews, productDelivered})
     }catch(error){
         return res.redirect('/errorPage')
