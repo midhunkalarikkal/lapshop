@@ -103,7 +103,7 @@
                                             <br>
                                             <span class="heads">Payment status</span><br>
                                             <% if (order[i].paymentStatus === false && order[i].paymentMethod !== "cod" && order[i].status !== "Cancelled" && order[i].status !== "Request return" && order[i].status !== "Request rejected" && order[i].status !== "Request accepted" && order[i].status !== "Admin cancelled") { %>
-                                                <span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment">Complete payment</button></span>            
+                                                <span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button></span>            
                                             <% } else if (order[i].paymentStatus) { %>
                                                 <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span> <br>
                                             <% } else if(order[i].paymentStatus === false && order[i].paymentMethod === "cod") { %>

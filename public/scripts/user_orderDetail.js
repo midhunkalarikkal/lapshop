@@ -1,3 +1,9 @@
+////// Repayment \\\\\\
+function repayment(button){
+    const orderId = button.getAttribute("data-orderId")
+    window.location.href = `/rePayment/${orderId}`
+}
+
 ////// Function to download the order invoice \\\\\\
 async function downloadInvoice(orderId) {
     try {
