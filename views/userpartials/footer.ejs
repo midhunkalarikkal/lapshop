@@ -1,5 +1,8 @@
 <!-- footer start -->
-    <footer class="text-light" id="footer">
+<footer class="text-light" id="footer">
+        <div class="backToTop" style="background-color: #1b1b1b;">
+           <p class="text-center py-3 fs-6" style="text-decoration: none; color: #f0ffff; cursor: pointer;">Back to top</p>
+        </div>
         <div class="container-fluid">
             <div class="row p-5 d-flex">
                 <div class="col-6 col-md-3 mt-4 mt-lg-0 align-items-start">
@@ -35,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-                <p class="text-center copyright small mt-4">&copy; All rights reserved 2024, www.lapshop.xyz</p>
+                <p class="text-center copyright small mt-4">&copy; All rights reserved 2024, www.lapshop.site</p>
             </div>
         </div>
     </footer>
@@ -53,6 +56,17 @@
         <script src="https://cdn.datatables.net/v/bs5/dt-1.13.10/datatables.min.js"></script>
 
         <!--Prevent user from right click -->
+
+        <script>
+            document.querySelector('.backToTop p').addEventListener('click', (event) => {
+            event.preventDefault(); 
+            window.scrollTo({
+                top: 0, 
+                behavior: 'smooth' 
+            });
+        });
+
+        </script>
 
     </body>
 </html>
