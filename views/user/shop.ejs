@@ -267,11 +267,6 @@
                                                 <% } %> <br>
                                                 <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
                                             </h6>
-                                            <div class="d-flex align-items-center justify-content-center d-none">                         
-                                                <h6 class="discount-percentage price mx-2">-<%= product.discountPercentage %>%</h6>
-                                                <h5 class="offer-price price">₹<%= product.offerPrice %></h5>
-                                                <h6 class="real-price small price d-none d-md-block mx-2">M.R.P ₹<del class="real-price"><%= product.realPrice %></del></h6>
-                                            </div>
                                         </div>                                           
                                     </div>
                                 </div>
@@ -304,9 +299,6 @@
                                             <div class="col-8 card-body px-1 py-2">
                                                 <span>
                                                     <span class="product-name"><%= product.name %></span>
-                                                    <% if (!isNewProduct){ %>                         
-                                                        <span class="badge">New</span>
-                                                    <% } %>
                                                     <br>
                                                     <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
                                                     <br>
@@ -317,13 +309,34 @@
                                                     <span class="mx-2 mt-2">(<span class="discount-percentage text-danger">-<%= product.discountPercentage %>%</span>)</span>
                                                 </span>
                                                 <div class="align-items-center justify-content-between d-flex">
-                                                    <% if (cartProdId !="" ) { %>
-                                                        <% for(let i=0; i < cartProdId.length; i++){ %>
-                                                            <% if(cartProdId[i] == product._id.toString()){ %>
-                                                                <span class="product-brand" style="color: rgb(233, 178, 0);" role="button" onclick="goToCart()">Already in your cart</span>
+                                                    <% if (cartProdId != "" && cartProdId.length > 0) { %>
+                                                        <% let isInCart = false; %>
+                                                        <% for (let i = 0; i < cartProdId.length; i++) { %>
+                                                            <% if (cartProdId[i] == product._id.toString()) { %>
+                                                                <span class="product-brand" style="color: rgb(255, 198, 9);" role="button" onclick="goToCart()">Already in your cart</span>
+                                                                <span class="offer-price price">                  
+                                                                    <span class="badge bg-warning text-white" role="button" onclick="goToCart()">Cart</span>
+                                                                </span>
+                                                                <% isInCart = true; %>
                                                                 <% break; %>
-                                                            <% } %>                                                                
+                                                            <% } %>
                                                         <% } %>
+                                                    
+                                                        <% if (!isInCart) { %>
+                                                            <span class="product-brand">Available</span>
+                                                            <span class="offer-price price">
+                                                                <% if (!isNewProduct) { %>                         
+                                                                    <span class="badge">New</span>
+                                                                <% } %>
+                                                            </span>
+                                                        <% } %>
+                                                    <% } else { %>
+                                                        <span class="product-brand">Available</span>
+                                                        <span class="offer-price price">
+                                                            <% if (!isNewProduct) { %>                         
+                                                                <span class="badge">New</span>
+                                                            <% } %>
+                                                        </span>
                                                     <% } %>
                                                 </div>         
                                             </div>    
@@ -384,7 +397,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- script for sweet alert -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
 
@@ -465,7 +478,7 @@
             .then(data => {
                 let productData = data.productData
                 let totalPages = data.totalPages
-                let prodId = data.prodId
+                let wishlistProdId = data.wishlistProdId
                 let cartProdId = data.cartProdId
                 updatePaginationUI(totalPages);
 
@@ -479,7 +492,7 @@
                 productData.forEach((product) => {
                     const isNewProduct = new Date(product.created) >= fiveDaysAgo;
                     const productDiv = $(
-                        `<div class='col-xl-3 col-lg-4 col-md-6 col-sm-6 col-6 pb-1'>
+                        `<div class='col-xl-3 col-lg-4 col-md-6 pb-1 d-none d-md-block'>
                             <div class='card product-item mb-4 product-card shadow'>
                                 <a href='/productDetail/${product._id}' class='product-outline'>
                                     <div class='card-header product-img position-relative overflow-hidden  p-0'>
@@ -499,10 +512,41 @@
                                     </div>
                                 </a>
                             </div>
-                        </div>`
+                        </div>
+                        
+
+                        <div class="col-12 d-block d-md-none">
+                            <a href="/productDetail/${product._id}" class="product-outline">
+                                <div class="card product-item mb-2 product-card shadow d-flex flex-row">
+                                    <div class="col-4 card-header product-img overflow-hidden p-2 d-flex align-items-center justify-content-center">
+                                        <img class="img-fluid product-image w-100" src="/static/images/ProductImages/${product.images[0]}" alt="">
+                                    </div>
+                                    <div class="col-8 card-body px-1 py-2">
+                                        <span>
+                                            <span class="product-name">${product.name}</span>
+                                            <br>
+                                            <span class="product-brand">${product.brand.name.toUpperCase()}</span>
+                                            <br>
+                                            <span class="text-muted" style="font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: wrap;">
+                                                ${product.description.slice(0, 100)}....
+                                            </span>
+                                            <br>
+                                            <span class="offer-price mt-4">₹ ${product.offerPrice}</span>
+                                            <span class="real-price">M.R.P ₹<del class="real-price">${product.realPrice}</del></span>
+                                            <span class="mx-2 mt-2">(<span class="discount-percentage text-danger">-${product.discountPercentage}%</span>)</span>
+                                        </span>
+                                        <div class="card-details">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        `
                     );
 
-                    ////// Dynamically adding the wishlist button to the product \\\\\\
+                    ////// Dynamically adding the cart button to the product \\\\\\
                     const productCardFooter = productDiv.find('.card-details');
 
                     if (cartProdId != "") {
@@ -549,6 +593,49 @@
                             </div>
                         `);
                         productCardFooter.append(addToCartButton);
+
+                    
+                    ////// Dynamically adding wishlist button \\\\\\
+                    const productCardHeader = productDiv.find('.card-Header');
+
+                    if(wishlistProdId != ""){
+                        let isInWishlist = false;
+                        for(let i = 0; i < wislistProductId.length; i++){
+                            if(wishlistProdId[i] == product_._id.toString()){
+                                isInWishlist = true;
+                                break;
+                            }
+                        }
+
+                        if(isInWishlist){
+                            const wishlistButton = $(`
+                            <a class="position-absolute"
+                                style="top: 8px; right: 10px; z-index: 1;"
+                                data-product-id="${product._id}"
+                                onclick="addToWishlist(this)">
+                                    <i class="fa-solid fa-heart wish-btn"></i>
+                            </a>
+                        `)
+                        }else{
+                            const wishlistButton = $(`
+                            <a href="#" class="position-absolute"
+                                style="top: 8px; right: 10px; z-index: 1;"
+                                data-product-id="${product._id}"
+                                onclick="addToWishlist(this)">
+                                    <i class="fa-regular fa-heart wish-btn"></i>
+                            </a>   
+                        `)
+                        }
+                    }else{
+                        const wishlistButton = $(`
+                        <a href="#" class="position-absolute"
+                            style="top: 8px; right: 10px; z-index: 1;"
+                            data-product-id="${product._id}"
+                            onclick="addToWishlist(this)">
+                                <i class="fa-regular fa-heart wish-btn"></i>
+                        </a>    
+                        `)
+                    }
 }
                        
 

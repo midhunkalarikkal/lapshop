@@ -566,8 +566,8 @@ const getUserShop = async(req,res)=>{
 const getCatProduct = async(req,res)=>{
     try{
         let productData;
-        let prodId = []
-        let cartProdId = []
+        let wishlistProdId = [];
+        let cartProdId = [];
 
         if(req.session.user){
             const user = req.session.user
@@ -575,7 +575,7 @@ const getCatProduct = async(req,res)=>{
             if(wishlist){
                 const wishlistProducts = wishlist[0].products
                 const productsId = wishlistProducts.map(item => item.product);
-                prodId = productsId
+                wishlistProdId = productsId
             }
             const cart = await Cart.find({ userId : user._id }) 
             if(cart){
@@ -663,7 +663,7 @@ const getCatProduct = async(req,res)=>{
             productData = productData.slice(skip, skip + perPage);
             const totalPages = Math.ceil(totalProducts / perPage);
 
-            return res.status(200).json({ message : "Categorized products", productData , totalPages , prodId , cartProdId})
+            return res.status(200).json({ message : "Categorized products", productData , totalPages , wishlistProdId , cartProdId})
         }else{
             return res.status(400).json({ message : "No categorized found" })
         }
