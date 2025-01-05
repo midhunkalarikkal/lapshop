@@ -105,9 +105,12 @@ const sendOtpMail = async(email,otp,subject,message)=>{
   //To get the user home
 const getHome = async (req, res) => {
     try {
+        const currentDate = new Date();
         const homeCarousel = await HomeCarousel.find({ isBlocked: false });
         const category = await Category.find({isBlocked : false})
-        const coupon = await Coupon.find({ isBlocked : false})
+        const coupon = await Coupon.find({ 
+            isBlocked: false, 
+            startDate: { $lte: currentDate }})
         const brands = await Brand.find({ isBlocked : false})
 
         const bestSellingProducts = await Order.aggregate([
@@ -550,7 +553,7 @@ const getUserShop = async(req,res)=>{
         }
 
         const page = parseInt(req.query.page) || 1;  
-        const limit = 9; 
+        const limit = 12; 
         return res.render('user/shop',{productData , userDetails , adCarousel , category , brand , categoryId , brandId , currentPage: page, wishlistProdId, cartProdId, totalPages: Math.ceil(totalProducts / limit) })
         
     }catch(error){
@@ -590,7 +593,7 @@ const getCatProduct = async(req,res)=>{
 
             const searchInput = req.body.inputValue
 
-            const perPage = 6;
+            const perPage = 12;
             const skip = (currentPage - 1) * perPage;
 
             let query = { isBlocked: false };

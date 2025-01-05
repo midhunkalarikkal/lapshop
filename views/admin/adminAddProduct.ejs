@@ -152,7 +152,24 @@
                                     <span id="productCpuSpeedError" class="text-danger"></span>
                                 </div>        
                             </div>
-                            <div class="col-12 col-md-6">                        
+                            <div class="col-12 col-md-6">
+                                <div class="mb-3 col-md-10">
+                                    <label for="producthdType" class="form-label">Product HD type</label>
+                                    <select class="form-control" name="producthdType" id="producthdType" required oninput="validateProducthdType()">
+                                        <option value="">Select HD type</option>
+                                        <option value="HDD">Hard Disk Drive (HDD)</option>
+                                        <option value="SSD">Solid-State Drive (SSD)</option>
+                                        <option value="SSHD">Hybrid Drive (SSHD)</option>
+                                        <option value="NVMe">NVMe SSD</option>
+                                        <option value="eMMC">eMMC</option>
+                                    </select>
+                                    <span id="producthdTypeError" class="text-danger"></span>
+                                </div>      
+                                <div class="mb-3 col-md-10">
+                                    <label for="productWattage" class="form-label">Product wattage</label>
+                                    <input type="number" class="form-control" min="1" name="productWattage" id="productWattage" value="" required oninput="validateProductWattage()">
+                                    <span id="productWattageError" class="text-danger"></span>
+                                </div>                        
                                 <div class="mb-3 col-md-10">
                                     <label for="productRamSize" class="form-label">Product ram size</label>
                                     <select class="form-control" name="productRamSize" id="productRamSize" required oninput="validateRamSize()">
@@ -507,6 +524,8 @@
             const productBatteryEnergy = document.getElementById('productBatteryEnergy').value;
             const productVoltage = document.getElementById('productVoltage').value;
             const productWeight = document.getElementById('productWeight').value;
+            const producthdType = document.getElementById('producthdType').value;
+            const productWattage = document.getElementById('productWattage').value;
             const productAboutOne = document.getElementById('productAboutOne').value;
             const productAboutTwo = document.getElementById('productAboutTwo').value;
             const productAboutThree = document.getElementById('productAboutThree').value;
@@ -541,6 +560,8 @@
             formData.append("productAboutThree", productAboutThree);
             formData.append("productAboutFour", productAboutFour);
             formData.append("productAboutFive", productAboutFive);
+            formData.append("producthdType", producthdType);
+            formData.append("productWattage", productWattage);
 
             imageArray.forEach((imageDataUrl, index) => {
                 let byteString = atob(imageDataUrl.split(',')[1]);
@@ -904,7 +925,7 @@ function validateGraphicsCard() {
 const graphicsCardInput = document.getElementById('productGraphicsCard');
 const graphicsCard = graphicsCardInput.value.trim();
 const graphicsCardError = document.getElementById('productGraphicsCardError');
-const regex = /^[a-zA-Z0-9\s!@#$%^&*()_+\-=~`{}\[\]:;"'<>,.?/\\|]{4,30}$/;
+const regex = /^.{4,50}$/;
 
 if (graphicsCard === "") {
 graphicsCardInput.classList.remove('is-invalid');
@@ -927,7 +948,7 @@ function validateProductAbout(inputId) {
 const aboutInput = document.getElementById(inputId);
 const aboutValue = aboutInput.value.trim();
 const aboutError = document.getElementById(`${inputId}Error`);
-const regex = /^[\s\S]{20,250}$/; // Matches any character, between 20 and 250 characters.
+const regex = /^[\s\S]{20,250}$/;
 
 if (aboutValue === "") {
 aboutInput.classList.remove('is-invalid');
@@ -1012,10 +1033,51 @@ weightError.textContent = '';
 return true;
 }
 }
-        
+   
+function validateProducthdType() {
+    const producthdTypeInput = document.getElementById('producthdType');
+    const producthdType = producthdTypeInput.value.trim();
+    const producthdTypeError = document.getElementById('producthdTypeError');
+
+    if (producthdType === "") {
+        producthdTypeInput.classList.add('is-invalid');
+        producthdTypeError.textContent = 'Please select a hard drive type.';
+        return false;
+    } else {
+        producthdTypeInput.classList.remove('is-invalid');
+        producthdTypeError.textContent = '';
+        return true;
+    }
+}
 
 
-        
+function validateProductWattage() {
+    const productWattageInput = document.getElementById('productWattage');
+    const productWattage = productWattageInput.value.trim();
+    const productWattageError = document.getElementById('productWattageError');
+
+    const regex = /^[A-Za-z0-9\s-]+$/;
+
+    if (productWattage === "") {
+        productWattageInput.classList.add('is-invalid');
+        productWattageError.textContent = 'Wattage is required.';
+        return false;
+    }
+    if (!regex.test(productWattage)) {
+        productWattageInput.classList.add('is-invalid');
+        productWattageError.textContent = 'Wattage can only include numbers, spaces, hyphens, and alphabets.';
+        return false;
+    }
+    if (productWattage < 1 || productWattage > 5000) {
+        productWattageInput.classList.add('is-invalid');
+        productWattageError.textContent = 'Wattage must be between 1 and 5000.';
+        return false;
+    } else {
+        productWattageInput.classList.remove('is-invalid');
+        productWattageError.textContent = '';
+        return true;
+    }
+}        
     </script>
 
 <!-- Admin foter -->

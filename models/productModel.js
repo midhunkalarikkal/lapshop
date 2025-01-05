@@ -100,6 +100,14 @@ const productSchema = new mongoose.Schema({
     weight : {
         type : String,
         required : false
+    },
+    wattage : {
+        type : String,
+        required : false
+    },
+    hdType : {
+        type : String,
+        required : false
     }
 },{
     timestamps : true

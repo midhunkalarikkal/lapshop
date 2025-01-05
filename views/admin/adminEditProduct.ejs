@@ -134,6 +134,25 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
+                                    <label for="producthdType" class="form-label">Product HD type</label>
+                                    <select class="form-control" name="producthdType" id="producthdType" required oninput="validateProducthdType()">
+                                        <option value="" <%= !product.hdType ? 'selected' : '' %>>Select HD type</option>
+                                        <option value="HDD" <%= product.hdType === 'HDD' ? 'selected' : '' %>>Hard Disk Drive (HDD)</option>
+                                        <option value="SSD" <%= product.hdType === 'SSD' ? 'selected' : '' %>>Solid-State Drive (SSD)</option>
+                                        <option value="SSHD" <%= product.hdType === 'SSHD' ? 'selected' : '' %>>Hybrid Drive (SSHD)</option>
+                                        <option value="NVMe" <%= product.hdType === 'NVMe' ? 'selected' : '' %>>NVMe SSD</option>
+                                        <option value="eMMC" <%= product.hdType === 'eMMC' ? 'selected' : '' %>>eMMC</option>
+                                    </select>
+                                    <span id="producthdTypeError" class="text-danger"></span>
+                                </div>      
+
+                                <div class="mb-3 col-md-10">
+                                    <label for="productWattage" class="form-label">Product wattage</label>
+                                    <input type="number" class="form-control" min="1" name="productWattage" id="productWattage" value="<%= product.wattage %>" required oninput="validateProductWattage()">
+                                    <span id="productWattageError" class="text-danger"></span>
+                                </div>   
+
+                                <div class="mb-3 col-md-10">
                                     <label for="productRamSize" class="form-label">Product RAM Size</label>
                                     <select class="form-control" name="productRamSize" id="productRamSize" required oninput="validateRamSize()">
                                         <option value="" <%= !product.ramSize ? 'selected' : '' %>>Select RAM Size</option>
@@ -554,6 +573,8 @@
             const productBatteryEnergy = document.getElementById('productBatteryEnergy').value;
             const productVoltage = document.getElementById('productVoltage').value;
             const productWeight = document.getElementById('productWeight').value;
+            const producthdType = document.getElementById('producthdType').value;
+            const productWattage = document.getElementById('productWattage').value;
             const productAboutOne = document.getElementById('productAboutOne').value;
             const productAboutTwo = document.getElementById('productAboutTwo').value;
             const productAboutThree = document.getElementById('productAboutThree').value;
@@ -586,6 +607,8 @@
             formData.append("productAboutThree", productAboutThree);
             formData.append("productAboutFour", productAboutFour);
             formData.append("productAboutFive", productAboutFive);
+            formData.append("producthdType", producthdType);
+            formData.append("productWattage", productWattage);
             
             imageArray.forEach((imageDataUrl, index) => {
                 let byteString = atob(imageDataUrl.split(',')[1]);

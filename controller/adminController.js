@@ -755,6 +755,8 @@ const postAdminAddProduct = async (req, res) => {
       productBatteryEnergy,
       productVoltage,
       productWeight,
+      producthdType,
+      productWattage,
       productAboutOne,
       productAboutTwo,
       productAboutThree,
@@ -816,6 +818,8 @@ const postAdminAddProduct = async (req, res) => {
         batteryEnergy: productBatteryEnergy,
         voltage: productVoltage,
         weight: productWeight,
+        hdType: producthdType,
+        wattage: productWattage
       });
 
       await newProduct.save();
@@ -945,6 +949,8 @@ const adminUpdateProduct = async (req, res) => {
       productBatteryEnergy,
       productVoltage,
       productWeight,
+      producthdType,
+      productWattage,
       productAboutOne,
       productAboutTwo,
       productAboutThree,
@@ -972,6 +978,8 @@ const adminUpdateProduct = async (req, res) => {
     product.batteryEnergy = productBatteryEnergy;
     product.voltage = productVoltage;
     product.weight = productWeight;
+    product.hdType = producthdType;
+    product.wattage = productWattage;
     product.about.aboutOne = productAboutOne || product.about.aboutOne;
     product.about.aboutTwo = productAboutTwo || product.about.aboutTwo;
     product.about.aboutThree = productAboutThree || product.about.aboutThree;

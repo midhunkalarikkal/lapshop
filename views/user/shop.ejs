@@ -178,7 +178,7 @@
                 </div>
                 <!-- Shop Sidebar End -->
 
-                <% const productsPerPage=6; %>
+                <% const productsPerPage=12; %>
                 <div class="col-md-9 col-lg-10">
                     <div class="container-lg">
                         
@@ -196,7 +196,7 @@
                                     <div class="card product-item mb-4 product-card shadow">
                                         <a href="/productDetail/<%= product._id %>" class="product-outline">
                                             <div class="card-header product-img position-relative overflow-hidden  p-0">
-                                                <img class="img-fluid product-image w-100" src="/static/images/ProductImages/<%= product.images[0] %>" alt="">
+                                                <img class="img-fluid product-image w-100" src="/static/images/ProductImages/<%= product.images[0] %>" alt="product-image" style="height: 250px;">
                                                 <% if (wishlistProdId !="" ) { %>
                                                     <% for(let i=0; i < wishlistProdId.length; i++){ %>
                                                         <% if(wishlistProdId[i]==product._id.toString()){ %>
@@ -483,7 +483,7 @@
                             <div class='card product-item mb-4 product-card shadow'>
                                 <a href='/productDetail/${product._id}' class='product-outline'>
                                     <div class='card-header product-img position-relative overflow-hidden  p-0'>
-                                        <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt=''>
+                                        <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt='product-image' style="height : 250px;">
                                     </div>
                                     <div class='card-body' style="border-top: 1px solid rgb(218, 216, 216);">
                                         <div class="p-2 card-details">
