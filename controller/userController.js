@@ -1266,8 +1266,8 @@ const sendContactMail = async (name, email, phone, message) => {
         });
 
         const mailOptions = {
-            from: 'lapshopotp@gmail.com',
-            to: 'lapshopotp@gmail.com',
+            from: 'lapshopsite@gmail.com',
+            to: 'lapshopsite@gmail.com',
             subject: `New Contact Form Submission from ${name}`,
             html: `
                 <!DOCTYPE html>
