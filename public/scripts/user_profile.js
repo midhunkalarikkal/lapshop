@@ -120,7 +120,7 @@ function previewImage() {
     if (file) {
         reader.readAsDataURL(file);
     } else {
-        preview.src = "../../static/images/icons/No profile image.jpg";
+        preview.src = "/static/images/icons/No profile image.jpg";
     }
 }
 

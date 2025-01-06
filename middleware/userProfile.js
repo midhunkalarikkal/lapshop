@@ -4,10 +4,10 @@ const imageTypes = /jpeg|jpg|png|svg|webp/;
 
 ////// Storage definition \\\\\\
 
-// For the product images
+// For the profile images
 const storage = multer.diskStorage({
   destination:function(req,file,cb){
-    cb(null,path.join(__dirname,'../static/images/UserProfile'));
+    cb(null,path.join(__dirname,'/static/images/UserProfile'));
   },
   filename:function(req,file,cb){
     const name = Date.now()+'-'+file.originalname;
@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 ////// Image uploader \\\\\\
 
-// For the product images
+// For the profile images
 const uploadProfileImage = multer({
   storage: storage,
   fileFilter: function(req, file, cb) {

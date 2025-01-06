@@ -7,7 +7,7 @@ const imageTypes = /jpeg|jpg|png|gif|svg|webp/;
 // For the product images
 const storage = multer.diskStorage({
   destination:function(req,file,cb){
-    cb(null,path.join(__dirname,'../static/images/AdCarousels'));
+    cb(null,path.join(__dirname,'/static/images/AdCarousels'));
   },
   filename:function(req,file,cb){
     const name = Date.now()+'-'+file.originalname;
