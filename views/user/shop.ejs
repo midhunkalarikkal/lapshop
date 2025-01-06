@@ -593,10 +593,11 @@
                             </div>
                         `);
                         productCardFooter.append(addToCartButton);
+                    }
 
                     
                     ////// Dynamically adding wishlist button \\\\\\
-                    const productCardHeader = productDiv.find('.card-Header');
+                    const productCardHeader = productDiv.find('.card-header');
 
                     if(wishlistProdId.length > 0){
                         let isInWishlist = false;
@@ -616,6 +617,7 @@
                                     <i class="fa-solid fa-heart wish-btn"></i>
                             </a>
                         `)
+                        productCardHeader.append(wishlistButton);
                         }else{
                             const wishlistButton = $(`
                             <a href="#" class="position-absolute"
@@ -625,6 +627,7 @@
                                     <i class="fa-regular fa-heart wish-btn"></i>
                             </a>   
                         `)
+                        productCardHeader.append(wishlistButton);
                         }
                     }else{
                         const wishlistButton = $(`
@@ -635,8 +638,8 @@
                                 <i class="fa-regular fa-heart wish-btn"></i>
                         </a>    
                         `)
+                        productCardHeader.append(wishlistButton);
                     }
-}
                        
 
                     ////// Appending the dynamically created product card in to the productCardRow div \\\\\\
