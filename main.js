@@ -38,7 +38,7 @@ app.set('views',path.join(__dirname, 'views'))
 app.set('view engine','ejs')
 
 //Static file serving
-app.use('/static', express.static(path.join(__dirname, "public")))
+app.use('/static', express.static(path.join(__dirname, "public")));
 app.use('/script', express.static(path.join(__dirname,"scripts")));
 
 //Routes

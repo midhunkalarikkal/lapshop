@@ -890,24 +890,7 @@ p,
   transform: scale(.98);
   }
 
-.custom-shape-divider-bottom-1735926811 {
-position: absolute;
-bottom: 0;
-left: 0;
-width: 100%;
-overflow: hidden;
-line-height: 0;
-transform: rotate(180deg);
+.shop-link{
+  text-decoration: underline #38ed77;
+  color: white;
 }
-
-.custom-shape-divider-bottom-1735926811 svg {
-position: relative;
-display: block;
-width: calc(178% + 1.3px);
-height: 146px;
-}
-
-.custom-shape-divider-bottom-1735926811 .shape-fill {
-fill: #000000;
-}   
-

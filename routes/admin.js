@@ -8,8 +8,6 @@ const uploadAdCarousel = require('../middleware/adCarouselMulter.js')
 const uploadBrand = require('../middleware/brandMulter')
 const adminAuth = require('../middleware/isAdminLoggedIn.js')
 
-adminRouter.use(express.static('../public'))
-
 adminRouter.use(bodyParser.json());
 adminRouter.use(bodyParser.urlencoded({extended:true}));
 
