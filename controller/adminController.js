@@ -588,7 +588,7 @@ const adminAddNewCategory = async (req, res) => {
     if (existingCategory) {
       const imagePath = path.join(
         __dirname,
-        "/static/images/CategoryImages",
+        "../public/images/CategoryImages",
         req.file.filename
       );
       fs.unlinkSync(imagePath);
@@ -677,7 +677,7 @@ const updateCategory = async (req, res) => {
         existingCategory.image = req.file.filename;
         const imagePath = path.join(
           __dirname,
-          "/static/images/CategoryImages",
+          "../public/images/CategoryImages",
           oldImageFilename
         );
         fs.unlinkSync(imagePath);
@@ -774,7 +774,7 @@ const postAdminAddProduct = async (req, res) => {
       for (const imageName of req.files) {
         const imagePath = path.join(
           __dirname,
-          "/static/images/ProductImages",
+          "../public/images/ProductImages",
           imageName
         );
         try {
@@ -898,7 +898,7 @@ const adminDeleteProductImage = async (req, res) => {
       );
       const imagePath = path.join(
         __dirname,
-        "/static/images/ProductImages",
+        "../public/images/ProductImages",
         imageName
       );
       try {
@@ -1025,7 +1025,7 @@ const postAdminHomeCarousel = async (req, res) => {
     if (existingHomeCarousel) {
       const imagePath = path.join(
         __dirname,
-        "/static/images/HomeCarousels",
+        "../public/images/HomeCarousels",
         req.file.filename
       );
       fs.unlinkSync(imagePath);
@@ -1078,7 +1078,7 @@ const adminDeleteHomeCarousel = async (req, res) => {
     } else {
       const imagePath = path.join(
         __dirname,
-        "/static/images/HomeCarousels",
+        "../public/images/HomeCarousels",
         homeCarousel.image
       );
       fs.unlinkSync(imagePath);
@@ -1132,7 +1132,7 @@ const adminUpdateHomeCarousel = async (req, res) => {
       if (req.file) {
         const imagePath = path.join(
           __dirname,
-          "/static/images/HomeCarousels",
+          "../public/images/HomeCarousels",
           existingHomeCarousel.image
         );
         fs.unlinkSync(imagePath);
@@ -1176,7 +1176,7 @@ const postAdminAdCarousel = async (req, res) => {
     if (existingAdCarousel) {
       const imagePath = path.join(
         __dirname,
-        "/static/images/AdCarousels",
+        "../public/images/AdCarousels",
         req.file.filename
       );
       fs.unlinkSync(imagePath);
@@ -1258,7 +1258,7 @@ const adminDeleteAdCarousel = async (req, res) => {
       if (deleteAdCarousel) {
         const imagePath = path.join(
           __dirname,
-          "/static/images/AdCarousels",
+          "../public/images/AdCarousels",
           adCarousel.image
         );
         fs.unlinkSync(imagePath);

@@ -464,7 +464,7 @@ const postUserProfileImage = async(req,res)=>{
 
         if(user.profileimage){
             existingimage = user.profileimage
-            const imagePath = path.join(__dirname, "/static/images/UserProfile", existingimage);
+            const imagePath = path.join(__dirname, "../public/images/UserProfile", existingimage);
             fs.unlinkSync(imagePath);
         }
 
@@ -494,7 +494,7 @@ const delteUserProfileImage = async(req,res)=>{
         }
 
         const existingImage = user.profileimage;
-        const imagePath = path.join(__dirname, "/static/images/UserProfile", existingImage);
+        const imagePath = path.join(__dirname, "../public/images/UserProfile", existingImage);
 
         if (!fs.existsSync(imagePath)) {
             return res.status(404).json({ success: false, message: 'Profile image not found.' });

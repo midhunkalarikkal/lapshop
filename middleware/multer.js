@@ -7,7 +7,7 @@ const imageTypes = /jpeg|jpg|png|gif|svg|webp/;
 // For the category images
 const storage = multer.diskStorage({
   destination:function(req,file,cb){
-    cb(null,path.join(__dirname,'/static/images/CategoryImages'));
+    cb(null,path.join(__dirname,'../public/images/CategoryImages'));
   },
   filename:function(req,file,cb){
     const name = Date.now()+'-'+file.originalname;

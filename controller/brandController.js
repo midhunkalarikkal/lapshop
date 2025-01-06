@@ -31,7 +31,7 @@ const adminAddNewBrand = async(req,res)=>{
         
         if (existbrand) {
             const newImage = req.file.filename
-            const imagePath = path.join(__dirname, "/static/images/BrandImages", newImage);
+            const imagePath = path.join(__dirname, "../public/images/BrandImages", newImage);
             fs.unlinkSync(imagePath);
             return res.status(400).json({ success : false, message : "Brand already exist" })
         }else{
@@ -106,7 +106,7 @@ const adminUpdateBrand = async(req,res)=>{
 
             if (req.file){
                 existingBrand.image = req.file.filename;
-                const imagePath = path.join(__dirname, "/static/images/BrandImages", oldImageFilename);
+                const imagePath = path.join(__dirname, "../public/images/BrandImages", oldImageFilename);
                 fs.unlinkSync(imagePath);
             }
             existingBrand.name = brandName;
