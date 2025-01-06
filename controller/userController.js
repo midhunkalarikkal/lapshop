@@ -86,12 +86,30 @@ const sendOtpMail = async(email,otp,subject,message)=>{
             to: email,
             subject: subject,
             html: `
-                <p>Dear Valued Customer,</p>
-                <p>${message}</p>
-                <p><strong>${otp}</strong></p>
-                <p>This OTP is valid for the next 3 minutes. Please do not share this OTP with anyone for security reasons.</p>
-                <p>If you did not request this OTP, please ignore this email or contact our support team immediately.</p>
-                <p>Best regards,<br>The LapShop Team</p>`
+                <!DOCTYPE html>
+                <html>
+                    <body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0; color: #1b1b1b;">
+                        <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                            <div style="background-color: #50c878; text-align: center; padding: 20px;">
+                                <h1 style="color: #1b1b1b; font-size: 24px; margin: 0; font-weight: bold; letter-spacing: 1px;">LapShop</h1>
+                            </div>
+
+                            <div style="padding: 20px; color: #333333; line-height: 1.6;">
+                                <p style="margin: 0 0 16px;">Dear Valued Customer,</p>
+                                <p style="margin: 0 0 16px;">${message}</p>
+                                <p style="margin: 0 0 16px; font-size: 18px; font-weight: bold; text-align: center;">${otp}</p>
+                                <p style="margin: 0 0 16px;">This OTP is valid for the next 3 minutes. Please do not share this OTP with anyone for security reasons.</p>
+                                <p style="margin: 0 0 16px;">If you did not request this OTP, please ignore this email or contact our support team immediately.</p>
+                                <p style="margin: 0 0 16px;">Best regards,<br><strong>The LapShop Team</strong></p>
+                            </div>
+
+                            <div style="background-color: #50c878; text-align: center; padding: 10px; color: #ffffff; font-size: 14px;">
+                                <p style="margin: 0;">Visit us: <a href="https://lapshop.site" style="color: #ffffff; text-decoration: none;">lapshop.site</a></p>
+                                <p style="margin: 0;">Contact: lapshopsite@gmail.com</p>
+                            </div>
+                        </div>
+                    </body>
+                </html>`
         }
 
         await transporter.sendMail(mailOptions)
@@ -1233,6 +1251,7 @@ const getContactPage = async(req,res)=>{
     }
 }
 
+//To send the contact form response
 const sendContactMail = async (name, email, phone, message) => {
     try {
         const transporter = nodemailer.createTransport({
@@ -1251,12 +1270,32 @@ const sendContactMail = async (name, email, phone, message) => {
             to: 'lapshopotp@gmail.com',
             subject: `New Contact Form Submission from ${name}`,
             html: `
-                <h3>New Contact Form Submission</h3>
-                <p><strong>Name:</strong> ${name}</p>
-                <p><strong>Email:</strong> ${email}</p>
-                <p><strong>Phone:</strong> ${phone}</p>
-                <p><strong>Message:</strong></p>
-                <p>${message}</p>`,
+                <!DOCTYPE html>
+                <html>
+                <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; color: #1b1b1b;">
+                    <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                        <!-- Header -->
+                        <div style="background-color: #50c878; text-align: center; padding: 20px;">
+                            <h1 style="color: #1b1b1b; font-size: 24px; margin: 0; font-weight: bold; letter-spacing: 1px;">LapShop Contact Form</h1>
+                        </div>
+
+                        <!-- Content -->
+                        <div style="padding: 20px; color: #333333; line-height: 1.6;">
+                            <h3 style="margin-bottom: 16px; color: #50c878;">New Contact Form Submission</h3>
+                            <p style="margin: 0 0 12px;"><strong>Name:</strong> ${name}</p>
+                            <p style="margin: 0 0 12px;"><strong>Email:</strong> ${email}</p>
+                            <p style="margin: 0 0 12px;"><strong>Phone:</strong> ${phone}</p>
+                            <p style="margin: 0 0 12px;"><strong>Message:</strong></p>
+                            <p style="margin: 0; background-color: #f4f4f4; padding: 10px; border-radius: 4px; color: #1b1b1b;">${message}</p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="background-color: #50c878; text-align: center; padding: 10px; color: #ffffff; font-size: 14px;">
+                            <p style="margin: 0;">This message was submitted through the LapShop contact form.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>`,
         };
 
         await transporter.sendMail(mailOptions);
