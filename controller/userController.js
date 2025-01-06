@@ -59,7 +59,6 @@ const generateReferralCode = async(fullname, phone) =>{
 
 //Generating otp function
 const generateOtp = () => {
-    const crypto = require('crypto');
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let otp = "";
     for (let i = 0; i < 6; i++) {
