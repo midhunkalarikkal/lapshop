@@ -565,8 +565,8 @@ const getUserShop = async(req,res)=>{
 const getCatProduct = async(req,res)=>{
     try{
         let productData;
-        let wishlistProdId = [];
-        let cartProdId = [];
+        let wishlistProdId;
+        let cartProdId;
 
         if(req.session.user){
             const user = req.session.user
@@ -574,7 +574,7 @@ const getCatProduct = async(req,res)=>{
             if(wishlist){
                 const wishlistProducts = wishlist[0].products
                 const productsId = wishlistProducts.map(item => item.product);
-                wishlistProdId = productsId
+                wishlistProdId = productsId;
             }
             const cart = await Cart.find({ userId : user._id }) 
             if(cart){

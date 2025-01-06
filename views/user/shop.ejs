@@ -478,8 +478,8 @@
             .then(data => {
                 let productData = data.productData
                 let totalPages = data.totalPages
-                let wishlistProdId = data.wishlistProdId
-                let cartProdId = data.cartProdId
+                let wishlistProdId = data.wishlistProdId || []
+                let cartProdId = data.cartProdId || []
                 updatePaginationUI(totalPages);
 
                 const currentDate = new Date();
@@ -549,7 +549,7 @@
                     ////// Dynamically adding the cart button to the product \\\\\\
                     const productCardFooter = productDiv.find('.card-details');
 
-                    if (cartProdId != "") {
+                    if (cartProdId.length > 0) {
                         let isInCart = false;
 
                         for (let i = 0; i < cartProdId.length; i++) {
@@ -598,7 +598,7 @@
                     ////// Dynamically adding wishlist button \\\\\\
                     const productCardHeader = productDiv.find('.card-Header');
 
-                    if(wishlistProdId != ""){
+                    if(wishlistProdId.length > 0){
                         let isInWishlist = false;
                         for(let i = 0; i < wislistProductId.length; i++){
                             if(wishlistProdId[i] == product_._id.toString()){
