@@ -1233,6 +1233,65 @@ const getContactPage = async(req,res)=>{
     }
 }
 
+const sendContactMail = async (name, email, phone, message) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.AUTH_EMAIL,
+                pass: process.env.AUTH_PASS,
+            },
+        });
+
+        const mailOptions = {
+            from: 'lapshopotp@gmail.com',
+            to: 'lapshopotp@gmail.com',
+            subject: `New Contact Form Submission from ${name}`,
+            html: `
+                <h3>New Contact Form Submission</h3>
+                <p><strong>Name:</strong> ${name}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Phone:</strong> ${phone}</p>
+                <p><strong>Message:</strong></p>
+                <p>${message}</p>`,
+        };
+
+        await transporter.sendMail(mailOptions);
+        return true;
+    } catch (error) {
+        return false;
+    }
+};
+
+const postContact = async(req,res) => {
+    try{
+        const { name, email, phone, message } = req.body;
+        
+        if (!name || !email || !phone || !message) {
+            return res.status(400).json({ success : false, message: "All fields are required." });
+        }
+
+        const emailSent = await sendContactMail(name, email, phone, message);
+
+        if (!emailSent) {
+            return res.status(500).json({
+                success: false,
+                message: "Failed to send your response. Please try again later.",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Form submitted successfully. We will get back to you shortly.",
+        });
+    }catch(error){
+        return res.redirect('/errorPage')
+    }
+}
+
 //To get the error page
 const getErrorPage = async(req,res)=>{
     res.render('user/errorPage', {
@@ -1276,6 +1335,7 @@ module.exports = {
     getPaymentPage,
     getPaymentSuccess,
     getContactPage,
+    postContact,
     getErrorPage,
     getOtpPage
 }

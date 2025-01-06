@@ -8,7 +8,7 @@
         <section class="view">
             <div class="container d-flex align-items-center justify-content-center min-vh-100">
                 <div class="main shadow rounded p-4 bg-white" style="width: 100%; max-width: 600px;">
-                    <form action="" method="POST" id="submit-form">
+                    <form method="POST" id="submit-form">
                         <div class="text-center mb-4">
                             <h4 class="fs-4 text-dark fw-bold">Send Your Response</h4>
                             <h6 class="text-success">www.lapshop.online</h6>
@@ -151,40 +151,76 @@
             }
 
             ////// To submit the form \\\\\\
-            const infoDiv = document.getElementById("response-info");
-            $("#submit-form").submit((e)=>{
-            e.preventDefault()
-            $.ajax({
-                url:"https://script.google.com/macros/s/AKfycbyjxJBsYD7Tpcl7M-OLQbyFuzWU6HEoG5d6yopYkSgctwaBTryaDKh4im_UkTU6P9fmpA/exec",
-                data:$("#submit-form").serialize(),
-                method:"post",
-                success:function (response){
-                    swal.fire({
-                        icon: "success",
-                        title: "Response sended successfully",
-                        text: "Thak your for your response.",
-                        showConfirmButton: true,
-                        background: "#333",
-                        color: "#ffffff",
-                        confirmButtonText: "Ok"
-                    })
-                    .then(()=>{
-                        document.getElementById('submit-form').reset();
-                    })
+            document.getElementById("submit-form").addEventListener("submit", async function (e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        // Get form data
+        const formData = {
+            name: document.getElementById("name").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            message: document.getElementById("message").value.trim()
+        };
+
+        try {
+
+            Swal.fire({
+                title: "Sending....",
+                text: "Please wait",
+                background: "#333",
+                color: "#ffffff",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
                 },
-                error:function (err){
-                    swal.fire({
-                        icon: "info",
-                        title: "Response sending failed.",
-                        text: response.message,
-                        showConfirmButton: true,
-                        background: "#333",
-                        color: "#ffffff",
-                        confirmButtonText: "Ok"
-                    })
-                }
             })
-        })
+
+            const response = await fetch("/contactForm", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const result = await response.json();
+            Swal.close();
+
+            if (result.success) {
+                swal.fire({
+                    icon: "success",
+                    title: "Response sent successfully",
+                    text: "Thank you for your response.",
+                    showConfirmButton: true,
+                    background: "#333",
+                    color: "#ffffff",
+                    confirmButtonText: "Ok"
+                });
+                document.getElementById("submit-form").reset();
+            } else {
+                swal.fire({
+                    icon: "error",
+                    title: "Submission Failed",
+                    text: errorData.message || "Something went wrong.",
+                    showConfirmButton: true,
+                    background: "#333",
+                    color: "#ffffff",
+                    confirmButtonText: "Ok"
+                });
+            }
+        } catch (error) {
+            console.log("error : ",error);
+            swal.fire({
+                icon: "error",
+                title: "Network Error",
+                text: "Unable to send your response. Please try again later.",
+                showConfirmButton: true,
+                background: "#333",
+                color: "#ffffff",
+                confirmButtonText: "Ok"
+            });
+        }
+    });
 
         ////// Cancel button goBack function \\\\\\
         function goBack() {

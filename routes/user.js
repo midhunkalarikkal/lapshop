@@ -77,6 +77,8 @@ userRouter.get('/shop',userController.getUserShop)
 userRouter.post('/shopCategoryId',userController.getCatProduct)
 //To get the contact page
 userRouter.get('/contact',userController.getContactPage)
+//To post contact formData
+userRouter.post('/contactForm',userController.postContact);
 
 //To get the wishlist page
 userRouter.get('/wishlist',userAuth.isLoggedIn,userAuth.isBlocked,wishlistController.getWishlistPage)
