@@ -600,7 +600,7 @@
 
                     if(wishlistProdId.length > 0){
                         let isInWishlist = false;
-                        for(let i = 0; i < wislistProductId.length; i++){
+                        for(let i = 0; i < wislistProdId.length; i++){
                             if(wishlistProdId[i] == product_._id.toString()){
                                 isInWishlist = true;
                                 break;
@@ -660,7 +660,6 @@
                 }
             })
             .catch(error => {
-                console.log("error : ",error);
                 Swal.fire({
                     icon: 'info',
                     title: 'Error!',

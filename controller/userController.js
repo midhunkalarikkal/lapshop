@@ -565,8 +565,8 @@ const getUserShop = async(req,res)=>{
 const getCatProduct = async(req,res)=>{
     try{
         let productData;
-        let wishlistProdId;
-        let cartProdId;
+        let wishlistProdId = [];
+        let cartProdId = [];
 
         if(req.session.user){
             const user = req.session.user
