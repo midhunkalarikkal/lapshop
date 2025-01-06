@@ -104,55 +104,55 @@
         }
 
         const canvas = document.getElementById('confettiCanvas');
-    const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d');
 
-    // Resize canvas to fit screen
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+        // Resize canvas to fit screen
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
 
-    // Create confetti particles
-    const confettiParticles = [];
-    for (let i = 0; i < 200; i++) {
-      confettiParticles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height - canvas.height,
-        r: Math.random() * 4 + 1,
-        d: Math.random() * 10 + 5,
-        color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-        tilt: Math.random() * 10 - 5,
-        tiltAngleIncrement: Math.random() * 0.1 + 0.05,
-        tiltAngle: 0
-      });
-    }
-
-    // Animate confetti
-    function drawConfetti() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      confettiParticles.forEach(p => {
-        ctx.beginPath();
-        ctx.lineWidth = p.r;
-        ctx.strokeStyle = p.color;
-        ctx.moveTo(p.x + p.tilt + p.r, p.y);
-        ctx.lineTo(p.x + p.tilt, p.y + p.r * 2);
-        ctx.stroke();
-
-        // Update particle position
-        p.y += p.d;
-        p.tiltAngle += p.tiltAngleIncrement;
-        p.tilt = Math.sin(p.tiltAngle) * 10;
-
-        // Reset position if out of bounds
-        if (p.y > canvas.height) {
-          p.x = Math.random() * canvas.width;
-          p.y = -20;
-          p.tilt = Math.random() * 10 - 5;
+        // Create confetti particles
+        const confettiParticles = [];
+        for (let i = 0; i < 200; i++) {
+        confettiParticles.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height - canvas.height,
+            r: Math.random() * 4 + 1,
+            d: Math.random() * 10 + 5,
+            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+            tilt: Math.random() * 10 - 5,
+            tiltAngleIncrement: Math.random() * 0.1 + 0.05,
+            tiltAngle: 0
+        });
         }
-      });
 
-      requestAnimationFrame(drawConfetti);
-    }
+        // Animate confetti
+        function drawConfetti() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        confettiParticles.forEach(p => {
+            ctx.beginPath();
+            ctx.lineWidth = p.r;
+            ctx.strokeStyle = p.color;
+            ctx.moveTo(p.x + p.tilt + p.r, p.y);
+            ctx.lineTo(p.x + p.tilt, p.y + p.r * 2);
+            ctx.stroke();
 
-    drawConfetti();
+            // Update particle position
+            p.y += p.d;
+            p.tiltAngle += p.tiltAngleIncrement;
+            p.tilt = Math.sin(p.tiltAngle) * 10;
+
+            // Reset position if out of bounds
+            if (p.y > canvas.height) {
+            p.x = Math.random() * canvas.width;
+            p.y = -20;
+            p.tilt = Math.random() * 10 - 5;
+            }
+        });
+
+        requestAnimationFrame(drawConfetti);
+        }
+
+        drawConfetti();
     </script>
 
     <!-- User footer -->

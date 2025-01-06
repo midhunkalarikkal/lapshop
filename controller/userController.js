@@ -1123,38 +1123,153 @@ const getPaymentPage = async(req,res)=>{
     }
 }
 
+//To send the purchase details to use email
+const sendPurchaseDetails = async (mailData) => {
+    try {
+        const transporter = nodemailer.createTransport({
+            service: "gmail",
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true,
+            auth: {
+                user: process.env.OFFICIAL_EMAIL,
+                pass: process.env.OFFICIALEMAIL_PASS,
+            },
+        });
+
+        // Helper function to format dates in a readable format like "07 Jan 2025"
+        const formatDate = (date) => {
+            const options = { year: 'numeric', month: 'short', day: '2-digit' };
+            return new Intl.DateTimeFormat('en-IN', options).format(new Date(date));
+        };
+
+        // Helper function to generate the payment status message
+        const getPaymentMessage = (paymentStatus) => {
+            return paymentStatus
+                ? "Your order has been confirmed. Thank you for your payment!"
+                : "Your order has been created and is awaiting payment. Please complete the payment to confirm your order.";
+        };
+
+        // Helper function to generate the wallet debited section
+        const generateWalletDebitedSection = (walletDebitedAmount) => {
+            return walletDebitedAmount > 0
+                ? `<p style="margin: 0 0 12px;"><strong>Wallet Debited Amount:</strong> ₹${walletDebitedAmount}</p>`
+                : "";
+        };
+
+        // Extract and format the address
+        const formatAddress = (address) => {
+            return `
+                <p style="margin: 0 0 12px;"><strong>Name:</strong> ${address.name}</p>
+                <p style="margin: 0 0 12px;"><strong>Address:</strong> ${address.addressLine}</p>
+                <p style="margin: 0 0 12px;"><strong>Phone:</strong> ${address.phone}</p>
+                <p style="margin: 0 0 12px;"><strong>City:</strong> ${address.city}</p>
+                <p style="margin: 0 0 12px;"><strong>District:</strong> ${address.district}</p>
+                <p style="margin: 0 0 12px;"><strong>State:</strong> ${address.state}</p>
+                <p style="margin: 0 0 12px;"><strong>Pincode:</strong> ${address.pincode}</p>
+                <p style="margin: 0 0 12px;"><strong>Country:</strong> ${address.country}</p>
+            `;
+        };
+
+        const orderedDate = formatDate(mailData.orderedDate);
+        const expectedDelivery = formatDate(mailData.expectedDelivery);
+        const paymentMessage = getPaymentMessage(mailData.paymentStatus);
+        const walletDebitedSection = generateWalletDebitedSection(mailData.walletDebitedAmount);
+
+        const mailOptions = {
+            from: "lapshopsite@gmail.com",
+            to: mailData.email,
+            subject: `Thank You for Your Purchase! Order ID: ${mailData.orderId}`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <body style="font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; color: #1b1b1b;">
+                    <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+                        <!-- Header -->
+                        <div style="background-color: #50c878; text-align: center; padding: 20px;">
+                            <h1 style="color: #1b1b1b; font-size: 24px; margin: 0; font-weight: bold; letter-spacing: 1px;">LapShop</h1>
+                            <p style="color: #ffffff; margin: 10px 0 0;">Thank you for shopping with us!</p>
+                        </div>
+
+                        <!-- Order Details -->
+                        <div style="padding: 20px; color: #333333; line-height: 1.6;">
+                            <h3 style="margin-bottom: 16px; color: #50c878;">Order Details</h3>
+                            <p style="margin: 0 0 12px;"><strong>Order ID:</strong> ${mailData.orderId}</p>
+                            <p style="margin: 0 0 12px;"><strong>Ordered Date:</strong> ${orderedDate}</p>
+                            <p style="margin: 0 0 12px;"><strong>Expected Delivery:</strong> ${expectedDelivery}</p>
+                            <p style="margin: 0 0 12px;"><strong>Payment Method:</strong> ${mailData.paymentMethod}</p>
+                            <p style="margin: 0 0 12px;"><strong>Payment Status:</strong> ${mailData.paymentStatus ? "Paid" : "Pending"}</p>
+                            ${walletDebitedSection}
+                            <p style="margin: 0 0 12px;"><strong>Order Total:</strong> ₹${mailData.orderTotal}</p>
+                            <h3 style="margin-top: 24px; color: #50c878;">Delivery Address</h3>
+                            ${formatAddress(mailData.address)}
+                            <p style="margin: 20px 0; background-color: #f4f4f4; padding: 10px; border-radius: 4px; color: #1b1b1b;">${paymentMessage}</p>
+                        </div>
+
+                        <!-- Footer -->
+                        <div style="background-color: #50c878; text-align: center; padding: 20px; color: #ffffff; font-size: 14px;">
+                            <p style="margin: 0;">If you have any questions, contact us at <a href="mailto:lapshopsite@gmail.com" style="color: #1b1b1b; text-decoration: none;">lapshopsite@gmail.com</a>.</p>
+                            <p style="margin: 0;">Check your order or visit us at: <a href="https://lapshop.site" style="color: #1b1b1b; text-decoration: none;">LapShop</a></p>
+                        </div>
+                    </div>
+                </body>
+                </html>`,
+        };
+
+        await transporter.sendMail(mailOptions);
+        return { success: true };
+    } catch (error) {
+        console.error("Error in sendPurchaseDetails:", error);
+        return { success: false, error: error.message };
+    }
+};
+
+
 // To get the order confirm page
 const getPaymentSuccess = async(req,res)=>{
     try{
-        let userDetails = req.session.userNC
-        const userId = req.session.user._id
-        const order = await Order.find({userId : userId})
-        const latestOrder = order.sort((a, b) => b.orderDate - a.orderDate)[0];
-        const addressId = latestOrder.address
-        const deliveryAddress = await Address.findById(addressId)
-        let paymentMethod = latestOrder.paymentMethod
-        if(paymentMethod === "cod"){
-            paymentMethod = "Cash on delivery."
-        }else if( paymentMethod === "wallet"){
-            paymentMethod = "Wallet payment."
-        }else if(paymentMethod === "razorpay"){
-            paymentMethod = "Online razorpay payment."
+        const userDetails = req.session.userNC;
+        const userId = req.session.user._id;
+
+        const user = await User.findById(userId);
+
+        const orders = await Order.find({ userId: userId });
+        const latestOrder = orders.sort((a, b) => b.orderDate - a.orderDate)[0];
+
+        if (!latestOrder) {
+            throw new Error("No orders found for the user.");
         }
-        const orderTotal = latestOrder.orderTotal
-        const orderedDate = latestOrder.orderDate
-        const walletDebitedAmount = latestOrder.walletDebitedAmount
-        const expectedDelivery = new Date(orderedDate);
-            expectedDelivery.setDate(expectedDelivery.getDate() + 4);
-        const data = {
-            address : deliveryAddress,
-            paymentMethod : paymentMethod,
-            paymentStatus : latestOrder.paymentStatus,
-            walletDebitedAmount : walletDebitedAmount,
-            orderTotal : orderTotal,
-            orderedDate : orderedDate,
-            expectedDelivery : expectedDelivery
-        }
-        return res.render('user/orderConfirmation',{userDetails , data})
+
+        const deliveryAddress = await Address.findById(latestOrder.address);
+
+        const paymentMethodMap = {
+            cod: "Cash on delivery.",
+            wallet: "Wallet payment.",
+            razorpay: "Online razorpay payment.",
+        };
+        const paymentMethod = paymentMethodMap[latestOrder.paymentMethod] || "Unknown method";
+
+        const expectedDelivery = new Date(latestOrder.orderDate);
+        expectedDelivery.setDate(expectedDelivery.getDate() + 4);
+
+        const sharedData = {
+            orderId: latestOrder.orderId,
+            orderedDate: latestOrder.orderDate,
+            expectedDelivery,
+            paymentMethod,
+            paymentStatus: latestOrder.paymentStatus,
+            walletDebitedAmount: latestOrder.walletDebitedAmount,
+            orderTotal: latestOrder.orderTotal,
+            address: deliveryAddress,
+        };
+
+        sendPurchaseDetails({
+            ...sharedData,
+            name: userDetails.userName,
+            email: user.email,
+        }).catch((err) => console.error("Failed to send email:", err));
+
+        return res.render("user/orderConfirmation", { userDetails, data: sharedData });
     }catch(error){
         return res.redirect('/errorPage')
     }
