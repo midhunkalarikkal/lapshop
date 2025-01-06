@@ -662,11 +662,13 @@ const getCatProduct = async(req,res)=>{
             productData = productData.slice(skip, skip + perPage);
             const totalPages = Math.ceil(totalProducts / perPage);
 
+            console.log("data : ", productData , totalPages , wishlistProdId , cartProdId)
             return res.status(200).json({ message : "Categorized products", productData , totalPages , wishlistProdId , cartProdId})
         }else{
             return res.status(400).json({ message : "No categorized found" })
         }
     }catch(error){
+        console.log("error : ",error);
         return res.redirect('/errorPage')
     }
 }
