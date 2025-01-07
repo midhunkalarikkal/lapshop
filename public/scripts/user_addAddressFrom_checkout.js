@@ -197,66 +197,82 @@ function validateForm() {
     return isValidName && isValidAddressLine && isValidPhone && isValidCity && isValidDistrict && isValidState && isValidPincode;
 }
 
-document.getElementById('submitButton').addEventListener('click', async function (event) {
-    event.preventDefault();
+const userId = document.getElementById("userId").value;
+const saveButtons = document.querySelectorAll('.save-btn');
 
-    if (validateForm()) {
-        const form = document.querySelector('form');
-        const formData = {
-            name: document.getElementById('name').value,
-            addressLine: document.getElementById('addressLine').value,
-            phone: document.getElementById('phone').value,
-            city: document.getElementById('city').value,
-            district: document.getElementById('district').value,
-            state: document.getElementById('state').value,
-            pincode: document.getElementById('pincode').value,
-            country: document.getElementById('country').value
-        };
+saveButtons.forEach(button => {
+    button.addEventListener('click', async function (event) {
+        event.preventDefault();
 
-        Swal.fire({
-            title: "Adding new address.",
-            text: "Please wait",
-            background: "#333",
-            color: "#ffffff",
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
+        if (validateForm()) {
+            const formData = {
+                name: document.getElementById('name').value,
+                addressLine: document.getElementById('addressLine').value,
+                phone: document.getElementById('phone').value,
+                city: document.getElementById('city').value,
+                district: document.getElementById('district').value,
+                state: document.getElementById('state').value,
+                pincode: document.getElementById('pincode').value,
+                country: document.getElementById('country').value
+            };
 
-        const response = await fetch(form.action, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const contentType = response.headers.get('content-type');
-        let data;
-        if (contentType && contentType.includes('application/json')) {
-            data = await response.json();
-            Swal.close();
-        } else {
-            window.location.href = `/login`;
-        }
-
-        if (data.success) {
             Swal.fire({
-                icon: 'success',
-                title: 'Success.',
-                text: data.message || 'New address added successfully..',
+                title: "Adding new address.",
+                text: "Please wait",
                 background: "#333",
                 color: "#ffffff",
-                showConfirmButton: true
-            }).then(() => {
-                window.location.href = '/checkout';
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
             });
+
+            const response = await fetch(`/saveNewAddress/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            });
+
+            const contentType = response.headers.get('content-type');
+            let data;
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+                Swal.close();
+            } else {
+                window.location.href = `/login`;
+            }
+
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success.',
+                    text: data.message || 'New address added successfully..',
+                    background: "#333",
+                    color: "#ffffff",
+                    showConfirmButton: true
+                }).then(() => {
+                    window.location.href = '/checkout';
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message || 'Something went wrong.',
+                    timer: 3000,
+                    background: "#333",
+                    color: "#ffffff",
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
         } else {
+            console.log("error");
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
-                text: data.message || 'Something went wrong.',
+                text: 'Fix the errors in the form.',
                 timer: 3000,
                 background: "#333",
                 color: "#ffffff",
@@ -264,21 +280,5 @@ document.getElementById('submitButton').addEventListener('click', async function
                 showConfirmButton: false
             });
         }
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Fix the errors in the form.',
-            timer: 3000,
-            background: "#333",
-            color: "#ffffff",
-            timerProgressBar: true,
-            showConfirmButton: false
-        });
-    }
+    });
 });
-
-////// Cancel button goBack function \\\\\\
-function goBack() {
-    window.location.href = "/checkout"
-}
