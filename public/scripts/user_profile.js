@@ -307,7 +307,8 @@ document.getElementById('saveUserInfo').addEventListener('click', async function
 });
 
 ////// Function to handle image upload \\\\\\
-document.getElementById('saveUserImage').addEventListener('click', async function () {
+document.getElementById('saveUserImage').addEventListener('click', async function (event) {
+    event.preventDefault();
     const userProfileImageInput = document.getElementById("image").files[0];
     const userId = document.getElementById('userIdFromImage').value;
 
@@ -348,8 +349,8 @@ document.getElementById('saveUserImage').addEventListener('click', async functio
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
             const data = await response.json();
-            Swal.close();
             if (data.success) {
+                Swal.close();
                 $('#profileImageModal').modal('hide');
                 Swal.fire({
                     icon: 'success',

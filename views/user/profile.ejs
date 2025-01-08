@@ -13,18 +13,19 @@
                 <div class="row mb-3">
 
                     <!-- For the small devices -->
-                    <div class="col-md-4 mt-4 d-block d-md-none">
+                    <div class="col-md-4 d-block d-md-none">
                         <div class="shadow d-flex flex-column p-2 user-info">
                             <div class="profile-intro mb-4 d-flex justify-content-between align-items-center">
                                 <h4 class="fw-bold mb-0">Your Profile</h4>
                             </div>
                             <div class="gradient-custom text-center text-white d-flex flex-column align-items-center shadow">
                                 <% if(userData.profileimage ) { %>
-                                    <img src="../../static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3" style="width: 150px; height: 150px;" />
+                                    <img src="/static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3" style="width: 150px; height: 150px;" />
                                     <a onclick="deletePI()" class="text-danger mb-3 mb-md-0 prf-btn">Remove picture</a>
                                 <% }else{ %>
-                                    <img src="../../static/images/icons/No profile image.jpg" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
+                                    <img src="/static/images/icons/No profile image.jpg" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
                                 <% } %>
+                                <h6 class="text-center">Hi, <%= userData.fullname %></h6>
                             </div>
                             <div class="container mt-5">
                                 <div class="row">
@@ -96,7 +97,7 @@
                     <div class="col-md-8 mt-4">
                         <div class="shadow d-flex user-info">
                             <div class="col-12 p-3">
-                                <div class="profile-intro mb-4 d-flex justify-content-between align-items-center">
+                                <div class="profile-intro mb-4 d-flex justify-content-between align-items-center d-none d-md-block">
                                     <h4 class="fw-bold mb-0">Your Profile</h4>
                                 </div>
                                 <div class="row pt-1">  
