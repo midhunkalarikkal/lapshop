@@ -282,3 +282,8 @@ saveButtons.forEach(button => {
         }
     });
 });
+
+////// Cancel button goBack function \\\\\\
+function goBack() {
+    window.location.href = "/checkout"
+}
