@@ -8,7 +8,7 @@
         <section class="view">
             <div class="container d-flex align-items-center justify-content-center">
                 <div class="main col-12 col-lg-10 m-3 mt-5 bg-white">
-                    <form action="/saveNewAddress/<%= userId %>" method="POST">
+                    <form>
                         <div class="p-5">
                             <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new address</h4>
                             <div class="input-box d-md-flex">
@@ -39,7 +39,7 @@
                                     </div>
                                     <div class="mt-5 d-md-block d-none">
                                         <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                                        <button type="submit" id="submitButton" class="btn btn-success .save-btn">Save</button>
+                                        <button type="submit" id="submitButton" class="btn btn-success save-btn">Save</button>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-6">
@@ -69,8 +69,9 @@
                                 </div>
                                 <div class="mt-4 d-block d-md-none">
                                     <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">Cancel</button>
-                                    <button type="submit" id="submitButton" class="btn btn-success btn-sm .save-btn">Save</button>
+                                    <button type="submit" id="submitButton" class="btn btn-success btn-sm save-btn">Save</button>
                                 </div>
+                                <input type="hidden" value="<%= userId %>" id="userId">
                             </div>
                         </div>
                     </form>

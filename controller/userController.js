@@ -705,6 +705,7 @@ const postUserAddress = async(req,res)=>{
     try{
         const { name, addressLine, phone, city, district, state, pincode, country} = req.body;
         const userId = req.params.userId;
+        console.log("userId : ",userId);
 
         if(!/^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/.test(name)){
             return res.status(400).json({ success : false, message : "Invalid name." });

@@ -427,10 +427,7 @@
                                 <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>" oninput="validatePhone()">
                                 <span id="phoneError" class="text-danger"></span>
                             </div>
-                            <div class="mb-3" style="display: none;">
-                                <label for="userId" class="form-label">User id</label>
-                                <input type="text" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
-                            </div>
+                            <input type="hidden" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
                         <% } %>
                     </form>
                 </div>

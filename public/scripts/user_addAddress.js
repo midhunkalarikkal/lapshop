@@ -207,6 +207,7 @@ function validateForm() {
   );
 }
 
+const userId = document.getElementById('userId').value;
 const saveButtons = document.querySelectorAll(".save-btn");
 
 saveButtons.forEach((button) => {
@@ -214,7 +215,6 @@ saveButtons.forEach((button) => {
     event.preventDefault();
 
     if (validateForm()) {
-      const form = document.querySelector("form");
       const formData = {
         name: document.getElementById("name").value,
         addressLine: document.getElementById("addressLine").value,
@@ -238,7 +238,7 @@ saveButtons.forEach((button) => {
           },
         });
 
-        const response = await fetch(form.action, {
+        const response = await fetch(`/saveNewAddress/${userId}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
