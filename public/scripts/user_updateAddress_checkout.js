@@ -182,8 +182,6 @@ function validateState() {
     }
 }
 
-
-
 ////// To submit the form \\\\\\
 function validateForm() {
     const isValidName = validateName();
@@ -197,67 +195,92 @@ function validateForm() {
     return isValidName && isValidAddressLine && isValidPhone && isValidCity && isValidDistrict && isValidState && isValidPincode;
 }
 
-document.getElementById('submitButton').addEventListener('click', async function (event) {
-    event.preventDefault();
+const addressId = document.getElementById("addressId").value;
+        const saveButtons = document.querySelectorAll('.save-btn');
 
-    if (validateForm()) {
-        const form = document.querySelector('form');
-        const formData = {
-            name: document.getElementById('name').value,
-            addressLine: document.getElementById('addressLine').value,
-            phone: document.getElementById('phone').value,
-            city: document.getElementById('city').value,
-            district: document.getElementById('district').value,
-            state: document.getElementById('state').value,
-            pincode: document.getElementById('pincode').value,
-            country: document.getElementById('country').value
-        };
-
-        Swal.fire({
-            title: "Updating.",
-            text: "Please wait",
-            background: "#333",
-            color: "#ffffff",
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
+        document.getElementById('desktopSaveButton').addEventListener('click', async function (event) {
+            handleSave(event);
         });
-        
-            const response = await fetch(form.action, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            });
 
-            const contentType = response.headers.get('content-type');
-            let data;
-            if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
-                Swal.close();
-            } 
-            else {
-                window.location.href = `/login`;
-            }
+        document.getElementById('mobileSaveButton').addEventListener('click', async function (event) {
+            handleSave(event);
+        });
 
-            if (data.success) {
+
+        async function handleSave(event) {
+            event.preventDefault();
+
+            if (validateForm()) {
+                const form = document.querySelector('form');
+                const formData = {
+                    name: document.getElementById('name').value,
+                    addressLine: document.getElementById('addressLine').value,
+                    phone: document.getElementById('phone').value,
+                    city: document.getElementById('city').value,
+                    district: document.getElementById('district').value,
+                    state: document.getElementById('state').value,
+                    pincode: document.getElementById('pincode').value,
+                    country: document.getElementById('country').value
+                };
+
                 Swal.fire({
-                    icon: 'success',
-                    title: 'Success.',
-                    text: data.message || 'Address updated successfully..',
+                    title: "Updating.",
+                    text: "Please wait",
                     background: "#333",
                     color: "#ffffff",
-                    showConfirmButton: true
-                }).then(() => {
-                    window.location.href = '/checkout';
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
                 });
+
+                const response = await fetch(`/updateAddressFromCheckout/${addressId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const contentType = response.headers.get('content-type');
+                let data;
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                    Swal.close();
+                    console.log("data : ", data);
+                }
+                else {
+                    window.location.href = `/login`;
+                }
+
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success.',
+                        text: data.message || 'Address updated successfully..',
+                        background: "#333",
+                        color: "#ffffff",
+                        showConfirmButton: true
+                    }).then(() => {
+                        window.location.href = '/checkout';
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error!',
+                        text: data.message || 'Something went wrong.',
+                        timer: 3000,
+                        background: "#333",
+                        color: "#ffffff",
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                }
             } else {
                 Swal.fire({
                     icon: 'error',
                     title: 'Error!',
-                    text: data.message || 'Something went wrong.',
+                    text: 'Fix the errors in the form.',
                     timer: 3000,
                     background: "#333",
                     color: "#ffffff",
@@ -265,20 +288,8 @@ document.getElementById('submitButton').addEventListener('click', async function
                     showConfirmButton: false
                 });
             }
-    } else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Fix the errors in the form.',
-            timer: 3000,
-            background: "#333",
-            color: "#ffffff",
-            timerProgressBar: true,
-            showConfirmButton: false
-        });
-    }
-});
-
+        }
+        
 ////// Cancel button goBack function \\\\\\
 function goBack() {
     window.location.href = "/checkout"

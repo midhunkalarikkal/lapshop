@@ -24,7 +24,7 @@
 </head>
 
 <body>
-    
+
     <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
         <div class="container">
             <div class="logo col-2">
@@ -37,81 +37,85 @@
             </div>
         </div>
     </nav>
-    
+
     <section class="view">
         <div class="container d-flex align-items-center justify-content-center">
             <div class="main col-12 col-lg-10 m-3 mt-5">
-                <form action="/updateAddressFromCheckout/<%= address.id %>" method="POST">
-                    <div class="p-5 shadow">
-                        <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit address address </h4>
+                <form>
+                    <div class="p-5 shadow rounded">
+                        <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit address</h4>
                         <div class="input-box d-md-flex">
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="Name" class="form-label">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" required value="<%= address.name %>"
-                                    oninput="validateName()">
+                                    <input type="text" class="form-control" name="name" id="name" required
+                                        value="<%= address.name %>" oninput="validateName()">
                                     <span id="nameError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="AddressLine" class="form-label">Address line</label>
-                                    <textarea class="form-control" name="addressLine" id="addressLine" rows="1" required 
-                                    oninput="validateAddressLine()"><%= address.addressLine %></textarea>
+                                    <textarea class="form-control" name="addressLine" id="addressLine" rows="1" required
+                                        oninput="validateAddressLine()"><%= address.addressLine %></textarea>
                                     <span id="addressLineError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="Phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" name="phone" id="phone" required value="<%= address.phone %>"
-                                    oninput="validatePhone()">
+                                    <input type="text" class="form-control" name="phone" id="phone" required
+                                        value="<%= address.phone %>" oninput="validatePhone()">
                                     <span id="phoneError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="City" class="form-label">City</label>
-                                    <input type="text" class="form-control" name="city" id="city" required value="<%= address.city %>"
-                                    oninput="validateCity()">
+                                    <input type="text" class="form-control" name="city" id="city" required
+                                        value="<%= address.city %>" oninput="validateCity()">
                                     <span id="cityError" class="text-danger"></span>
                                 </div>
                                 <div class="mt-5 d-md-block d-none">
                                     <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                                    <button type="submit" id="submitButton" class="btn btn-success">Save changes
-                                    </button>
+                                    <button type="submit" id="desktopSaveButton" class="btn btn-success .save-btn">Save
+                                        changes</button>
                                 </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
                                     <label for="District" class="form-label">District</label>
-                                    <input type="text" class="form-control" name="district" id="district" required value="<%= address.district %>"
-                                    oninput="validateDistrict()">
+                                    <input type="text" class="form-control" name="district" id="district" required
+                                        value="<%= address.district %>" oninput="validateDistrict()">
                                     <span id="districtError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="State" class="form-label">State</label>
-                                    <input type="text" class="form-control" name="state" id="state" required value="<%= address.state %>"
-                                    oninput="validateState()">
+                                    <input type="text" class="form-control" name="state" id="state" required
+                                        value="<%= address.state %>" oninput="validateState()">
                                     <span id="stateError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="Pincode" class="form-label">Pincode</label>
-                                    <input type="text" class="form-control" name="pincode" id="pincode" required value="<%= address.pincode %>"
-                                    oninput="validatePincode()">
+                                    <input type="text" class="form-control" name="pincode" id="pincode" required
+                                        value="<%= address.pincode %>" oninput="validatePincode()">
                                     <span id="pincodeError" class="text-danger"></span>
                                 </div>
                                 <div class="mb-3 col-md-10">
                                     <label for="Country" class="form-label">Country</label>
-                                    <input type="text" class="form-control" name="country" id="country" value="India" required readonly>
+                                    <input type="text" class="form-control" name="country" id="country" value="India"
+                                        required readonly>
                                 </div>
                             </div>
                             <div class="mt-4 d-block d-md-none">
-                                <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                                <button type="submit" id="submitButton" class="btn btn-success">Save changes
+                                <button type="button" class="btn btn-sm btn-secondary"
+                                    onclick="goBack()">Cancel</button>
+                                <button type="submit" id="mobileSaveButton" class="btn btn-sm btn-success .save-btn">Save
+                                    changes
                                 </button>
                             </div>
+                            <input type="hidden" value="<%= address._id %>" id="addressId">
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </section>
-    
+
     <footer class="text-light" id="footer">
         <div class="container-fluid">
             <div class="row p-5 d-flex justify-content-center">
@@ -142,6 +146,6 @@
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
         </script>
-</body>
 
+</body>
 </html>
