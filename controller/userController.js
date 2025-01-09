@@ -768,8 +768,14 @@ const postUserAddress = async(req,res)=>{
 const postAddressDelete = async (req, res) => {
     try {
         const addressId = req.params.addressId;
+        const userId = req.session.user._id;
         if(!addressId){
             return res.status(400).json({ success : false, message : "Address fetching error."})
+        }
+
+        const ordersWithCurrentAddress = await Order.find({userId : userId, address : addressId});
+        if(ordersWithCurrentAddress.length > 0){
+            return res.status(400).json({ success : false, message: "This address is used for your purchase." });
         }
 
         const deletedAddress = await Address.findByIdAndDelete(addressId);

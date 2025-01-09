@@ -437,8 +437,8 @@ document.querySelectorAll('.delete-address-btn').forEach(button => {
                         })
                     }else{
                         Swal.fire({
-                            icon: 'success',
-                            title: 'Success!',
+                            icon: 'error',
+                            title: 'Error!',
                             text: data.message || 'Address deletion failed.',
                             timer: 3000,
                             background: "#333",
