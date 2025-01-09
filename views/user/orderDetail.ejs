@@ -131,12 +131,16 @@
                                         <div class="order-payment-head p-3 border">
                                             <h5>Shipping & billing address</h5>
                                             <hr>
-                                            <span class="product-name"><span class="heads"><%= order[i].address.name  %> <br></span>
-                                               <%= order[i].address.addressLine %> <br>
-                                               <%= order[i].address.city %>, <%= order[i].address.district %> <br>
-                                               <%= order[i].address.state %>, <%= order[i].address.pincode %> <br>
-                                               phone : <%= order[i].address.phone %>, <%= order[i].address.country %>
-                                            </span>
+                                            <% if(order[i].address){ %>
+                                                <span class="product-name"><span class="heads"><%= order[i].address.name  %> <br></span>
+                                                    <%= order[i].address.addressLine %> <br>
+                                                    <%= order[i].address.city %>, <%= order[i].address.district %> <br>
+                                                    <%= order[i].address.state %>, <%= order[i].address.pincode %> <br>
+                                                    phone : <%= order[i].address.phone %>, <%= order[i].address.country %>
+                                                </span>
+                                            <% }else{ %>
+                                                <p class="text-center">Address not found</p>
+                                            <% } %>
                                         </div>
                                     </div>
                                 </div>

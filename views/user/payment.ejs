@@ -42,17 +42,62 @@
         <div class="cart-wrap mt-5">
             <div class="container">
                 <div class="row mb-3">
+
+                    <div class="product-subtotal col-12 d-block d-md-none">
+                        <div class="subtotal mt-4 shadow d-flex flex-column p-3">
+                            <div class="head text-center">
+                                <h4 class="">Payment</h4>
+                                <p class="text-success">Select payment and confirm order</p>
+                            </div>
+                            <hr>
+                            <div class="checkbox-payment">
+                                <div class="razorpay d-flex flex-row">
+                                    <input type="radio" name="paymentMethod" id="razorpay">
+                                    <label for="razorpay" class="mx-2">Razorpay</label>
+                                </div>
+                                <div class="cod d-flex flex-row">
+                                    <input type="radio" name="paymentMethod" id="cod">
+                                    <label for="cod" class="mx-2">Cash on delivery</label>
+                                </div>
+                                <div class="wallet d-flex flex-row">
+                                    <input type="radio" name="paymentMethod" id="wallet">
+                                    <label for="wallet" class="mx-2">Wallet</label>
+                                </div>
+                            </div>                            
+                            <hr>
+                            <div class="details">
+                                <% if(userCart){ %>
+                                    <div class="total d-flex justify-content-between">
+                                        <h6>Total : </h6> <h6>₹ <%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice + userCart.couponAmount ).toFixed(2) %></h6>
+                                    </div>
+                                    <div class="total d-flex justify-content-between">
+                                        <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
+                                    </div>
+                                    <% if(userCart.couponApplied){ %>
+                                        <div class="total d-flex justify-content-between">
+                                            <h6>Coupon Discount : </h6> <h6>₹ <%= userCart.couponAmount %></h6>
+                                        </div>
+                                    <% } %>
+                                    <div class="d-flex justify-content-between">
+                                        <h6>Product discount : </h6> <h6>₹ <%= userCart.totalCartDiscountPrice %></h6>
+                                    </div> 
+                                <hr>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="product-card col-12 col-md-8">
                         <div class="product-card-each mt-4 shadow d-flex">
                             <div class="col-12 p-3">
                                 <div class="payment-intro mb-4 d-flex justify-content-between align-items-center">
-                                    <h4 class="fw-bold mb-0">Manage Your Payment Options</h4>
+                                    <h4 class="fw-bold mb-0">Details and coupon</h4>
                                     <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="On this page, you can choose your preferred payment method, apply coupons, and review the payment details before completing your purchase. Ensure that all information is correct to avoid any issues with your order.">
                                         <i class="fas fa-question-circle text-muted"></i>
                                     </a>
                                 </div>         
                                 <hr>    
-                                <h5>Your cart items</h5>
+                                <h5>Your cart products</h5>
                                 <hr>
                                 <% userCart.items.forEach((item , index) => { %>
                                     <div class="row mb-1">
@@ -107,7 +152,7 @@
                     </div>
                     
                     
-                    <div class="product-subtotal col-12 col-md-4">
+                    <div class="product-subtotal col-md-4 d-none d-md-block">
                         <div class="subtotal mt-4 shadow d-flex flex-column p-3">
                             <div class="head text-center">
                                 <h4 class="">Payment</h4>
@@ -237,6 +282,24 @@
                 </div>
             </div>
         </div>
+
+        <div class="product-subtotal col-12 d-block d-md-none shadow-lg rounded-top-4 sticky-bottom bg-white">
+            <div class="subtotal p-3">
+                <div class="details">
+                    <% if(userCart){ %>
+                        <p class="subTotal fs-5 d-flex justify-content-center">
+                            <span>Subtotal:</span>
+                            <span class="subtotal fw-bold mx-2">₹ <%= userCart.totalCartPrice %></span>
+                        </p>
+                    <% } %>
+                </div>
+                <hr>
+                <div class="button mt-3">
+                    <button onclick="confirmOrder()" class="btn btn-warning w-100 btn-md fw-bold shadow-sm" id="goToPayment">Confirm order</button>
+                </div>
+            </div>
+        </div>
+
     </section>
 
     <footer class="text-light" id="footer">

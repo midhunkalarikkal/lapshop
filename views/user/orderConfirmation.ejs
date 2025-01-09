@@ -42,11 +42,17 @@
                                     <p class="text-center">Thank you for your purchase from LapShop! Your order has been saved. Once you complete the payment, your order will be confirmed.</p>
                                 <% } %>
                             </div>
+                            <div class="buttons d-flex mt-3 d-flex justify-content-center d-block d-md-none">
+                                <button onclick="goToShop()" class="btn btn-success btn-sm" id="shopping">Continue shopping</button>
+                                <button onclick="goToOrder()" class="btn btn-success btn-sm mx-3" id="orders">Review orders</button>
+                            </div>
                             <div class="center d-flex flex-column flex-md-row">
                                 <div class="left col-md-6">
                                     <div class="Order details mt-4">
                                         <% if(data && data !== ""){ %>
-                                        <h6 class="fw-bold">Expected delivery : <span class="fw-normal"> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
+                                            <% if(data.paymentStatus === true){ %>
+                                                <h6 class="fw-bold">Expected delivery : <span class="fw-normal"> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
+                                            <% } %>
                                         <h6 class="fw-bold">Payment : <span class="fw-normal"><%= data.paymentMethod %></span></h6>
                                         <% if(data.paymentStatus === true){ %>
                                             <h6 class="fw-bold">Payment status : <span class="fw-normal">Success</span></h6>
@@ -69,17 +75,20 @@
                                         <% } %>
                                     </div>
                                 </div>
-                                <div class="right col-md-6 d-flex align-item-center justify-content-center">
-                                    <lord-icon
-                                        src="https://cdn.lordicon.com/hsrrkevt.json"
-                                        trigger="loop"
-                                        state="loop-cycle"
-                                        style="width:250px;height:250px">
-                                    </lord-icon>
-                                    
-                                </div>
+                                <% if(data && data !== ""){ %>
+                                    <% if(data.paymentStatus === true){ %>        
+                                        <div class="right col-md-6 d-flex align-item-center justify-content-center">
+                                            <lord-icon
+                                                src="https://cdn.lordicon.com/hsrrkevt.json"
+                                                trigger="loop"
+                                                state="loop-cycle"
+                                                style="width:250px;height:250px">
+                                            </lord-icon>
+                                        </div>
+                                    <% } %>
+                                <% } %>
                             </div>
-                            <div class="buttons d-flex mt-3 d-flex justify-content-center">
+                            <div class="buttons d-flex mt-3 d-flex justify-content-center d-none d-md-block">
                                 <button onclick="goToShop()" class="btn btn-success" id="shopping">Continue shopping</button>
                                 <button onclick="goToOrder()" class="btn btn-success mx-3" id="orders">Review orders</button>
                             </div>
