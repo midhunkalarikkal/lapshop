@@ -21,6 +21,15 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
+    <style>
+        .view{
+            background-image: linear-gradient(100deg,rgb(77, 89, 89) 40%,rgb(59, 62, 64) 60%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body>
@@ -39,8 +48,8 @@
     </nav>
 
     <section class="view">
-        <div class="container d-flex align-items-center justify-content-center mt-3">
-            <div class="main col-12 col-lg-10 m-3 mt-5 shadow">
+        <div class="container d-flex align-items-center justify-content-center">
+            <div class="main col-12 col-lg-10 m-3 mt-5 shadow bg-white rounded">
                 <form>
                     <div class="p-5">
                         <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new address</h4>
@@ -70,10 +79,6 @@
                                         oninput="validateCity()">
                                     <span id="cityError" class="text-danger"></span>
                                 </div>
-                                <div class="mt-5 d-md-block d-none">
-                                    <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                                    <button type="submit" class="btn btn-success save-btn">Save</button>
-                                </div>
                             </div>
                             <div class="col-12 col-md-6">
                                 <div class="mb-3 col-md-10">
@@ -100,11 +105,10 @@
                                         required readonly>
                                 </div>
                             </div>
-                            <div class="mt-4 d-block d-md-none">
-                                <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                                <button type="submit" class="btn btn-success save-btn">Save</button>
-                            </div>
-                            <input type="hidden" value="<%= userId %>" id="userId">
+                        </div>
+                        <div class="mt-4">
+                            <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
+                            <button type="submit" id="addAddress" class="btn btn-success">Save</button>
                         </div>
                     </div>
                 </form>

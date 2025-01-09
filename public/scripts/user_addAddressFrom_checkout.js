@@ -197,11 +197,9 @@ function validateForm() {
     return isValidName && isValidAddressLine && isValidPhone && isValidCity && isValidDistrict && isValidState && isValidPincode;
 }
 
-const userId = document.getElementById("userId").value;
-const saveButtons = document.querySelectorAll('.save-btn');
+const saveButtons = document.getElementById('addAddress');
 
-saveButtons.forEach(button => {
-    button.addEventListener('click', async function (event) {
+saveButtons.addEventListener('click', async function (event) {
         event.preventDefault();
 
         if (validateForm()) {
@@ -227,7 +225,7 @@ saveButtons.forEach(button => {
                 },
             });
 
-            const response = await fetch(`/saveNewAddress/${userId}`, {
+            const response = await fetch(`/saveNewAddress`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -281,7 +279,6 @@ saveButtons.forEach(button => {
             });
         }
     });
-});
 
 ////// Cancel button goBack function \\\\\\
 function goBack() {

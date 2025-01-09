@@ -1,4 +1,4 @@
- ////// Validation function for name input \\\\\\
+ // Validation function for name input 
  function validateName() {
     const nameInput = document.getElementById('name');
     const name = nameInput.value.trim();
@@ -26,7 +26,7 @@
     }
 }
 
-////// Validation function for phone input \\\\\\
+// Validation function for phone input 
 function validatePhone() {
     const phoneInput = document.getElementById('phone');
     const phone = phoneInput.value.trim();
@@ -50,7 +50,7 @@ function validatePhone() {
     }
 }
 
-////// Validation function for addressLine input \\\\\\
+// Validation function for addressLine input 
 function validateAddressLine() {
     const addressLineInput = document.getElementById('addressLine');
     const addressLine = addressLineInput.value
@@ -76,7 +76,7 @@ function validateAddressLine() {
     }
 }
 
-////// Validation function for pincode input \\\\\\
+// Validation function for pincode input 
 function validatePincode() {
     const pincodeInput = document.getElementById('pincode');
     const pincode = pincodeInput.value;
@@ -99,7 +99,7 @@ function validatePincode() {
     }
 }
 
-////// Validation function for city input \\\\\\
+// Validation function for city input 
 function validateCity() {
     const cityInput = document.getElementById('city');
     const city = cityInput.value.trim();
@@ -127,7 +127,7 @@ function validateCity() {
     }
 }
 
-////// Validation function for district input \\\\\\
+// Validation function for district input 
 function validateDistrict() {
     const districtInput = document.getElementById('district');
     const district = districtInput.value.trim();
@@ -144,8 +144,8 @@ function validateDistrict() {
         districtError.textContent = 'District must contain only alphabets and spaces';
         return false;
     } else if (district.length < 4 || district.length > 15) {
-        nameInput.classList.add('is-invalid');
-        nameError.textContent = 'Name must be between 4 and 15 characters long';
+        districtInput.classList.add('is-invalid');
+        districtError.textContent = 'Name must be between 4 and 15 characters long';
         return false;
     } else {
         districtInput.classList.remove('is-invalid');
@@ -154,7 +154,7 @@ function validateDistrict() {
     }
 }
 
-////// Validation function for state input \\\\\\
+// Validation function for state input 
 function validateState() {
     const stateInput = document.getElementById('state');
     const state = stateInput.value.trim();
@@ -182,7 +182,7 @@ function validateState() {
     }
 }
 
-////// To submit the form \\\\\\
+// To submit the form 
 function validateForm() {
     const isValidName = validateName();
     const isValidAddressLine = validateAddressLine();
@@ -196,18 +196,9 @@ function validateForm() {
 }
 
 const addressId = document.getElementById("addressId").value;
-        const saveButtons = document.querySelectorAll('.save-btn');
+const submitButton = document.getElementById('submit');
 
-        document.getElementById('desktopSaveButton').addEventListener('click', async function (event) {
-            handleSave(event);
-        });
-
-        document.getElementById('mobileSaveButton').addEventListener('click', async function (event) {
-            handleSave(event);
-        });
-
-
-        async function handleSave(event) {
+submitButton.addEventListener('click', async function handleSave(event) {
             event.preventDefault();
 
             if (validateForm()) {
@@ -247,7 +238,6 @@ const addressId = document.getElementById("addressId").value;
                 if (contentType && contentType.includes('application/json')) {
                     data = await response.json();
                     Swal.close();
-                    console.log("data : ", data);
                 }
                 else {
                     window.location.href = `/login`;
@@ -288,9 +278,9 @@ const addressId = document.getElementById("addressId").value;
                     showConfirmButton: false
                 });
             }
-        }
-        
-////// Cancel button goBack function \\\\\\
+        })
+
+// Cancel button goBack function 
 function goBack() {
     window.location.href = "/checkout"
 }
