@@ -252,3 +252,26 @@ registerForm.addEventListener("submit", async (e) => {
     });
   }
 });
+
+// For the input fields
+document.addEventListener('DOMContentLoaded', () => {
+  const inputs = document.querySelectorAll('.input-field .input');
+
+  inputs.forEach((input) => {
+    const label = input.nextElementSibling;
+
+    const handleLabelPosition = () => {
+      if (input.value.trim() !== '') {
+        label.classList.add('active');
+      } else {
+        label.classList.remove('active');
+      }
+    };
+
+    handleLabelPosition();
+
+    input.addEventListener('focus', handleLabelPosition);
+    input.addEventListener('blur', handleLabelPosition);
+    input.addEventListener('input', handleLabelPosition);
+  });
+});

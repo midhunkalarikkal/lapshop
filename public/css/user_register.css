@@ -174,14 +174,11 @@ font-family: 'Saira Semi Condensed', sans-serif;
     color: var(--seventh-color);
 }
 
-.input-field input:focus~label {
-    top: -10px;
-    font-size: 13px;
-}
-
-.input-field input:valid~label {
-    top: -10px;
-    font-size: 13px;
+.input-field .input:focus + label,
+.input-field label.active {
+  top: -10px;
+  left: 10px;
+  font-size: 12px;
 }
 
 #referal-input{

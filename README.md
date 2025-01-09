@@ -1,75 +1,104 @@
 # E-Commerce Web Application for Laptops 💻🛒
 
-This project is developed from scratch, and it helped me gain valuable knowledge about full-stack development. It is an e-commerce web application exclusively designed for laptops. Throughout the development process, I learned about various aspects of building a complete web application, from front-end to back-end.
+This project is a fully functional **e-commerce web application** exclusively designed for laptops. It showcases expertise in full-stack development, covering front-end, back-end, and deployment aspects.
 
-## Project Overview
+---
 
-This application has both **user** and **admin** sides, each packed with a variety of functionalities. The architecture follows the **MVC (Model-View-Controller)** pattern, with multiple middlewares to handle authentication and security.
+## Project Overview 📋
 
-- **Security:** SSL certificates ensure secure image uploads.
-- **Hosting:** The application is hosted on **AWS EC2** and **ECS** with **Nginx** for server management and reverse proxy.
-  
-### Technologies Used ⚙️
+The application has two main sides: **User** and **Admin**, each packed with multiple features. It follows the **MVC (Model-View-Controller)** architecture, with middleware for authentication and security.
 
-- **Frontend:** HTML, CSS, Bootstrap, and EJS
+- **Security:** Configured with SSL certificates for secure image uploads.
+- **Hosting:** Deployed on **AWS EC2** and **ECS**, with **Nginx** for server management and reverse proxy.
+
+---
+
+## Technologies Used ⚙️
+
+- **Frontend:** HTML, CSS, Bootstrap, EJS
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
 
-### Modules & Libraries 🛠️
+---
 
-- **bcrypt:** For password hashing
-- **crypto:** For generating random strings
-- **multer:** For image upload handling
-- **mongoose:** For defining models and database operations
-- **nodemailer:** For sending emails to users
-- **pdfkit:** For generating printable order invoices
-- **sweetalert:** For showing user-friendly alerts
+## Modules & Libraries 🛠️
 
-### Payment Gateway 💳
+- **bcrypt:** Password hashing
+- **crypto:** Random string generation
+- **multer:** Image upload handling
+- **mongoose:** Database models and operations
+- **nodemailer:** Email notifications
+- **pdfkit:** Generating order invoices
+- **sweetalert:** User-friendly alerts
 
-- **Razorpay** for handling online payments
+---
+
+## Payment Gateway 💳
+
+- **Razorpay**: For handling online payments securely.
+
+---
 
 ## Features 🌟
 
 ### User Side Features 👤
 
-- **Shop Page:** Browse and view laptops.
-- **Search, Filter, and Sort:** Find laptops based on brand, category, price range, and alphabetical order.
-- **Wishlist:** Users can save laptops for future reference.
-- **Cart:** With a 'Save for Later' feature.
-- **User Profile:** Manage passwords, profiles, and addresses.
-- **Wallet:** Users can manage their wallet balance and view wallet history.
-- **Contact Page:** For customer support inquiries.
-- **Coupons:** Users can apply coupons during checkout.
-- **Payment Methods:** 
+- **Authentication:**
+  - Sign up with email verification
+  - Login and Forgot Password functionality
+  - Change password with email verification
+- **Profile Management:**
+  - Detailed profile with address management
+  - Profile image upload and management
+- **Shopping Features:**
+  - **Cart**: Save for Later functionality
+  - **Wishlist**: Save products for future reference
+  - Address management directly in the checkout page
+  - Wallet with detailed debit and credit transaction data
+- **Payment Methods:**
+  - Online payment using Razorpay
   - Cash on Delivery (COD)
-  - Online Payment
-  - Wallet
-  - Wallet with Online Payment
-- **Order Management:** Users can view their order history and invoice.
+  - Wallet payment
+  - Wallet combined with online Razorpay payment
+- **Order Management:**
+  - Email notifications for product purchases
+  - Purchase confirmation page with order details
+  - Order details with return and cancel options
+  - Detailed order tracking
+  - Invoice download
+- **Product Reviews:** Ability to leave reviews for products
+- **Coupons:** Apply coupons during payment
+- **Advertisement Banners:** Display banners dynamically on the website
+
+---
 
 ### Admin Side Features 🧑‍💼
 
-- **Dashboard:** A detailed overview of the current status of all data within the application.
-- **Order Summary:** Multiple graphs and statistics for easy tracking.
-- **Banner Management:** Dynamic management of homepage and advertisement banners.
-- **User Management:** Block/unblock users as needed.
-- **Coupon Management:** Admin can create and manage coupons.
-- **Product Management:** Add products with multiple images and data.
-- **Brand and Category Management:** Manage laptop brands and categories.
-- **Order Management:** Detailed views and order status management.
+- **Product Management:** Add, edit, and delete products with multiple images
+- **Brand & Category Management:** Manage laptop brands and categories
+- **Coupon Management:** Create and manage coupons
+- **Advertisement Banners:** Dynamic management of homepage banners
+- **Order Management:** View detailed order data and update order statuses
+- **User Management:** Block/unblock users as required
+- **Dashboard:**
+  - Overview of all data with multiple graph representations
+  - Best-performing product, category, and brand lists
+  - Order details filtered by day, month, or year
+  - Print and export order data to Excel
 
-## Ongoing Improvements 🚀
-
-I am continuously working on adding new features and improving the code quality to make this application even better. Stay tuned for more updates!
+---
 
 ## Deployment 🌐
 
-- **Hosted on AWS EC2** for reliable cloud hosting.
-- **AWS ECS** for container management.
-- **Nginx** is used for reverse proxy and efficient load balancing.
+- **AWS EC2:** For reliable cloud hosting
+- **Nginx:** Configured for reverse proxy and SSL certificates
+
+---
+
+This project was built from scratch, requiring significant time and effort to implement a wide range of features. It has been a continuous process of optimization, adding new functionalities, and thoroughly testing new ideas. The project has evolved and improved with each iteration, ensuring a solid and feature-rich e-commerce platform.
 
 ## Final Thoughts 💭
 
-This project has been an incredible learning experience. The combination of front-end, back-end, and various features, along with secure deployment, has given me hands-on experience in developing a full-fledged e-commerce platform. I am excited to continue improving this project and adding new features to it.
+This project has been a fantastic learning experience. The combination of front-end, back-end, and secure deployment has helped me develop a full-fledged e-commerce platform. I am excited to continue improving this application by adding new features and enhancing its performance.
 
+---

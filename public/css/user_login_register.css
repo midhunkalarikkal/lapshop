@@ -150,12 +150,11 @@ h1,h2,h3,h4,h5,h6,span,a{
 
 /*======> Class input-filed  start <======*/
 .input-field {
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    padding: 0 10px 0 10px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0 10px 0 10px;
 }
-
 
 .input {
   height: 35px;
@@ -177,14 +176,11 @@ h1,h2,h3,h4,h5,h6,span,a{
   color: var(--seventh-color);
 }
 
-.input-field input:focus~label {
+.input-field .input:focus + label,
+.input-field label.active {
   top: -10px;
-  font-size: 13px;
-}
-
-.input-field input:valid~label {
-  top: -10px;
-  font-size: 13px;
+  left: 10px;
+  font-size: 12px;
 }
 
 .input-field .input:focus,
