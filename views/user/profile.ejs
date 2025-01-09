@@ -156,16 +156,21 @@
                                         </p>
                                     </div>
                                     <hr>
-                                    <div class="col-12 d-flex">
-                                        <p class="col-4 fw-semibold">Referal code</p>
-                                        <p class="text-muted col-4" id="referralCode">
-                                            <% if(userData.referalCode){ %>
-                                                <%= userData.referalCode %>
-                                            <% }else{ %>
-                                                <span class="text danger">Fetching error!</span>
-                                            <% } %>
-                                        </p>
-                                        <p onclick="copyReferal()" style="cursor: pointer;"><i class="fa-solid fa-copy" style="color: black;"></i> <span id="referalCopyBtn">COPY REFERAL</span></p>
+                                    <div class="col-12">
+                                        <div class="row">
+                                            <p class="col-12 col-md-4 fw-semibold">Referral Code</p>
+                                            <div class="col-12 col-md-8">
+                                                <% if (userData.referalCode) { %>
+                                                    <p class="d-inline-block text-muted mb-1 mb-md-0" id="referralCode"><%= userData.referalCode %></p>
+                                                    <p class="d-inline-block ms-2" onclick="copyReferal()" style="cursor: pointer;">
+                                                        <i class="fa-solid fa-copy" style="color: black;"></i>
+                                                        <span id="referalCopyBtn">COPY REFERAL</span>
+                                                    </p>
+                                                <% } else { %>
+                                                    <span class="text-danger">Fetching error!</span>
+                                                <% } %>
+                                            </div>
+                                        </div>
                                     </div>
                                     <hr>
                                 </div>
@@ -180,7 +185,7 @@
                                                 class="btn btn-secondary btn-sm mb-2"
                                                 id="add-address"
                                                 data-userId="<%= userData._id %>">
-                                                <i class="fas fa-add"></i> Add address
+                                                <i class="fas fa-add"></i> Add new address
                                             </button>
                                         </div>
                                     </div>
@@ -330,7 +335,7 @@
                                 </h2>
                                 <div id="faqOne" class="accordion-collapse collapse show" aria-labelledby="faqHeadingOne" data-bs-parent="#userProfileFAQ">
                                     <div class="accordion-body">
-                                        To update your profile picture, simply click on the current image at the top of your profile. You will be prompted to upload a new image from your device. Make sure the image is in a supported format (JPG, PNG) and under the size limit.
+                                        To update your profile picture, simply click on the update image button. You will be prompted to upload a new image from your device. Make sure the image is in a supported format (JPG, PNG) and under the size limit max of 500kb.
                                     </div>
                                 </div>
                             </div>
@@ -405,41 +410,6 @@
         
     </section>
 
-    <!-- User info Modal start -->
-    <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="informationModalLabel">Edit user information</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="userInfoForm">
-                        <% if(userData !="" ){ %>
-                            <div class="mb-3">
-                                <label for="userName" class="form-label">Username</label>
-                                <input type="text" class="form-control" id="userName" name="userName" value="<%= userData.fullname %>" oninput="validateName()">
-                                <span id="nameError" class="text-danger"></span>
-                            </div>
-                            <div class="mb-3">
-                                <label for="phone" class="form-label">Phone no</label>
-                                <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>" oninput="validatePhone()">
-                                <span id="phoneError" class="text-danger"></span>
-                            </div>
-                            <input type="hidden" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
-                        <% } %>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" id="saveUserInfo" class="btn btn-success">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- User info Modal end -->
-
     <!-- User image Modal start -->
     <div class="modal fade" id="profileImageModal" tabindex="-1" aria-labelledby="profileImageModalLabel"
         aria-hidden="true">
@@ -454,16 +424,14 @@
                         <div class="mb-3">
                             <label for="image" class="form-label mx-2">Select image</label>
                             <input type="file" name="image" id="image" class="form-control form-control-md" onchange="previewImage()">
+                            <span class="text-warning fs-6 small">Please use a small image</span>
                         </div>
                         <div class="mb-3 text-center">
                             <div class="image">
                                 <img id="preview" class="thumbnail img-fluid" src="" alt="" style="width: 150px; height: auto;">
                             </div>
                         </div>
-                        <div class="mb-3" style="display: none;">
-                            <label for="userId" class="form-label">User id</label>
-                            <input type="text" class="form-control" id="userIdFromImage" name="userId" value="<%= userData._id %>">
-                        </div>
+                        <input type="hidden" class="form-control" id="userIdFromImage" name="userId" value="<%= userData._id %>">
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -474,6 +442,40 @@
         </div>
     </div>
     <!-- User image Modal end -->
+
+    <!-- User info Modal start -->
+    <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="informationModalLabel">Edit user information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="userInfoForm">
+                        <% if(userData !="" ){ %>
+                            <div class="mb-3">
+                                <label for="userName" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="name" name="name" value="<%= userData.fullname %>" oninput="validateName()">
+                                <span id="nameError" class="text-danger"></span>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="form-label">Phone no</label>
+                                <input type="number" class="form-control" id="phone" name="phone" value="<%= userData.phone %>" oninput="validatePhone()">
+                                <span id="phoneError" class="text-danger"></span>
+                            </div>
+                        <% } %>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" id="saveUserInfo" class="btn btn-success" onclick="updateUserInfo(event)">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- User info Modal end -->
 
     <!-- User email verification for change password Modal start -->
     <div class="modal fade" id="verifyModal" tabindex="-1" aria-labelledby="verifyModalLabel"
@@ -496,14 +498,8 @@
                                 <label for="passotp" class="form-label">Enter Otp</label>
                                 <input type="text" class="form-control" id="passotp" name="passotp" required>
                             </div>
-                            <div class="mb-3" style="display: none;">
-                                <label for="userId" class="form-label">User id</label>
-                                <input type="text" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
-                            </div>
-                            <div class="mb-3" style="display: none;">
-                                <label for="userEmail" class="form-label">User email</label>
-                                <input type="text" class="form-control" id="userEmail" name="userEmail" value="<%= userData.email %>">
-                            </div>
+                            <input type="hidden" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
+                            <input type="hidden" class="form-control" id="userEmail" name="userEmail" value="<%= userData.email %>">
                         <% } %>
                     </form>
                     <span id="timer" style="margin-left: auto;"></span>
@@ -531,16 +527,15 @@
                         <% if(userData !="" ){ %>
                             <div class="mb-3">
                                 <label for="newPass" class="form-label">New password</label>
-                                <input type="text" class="form-control" id="newPass" name="newPass" required>
+                                <input type="text" class="form-control" id="newPass" name="newPass" required oninput="validatePassword()">
+                                <span id="newPassError" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPass" class="form-label">Confirm password</label>
-                                <input type="text" class="form-control" id="confirmPass" name="confirmPass" required>
+                                <input type="text" class="form-control" id="confirmPass" name="confirmPass" required oninput="validateConfirmPassword()">
+                                <span id="confirmPassError" class="text-danger"></span>
                             </div>
-                            <div class="mb-3" style="display: none;">
-                                <label for="userId" class="form-label" >User id</label>
-                                <input type="text" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
-                            </div>
+                            <input type="hidden" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
                         <% } %>
                     </form>
                 </div>
@@ -552,6 +547,7 @@
         </div>
     </div>
     <!-- User change password Modal end -->
+
 
     <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

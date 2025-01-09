@@ -1,312 +1,18 @@
- ////// To delete the profile image \\\\\\
- async function deletePI(button){
-    const confirmation = await swal.fire({
-        title: 'Are you sure?',
-        text: 'You will not be able to recover your profile image!',
-        icon: 'warning',
-        showCancelButton: true,
-        background: "#333",
-        color: "#ffffff",
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
-        reverseButtons: true
+// To add a new address 
+document.getElementById('add-address').addEventListener('click', function () {
+    const userId = this.dataset.userid;
+    window.location.href = `/addAddress/${userId}`; 
+});    
+
+// To edit a specific address 
+document.querySelectorAll('.edit-address-btn').forEach(button => {
+    button.addEventListener('click', function () {
+    const addressId = this.dataset.adid;
+    window.location.href = `/editAddress/${addressId}`; 
     });
-
-    if (confirmation.isConfirmed) {
-        try {
-            Swal.fire({
-                title: "Deleting image",
-                background: "#333",
-                color: "#ffffff",
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                },
-            });
-
-            const response = await fetch('/deleteUserProfileImage', {
-                method: 'DELETE'
-            });
-
-            const contentType = response.headers.get('content-type');
-            let data;
-            if (contentType && contentType.includes('application/json')) {
-                data = await response.json();
-                Swal.close();
-            } else {
-                window.location.href = '/login'
-                return;
-            }
-
-            if (data.success) {
-                swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Profile image deleted successfully!',
-                    showConfirmButton: true,
-                    background: "#333",
-                    color: "#ffffff",
-                    confirmButtonText: "Ok"
-                }).then((result)=>{
-                    if(result.isConfirmed){
-                        location.reload()
-                    }
-                })
-            } else {
-                swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: data.message || 'Failed to delete profile image!',
-                    showConfirmButton: true,
-                    background: "#333",
-                    color: "#ffffff",
-                    confirmButtonText: "Ok"
-                });
-            }
-        } catch (error) {
-            Swal.close();
-            swal.fire({
-                icon: 'error',
-                title: 'Error',
-                text: 'Internal server error, Please try again later.',
-                timer: 3000,
-                background: "#333",
-                color: "#ffffff",
-                timerProgressBar: true,
-                showConfirmButton: false,
-            });
-        }
-    }
-}
-
-////// To copy the referal code \\\\\\
-function copyReferal() {
-    const referralCodeElement = document.getElementById('referralCode');
-    const btn = document.getElementById('referalCopyBtn')
-    let referralCode = referralCodeElement.textContent;
-    referralCode = referralCode.trim()
-    navigator.clipboard.writeText(referralCode)
-    .then(() => {
-        btn.innerHTML = "COPIED";
-        setTimeout(function () {
-            btn.innerHTML = "COPY REFERRAL";
-        }, 3000);
-    })
-    .catch((error) => {
-        Swal.fire({
-            icon: 'info',
-            title: 'Copy Failed',
-            text: 'Failed to copy the code. Please try again.',
-            timer: 3000,
-            background: "#333",
-            color: "#ffffff",
-            timerProgressBar: true,
-            showConfirmButton: false
-            
-        });
-    });
-}
-
-////// Function to handle image preview \\\\\\
-function previewImage() {
-    const preview = document.getElementById('preview');
-    const file = document.getElementById('image').files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = function () {
-        preview.src = reader.result;
-    };
-
-    if (file) {
-        reader.readAsDataURL(file);
-    } else {
-        preview.src = "/static/images/icons/No profile image.jpg";
-    }
-}
-
- ////// Validation function for name input \\\\\\
- function validateName() {
-        const nameInput = document.getElementById('userName');
-        const name = nameInput.value.trim();
-        const nameError = document.getElementById('nameError');
-
-        const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
-
-        if (name === "") {
-            nameInput.classList.remove('is-invalid');
-            nameError.textContent = '';
-            return false;
-        }
-        if (!namePattern.test(name)) {
-            nameInput.classList.add('is-invalid');
-            nameError.textContent = 'Name must contain only alphabets and spaces.';
-            return false;
-        } else if (name.length < 5 || name.length > 25) {
-            nameInput.classList.add('is-invalid');
-            nameError.textContent = 'Name must be between 5 and 25 characters long';
-            return false;
-        } else {
-            nameInput.classList.remove('is-invalid');
-            nameError.textContent = '';
-            return true;
-        }
-    }
-
-    ////// Validation function for phone input \\\\\\
-    function validatePhone() {
-        const phoneInput = document.getElementById('phone');
-        const phone = phoneInput.value.trim();
-        const phoneError = document.getElementById('phoneError');
-
-        const phonePattern = /^\d{10}$/;
-
-        if (phone === "") {
-            phoneInput.classList.remove('is-invalid');
-            phoneError.textContent = '';
-            return false;
-        }
-        if (!phonePattern.test(phone)) {
-            phoneInput.classList.add('is-invalid');
-            phoneError.textContent = 'Phone number must contain only 10 digits.';
-            return false;
-        } else {
-            phoneInput.classList.remove('is-invalid');
-            phoneError.textContent = '';
-            return true;
-        }
-    }
-
-    ////// Validation function for phone input \\\\\\
-    function validateEmail() {
-    const emailInput = document.getElementById("email");
-    const email = emailInput.value;
-    const emailError = document.getElementById('emailError');
-
-    var emailRegex = /^[^\s@]+@gmail\.com$/;
-
-    if (email === "") {
-        emailInput.classList.remove('is-invalid');
-        emailError.textContent = '';
-        return false;
-    }
-    if (!emailRegex.test(email)) {
-        emailInput.classList.add('is-invalid');
-        emailError.textContent = 'Phone check the email.';
-        return false;
-    } else {
-        emailInput.classList.remove('is-invalid');
-        emailError.textContent = '';
-        return true;
-    }
-}
-
-
-////// To update the user information \\\\\\
-document.getElementById('saveUserInfo').addEventListener('click', async function () {
-    const formData = {
-        userName: document.getElementById('userName').value,
-        phone: document.getElementById('phone').value,
-        userId: document.getElementById('userId').value
-    };
-    
-    if(!formData.userName || !formData.phone){
-        swal.fire({
-            icon: "info",
-            title: "Empty field",
-            text: "Please fill the fields.",
-            background: "#333",
-            color: "#ffffff",
-            showConfirmButton: true,
-            confirmButtonText: "Ok"
-        })
-        return false
-    }      
-
-    if(!validateName() || !validatePhone()){
-        swal.fire({
-            icon: "warning",
-            title: "Invalid info",
-            text: "Please check the fields.",
-            background: "#333",
-            color: "#ffffff",
-            showConfirmButton: true,
-            confirmButtonText: "Ok"
-        })
-        return false
-    }            
-
-    try {
-        Swal.fire({
-            title: "Updating your info.",
-            text: "Please wait",
-            background: "#333",
-            color: "#ffffff",
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            },
-        });
-
-        const response = await fetch('/updateUserInfo', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        });
-
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-            const data = await response.json();
-            Swal.close();
-
-            if (data.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: data.message || 'User updated successfully',
-                    showConfirmButton: true,
-                    background: "#333",
-                    color: "#ffffff",
-                    confirmButtonText: "Ok"
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        $('#informationModal').modal('hide');
-                        location.reload();
-                    }
-                });
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: data.message || 'Failed to update user information',
-                    timer: 3000,
-                    background: "#333",
-                    color: "#ffffff",
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
-            }
-        } else {
-            window.location.href = `/login`;
-            return;
-        }
-    } catch (error) {
-        Swal.close();
-        Swal.fire({
-            icon: 'error',
-            title: 'Error!',
-            text: 'Internal server error',
-            timer: 3000,
-            background: "#333",
-            color: "#ffffff",
-            timerProgressBar: true,
-            showConfirmButton: false
-        });
-    }
 });
 
-////// Function to handle image upload \\\\\\
+// To upload an profile image
 document.getElementById('saveUserImage').addEventListener('click', async function (event) {
     event.preventDefault();
     const userProfileImageInput = document.getElementById("image").files[0];
@@ -396,8 +102,290 @@ document.getElementById('saveUserImage').addEventListener('click', async functio
     }
 });
 
+// To delete the profile image
+async function deletePI(button){
+    const confirmation = await swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover your profile image!',
+        icon: 'warning',
+        showCancelButton: true,
+        background: "#333",
+        color: "#ffffff",
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+    });
 
-////// To delete a specific address \\\\\\
+    if (confirmation.isConfirmed) {
+        try {
+            Swal.fire({
+                title: "Deleting image",
+                background: "#333",
+                color: "#ffffff",
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
+            const response = await fetch('/deleteUserProfileImage', {
+                method: 'DELETE'
+            });
+
+            const contentType = response.headers.get('content-type');
+            let data;
+            if (contentType && contentType.includes('application/json')) {
+                data = await response.json();
+                Swal.close();
+            } else {
+                window.location.href = '/login'
+                return;
+            }
+
+            if (data.success) {
+                swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Profile image deleted successfully!',
+                    showConfirmButton: true,
+                    background: "#333",
+                    color: "#ffffff",
+                    confirmButtonText: "Ok"
+                }).then((result)=>{
+                    if(result.isConfirmed){
+                        location.reload()
+                    }
+                })
+            } else {
+                swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: data.message || 'Failed to delete profile image!',
+                    showConfirmButton: true,
+                    background: "#333",
+                    color: "#ffffff",
+                    confirmButtonText: "Ok"
+                });
+            }
+        } catch (error) {
+            Swal.close();
+            swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Internal server error, Please try again later.',
+                timer: 3000,
+                background: "#333",
+                color: "#ffffff",
+                timerProgressBar: true,
+                showConfirmButton: false,
+            });
+        }
+    }
+}
+
+// Function to handle image preview
+function previewImage() {
+    const preview = document.getElementById('preview');
+    const file = document.getElementById('image').files[0];
+    const reader = new FileReader();
+
+    reader.onloadend = function () {
+        preview.src = reader.result;
+    };
+
+    if (file) {
+        reader.readAsDataURL(file);
+    } else {
+        preview.src = "/static/images/icons/No profile image.jpg";
+    }
+}
+
+// To copy the referal code
+function copyReferal() {
+    const referralCodeElement = document.getElementById('referralCode');
+    const btn = document.getElementById('referalCopyBtn')
+    let referralCode = referralCodeElement.textContent;
+    referralCode = referralCode.trim()
+    navigator.clipboard.writeText(referralCode)
+    .then(() => {
+        btn.innerHTML = "COPIED";
+        setTimeout(function () {
+            btn.innerHTML = "COPY REFERRAL";
+        }, 3000);
+    })
+    .catch((error) => {
+        Swal.fire({
+            icon: 'info',
+            title: 'Copy Failed',
+            text: 'Failed to copy the code. Please try again.',
+            timer: 3000,
+            background: "#333",
+            color: "#ffffff",
+            timerProgressBar: true,
+            showConfirmButton: false
+            
+        });
+    });
+}
+
+// Validation function for name input
+function validateName() {
+    const nameInput = document.getElementById('name');
+    const name = nameInput.value.trim();
+    const nameError = document.getElementById('nameError');
+
+    const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
+
+    if (name === "") {
+        nameInput.classList.remove('is-invalid');
+        nameError.textContent = '';
+        return false;
+    }
+    if (!namePattern.test(name)) {
+        nameInput.classList.add('is-invalid');
+        nameError.textContent = 'Name must contain only alphabets and spaces.';
+        return false;
+    } else if (name.length < 5 || name.length > 25) {
+        nameInput.classList.add('is-invalid');
+        nameError.textContent = 'Name must be between 5 and 25 characters long';
+        return false;
+    } else {
+        nameInput.classList.remove('is-invalid');
+        nameError.textContent = '';
+        return true;
+    }
+}
+
+// Validation function for phone input
+function validatePhone() {
+    const phoneInput = document.getElementById('phone');
+    const phone = phoneInput.value.trim();
+    const phoneError = document.getElementById('phoneError');
+
+    const phonePattern = /^\d{10}$/;
+
+    if (phone === "") {
+        phoneInput.classList.remove('is-invalid');
+        phoneError.textContent = '';
+        return false;
+    }
+    if (!phonePattern.test(phone)) {
+        phoneInput.classList.add('is-invalid');
+        phoneError.textContent = 'Phone number must contain only 10 digits';
+        return false;
+    } else {
+        phoneInput.classList.remove('is-invalid');
+        phoneError.textContent = '';
+        return true;
+    }
+}
+
+// To update the user information 
+async function updateUserInfo(event){
+    event.preventDefault();
+    const formData = {
+        userName: document.getElementById('name').value,
+        phone: document.getElementById('phone').value,
+    };
+    
+    if(!formData.userName || !formData.phone){
+        swal.fire({
+            icon: "warning",
+            title: "Empty field",
+            text: "Please fill the fields.",
+            background: "#333",
+            color: "#ffffff",
+            showConfirmButton: true,
+            confirmButtonText: "Ok"
+        })
+        return false
+    }
+    
+    if(!validateName() || !validatePhone()){
+        swal.fire({
+            icon: "warning",
+            title: "Empty field",
+            text: "Please fill the fields.",
+            background: "#333",
+            color: "#ffffff",
+            showConfirmButton: true,
+            confirmButtonText: "Ok"
+        })
+        return false
+    }
+
+    try {
+        Swal.fire({
+            title: "Updating your info.",
+            text: "Please wait",
+            background: "#333",
+            color: "#ffffff",
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            },
+        });
+
+        const response = await fetch('/updateUserInfo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+            const data = await response.json();
+            Swal.close();
+
+            if (data.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: data.message || 'User updated successfully',
+                    showConfirmButton: true,
+                    background: "#333",
+                    color: "#ffffff",
+                    confirmButtonText: "Ok"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $('#informationModal').modal('hide');
+                        location.reload();
+                    }
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: data.message || 'Failed to update user information',
+                    timer: 3000,
+                    background: "#333",
+                    color: "#ffffff",
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+            }
+        } else {
+            window.location.href = `/login`;
+            return;
+        }
+    } catch (error) {
+        Swal.close();
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Internal server error',
+            timer: 3000,
+            background: "#333",
+            color: "#ffffff",
+            timerProgressBar: true,
+            showConfirmButton: false
+        });
+    }
+}
+
+// To delete a specific address 
 document.querySelectorAll('.delete-address-btn').forEach(button => {
     button.addEventListener('click', async function () {
         const addressId = this.dataset.adid;
@@ -480,22 +468,31 @@ document.querySelectorAll('.delete-address-btn').forEach(button => {
     });
 });
 
-////// To add a new address \\\\\\
-document.getElementById('add-address').addEventListener('click', function () {
-    const userId = this.dataset.userid;
-    window.location.href = `/addAddress/${userId}`; 
-});    
+// To validate email for changing password
+function validateEmail(event) {
+    const emailInput = document.getElementById("email");
+    const email = emailInput.value;
+    const emailError = document.getElementById('emailError');
+    
+    var emailRegex = /^[^\s@]+@gmail\.com$/;
+    
+    if (email === "") {
+        emailInput.classList.remove('is-invalid');
+        emailError.textContent = '';
+        return false;
+    }
+    if (!emailRegex.test(email)) {
+        emailInput.classList.add('is-invalid');
+        emailError.textContent = 'Phone check the email.';
+        return false;
+    } else {
+        emailInput.classList.remove('is-invalid');
+        emailError.textContent = '';
+        return true;
+    }
+    }
 
-
-////// To edit a specific address \\\\\\
-document.querySelectorAll('.edit-address-btn').forEach(button => {
-    button.addEventListener('click', function () {
-    const addressId = this.dataset.adid;
-    window.location.href = `/editAddress/${addressId}`; 
-    });
-});
-
-////// To send otp to email for changing password \\\\
+// To send otp to email for changing password 
 document.getElementById('sendOtp').addEventListener('click', async function (event) {
     event.preventDefault();
 
@@ -533,7 +530,7 @@ document.getElementById('sendOtp').addEventListener('click', async function (eve
         Swal.fire({
             icon: 'info',
             title: 'Eamil!',
-            text: 'Entered email is not registered.',
+            text: 'Incorrect email.',
             showConfirmButton: true,
             background: "#333",
             color: "#ffffff",
@@ -641,7 +638,7 @@ document.getElementById('sendOtp').addEventListener('click', async function (eve
     }
 });
 
-////// For submiting otp \\\\\\
+// For submiting otp \\\\\\
 document.getElementById('submitOtp').addEventListener('click', async function () {
     const formData = {
         otp: document.getElementById('passotp').value,
@@ -715,7 +712,56 @@ document.getElementById('submitOtp').addEventListener('click', async function ()
     }
 });
 
-////// For submiting the new password \\\\\\
+ // Validate password
+ function validatePassword() {
+    const passwordInput = document.getElementById('newPass');
+    const password = passwordInput.value.trim();
+    const passwordError = document.getElementById('newPassError');
+
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/;
+
+    if (password === "") {
+        passwordInput.classList.remove('is-invalid');
+        passwordError.textContent = '';
+        return false;
+    }
+
+    if (!passwordRegex.test(password)) {
+        passwordInput.classList.add('is-invalid');
+        passwordError.textContent = 'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (!@#$%^&*), and be at least 8 characters long.';
+        return false;
+    } else {
+        passwordInput.classList.remove('is-invalid');
+        passwordError.textContent = '';
+        return true;
+    }
+}
+
+// validate conform password
+function validateConfirmPassword() {
+    const confirmPassInput = document.getElementById('confirmPass');
+    const confirmPass = confirmPassInput.value.trim();
+    const confirmPassError = document.getElementById('confirmPassError');
+    const newPass = document.getElementById('newPass').value.trim();
+
+    if (confirmPass === "") {
+        confirmPassInput.classList.remove('is-invalid');
+        confirmPassError.textContent = '';
+        return false;
+    }
+
+    if (confirmPass !== newPass) {
+        confirmPassInput.classList.add('is-invalid');
+        confirmPassError.textContent = 'Passwords do not match.';
+        return false;
+    } else {
+        confirmPassInput.classList.remove('is-invalid');
+        confirmPassError.textContent = '';
+        return true;
+    }
+}
+
+// For submiting the new password
 document.getElementById('submitPass').addEventListener('click', async function (event) {
     event.preventDefault();
 
@@ -725,7 +771,20 @@ document.getElementById('submitPass').addEventListener('click', async function (
 
     if (newPass !== confirmPass) {
         Swal.fire({
-            icon: 'info',
+            icon: 'warning',
+            title: 'Password!',
+            text: 'Password is not matching.',
+            showConfirmButton: true,
+            background: "#333",
+            color: "#ffffff",
+            confirmButtonText: "Ok"
+        });
+        return;
+    }
+
+    if(!validatePassword() || !validateConfirmPassword()){
+        Swal.fire({
+            icon: 'warning',
             title: 'Password!',
             text: 'Password is not matching.',
             showConfirmButton: true,
@@ -762,8 +821,8 @@ document.getElementById('submitPass').addEventListener('click', async function (
         const contentType = response.headers.get('content-type');
         if (contentType && contentType.includes('application/json')) {
             const data = await response.json();
-            Swal.close();
             if (data.success) {
+                Swal.close();
                 Swal.fire({
                     icon: 'success',
                     title: 'Password',

@@ -444,7 +444,8 @@ const getUserProfile = async(req,res)=>{
 // To update the user information
 const postUserUpdatedInfo = async(req,res)=>{
     try{
-        const { userName, phone, userId } = req.body;
+        const { userName, phone} = req.body;
+        const userId = req.session.user._id;
 
         if(!userName || !phone || !userId){
             return res.status(400).json({ success : false, message : "User data submiting failed"})
@@ -704,8 +705,7 @@ const getUserNewAddress = async(req,res)=>{
 const postUserAddress = async(req,res)=>{
     try{
         const { name, addressLine, phone, city, district, state, pincode, country} = req.body;
-        const userId = req.params.userId;
-        console.log("userId : ",userId);
+        const userId = req.session.user._id;
 
         if(!/^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/.test(name)){
             return res.status(400).json({ success : false, message : "Invalid name." });

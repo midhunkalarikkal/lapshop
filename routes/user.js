@@ -43,10 +43,10 @@ userRouter.post('/uploadProfileImage',userAuth.isLoggedIn,userAuth.isBlocked,upl
 //To get userAddress adding page from profile
 userRouter.get('/addAddress/:userId',userAuth.isLoggedIn,userAuth.isBlocked,userController.getUserNewAddress)
 //To save new address from profile
-userRouter.post('/saveNewAddress/:userId',userAuth.isLoggedIn,userAuth.isBlocked,userController.postUserAddress)
+userRouter.post('/saveNewAddress',userAuth.isLoggedIn,userAuth.isBlocked,userController.postUserAddress)
 //To delete address from profile
 userRouter.delete('/deleteAddress/:addressId',userAuth.isLoggedIn,userAuth.isBlocked,userController.postAddressDelete)
-//To edit user address from profile
+//To get the address for updation
 userRouter.get('/editAddress/:addressId',userAuth.isLoggedIn,userAuth.isBlocked,userController.getUserEditAddress)
 //To update the edited address from profile
 userRouter.post('/updateAddress/:addressId',userAuth.isLoggedIn,userAuth.isBlocked,userController.postUpdateUserAddress)

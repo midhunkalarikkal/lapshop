@@ -10,7 +10,7 @@
         <section class="view">
             <div class="container d-flex align-items-center justify-content-center">
                 <div class="main col-12 col-lg-10 m-3 mt-5 bg-white">
-                    <form action="/updateAddress/<%= userAddress._id %>" method="POST" id="updateFrom">
+                    <form>
                         <div class="p-5">
                             <h4 class=" fs-3 mb-4" style="color: #0f1923;">Edit address</h4>
                             <% if(userAddress !="" ){ %>
@@ -42,11 +42,6 @@
                                                 value="<%= userAddress.city %>" required oninput="validateCity()">
                                             <span id="cityError" class="text-danger"></span>
                                         </div>
-                                        <div class="mt-5 d-md-block d-none">
-                                            <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                                            <button type="submit" id="submitButton" class="btn btn-success">Save
-                                                changes</button>
-                                        </div>
                                     </div>
                                     <div class="col-12 col-md-6">
                                         <div class="mb-3 col-md-10">
@@ -76,10 +71,11 @@
                                                 value="<%= userAddress.country %>" required readonly>
                                         </div>
                                     </div>
-                                    <div class="mt-4 d-block d-md-none">
-                                        <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">Cancel</button>
-                                        <button type="submit" id="submitButton" class="btn btn-success btn-sm">Save changes</button>
-                                    </div>
+                                    <input type="hidden" value="<%= userAddress._id %>" id="addressId">
+                                </div>
+                                <div class="mt-4">
+                                    <button type="button" class="btn btn-secondary btn-sm" onclick="goBack()">Cancel</button>
+                                    <button type="submit" id="submit" class="btn btn-success btn-sm">Save changes</button>
                                 </div>
                             <% } %>
                         </div>
@@ -90,7 +86,7 @@
 
         <!-- script for the sweet alert -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script src="/static/scripts/user_updateaddress.js"></script>
+        <script src="/static/scripts/user_updateAddress.js"></script>
 
         <!-- Admin footer -->
         <%-include("../userpartials/footer.ejs")%>
