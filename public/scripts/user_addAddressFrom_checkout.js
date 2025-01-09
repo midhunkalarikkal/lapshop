@@ -266,7 +266,6 @@ saveButtons.addEventListener('click', async function (event) {
                 });
             }
         } else {
-            console.log("error");
             Swal.fire({
                 icon: 'error',
                 title: 'Error!',
