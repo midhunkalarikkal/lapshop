@@ -1,13 +1,13 @@
-////// Attach input event listener to each input field \\\\\\
 const otpInputs = document.querySelectorAll(".input");
 otpInputs.forEach((input, index) => {
+  // Handle typing and moving to the next field
   input.addEventListener("input", (event) => {
     if (event.target.value.length === 1 && index < otpInputs.length - 1) {
       otpInputs[index + 1].focus();
     }
   });
 
-  ////// Prevent pasting into input fields \\\\\\
+  // Prevent pasting into input fields
   input.addEventListener("paste", (event) => {
     event.preventDefault();
     const clipboardData = event.clipboardData || window.clipboardData;
@@ -26,26 +26,23 @@ otpInputs.forEach((input, index) => {
     });
   });
 
-  ////// Arrow key navigation \\\\\\
+  // Handle navigation using arrow keys and backspace
   input.addEventListener("keydown", (event) => {
     if (event.key === "ArrowRight" && index < otpInputs.length - 1) {
       otpInputs[index + 1].focus();
-    } else if (event.key === "ArrowLeft") {
-      event.preventDefault();
-      if (index > 0) {
+    } else if (event.key === "ArrowLeft" && index > 0) {
+      otpInputs[index - 1].focus();
+    } else if (event.key === "Backspace") {
+      if (input.value.length === 0 && index > 0) {
         otpInputs[index - 1].focus();
-        otpInputs[index - 1].setSelectionRange(
-          otpInputs[index - 1].value.length,
-          otpInputs[index - 1].value.length
-        );
+        otpInputs[index - 1].value = ""; // Clear the previous field for consistency
       }
-    } else if (event.key.length === 1 && otpInputs[index].value.length > 0) {
-      event.preventDefault();
     }
   });
 });
 
-////// For the alert \\\\\\
+
+// For the alert
 var alertElement = document.getElementById("myAlert");
 if (alertElement) {
   function hideAlert() {
@@ -65,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-////// Funtion to display the timer \\\\\\
+// Funtion to display the timer
 let timerRunning = false;
 
 function startTimer() {
@@ -151,7 +148,7 @@ async function sendotp() {
       Swal.fire({
         icon: "success",
         title: "OTP Sent",
-        text: data.message || "Your OTP has been resent successfully!",
+        text: data.message || "An OTP has been sent to your email address.",
         timer: 3000,
         timerProgressBar: true,
         showConfirmButton: false,
@@ -192,6 +189,20 @@ document.getElementById("submit").addEventListener("click", async function (e) {
   const otpInputs = document.querySelectorAll(".otp-input");
   let otp = "";
   otpInputs.forEach((input) => (otp += input.value));
+
+  if(otp.length === 0){
+    Swal.fire({
+      title: "Empty fields",
+        text: "Please enter the OTP.",
+        icon: "info",
+        timer: 2000,
+        background: "#333",
+        color: "#ffffff",
+        timerProgressBar: true,
+        showConfirmButton: false,
+    })
+    return;
+  }
 
   try {
     Swal.fire({

@@ -416,7 +416,7 @@ const sendOtp = async(req,res)=>{
         const message = "Thank you for choosing LapShop Ecommerce. To complete your registration, please use the following One Time Password (OTP):"
         const sendOtp = await sendOtpMail(enteredEmail, registerOtp, subject, message);
         if(sendOtp){
-            return res.status(200).json({ success : true, message : "Otp sented succesfully."})
+            return res.status(200).json({ success : true, message : "An OTP has been sent to your email address."})
         }else{
             return res.status(400).json({ success : false, message : "Otp senting failed."})
         }
