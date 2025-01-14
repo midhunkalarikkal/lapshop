@@ -615,58 +615,20 @@ const getCatProduct = async(req,res)=>{
             const skip = (currentPage - 1) * perPage;
 
             let query = { isBlocked: false };
-            if (categories.length > 0 && brands.length > 0 && searchInput) {
+
+            if (categories.length > 0 || brands.length > 0 || searchInput) {
                 query = {
                     $and: [
-                        { category: { $in: categories } },
-                        { brand: { $in: brands } },
-                        { name: {$regex : ".*"+searchInput+".*", $options : "i"} }
+                        ...(categories.length > 0 ? [{ category: { $in: categories } }] : []),
+                        ...(brands.length > 0 ? [{ brand: { $in: brands } }] : []),
+                        ...(searchInput ? [{ name: { $regex: ".*" + searchInput + ".*", $options: "i" } }] : [])
                     ],
-                    isBlocked: false
-                };
-            } else if (categories.length > 0 && brands.length === 0 && !searchInput) {
-                query = {
-                    category: { $in: categories },
-                    isBlocked: false
-                };
-            } else if (brands.length > 0 && categories.length === 0 && !searchInput) {
-                query = {
-                    brand: { $in: brands },
-                    isBlocked: false
-                };
-            } else if ( searchInput && categories.length === 0 && brands.length === 0){
-                query = {
-                    name : { $regex : ".*"+searchInput+".*", $options : "i"},
-                    isBlocked: false
-                };
-            } else if (searchInput && categories.length > 0 && brands.length === 0) {
-                query = {
-                    $and: [
-                        { category: { $in: categories } },
-                        { name: { $regex : ".*"+searchInput+".*", $options : "i"} }
-                    ],
-                    isBlocked: false
-                };
-            } else if (searchInput && brands.length > 0 && categories.length === 0) {
-                query = {
-                    $and: [
-                        { brand: { $in: brands } },
-                        { name: { $regex : ".*"+searchInput+".*", $options : "i"} }
-                    ],
-                    isBlocked: false
-                };
-            } else if (brands.length > 0 && categories.length > 0 && !searchInput) {
-                query = {
-                    $and: [
-                        { brand: { $in: brands } },
-                        { category: { $in: categories } }
-                    ],
-                    isBlocked: false
+                    isBlocked: false,
                 };
             }
 
             productData = await Product.find(query).populate({path : "brand"});
-                
+            
             if(sortCriteria === "highToLow"){
                 productData.sort((a,b) => b.offerPrice - a.offerPrice)
             }else if(sortCriteria === "lowToHigh"){
@@ -678,12 +640,14 @@ const getCatProduct = async(req,res)=>{
             }
 
             let totalProducts = productData.length;
-            productData = productData.slice(skip, skip + perPage);
+            if(productData.length > 12){
+                productData = productData.slice(skip, skip + perPage);
+            }
             const totalPages = Math.ceil(totalProducts / perPage);
-
+            
             return res.status(200).json({ message : "Categorized products", productData , totalPages , wishlistProdId , cartProdId})
         }else{
-            return res.status(400).json({ message : "No categorized found" })
+            return res.status(400).json({ message : "No products found" })
         }
     }catch(error){
         return res.redirect('/errorPage')
