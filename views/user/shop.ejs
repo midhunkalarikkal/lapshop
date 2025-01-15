@@ -218,6 +218,7 @@
                                             </div>
                                         </a>
                                         <div class="card-body" style="border-top: 1px solid rgb(218, 216, 216);">
+                                            <a href="/productDetail/<%= product._id %>" style="text-decoration: none;">
                                             <div class="p-2">
                                                 <div class="align-items-center justify-content-between d-flex">
                                                     <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
@@ -267,6 +268,7 @@
                                                 <% } %> <br>
                                                 <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
                                             </h6>
+                                            </a>
                                         </div>                                           
                                     </div>
                                 </div>
@@ -296,7 +298,9 @@
                                                     <i class="fa-regular fa-heart wish-btn"></i>
                                                 </a>                    
                                             </div>
-                                            <div class="col-8 card-body px-1 py-2">
+                                        </a>    
+                                        <div class="col-8 card-body px-1 py-2">
+                                            <a href="/productDetail/<%= product._id %>" style="text-decoration: none;">   
                                                 <span>
                                                     <span class="product-name"><%= product.name %></span>
                                                     <br>
@@ -339,9 +343,9 @@
                                                         </span>
                                                     <% } %>
                                                 </div>         
-                                            </div>    
-                                        </a>                                
-                                    </div>
+                                            </a>  
+                                        </div>  
+                                    </div>                         
                                 </div>
                                 <!-- For small devices -->
 
@@ -493,8 +497,8 @@
                     const isNewProduct = new Date(product.created) >= fiveDaysAgo;
                     const productDiv = $(
                         `<div class='col-xl-3 col-lg-4 col-md-6 pb-1 d-none d-md-block'>
-                            <div class='card product-item mb-4 product-card shadow'>
-                                <a href='/productDetail/${product._id}' class='product-outline'>
+                            <a href='/productDetail/${product._id}' class='product-outline'>
+                                <div class='card product-item mb-4 product-card shadow'>
                                     <div class='card-header product-img position-relative overflow-hidden  p-0'>
                                         <img class='card-header-img img-fluid product-image w-100' src='/static/images/ProductImages/${product.images[0]}' alt='product-image' style="height : 250px;">
                                     </div>
@@ -510,8 +514,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                </a>
-                            </div>
+                                </div>
+                            </a>
                         </div>
                         
 
