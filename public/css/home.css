@@ -723,28 +723,6 @@ p,
   transform: translateY(-5px);
 }
 
-.coupon::before,
-.coupon::after {
-  content: '';
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background: #f8f9fa;
-  border-radius: 50%;
-}
-
-.coupon::before {
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.coupon::after {
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
 .coupon-title {
   font-size: 1.5rem;
   font-weight: bold;
