@@ -122,7 +122,7 @@
         
 
         <!-- Shop Start -->
-        <div class="container-fluid pt-5">
+        <div class="container-fluid pt-5" style="min-height: 80vh;">
             <div class="row px-xl-3">
                 <!-- Shop Sidebar Start -->
                 <div class="col-md-3 col-lg-2 d-none d-md-block">
@@ -188,9 +188,9 @@
                             <% currentPageProducts.forEach((product,index)=>{ %>
                                 <% 
                                     const currentDate = new Date();
-                                    const fiveDaysAgo = new Date(currentDate);
-                                    fiveDaysAgo.setDate(currentDate.getDate() - 5);
-                                    const isNewProduct = new Date(product.created) >= fiveDaysAgo;
+                                    const twentyDaysAgo = new Date(currentDate);
+                                    twentyDaysAgo.setDate(currentDate.getDate() - 20);
+                                    const isNewProduct = product.createdAt > twentyDaysAgo;
                                 %>   
                                 <div class="col-xl-3 col-lg-4 col-md-6 pb-1 d-none d-md-block">
                                     <div class="card product-item mb-4 product-card shadow">
@@ -245,7 +245,7 @@
                                                         <% if (!isInCart) { %>
                                                             <span class="product-brand">Available</span>
                                                             <span class="offer-price price">
-                                                                <% if (!isNewProduct) { %>                         
+                                                                <% if (isNewProduct) { %>                         
                                                                     <span class="badge">New</span>
                                                                 <% } %>
                                                             </span>
@@ -253,7 +253,7 @@
                                                     <% } else { %>
                                                         <span class="product-brand">Available</span>
                                                         <span class="offer-price price">
-                                                            <% if (!isNewProduct) { %>                         
+                                                            <% if (isNewProduct) { %>                         
                                                                 <span class="badge">New</span>
                                                             <% } %>
                                                         </span>
@@ -263,7 +263,7 @@
 
                                             <h6 class="product-name text-center mb-2 d-none">
                                                 <%= product.name %>
-                                                <% if(!isNewProduct){ %>                         
+                                                <% if(isNewProduct){ %>                         
                                                     <span class="badge">New</span>
                                                 <% } %> <br>
                                                 <span class="product-brand"><%= product.brand.name.toUpperCase() %></span>
@@ -329,7 +329,7 @@
                                                         <% if (!isInCart) { %>
                                                             <span class="product-brand">Available</span>
                                                             <span class="offer-price price">
-                                                                <% if (!isNewProduct) { %>                         
+                                                                <% if (isNewProduct) { %>                         
                                                                     <span class="badge">New</span>
                                                                 <% } %>
                                                             </span>
@@ -337,7 +337,7 @@
                                                     <% } else { %>
                                                         <span class="product-brand">Available</span>
                                                         <span class="offer-price price">
-                                                            <% if (!isNewProduct) { %>                         
+                                                            <% if (isNewProduct) { %>                         
                                                                 <span class="badge">New</span>
                                                             <% } %>
                                                         </span>
@@ -348,53 +348,54 @@
                                     </div>                         
                                 </div>
                                 <!-- For small devices -->
-
                             <% } ) %>
                         </div>
                         <!-- Shop Product end -->
 
-                        <!--  Pagination for the shop page start , This will hidden in the filtering and sorting page -->
-                        <div class="col-12 pb-1" id="shopPagination">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center mb-3">
-                                    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
-                                        <a class="page-link" href="/shop?page=<%= currentPage - 1 %>" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                            <span class="sr-only">Previous</span>
-                                        </a>
-                                    </li>
-                                    <% for(let i=1; i<=totalPages; i++) { %>
-                                        <li class="page-item mx-1 <%= currentPage === i ? 'active' : '' %>">
-                                            <a class="page-link" href="/shop?page=<%= i %>">
-                                                <%= i %>
-                                            </a>
-                                        </li>
-                                    <% } %>
-                                    <li class="page-item mx-1 <%= currentPage === totalPages ? 'disabled' : '' %>">
-                                        <a class="page-link" href="/shop?page=<%= currentPage + 1 %>" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                            <span class="sr-only">Next</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                        <!--  Pagination for the shop page end -->
-
-                        <!--  Pagination for the filtering and sorting start -->
-                        <div class="col-12 pb-1">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination justify-content-center mb-3" id="pagination">
-                                    <!--  adding by dynamically -->
-                                </ul>
-                            </nav>
-                        </div>
-                        <!--  Pagination for the filtering and sorting end -->
                     </div>
                 </div>
             </div>
         </div>
         <!-- Shop End -->
+
+        <!--  Pagination for the shop page start , This will hidden in the filtering and sorting page -->
+        <div class="col-12 pb-1 mt-auto" id="shopPagination">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mb-3">
+                    <li class="page-item <%= currentPage === 1 ? 'disabled' : '' %>">
+                        <a class="page-link" href="/shop?page=<%= currentPage - 1 %>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>
+                    <% for(let i=1; i<=totalPages; i++) { %>
+                        <li class="page-item mx-1 <%= currentPage === i ? 'active' : '' %>">
+                            <a class="page-link" href="/shop?page=<%= i %>">
+                                <%= i %>
+                            </a>
+                        </li>
+                    <% } %>
+                    <li class="page-item mx-1 <%= currentPage === totalPages ? 'disabled' : '' %>">
+                        <a class="page-link" href="/shop?page=<%= currentPage + 1 %>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <!--  Pagination for the shop page end -->
+
+        <!--  Pagination for the filtering and sorting start -->
+        <div class="col-12 pb-1 mt-auto">
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center mb-3" id="pagination">
+                    <!--  adding by dynamically -->
+                </ul>
+            </nav>
+        </div>
+        <!--  Pagination for the filtering and sorting end -->
+          
     </section>
 
     <!-- script for jquery -->
@@ -487,14 +488,14 @@
                 updatePaginationUI(totalPages);
 
                 const currentDate = new Date();
-                const fiveDaysAgo = new Date(currentDate);
-                fiveDaysAgo.setDate(currentDate.getDate() - 5);
+                const twentyDaysAgo = new Date(currentDate);
+                twentyDaysAgo.setDate(currentDate.getDate() - 20);
                 
                 ////// Emptying the child elements of the productCardRow div \\\\\\
                 $("#productCardRow").empty()
                 
                 productData.forEach((product) => {
-                    const isNewProduct = new Date(product.created) >= fiveDaysAgo;
+                    const isNewProduct = new Date(product.created) >= twentyDaysAgo;
                     const productDiv = $(
                         `<div class='col-xl-3 col-lg-4 col-md-6 pb-1 d-none d-md-block'>
                             <a href='/productDetail/${product._id}' class='product-outline'>
@@ -735,7 +736,7 @@
                 `;
             }
 
-            ////// Creating hte next button for the second pagination \\\\\\
+            ////// Creating the next button for the second pagination \\\\\\
             paginationHTML += `
                 <li class="page-item mx-1 ${currentPage === totalPages ? 'disabled' : ''}">
                     <a class="page-link" href="#" onclick="changePage(${currentPage + 1})" aria-label="Next">
