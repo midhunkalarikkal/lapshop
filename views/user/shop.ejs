@@ -416,10 +416,16 @@
         ////// Search products \\\\\\
         $(document).ready(function () {
             var searchInput = $('.search-input');
+            var deBounceTimer;
 
             searchInput.on('input', function () {
                 inputValue = $(this).val();
-                updateProductList();
+
+                clearTimeout(deBounceTimer);
+
+                deBounceTimer = setTimeout(() => {
+                    updateProductList();
+                }, 500)
             });
         });
 

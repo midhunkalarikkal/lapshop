@@ -621,7 +621,18 @@ const getCatProduct = async(req,res)=>{
                     $and: [
                         ...(categories.length > 0 ? [{ category: { $in: categories } }] : []),
                         ...(brands.length > 0 ? [{ brand: { $in: brands } }] : []),
-                        ...(searchInput ? [{ name: { $regex: ".*" + searchInput + ".*", $options: "i" } }] : [])
+                        ...(searchInput
+                            ? [
+                                  {
+                                      $or: [
+                                          { name: { $regex: ".*" + searchInput + ".*", $options: "i" } },
+                                          { "brand.name": { $regex: ".*" + searchInput + ".*", $options: "i" } },
+                                          { "category.name": { $regex: ".*" + searchInput + ".*", $options: "i" } },
+                                          { description: { $regex: ".*" + searchInput + ".*", $options: "i" } },
+                                      ],
+                                  },
+                              ]
+                            : []),
                     ],
                     isBlocked: false,
                 };
