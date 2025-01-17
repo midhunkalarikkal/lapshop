@@ -49,26 +49,31 @@ The application has two main sides: **User** and **Admin**, each packed with mul
   - Change password with email verification
 - **Profile Management:**
   - Detailed profile with address management
-  - Profile image upload and management
+  - Profile image management
+  - Change password
+  - Change user info
 - **Shopping Features:**
-  - **Cart**: Save for Later functionality
+  - **Product details** page with inbuilt zooming funcationality, necessary details, popular products and same-category products and review-adding feature
+  - **Cart**: cart with Save for Later functionality
   - **Wishlist**: Save products for future reference
-  - Address management directly in the checkout page
-  - Wallet with detailed debit and credit transaction data
+  - **Wallet** : wallet with detailed debit and credit transaction data
+  - **Chckout** : Address management directly in the checkout page
 - **Payment Methods:**
   - Online payment using Razorpay
   - Cash on Delivery (COD)
   - Wallet payment
   - Wallet combined with online Razorpay payment
 - **Order Management:**
-  - Email notifications for product purchases
-  - Purchase confirmation page with order details
-  - Order details with return and cancel options
-  - Detailed order tracking
-  - Invoice download
-- **Product Reviews:** Ability to leave reviews for products
+  - **Purchase confirmation** page with order details
+  - **Email** notifications for product purchases
+  - **Order details** with return and cancel options
+  - **Detailed order tracking**
+  - **Invoice** download
+- **Product Reviews:** Ability to leave reviews for purchased products
 - **Coupons:** Apply coupons during payment
 - **Advertisement Banners:** Display banners dynamically on the website
+- **Contact page**
+- **Responsive design**
 
 ---
 
