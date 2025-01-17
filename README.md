@@ -44,34 +44,37 @@ The application has two main sides: **User** and **Admin**, each packed with mul
 ### User Side Features 👤
 
 - **Authentication:**
-  - Sign up with email verification
-  - Login and Forgot Password functionality
-  - Change password with email verification
+  - Sign up with email verification.
+  - Login and Forgot Password functionality.
+  - Change password with email verification.
 - **Profile Management:**
-  - Detailed profile with address management
-  - Profile image management
-  - Change password
-  - Change user info
+  - Detailed profile with address management.
+  - Profile image management.
+  - Change password.
+  - Change user info.
 - **Shopping Features:**
-  - **Product details** page with inbuilt zooming funcationality, necessary details, popular products and same-category products and review-adding feature
-  - **Cart**: cart with Save for Later functionality
-  - **Wishlist**: Save products for future reference
-  - **Wallet** : wallet with detailed debit and credit transaction data
-  - **Chckout** : Address management directly in the checkout page
+  - **Product details** page with inbuilt zooming funcationality, necessary details, popular products and same-category products and review-adding feature.
+  - **Filter** by brands and categories.
+  - **Sort** by name.
+  - **Debouncing** featuring in search functionality.
+  - **Cart** with Save for Later functionality.
+  - **Wishlist**: Save products for future reference.
+  - **Wallet** : wallet with detailed debit and credit transaction data.
+  - **Chckout** : Address management directly in the checkout page.
 - **Payment Methods:**
-  - Online payment using Razorpay
-  - Cash on Delivery (COD)
-  - Wallet payment
-  - Wallet combined with online Razorpay payment
+  - Online payment using Razorpay.
+  - Cash on Delivery (COD).
+  - Wallet payment.
+  - Wallet combined with online Razorpay payment.
 - **Order Management:**
-  - **Purchase confirmation** page with order details
-  - **Email** notifications for product purchases
-  - **Order details** with return and cancel options
+  - **Purchase confirmation** page with order details.
+  - **Email** notifications for product purchases.
+  - **Order details** with return and cancel options.
   - **Detailed order tracking**
-  - **Invoice** download
-- **Product Reviews:** Ability to leave reviews for purchased products
-- **Coupons:** Apply coupons during payment
-- **Advertisement Banners:** Display banners dynamically on the website
+  - **Invoice** download.
+- **Product Reviews:** Ability to leave reviews for purchased products.
+- **Coupons:** Apply coupons during payment.
+- **Advertisement Banners:** Display banners dynamically on the website.
 - **Contact page**
 - **Responsive design**
 
