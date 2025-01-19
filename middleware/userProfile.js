@@ -1,6 +1,6 @@
 const multer = require("multer");
 const path = require("path");
-const imageTypes = /jpeg|jpg|png|svg|webp/;
+const imageTypes = /jpeg|jpg|png/;
 
 ////// Storage definition \\\\\\
 

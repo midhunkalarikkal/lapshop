@@ -187,13 +187,27 @@ async function deletePI(button){
 function previewImage() {
     const preview = document.getElementById('preview');
     const file = document.getElementById('image').files[0];
-    const reader = new FileReader();
-
-    reader.onloadend = function () {
-        preview.src = reader.result;
-    };
 
     if (file) {
+        const allowedExtensions = ['image/png', 'image/jpeg', 'image/jpg'];
+
+        if (!allowedExtensions.includes(file.type)) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Invalid File Type',
+                text: 'Only PNG, JPG, and JPEG files are allowed!',
+            });
+
+            document.getElementById('image').value = '';
+
+            preview.src = "/static/images/icons/No profile image.jpg";
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            preview.src = reader.result;
+        };
         reader.readAsDataURL(file);
     } else {
         preview.src = "/static/images/icons/No profile image.jpg";
