@@ -1109,6 +1109,7 @@ const getPaymentPage = async(req,res)=>{
 
 //To send the purchase details to use email
 const sendPurchaseDetails = async (mailData) => {
+    console.log("Seding purchase mail and maildata :",mailData);
     try {
         const transporter = nodemailer.createTransport({
             service: "gmail",
@@ -1203,7 +1204,6 @@ const sendPurchaseDetails = async (mailData) => {
         await transporter.sendMail(mailOptions);
         return { success: true };
     } catch (error) {
-        console.error("Error in sendPurchaseDetails:", error);
         return { success: false, error: error.message };
     }
 };
@@ -1247,11 +1247,11 @@ const getPaymentSuccess = async(req,res)=>{
             address: deliveryAddress,
         };
 
-        sendPurchaseDetails({
+        await sendPurchaseDetails({
             ...sharedData,
             name: userDetails.userName,
             email: user.email,
-        }).catch((err) => console.error("Failed to send email:", err));
+        })
 
         return res.render("user/orderConfirmation", { userDetails, data: sharedData });
     }catch(error){
