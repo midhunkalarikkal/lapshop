@@ -586,17 +586,19 @@ const getCatProduct = async(req,res)=>{
         let productData;
         let wishlistProdId = [];
         let cartProdId = [];
+        let wishlist = [];
+        let cart = [];
 
         if(req.session.user){
             const user = req.session.user
-            const wishlist = await Wishlist.find({ userId : user._id})
-            if(wishlist){
+            wishlist = await Wishlist.find({ userId : user._id})
+            if(wishlist.length > 0){
                 const wishlistProducts = wishlist[0].products
                 const productsId = wishlistProducts.map(item => item.product);
                 wishlistProdId = productsId;
             }
-            const cart = await Cart.find({ userId : user._id }) 
-            if(cart){
+            cart = await Cart.find({ userId : user._id }) 
+            if(cart.length > 0){
                 cartProdId = cart[0].items.map(item => item.product)
             }
         }
@@ -655,6 +657,11 @@ const getCatProduct = async(req,res)=>{
                 productData = productData.slice(skip, skip + perPage);
             }
             const totalPages = Math.ceil(totalProducts / perPage);
+
+            console.log("productData : ",productData.length);
+            console.log("totalPages : ",totalPages);
+            console.log("wishlistProdId : ",wishlistProdId);
+            console.log("cartProdId : ",cartProdId);
             
             return res.status(200).json({ message : "Categorized products", productData , totalPages , wishlistProdId , cartProdId})
         }else{
