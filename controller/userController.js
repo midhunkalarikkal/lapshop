@@ -1109,7 +1109,6 @@ const getPaymentPage = async(req,res)=>{
 
 //To send the purchase details to use email
 const sendPurchaseDetails = async (mailData) => {
-    console.log("Seding purchase mail and maildata :",mailData);
     try {
         const transporter = nodemailer.createTransport({
             service: "gmail",
