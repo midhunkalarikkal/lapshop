@@ -657,11 +657,6 @@ const getCatProduct = async(req,res)=>{
                 productData = productData.slice(skip, skip + perPage);
             }
             const totalPages = Math.ceil(totalProducts / perPage);
-
-            console.log("productData : ",productData.length);
-            console.log("totalPages : ",totalPages);
-            console.log("wishlistProdId : ",wishlistProdId);
-            console.log("cartProdId : ",cartProdId);
             
             return res.status(200).json({ message : "Categorized products", productData , totalPages , wishlistProdId , cartProdId})
         }else{
