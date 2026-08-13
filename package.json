@@ -1,11 +1,11 @@
 {
   "name": "lapshop-ecommerce",
   "version": "1.0.0",
-  "description": "",
+  "description": "E Commerce platform for laptopsnpm run lint",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Midhun K Paniker",
   "license": "ISC",
@@ -25,6 +25,8 @@
     "razorpay": "^2.9.3"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "globals": "^17.11.0",
     "http-errors": "^2.0.0",
     "morgan": "^1.10.0",
     "nodemon": "^3.0.3"
