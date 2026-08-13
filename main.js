@@ -1,5 +1,7 @@
 const dns = require("node:dns/promises");
-dns.setServers(["1.1.1.1", "1.0.0.1"]);
+if (process.env.NODE_ENV !== "production") {
+    dns.setServers(["1.1.1.1", "1.0.0.1"]);
+}
 
 const express = require('express');
 const session = require('express-session');
