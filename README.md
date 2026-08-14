@@ -21,6 +21,12 @@ The application has two main sides: **User** and **Admin**, each packed with mul
 
 ---
 
+## Screenshots
+
+![Lapshop Home Page](./screenshots/landing_hero.png)
+
+![Lapshop Admin Dashboard](./screenshots/landing_secion_one.png)
+
 ## Modules & Libraries 🛠️
 
 - **bcrypt:** Password hashing
