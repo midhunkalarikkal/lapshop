@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const dns = require("node:dns/promises");
 if (process.env.NODE_ENV !== "production") {
     dns.setServers(["1.1.1.1", "1.0.0.1"]);
@@ -11,7 +13,6 @@ const morgan = require('morgan');
 const path = require('path');
 const app = express();
 
-require('dotenv').config();
 config.mongooseConnection();
 
 app.use(cookieParser())
