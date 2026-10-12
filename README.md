@@ -1,118 +1,115 @@
-# E-Commerce Web Application for Laptops 💻🛒
+<div align="center">
 
-This project is a fully functional **e-commerce web application** exclusively designed for laptops. It showcases expertise in full-stack development, covering front-end, back-end, and deployment aspects.
+# 💻 LapShop — Laptop E-Commerce Platform
+
+**A full-stack, server-rendered e-commerce application built with Node.js, Express, EJS, and MongoDB.**
+
+A unified Express application that serves both the backend business logic and the EJS-rendered frontend, following the **Model–View–Controller (MVC)** architecture.
+
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](LICENSE)
+![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
+![Express.js](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white)
+![EJS](https://img.shields.io/badge/EJS-B4CA65?logo=ejs&logoColor=black)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?logo=mongodb&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/Bootstrap-7952B3?logo=bootstrap&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+
+</div>
 
 ---
 
 ## Project Overview 📋
 
-The application has two main sides: **User** and **Admin**, each packed with multiple features. It follows the **MVC (Model-View-Controller)** architecture, with middleware for authentication and security.
+LapShop is a fully functional e-commerce web application dedicated to laptops. It includes separate **customer-facing** and **administrative** interfaces within a single, server-rendered Node.js application. Express handles routing, middleware, and business logic, while **EJS templates render the user interface on the server**. The codebase follows the **MVC pattern** and uses middleware for authentication and security.
 
-- **Security:** Configured with SSL certificates for secure image uploads.
-- **Hosting:** Deployed on **AWS EC2** and **ECS**, with **Nginx** for server management and reverse proxy.
+The project also covers deployment and infrastructure practices, including **AWS EC2**, **Amazon ECS**, **Nginx** as a reverse proxy, and **SSL/TLS certificates** for secure connections and uploads.
 
----
+## Technology Stack ⚙️
 
-## Technologies Used ⚙️
+| Layer | Technologies |
+| --- | --- |
+| Frontend / Views | HTML, CSS, Bootstrap, EJS |
+| Backend | Node.js, Express.js (CommonJS) |
+| Database | MongoDB, Mongoose |
+| Authentication & Sessions | bcrypt, express-session, cookie-parser |
+| File Uploads | Multer |
+| Email | Nodemailer |
+| Invoice Generation | PDFKit |
+| Payments | Razorpay |
+| Code Quality | ESLint, Prettier |
+| Deployment | AWS EC2, Amazon ECS, Nginx, SSL/TLS |
 
-- **Frontend:** HTML, CSS, Bootstrap, EJS
-- **Backend:** Node.js, Express.js
-- **Database:** MongoDB
+## Screenshots 📸
 
----
+**LapShop home page**
 
-## Screenshots
+![LapShop home page](./screenshots/landing_hero.png)
 
-![Lapshop Home Page](./screenshots/landing_hero.png)
+**LapShop admin dashboard**
 
-![Lapshop Admin Dashboard](./screenshots/landing_secion_one.png)
-
-## Modules & Libraries 🛠️
-
-- **bcrypt:** Password hashing
-- **crypto:** Random string generation
-- **multer:** Image upload handling
-- **mongoose:** Database models and operations
-- **nodemailer:** Email notifications
-- **pdfkit:** Generating order invoices
-- **sweetalert:** User-friendly alerts
-
----
-
-## Payment Gateway 💳
-
-- **Razorpay**: For handling online payments securely.
-
----
+![LapShop admin dashboard](./screenshots/landing_secion_one.png)
 
 ## Features 🌟
 
-### User Side Features 👤
+### Customer Features 👤
 
-- **Authentication:**
-  - Sign up with email verification.
-  - Login and Forgot Password functionality.
-  - Change password with email verification.
-- **Profile Management:**
-  - Detailed profile with address management.
-  - Profile image management.
-  - Change password.
-  - Change user info.
-- **Shopping Features:**
-  - **Product details** page with inbuilt zooming funcationality, necessary details, popular products and same-category products and review-adding feature.
-  - **Filter** by brands and categories.
-  - **Sort** by name.
-  - **Debouncing** featuring in search functionality.
-  - **Cart** with Save for Later functionality.
-  - **Wishlist**: Save products for future reference.
-  - **Wallet** : wallet with detailed debit and credit transaction data.
-  - **Chckout** : Address management directly in the checkout page.
-- **Payment Methods:**
-  - Online payment using Razorpay.
-  - Cash on Delivery (COD).
-  - Wallet payment.
-  - Wallet combined with online Razorpay payment.
-- **Order Management:**
-  - **Purchase confirmation** page with order details.
-  - **Email** notifications for product purchases.
-  - **Order details** with return and cancel options.
-  - **Detailed order tracking**
-  - **Invoice** download.
-- **Product Reviews:** Ability to leave reviews for purchased products.
-- **Coupons:** Apply coupons during payment.
-- **Advertisement Banners:** Display banners dynamically on the website.
-- **Contact page**
-- **Responsive design**
+**Authentication and account management**
+- Sign up with email verification.
+- Log in, recover a forgotten password, and change a password with email verification.
+- Manage profile information, profile images, and saved addresses.
 
----
+**Product discovery and shopping**
+- View product details with image zoom, specifications, popular products, related products, and reviews.
+- Filter products by brand and category; sort by name.
+- Search with debouncing.
+- Manage a shopping cart with **Save for Later** functionality.
+- Save products to a wishlist.
+- Manage checkout addresses directly from the checkout page.
 
-### Admin Side Features 🧑‍💼
+**Payments, wallet, and promotions**
+- Pay using Razorpay, Cash on Delivery (COD), or wallet balance.
+- Combine wallet balance with an online Razorpay payment.
+- View wallet credit and debit transaction history.
+- Apply coupons during checkout.
 
-- **Product Management:** Add, edit, and delete products with multiple images
-- **Brand & Category Management:** Manage laptop brands and categories
-- **Coupon Management:** Create and manage coupons
-- **Advertisement Banners:** Dynamic management of homepage banners
-- **Order Management:** View detailed order data and update order statuses
-- **User Management:** Block/unblock users as required
-- **Dashboard:**
-  - Overview of all data with multiple graph representations
-  - Best-performing product, category, and brand lists
-  - Order details filtered by day, month, or year
-  - Print and export order data to Excel
+**Orders and engagement**
+- View purchase confirmations and order details.
+- Receive purchase-related email notifications.
+- Track orders and request returns or cancellations.
+- Download PDF invoices.
+- Review purchased products.
+- View dynamic promotional banners and use the contact page.
+- Access a responsive interface across device sizes.
 
----
+### Administrator Features 🧑‍💼
 
-## Deployment 🌐
+- **Product management:** Add, edit, and delete products with multiple images.
+- **Catalog management:** Manage laptop brands and categories.
+- **Coupon management:** Create and manage promotional coupons.
+- **Banner management:** Manage dynamic homepage advertisements.
+- **Order management:** Inspect orders and update their statuses.
+- **User management:** Block or unblock user accounts.
+- **Analytics dashboard:** Review key data using multiple charts and graphs, including top-performing products, categories, and brands.
+- **Reporting:** Filter order data by day, month, or year; print reports and export order data to Excel.
 
-- **AWS EC2:** For reliable cloud hosting
-- **Nginx:** Configured for reverse proxy and SSL certificates
+## Key Libraries 🛠️
 
----
+| Library | Role |
+| --- | --- |
+| `bcrypt` | Password hashing |
+| Node.js `crypto` | Random-string generation |
+| `multer` | Image upload handling |
+| `mongoose` | MongoDB models and data operations |
+| `nodemailer` | Transactional email notifications |
+| `pdfkit` | PDF invoice generation |
+| SweetAlert | User-facing alerts and confirmations |
+| `razorpay` | Online payment integration |
 
-This project was built from scratch, requiring significant time and effort to implement a wide range of features. It has been a continuous process of optimization, adding new functionalities, and thoroughly testing new ideas. The project has evolved and improved with each iteration, ensuring a solid and feature-rich e-commerce platform.
 
-## Final Thoughts 💭
+## Project Background
 
-This project has been a fantastic learning experience. The combination of front-end, back-end, and secure deployment has helped me develop a full-fledged e-commerce platform. I am excited to continue improving this application by adding new features and enhancing its performance.
+LapShop was developed from scratch as a full-stack learning and engineering project. Its implementation spans frontend rendering, backend development, authentication, catalog and order management, payments, administrative reporting, and cloud deployment. The application has evolved through iterative feature development, optimization.
 
----
+## License 📄
+
+This project is licensed under the **ISC License**. See the [LICENSE](./LICENSE) file for details.
