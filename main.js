@@ -16,6 +16,7 @@ const app = express();
 const userRoute = require('./routes/user');
 const adminRoute = require('./routes/admin');
 const errorHandler = require('./middleware/errorHandler');
+const { appConfig } = require('./config/appConfig');
 
 config.mongooseConnection();
 
@@ -76,7 +77,22 @@ app.use('/*', (_req, res) => {
    return res.status(404).render('user/errorPage');
 });
 
-const PORT = process.env.PORT || 8001;
-app.listen(PORT, () => {
-   console.log(`Server is listening to the port http://localhost:${PORT}`);
+app.listen(appConfig.port, () => {
+    const isProduction = !appConfig.isDev;
+
+    console.log(`
+╔══════════════════════════════════════════════════╗
+║                                                  ║
+║                  🛒 LAPSHOP                      ║
+║             E-Commerce Platform                  ║
+║                                                  ║
+╚══════════════════════════════════════════════════╝
+
+  🚀 Server Status : Running
+  🌍 Environment   : ${isProduction ? 'Production' : 'Development'}
+  🔌 Port          : ${appConfig.port}
+  🔗 Local URL     : http://localhost:${appConfig.port}
+
+  ✔ LapShop server started successfully!
+`);
 });
