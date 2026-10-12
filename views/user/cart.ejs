@@ -38,7 +38,7 @@
                           <%= product.product.description.slice(0,75) %>
                         </span>
                         <span class="product-offerPrice text-success">
-                          ₹ <%= product.price %>
+                          ₹ <%= (product.price).toFixed(2) %>
                         </span>
                         <br>
                         <% if(product.product.noOfStock < 5){ %>
@@ -117,7 +117,7 @@
                           </span>
                           <br>
                           <span class="product-offerPrice text-success">
-                            ₹ <%= product.price %>
+                            ₹ <%= (product.price).toFixed(2) %>
                           </span>
                           <br>
                           <% if(product.product.noOfStock < 5){ %>
@@ -180,11 +180,11 @@
               </div>
               <div class="details">
                 <hr>
-                <p class="countOfItems">Count of items : <span><%= cart.items.length %></span></p>
+                <p class="countOfItems">Products : <span><%= cart.items.length %></span></p>
                 <p class="purchaseSave">You will save in this purchace : <span class="purchace-discount"> ₹ <%=
                       cart.totalCartDiscountPrice.toFixed(2) %></span></p>
                 <hr>
-                <p class="subTotal">Subtotal : <span class="subtotal"> ₹ <%= cart.totalCartPrice %></span></p>
+                <p class="subTotal">Subtotal : <span class="subtotal"> ₹ <%= (cart.totalCartPrice).toFixed(2) %></span></p>
                 <hr>
               </div>
               <div class="button mt-3">

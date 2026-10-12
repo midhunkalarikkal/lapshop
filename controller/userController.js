@@ -78,12 +78,12 @@ const sendOtpMail = async (email, otp, subject, message) => {
          port: 465,
          secure: true,
          auth: {
-            user: process.env.AUTH_EMAIL,
-            pass: process.env.AUTH_PASS,
+            user: process.env.OFFICIAL_EMAIL,
+            pass: process.env.OFFICIALEMAIL_PASS,
          },
       });
       const mailOptions = {
-         from: 'lapshopotp@gmail.com',
+         from: process.env.OFFICIAL_EMAIL,
          to: email,
          subject: subject,
          html: `
@@ -223,7 +223,7 @@ const postRegister = async (req, res, next) => {
       function clearSaveOtp() {
          registerOtp = '';
       }
-      setTimeout(clearSaveOtp, 180000);
+      setTimeout(clearSaveOtp, 300000);
 
       enteredFullname = req.body.fullname;
       enteredEmail = req.body.email;
