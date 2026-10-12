@@ -1,34 +1,42 @@
 {
-  "name": "lapshop-ecommerce",
-  "version": "1.0.0",
-  "description": "E Commerce platform for laptopsnpm run lint",
-  "main": "main.js",
-  "scripts": {
-    "start": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "Midhun K Paniker",
-  "license": "ISC",
-  "dependencies": {
-    "bcrypt": "^5.1.1",
-    "body-parser": "^1.20.2",
-    "connect-mongo": "^5.1.0",
-    "cookie-parser": "^1.4.6",
-    "dotenv": "^16.4.1",
-    "ejs": "^3.1.9",
-    "express": "^4.18.2",
-    "express-session": "^1.18.0",
-    "mongoose": "^8.1.1",
-    "multer": "^1.4.5-lts.1",
-    "nodemailer": "^6.9.9",
-    "pdfkit": "^0.15.0",
-    "razorpay": "^2.9.3"
-  },
-  "devDependencies": {
-    "@eslint/js": "^10.0.1",
-    "globals": "^17.11.0",
-    "http-errors": "^2.0.0",
-    "morgan": "^1.10.0",
-    "nodemon": "^3.0.3"
-  }
+   "name": "lapshop-ecommerce",
+   "version": "1.0.0",
+   "description": "E Commerce platform for laptopsnpm run lint",
+   "main": "main.js",
+   "type": "commonjs",
+   "scripts": {
+      "start": "nodemon app.js",
+      "test": "echo \"Error: no test specified\" && exit 1",
+      "lint": "eslint .",
+      "lint:fix": "eslint . --fix",
+      "format": "prettier . --write",
+      "format:check": "prettier . --check"
+   },
+   "author": "Midhun K Paniker",
+   "license": "ISC",
+   "dependencies": {
+      "bcrypt": "^5.1.1",
+      "body-parser": "^1.20.2",
+      "connect-mongo": "^5.1.0",
+      "cookie-parser": "^1.4.6",
+      "dotenv": "^16.4.1",
+      "ejs": "^3.1.9",
+      "express": "^4.18.2",
+      "express-session": "^1.18.0",
+      "mongoose": "^8.1.1",
+      "multer": "^1.4.5-lts.1",
+      "nodemailer": "^6.9.9",
+      "pdfkit": "^0.15.0",
+      "razorpay": "^2.9.3"
+   },
+   "devDependencies": {
+      "@eslint/js": "^10.0.1",
+      "eslint": "^10.12.0",
+      "eslint-config-prettier": "^10.1.8",
+      "globals": "^17.13.0",
+      "http-errors": "^2.0.0",
+      "morgan": "^1.10.0",
+      "nodemon": "^3.0.3",
+      "prettier": "^3.9.10"
+   }
 }
