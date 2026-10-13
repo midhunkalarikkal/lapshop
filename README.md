@@ -41,22 +41,22 @@ Explore **15 screenshots** showcasing the LapShop customer interface, shopping e
 
 ## Technology Stack ⚙️
 
-| Layer | Technologies |
-| --- | --- |
-| Frontend / Views | HTML, CSS, JavaScript, Bootstrap, EJS |
-| Backend | Node.js, Express.js (CommonJS) |
-| Architecture | Model–View–Controller (MVC) |
-| Database | MongoDB, Mongoose |
-| Authentication & Sessions | bcrypt, express-session, cookie-parser |
-| File Uploads | Multer |
-| Email | Nodemailer |
-| Invoice Generation | PDFKit |
-| Payments | Razorpay |
-| Code Quality | ESLint, Prettier |
-| Version Control | Git, GitHub |
-| CI/CD | GitHub Actions |
-| Deployment & Hosting | Render |
-| Live Domain | [lapshop](https://lapshop-loading.midhunkpaniker.online) |
+| Layer                     | Technologies                                             |
+| ------------------------- | -------------------------------------------------------- |
+| Frontend / Views          | HTML, CSS, JavaScript, Bootstrap, EJS                    |
+| Backend                   | Node.js, Express.js (CommonJS)                           |
+| Architecture              | Model–View–Controller (MVC)                              |
+| Database                  | MongoDB, Mongoose                                        |
+| Authentication & Sessions | bcrypt, express-session, cookie-parser                   |
+| File Uploads              | Multer                                                   |
+| Email                     | Nodemailer                                               |
+| Invoice Generation        | PDFKit                                                   |
+| Payments                  | Razorpay                                                 |
+| Code Quality              | ESLint, Prettier                                         |
+| Version Control           | Git, GitHub                                              |
+| CI/CD                     | GitHub Actions                                           |
+| Deployment & Hosting      | Render                                                   |
+| Live Domain               | [lapshop](https://lapshop-loading.midhunkpaniker.online) |
 
 ## Features 🌟
 
@@ -107,21 +107,21 @@ Explore **15 screenshots** showcasing the LapShop customer interface, shopping e
 
 ## Key Libraries 🛠️
 
-| Library | Role |
-| --- | --- |
-| `express` | HTTP server, routing, and middleware |
-| `ejs` | Server-side HTML rendering |
-| `bcrypt` | Password hashing |
-| Node.js `crypto` | Random-string generation |
-| `express-session` | Session management |
-| `multer` | Image upload handling |
-| `mongoose` | MongoDB models and data operations |
-| `nodemailer` | Transactional email notifications |
-| `pdfkit` | PDF invoice generation |
-| SweetAlert | User-facing alerts and confirmations |
-| `razorpay` | Online payment integration |
-| `eslint` | JavaScript static analysis |
-| `prettier` | Code formatting and consistency |
+| Library           | Role                                 |
+| ----------------- | ------------------------------------ |
+| `express`         | HTTP server, routing, and middleware |
+| `ejs`             | Server-side HTML rendering           |
+| `bcrypt`          | Password hashing                     |
+| Node.js `crypto`  | Random-string generation             |
+| `express-session` | Session management                   |
+| `multer`          | Image upload handling                |
+| `mongoose`        | MongoDB models and data operations   |
+| `nodemailer`      | Transactional email notifications    |
+| `pdfkit`          | PDF invoice generation               |
+| SweetAlert        | User-facing alerts and confirmations |
+| `razorpay`        | Online payment integration           |
+| `eslint`          | JavaScript static analysis           |
+| `prettier`        | Code formatting and consistency      |
 
 ## CI/CD Pipeline 🚀
 
@@ -181,6 +181,7 @@ Render Auto Deployment
        v
 LapShop Production
 ```
+
 ## Project Background
 
 LapShop was developed from scratch as a full-stack learning and engineering project. Its implementation spans frontend rendering, backend development, authentication, catalog and order management, payment integration, administrative reporting, and cloud deployment.
