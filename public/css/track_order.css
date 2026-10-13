@@ -1,0 +1,392 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;500;600;700;800&display=swap');
+.tracking-page {
+    min-height: 100vh;
+    padding: 44px 0 88px;
+    background: linear-gradient(145deg, #f4f8f5 0%, #ffffff 52%, #edf6ef 100%);
+    color: var(--third-color);
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+.tracking-page .tracking-container {
+    max-width: 1320px;
+}
+.tracking-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+.tracking-eyebrow, .tracking-section-kicker, .tracking-overview-kicker {
+    color: var(--offerprice-color);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0.15em;
+}
+.tracking-header h1 {
+    margin: 6px 0 8px;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+}
+.tracking-header p {
+    max-width: 550px;
+    margin: 0;
+    color: #68766c;
+    line-height: 1.6;
+}
+.tracking-back-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 45px;
+    padding: 10px 20px;
+    border: 1px solid #dce7df;
+    border-radius: 11px;
+    background: #ffffff;
+    color: #27382d;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.tracking-back-link:hover {
+    border-color: #9cd5ad;
+    background: #f1f9f3;
+    color: #17592c;
+}
+.tracking-overview, .tracking-panel {
+    border: 1px solid #e1ebe3;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 16px 48px rgba(27, 27, 27, 0.055);
+}
+.tracking-overview {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+    padding: 25px 28px;
+}
+.tracking-overview-icon {
+    display: grid;
+    width: 60px;
+    height: 60px;
+    flex-shrink: 0;
+    place-items: center;
+    border-radius: 16px;
+    background: #e9f8ed;
+    color: var(--offerprice-color);
+    font-size: 1.5rem;
+}
+.tracking-overview-copy {
+    flex: 1;
+    min-width: 0;
+}
+.tracking-overview h2 {
+    margin: 4px 0;
+    font-size: 1.6rem;
+    font-weight: 800;
+}
+.tracking-overview p {
+    margin: 0;
+    color: #728075;
+    overflow-wrap: anywhere;
+}
+.tracking-dot {
+    padding: 0 6px;
+}
+.tracking-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 13px;
+    border-radius: 999px;
+    font-size: 0.87rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+.tracking-status-success {
+    background: #e9f8ed;
+    color: #21743d;
+}
+.tracking-status-warning {
+    background: #fff4e2;
+    color: #9c600a;
+}
+.tracking-status-danger {
+    background: #fff0f0;
+    color: #bd3535;
+}
+.tracking-status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+}
+.tracking-panel {
+    overflow: hidden;
+}
+.tracking-panel-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 25px 28px;
+    border-bottom: 1px solid #edf1ed;
+}
+.tracking-panel-heading h2 {
+    margin: 5px 0 0;
+    font-size: 1.35rem;
+    font-weight: 800;
+}
+.tracking-count {
+    padding: 6px 12px;
+    border-radius: 30px;
+    background: #e9f8ed;
+    color: #21743d;
+    font-size: 0.85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.tracking-timeline {
+    margin: 0;
+    padding: 30px 28px 8px;
+    list-style: none;
+}
+.tracking-step {
+    position: relative;
+    display: flex;
+    gap: 18px;
+    min-height: 105px;
+}
+.tracking-step:not(:last-child)::before {
+    position: absolute;
+    top: 42px;
+    bottom: 0;
+    left: 19px;
+    width: 2px;
+    background: #d7eadb;
+    content: '';
+}
+.tracking-step-marker {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    place-items: center;
+    border: 2px solid #c6e7cf;
+    border-radius: 50%;
+    background: #e9f8ed;
+    color: #218343;
+}
+.tracking-step-current .tracking-step-marker {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: #173420;
+    box-shadow: 0 0 0 5px #e9f8ed;
+}
+.tracking-step-danger .tracking-step-marker {
+    border-color: #f3d4d4;
+    background: #fff0f0;
+    color: #bd3535;
+}
+.tracking-step-return .tracking-step-marker {
+    border-color: #f4dfb5;
+    background: #fff4e2;
+    color: #9c600a;
+}
+.tracking-step-content {
+    min-width: 0;
+    flex: 1;
+    padding: 4px 0 27px;
+}
+.tracking-step-title-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+.tracking-step-title-row h3 {
+    margin: 0;
+    font-size: 1.08rem;
+    font-weight: 800;
+}
+.tracking-latest {
+    padding: 3px 9px;
+    border-radius: 20px;
+    background: #e9f8ed;
+    color: #21743d;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+.tracking-step-date {
+    display: block;
+    margin-top: 7px;
+    color: #77867b;
+    font-size: 0.9rem;
+}
+.tracking-step-date i {
+    margin-right: 5px;
+}
+.tracking-time-separator {
+    padding: 0 3px;
+}
+.tracking-step-note {
+    margin: 10px 0 0;
+    color: #506154;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+.tracking-empty {
+    padding: 55px 25px;
+    text-align: center;
+}
+.tracking-empty i {
+    color: var(--offerprice-color);
+    font-size: 2rem;
+}
+.tracking-empty h3 {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+.tracking-empty p {
+    color: #728075;
+}
+.tracking-help {
+    display: flex;
+    gap: 13px;
+    margin-top: 20px;
+    padding: 18px 20px;
+    border: 1px solid #e1ebe3;
+    border-radius: 14px;
+    background: #f6faf7;
+}
+.tracking-help-icon {
+    color: var(--offerprice-color);
+    font-size: 1.15rem;
+}
+.tracking-help strong {
+    font-weight: 800;
+}
+.tracking-help p {
+    margin: 4px 0 0;
+    color: #728075;
+    font-size: 0.92rem;
+    line-height: 1.5;
+}
+.tracking-details {
+    position: sticky;
+    top: 24px;
+}
+.tracking-details-body {
+    padding: 10px 26px 26px;
+}
+.tracking-detail-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 15px 0;
+    border-bottom: 1px solid #edf1ed;
+}
+.tracking-detail-row span {
+    color: #738077;
+}
+.tracking-detail-row strong {
+    max-width: 55%;
+    color: #26372b;
+    font-weight: 700;
+    text-align: right;
+    overflow-wrap: anywhere;
+}
+.tracking-detail-total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 22px 0;
+    font-weight: 800;
+}
+.tracking-detail-total strong {
+    color: var(--offerprice-color);
+    font-size: 1.65rem;
+}
+.tracking-details-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 46px;
+    border: 1px solid var(--primary-color);
+    border-radius: 10px;
+    background: var(--primary-color);
+    color: #173420;
+    font-weight: 800;
+}
+.tracking-details-button:hover {
+    border-color: var(--offerprice-color);
+    background: var(--offerprice-color);
+    color: #ffffff;
+}
+@media (max-width: 991px) {
+    .tracking-details {
+        position: static;
+    }
+}
+@media (max-width: 767px) {
+    .tracking-page {
+        padding: 26px 0 60px;
+    }
+    .tracking-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 17px;
+    }
+    .tracking-back-link {
+        width: 100%;
+    }
+    .tracking-overview {
+        align-items: flex-start;
+        flex-wrap: wrap;
+        gap: 13px;
+        padding: 20px;
+    }
+    .tracking-overview-icon {
+        width: 48px;
+        height: 48px;
+        font-size: 1.2rem;
+    }
+    .tracking-status {
+        margin-left: 0;
+    }
+    .tracking-overview, .tracking-panel {
+        border-radius: 15px;
+    }
+    .tracking-panel-heading {
+        padding: 20px;
+    }
+    .tracking-timeline {
+        padding: 25px 19px 4px;
+    }
+    .tracking-step {
+        gap: 13px;
+    }
+    .tracking-details-body {
+        padding: 8px 20px 20px;
+    }
+}
+@media (max-width: 480px) {
+    .tracking-overview-copy {
+        flex-basis: calc(100% - 65px);
+    }
+    .tracking-overview h2 {
+        font-size: 1.35rem;
+    }
+    .tracking-step-date {
+        font-size: 0.82rem;
+    }
+    .tracking-detail-total strong {
+        font-size: 1.4rem;
+    }
+}

@@ -5,118 +5,163 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LapShop</title>
-    <link rel="icon" href="/static/images/Bg/desktop/Lapshoplogo.png" type="image/x-icon">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!--Bootstrap-->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="icon" href="/static/images/Bg/desktop/Lapshoplogo.png" type="image/png">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <!--Font Awesome-->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
         integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <link rel="stylesheet" href="/static/css/nav_footer.css">
 </head>
 
 <body>
-
     <div id="screen-size"></div>
 
-    <!-- Navbar One-->
-    <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
-        <div class="container">
+    <nav class="navbar navbar-expand-lg lapshop-navbar fixed-top">
+        <div class="container lapshop-navbar-container">
 
-            <!-- Navbar Logo -->
-            <div class="logo col-lg-2">
-                <a href="www.lapshop.site" class="navbar-brand">
-                    <span class="fw-bold fs-3">LapShop</span>
+            <a href="/" class="navbar-brand lapshop-brand">
+                <img src="/static/images/Bg/desktop/Lapshoplogo.png" alt="LapShop" class="lapshop-navbar-logo">
+                <span>LapShop</span>
+            </a>
+
+            <div class="lapshop-mobile-actions">
+                <a href="/cart" class="lapshop-mobile-cart" aria-label="Shopping cart">
+                    <i class="fa-solid fa-cart-shopping"></i>
+
+                    <% if (userDetails && userDetails.cartItemCount> 0) { %>
+                        <span class="lapshop-cart-badge">
+                            <%= userDetails.cartItemCount %>
+                        </span>
+                        <% } %>
                 </a>
+
+                <button class="navbar-toggler lapshop-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#lapshopNavMenu" aria-controls="lapshopNavMenu" aria-expanded="false"
+                    aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
             </div>
 
-            <!-- Navbar Toggle button -->
-            <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navmenu">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="input-group mt-4 collapse" id="navmenu">
-                <input type="text" class="form-control search-input" placeholder="Search"
-                    aria-label="Search for Products, Brands and More" aria-describedby="basic-addon2">
-            </div>
+            <div class="collapse navbar-collapse lapshop-navbar-collapse" id="lapshopNavMenu">
 
-            <!-- Navbar rightsdie icons -->
-            <div class="facaac col-lg-6" id="facaac">
-                <div class="collapse navbar-collapse" id="navmenu">
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item ">
-                            <a href="/" class="nav-link">Home</a>
-                        </li> 
-                        <li class="nav-item ">
-                            <a href="/shop" class="nav-link">Shop</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="/contact" class="nav-link">Contact</a>
-                        </li>
-                        <li class="dropdown nav-item dropnav">
-                            <a class="nav-link dropdown-toggle" type="button" data-bs-toggle="dropdown"
-                                aria-expanded="false">Account
-                            </a>
-                            <ul class="dropdown-menu">
-                                <% if(userDetails) { %>
-                                    <li><a class="dropdown-item" href="/userProfile"><i class="fa-solid fa-user"></i> Profile</a></li>
-                                    <li><a class="dropdown-item" href="/orders"><i class="fa-solid fa-folder"></i> Orders</a></li>
-                                    <li><a class="dropdown-item" href="/wishlist"><i class="fa-solid fa-heart"></i> Wishlist</a></li>
-                                    <li><a class="dropdown-item" href="/wallet"><i class="fa-solid fa-wallet"></i> Wallet</a></li>
-                                    <hr>
-                                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
-                                <% } else { %>
-                                    <li><a class="dropdown-item" href="/register">New customer? <span class="signup">Sign Up</span></a></li>
-                                    <li><a class="dropdown-item" href="/login">Login</a></li>
-                                <% } %>
-                            </ul>
-                        </li>
-                        <li class="nav-item navitem">
-                            <a href="/cart" id="toGetCart" class="nav-link position-relative">
-                                <i class="fa-solid fa-cart-shopping fs-5"></i>
-                                <% if(userDetails){ %>
-                                    <% if(userDetails.cartItemCount > 0){ %>
-                                        <span class="position-absolute top-5 start-md-100 translate-middle badge text-white rounded-pill bg-danger" id="cart-item-count">
-                                            <%= userDetails.cartItemCount %>
-                                        </span>
-                                    <% } %>
-                                <% } %>
-                              </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+                <ul class="navbar-nav lapshop-nav-links">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">Home</a>
+                    </li>
 
-            <!-- Navbar Search box -->
-            <div class="search col-lg-4 d-flex justify-content-center" id="search">
-                <div class="d-none d-lg-block col-10">
-                    <div class="input-group">
-                        <input type="text" class="form-control search-input" placeholder="Search"
-                            aria-label="Search for Products, Brands and More" aria-describedby="basic-addon2">
+                    <li class="nav-item">
+                        <a href="/shop" class="nav-link">Shop</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/contact" class="nav-link">Contact</a>
+                    </li>
+                </ul>
+
+                <div class="lapshop-navbar-search">
+                    <div class="lapshop-search-field">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="search" class="form-control search-input" placeholder="Search laptops..."
+                            aria-label="Search for laptops">
                     </div>
+                </div>
+
+                <div class="lapshop-navbar-right">
+
+                    <div class="nav-item dropdown lapshop-account-dropdown">
+                        <button class="nav-link dropdown-toggle lapshop-account-toggle" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-regular fa-circle-user"></i>
+                            <span>Account</span>
+                        </button>
+
+                        <ul class="dropdown-menu dropdown-menu-end lapshop-dropdown-menu">
+                            <% if (userDetails) { %>
+                                <li>
+                                    <a class="dropdown-item" href="/userProfile">
+                                        <i class="fa-regular fa-user"></i>
+                                        Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/orders">
+                                        <i class="fa-solid fa-box"></i>
+                                        Orders
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/wishlist">
+                                        <i class="fa-regular fa-heart"></i>
+                                        Wishlist
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/wallet">
+                                        <i class="fa-solid fa-wallet"></i>
+                                        Wallet
+                                    </a>
+                                </li>
+                                <li>
+                                    <hr class="dropdown-divider">
+                                </li>
+                                <li>
+                                    <a class="dropdown-item lapshop-logout" href="/logout">
+                                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                                        Logout
+                                    </a>
+                                </li>
+                                <% } else { %>
+                                    <li>
+                                        <a class="dropdown-item" href="/login">
+                                            <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                                            Login
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/register">
+                                            <i class="fa-regular fa-user"></i>
+                                            Create account
+                                        </a>
+                                    </li>
+                                    <% } %>
+                        </ul>
+                    </div>
+
+                    <a href="/cart" id="toGetCart" class="lapshop-desktop-cart" aria-label="Shopping cart">
+                        <i class="fa-solid fa-cart-shopping"></i>
+
+                        <% if (userDetails && userDetails.cartItemCount> 0) { %>
+                            <span class="lapshop-cart-badge" id="cart-item-count">
+                                <%= userDetails.cartItemCount %>
+                            </span>
+                            <% } %>
+                    </a>
+
                 </div>
             </div>
         </div>
     </nav>
-    <!-- Navbar end -->
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const currentPath = window.location.pathname;
-            const navLinks = document.querySelectorAll('.nav-link');
-    
+            const navLinks = document.querySelectorAll(".lapshop-nav-links .nav-link");
+
             navLinks.forEach(link => {
-                if (link.getAttribute('href') === currentPath) {
-                    link.classList.add('active');
-                    link.style.color = '#50c878';
+                const href = link.getAttribute("href");
+
+                if (
+                    href === currentPath ||
+                    (href === "/shop" && currentPath.startsWith("/shop/"))
+                ) {
+                    link.classList.add("active");
                 }
             });
         });
     </script>
-
-
-
-    

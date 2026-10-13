@@ -21,120 +21,126 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
-    <style>
-        .view{
-            background-image: linear-gradient(100deg,rgb(77, 89, 89) 40%,rgb(59, 62, 64) 60%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
+    <link rel='stylesheet' href='/static/css/addoredit_address_checkout.css' type="text/css" />
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
-        <div class="container">
-            <div class="logo col-2">
-                <a href="" class="navbar-brand">
-                    <span class="fw-bold fs-3">LapShop</span>
-                </a>
-            </div>
-            <div class="col-10 d-flex align-items-center justify-content-center">
-                <h3 class="text-light fs-3 mt-2">Checkout</h3>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top address-navbar">
+        <div class="container address-container">
+            <a href="/home" class="navbar-brand fw-bold fs-3">LapShop</a>
+            <span class="address-nav-caption"><i class="fa-solid fa-lock me-2"></i>Secure checkout</span>
         </div>
     </nav>
-
-    <section class="view">
-        <div class="container d-flex align-items-center justify-content-center">
-            <div class="main col-12 col-lg-10 m-3 mt-5 shadow bg-white rounded">
-                <form>
-                    <div class="p-5">
-                        <h4 class=" fs-3 mb-4" style="color: #0f1923;">Add new address</h4>
-                        <div class="input-box d-md-flex">
-                            <div class="col-12 col-md-6">
-                                <div class="mb-3 col-md-10">
-                                    <label for="Name" class="form-label">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" required
-                                        oninput="validateName()">
-                                    <span id="nameError" class="text-danger"></span>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="AddressLine" class="form-label">Address line</label>
-                                    <textarea class="form-control" name="addressLine" id="addressLine" rows="1" required
-                                        oninput="validateAddressLine()"></textarea>
-                                    <span id="addressLineError" class="text-danger"></span>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="Phone" class="form-label">Phone</label>
-                                    <input type="text" class="form-control" name="phone" id="phone" required
-                                        oninput="validatePhone()">
-                                    <span id="phoneError" class="text-danger"></span>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="City" class="form-label">City</label>
-                                    <input type="text" class="form-control" name="city" id="city" required
-                                        oninput="validateCity()">
-                                    <span id="cityError" class="text-danger"></span>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="mb-3 col-md-10">
-                                    <label for="District" class="form-label">District</label>
-                                    <input type="text" class="form-control" name="district" id="district" required
-                                        oninput="validateDistrict()">
-                                    <span id="districtError" class="text-danger"></span>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="State" class="form-label">State</label>
-                                    <input type="text" class="form-control" name="state" id="state" required
-                                        oninput="validateState()">
-                                    <span id="stateError" class="text-danger"></span>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="Pincode" class="form-label">Pincode</label>
-                                    <input type="text" class="form-control" name="pincode" id="pincode" required
-                                        oninput="validatePincode()">
-                                    <span id="pincodeError" class="text-danger"></span>
-                                </div>
-                                <div class="mb-3 col-md-10">
-                                    <label for="Country" class="form-label">Country</label>
-                                    <input type="text" class="form-control" name="country" id="country" value="India"
-                                        required readonly>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <button type="button" class="btn btn-secondary" onclick="goBack()">Cancel</button>
-                            <button type="submit" id="addAddress" class="btn btn-success">Save</button>
-                        </div>
-                    </div>
-                </form>
+    <main class="address-page">
+        <div class="container address-container">
+            <div class="address-page-header">
+                <div>
+                    <span class="address-eyebrow">CHECKOUT / DELIVERY DETAILS</span>
+                    <h1>Add a new address</h1>
+                    <p>Enter your delivery information so we can get your order to the right place.</p>
+                </div>
+                <button type="button" class="address-back-btn" onclick="goBack()"><i class="fa-solid fa-arrow-left"></i>
+                    Back to checkout</button>
             </div>
-        </div>
-    </section>
-    
-    <footer class="text-light" id="footer">
-        <div class="container-fluid">
-            <div class="row p-5 d-flex justify-content-center">
-                <div class="col-12">
-                    <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
-                        <div class="d-flex flex-column align-items-center justify-content-center">
-                            <img src="/static/images/Bg/desktop/Lapshoplogo.png" class="img-fluid w-25 h-25">
-                            <div class="text text-center">
-                                <h1>LapShop</h1>
-                                <h6>Discover Your Digital World with Us.</h6>
+            <div class="row g-4 align-items-start">
+                <div class="col-lg-8">
+                    <section class="address-form-panel">
+                        <div class="address-panel-heading">
+                            <span class="address-heading-icon"><i class="fa-solid fa-location-dot"></i></span>
+                            <div>
+                                <h2>Delivery address</h2>
+                                <p>Fields marked with * are required.</p>
                             </div>
                         </div>
-                    </div>
+                        <form>
+                            <div class="address-form-body">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label for="name" class="form-label">Full name <span>*</span></label>
+                                        <input type="text" class="form-control" name="name" id="name"
+                                            placeholder="Name of the recipient" autocomplete="name" required
+                                            oninput="validateName()">
+                                        <span id="nameError" class="address-field-error text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="phone" class="form-label">Phone number <span>*</span></label>
+                                        <input type="tel" class="form-control" name="phone" id="phone"
+                                            placeholder="10-digit mobile number" autocomplete="tel" inputmode="numeric"
+                                            required oninput="validatePhone()">
+                                        <span id="phoneError" class="address-field-error text-danger"></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="addressLine" class="form-label">Street address
+                                            <span>*</span></label>
+                                        <textarea class="form-control" name="addressLine" id="addressLine" rows="2"
+                                            placeholder="House number, building, street or locality"
+                                            autocomplete="street-address" required
+                                            oninput="validateAddressLine()"></textarea>
+                                        <span id="addressLineError" class="address-field-error text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="city" class="form-label">City / Town <span>*</span></label>
+                                        <input type="text" class="form-control" name="city" id="city"
+                                            placeholder="Enter city or town" autocomplete="address-level2" required
+                                            oninput="validateCity()">
+                                        <span id="cityError" class="address-field-error text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="district" class="form-label">District <span>*</span></label>
+                                        <input type="text" class="form-control" name="district" id="district"
+                                            placeholder="Enter district" required oninput="validateDistrict()">
+                                        <span id="districtError" class="address-field-error text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="state" class="form-label">State <span>*</span></label>
+                                        <input type="text" class="form-control" name="state" id="state"
+                                            placeholder="Enter state" autocomplete="address-level1" required
+                                            oninput="validateState()">
+                                        <span id="stateError" class="address-field-error text-danger"></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="pincode" class="form-label">PIN code <span>*</span></label>
+                                        <input type="text" class="form-control" name="pincode" id="pincode"
+                                            placeholder="6-digit PIN code" autocomplete="postal-code"
+                                            inputmode="numeric" required oninput="validatePincode()">
+                                        <span id="pincodeError" class="address-field-error text-danger"></span>
+                                    </div>
+                                    <div class="col-12">
+                                        <label for="country" class="form-label">Country <span>*</span></label>
+                                        <div class="address-country-field">
+                                            <input type="text" class="form-control" name="country" id="country"
+                                                value="India" required readonly>
+                                            <i class="fa-solid fa-lock"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="address-form-actions">
+                                <button type="button" class="address-cancel-btn" onclick="goBack()">Cancel</button>
+                                <button type="submit" id="addAddress" class="address-save-btn"><i
+                                        class="fa-solid fa-check me-2"></i>Save address</button>
+                            </div>
+                        </form>
+                    </section>
+                </div>
+                <div class="col-lg-4">
+                    <aside class="address-help-panel">
+                        <div class="address-help-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                        <h2>Make delivery easy</h2>
+                        <p>A complete address helps your order arrive without unnecessary delays.</p>
+                        <div class="address-tip"><i class="fa-solid fa-circle-check"></i><span>Enter the recipient's
+                                full name and reachable mobile number.</span></div>
+                        <div class="address-tip"><i class="fa-solid fa-circle-check"></i><span>Include your building,
+                                street, and locality in the address line.</span></div>
+                        <div class="address-tip"><i class="fa-solid fa-circle-check"></i><span>Double-check your PIN
+                                code before saving.</span></div>
+                        <div class="address-help-footer"><i class="fa-solid fa-shield-halved"></i> Your address is used
+                            to fulfill your order.</div>
+                    </aside>
                 </div>
             </div>
         </div>
-    </footer>
-    
-
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/static/scripts/user_addAddressFrom_checkout.js"></script>
@@ -146,10 +152,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
         integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
         crossorigin="anonymous" referrerpolicy="no-referrer">
-    </script>
+        </script>
 
     <script>
-        
+
     </script>
 </body>
 

@@ -26,18 +26,18 @@ The project also covers deployment and infrastructure practices, including **AWS
 
 ## Technology Stack ⚙️
 
-| Layer | Technologies |
-| --- | --- |
-| Frontend / Views | HTML, CSS, Bootstrap, EJS |
-| Backend | Node.js, Express.js (CommonJS) |
-| Database | MongoDB, Mongoose |
+| Layer                     | Technologies                           |
+| ------------------------- | -------------------------------------- |
+| Frontend / Views          | HTML, CSS, Bootstrap, EJS              |
+| Backend                   | Node.js, Express.js (CommonJS)         |
+| Database                  | MongoDB, Mongoose                      |
 | Authentication & Sessions | bcrypt, express-session, cookie-parser |
-| File Uploads | Multer |
-| Email | Nodemailer |
-| Invoice Generation | PDFKit |
-| Payments | Razorpay |
-| Code Quality | ESLint, Prettier |
-| Deployment | AWS EC2, Amazon ECS, Nginx, SSL/TLS |
+| File Uploads              | Multer                                 |
+| Email                     | Nodemailer                             |
+| Invoice Generation        | PDFKit                                 |
+| Payments                  | Razorpay                               |
+| Code Quality              | ESLint, Prettier                       |
+| Deployment                | AWS EC2, Amazon ECS, Nginx, SSL/TLS    |
 
 ## Screenshots 📸
 
@@ -54,11 +54,13 @@ The project also covers deployment and infrastructure practices, including **AWS
 ### Customer Features 👤
 
 **Authentication and account management**
+
 - Sign up with email verification.
 - Log in, recover a forgotten password, and change a password with email verification.
 - Manage profile information, profile images, and saved addresses.
 
 **Product discovery and shopping**
+
 - View product details with image zoom, specifications, popular products, related products, and reviews.
 - Filter products by brand and category; sort by name.
 - Search with debouncing.
@@ -67,12 +69,14 @@ The project also covers deployment and infrastructure practices, including **AWS
 - Manage checkout addresses directly from the checkout page.
 
 **Payments, wallet, and promotions**
+
 - Pay using Razorpay, Cash on Delivery (COD), or wallet balance.
 - Combine wallet balance with an online Razorpay payment.
 - View wallet credit and debit transaction history.
 - Apply coupons during checkout.
 
 **Orders and engagement**
+
 - View purchase confirmations and order details.
 - Receive purchase-related email notifications.
 - Track orders and request returns or cancellations.
@@ -94,17 +98,16 @@ The project also covers deployment and infrastructure practices, including **AWS
 
 ## Key Libraries 🛠️
 
-| Library | Role |
-| --- | --- |
-| `bcrypt` | Password hashing |
-| Node.js `crypto` | Random-string generation |
-| `multer` | Image upload handling |
-| `mongoose` | MongoDB models and data operations |
-| `nodemailer` | Transactional email notifications |
-| `pdfkit` | PDF invoice generation |
-| SweetAlert | User-facing alerts and confirmations |
-| `razorpay` | Online payment integration |
-
+| Library          | Role                                 |
+| ---------------- | ------------------------------------ |
+| `bcrypt`         | Password hashing                     |
+| Node.js `crypto` | Random-string generation             |
+| `multer`         | Image upload handling                |
+| `mongoose`       | MongoDB models and data operations   |
+| `nodemailer`     | Transactional email notifications    |
+| `pdfkit`         | PDF invoice generation               |
+| SweetAlert       | User-facing alerts and confirmations |
+| `razorpay`       | Online payment integration           |
 
 ## Project Background
 

@@ -1,71 +1,106 @@
-<!-- footer start -->
-<footer class="text-light" id="footer">
-    <div class="backToTop" style="background-color: #1b1b1b;">
-        <p class="text-center py-3 fs-6" style="text-decoration: none; color: #f0ffff; cursor: pointer;">Back to top</p>
-    </div>
-    <div class="container-fluid">
-        <div class="row p-5 d-flex">
-            <div class="col-6 col-md-3 mt-4 mt-lg-0 align-items-start">
-                <div class="footer-section">
-                    <h6>Get to know us</h6>
-                    <p class="mt-3">lapshopsite@gmail.com</p>
-                    <p class="mt-3">+910000000000</p>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mt-4 mt-lg-0 align-items-start">
-                <div class="footer-section">
-                    <h6>Let us help you</h6>
-                    <p class="mt-3"><a class="footer-a" href="/profile">Your account</a></p>
-                    <p class="mt-3"><a class="footer-a" href="/contact">Contact</a></p>
-                </div>
-            </div>
-            <div class="col-6 col-md-3 mt-4 mt-lg-0 align-items-start">
-                <div class="footer-section">
-                    <h6>Connect with us</h6>
-                    <p class="mt-3"><a class="footer-a" href="https://github.com/midhunkalarikkal">Github</a></p>
-                </div>
-            </div>
-            <div class="col-12 col-md-3 mt-3 mt-md-0">
-                <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
-                    <div class="d-flex flex-column align-items-center justify-content-center">
-                        <img src="/static/images/Bg/desktop/Lapshoplogo.png" class="img-fluid w-25 h-25">
-                        <div class="text text-center footer-section">
-                            <h1>LapShop</h1>
-                            <h6 class="logo-footer">Discover Your Digital World with Us.</h6>
-                        </div>
+
+<footer id="footer">
+    <button type="button" class="footer-back-to-top" id="backToTop">
+        <span>Back to top</span>
+        <i class="fa-solid fa-arrow-up"></i>
+    </button>
+
+    <div class="container">
+        <div class="footer-main">
+            <div class="row gy-5 gx-4">
+
+                <div class="col-12 col-lg-4">
+                    <div class="footer-brand">
+                        <a href="/" class="footer-brand-link">
+                            <img
+                                src="/static/images/Bg/desktop/Lapshoplogo.png"
+                                alt="LapShop logo"
+                                class="footer-logo">
+                            <span class="footer-brand-name">LapShop</span>
+                        </a>
+
+                        <p class="footer-brand-description">
+                            Discover your digital world with us.
+                            Explore quality laptops and technology
+                            designed for your everyday needs.
+                        </p>
+
+                        <a
+                            href="https://github.com/midhunkalarikkal"
+                            class="footer-social-link"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label="Visit GitHub">
+                            <i class="fa-brands fa-github"></i>
+                        </a>
                     </div>
                 </div>
+
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="footer-section">
+                        <h6>Explore</h6>
+                        <ul class="footer-links">
+                            <li><a href="/shop">Shop laptops</a></li>
+                            <li><a href="/userProfile">My account</a></li>
+                            <li><a href="/orders">My orders</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="footer-section">
+                        <h6>Support</h6>
+                        <ul class="footer-links">
+                            <li><a href="/contact">Contact us</a></li>
+                            <li><a href="/userProfile">Account settings</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-12 col-md-4 col-lg-4">
+                    <div class="footer-section footer-contact">
+                        <h6>Get in touch</h6>
+                        <p>
+                            Have questions or need assistance?
+                            We're here to help.
+                        </p>
+
+                        <a href="mailto:lapshopsite@gmail.com" class="footer-contact-link">
+                            <i class="fa-regular fa-envelope"></i>
+                            <span>lapshopsite@gmail.com</span>
+                        </a>
+                    </div>
+                </div>
+
             </div>
-            <p class="text-center copyright small mt-4">&copy; All rights reserved 2024, www.lapshop.site</p>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <%= new Date().getFullYear() %> LapShop. All rights reserved.</p>
+            <span>Discover Your Digital World with Us.</span>
         </div>
     </div>
 </footer>
-<!-- footer end -->
 
-<!--Bootstrap-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
+    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+    crossorigin="anonymous"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
     integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer">
-    </script>
-<!-- Script for the data table -->
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"></script>
+
 <script src="https://cdn.datatables.net/v/bs5/dt-1.13.10/datatables.min.js"></script>
 
-<!--Prevent user from right click -->
-
 <script>
-    document.querySelector('.backToTop p').addEventListener('click', (event) => {
-        event.preventDefault();
+    document.getElementById("backToTop")?.addEventListener("click", () => {
         window.scrollTo({
             top: 0,
-            behavior: 'smooth'
+            behavior: "smooth"
         });
     });
-
 </script>
 
 </body>
-
 </html>

@@ -25,300 +25,147 @@
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
-        <div class="container">
-            <div class="logo col-2">
-                <a href="" class="navbar-brand">
-                    <span class="fw-bold fs-3">LapShop</span>
-                </a>
-            </div>
-            <div class="col-10 d-flex align-items-center justify-content-center">
-                <h3 class="text-light fs-3 mt-2">Payment</h3>
-            </div>
+   <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top payment-navbar">
+        <div class="container payment-container d-flex justify-content-between align-items-center">
+            <a href="/home" class="navbar-brand fw-bold fs-3">LapShop</a>
+            <span class="payment-nav-caption"><i class="fa-solid fa-lock me-2"></i>Secure checkout</span>
         </div>
     </nav>
-
-    <section class="view">
-        <div class="cart-wrap mt-5">
-            <div class="container">
-                <div class="row mb-3">
-
-                    <div class="product-subtotal col-12 d-block d-md-none">
-                        <div class="subtotal mt-4 shadow d-flex flex-column p-3">
-                            <div class="head text-center">
-                                <h4 class="">Payment</h4>
-                                <p class="text-success">Select payment and confirm order</p>
-                            </div>
-                            <hr>
-                            <div class="checkbox-payment">
-                                <div class="razorpay d-flex flex-row">
-                                    <input type="radio" name="paymentMethod" id="razorpay">
-                                    <label for="razorpay" class="mx-2">Razorpay</label>
-                                </div>
-                                <div class="cod d-flex flex-row">
-                                    <input type="radio" name="paymentMethod" id="cod">
-                                    <label for="cod" class="mx-2">Cash on delivery</label>
-                                </div>
-                                <div class="wallet d-flex flex-row">
-                                    <input type="radio" name="paymentMethod" id="wallet">
-                                    <label for="wallet" class="mx-2">Wallet</label>
-                                </div>
-                            </div>                            
-                            <hr>
-                            <div class="details">
-                                <% if(userCart){ %>
-                                    <div class="total d-flex justify-content-between">
-                                        <h6>Total : </h6> <h6>₹ <%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice + userCart.couponAmount ).toFixed(2) %></h6>
-                                    </div>
-                                    <div class="total d-flex justify-content-between">
-                                        <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                    </div>
-                                    <% if(userCart.couponApplied){ %>
-                                        <div class="total d-flex justify-content-between">
-                                            <h6>Coupon Discount : </h6> <h6>₹ <%= userCart.couponAmount %></h6>
-                                        </div>
-                                    <% } %>
-                                    <div class="d-flex justify-content-between">
-                                        <h6>Product discount : </h6> <h6>₹ <%= userCart.totalCartDiscountPrice %></h6>
-                                    </div> 
-                                <hr>
-                                <% } %>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="product-card col-12 col-md-8">
-                        <div class="product-card-each mt-4 shadow d-flex">
-                            <div class="col-12 p-3">
-                                <div class="payment-intro mb-4 d-flex justify-content-between align-items-center">
-                                    <h4 class="fw-bold mb-0">Details and coupon</h4>
-                                    <a href="#" data-bs-toggle="tooltip" data-bs-placement="left" title="On this page, you can choose your preferred payment method, apply coupons, and review the payment details before completing your purchase. Ensure that all information is correct to avoid any issues with your order.">
-                                        <i class="fas fa-question-circle text-muted"></i>
-                                    </a>
-                                </div>         
-                                <hr>    
-                                <h5>Your cart products</h5>
-                                <hr>
-                                <% userCart.items.forEach((item , index) => { %>
-                                    <div class="row mb-1">
-                                       <h6>Item <%= index+1 %></h6>
-                                        <p class="small">
-                                            <%= item.product.brand.name %> ,
-                                            <%= item.product.name %> ,
-                                            Quantity : <%= item.quantity %>
-                                            <br>
-                                            Price (according to quantity) : <%= item.totalPrice %>
-                                        </p>
-                                    </div>
-                                <% }) %>
-                                <hr>
-                                <h5>Selected address</h5>
-                                <hr>
-                                <% if(userAddress){ %>
-                                    <h6><%= userAddress[0].name %></h6>
-                                    <p>
-                                        <%= userAddress[0].addressLine %> ,
-                                        <%= userAddress[0].city %> , <br>
-                                        <%= userAddress[0].district %> , 
-                                        <%= userAddress[0].state %> , 
-                                        Pincode : <%= userAddress[0].pincode %> , 
-                                        <%= userAddress[0].country %> <br>
-                                        Phone : <%= userAddress[0].phone %> 
-                                    </p>
-                                    <input type="hidden" id="userAddress" value="<%= userAddress[0]._id  %>">
-                                <% } %>
-                                <hr>
-                                <% if(coupon && coupon.length > 0){ %>
-                                    <h5>Apply coupon</h5>
-                                    <p class="small">Caoupon details are displayed on home page</p>
-                                    <hr>
-                                    <% if(!userCart.couponApplied){ %>
-                                        <div class="coupon shadow p-3 mb-2 col-lg-8" id="coupon" style="border: 2px solid rgb(19, 192, 79);">
-                                            <div class="coupon-body d-flex align-item-center justify-content-center" id="coupon-body">
-                                                <input type="text" class="form-control" placeholder="Coupon code" id="userCouponCode">
-                                                <button class="btn btn-success btn-sm mx-1" onclick="submitCoupon()">Apply</button>
-                                            </div>
-                                        </div>
-                                    <% }else{ %>
-                                        <div class="coupon-applied text-center" id="coupon-applied">
-                                            <h6 class="text-center text-success" id="coupon-applied">🎉Congradulations, Coupon applied successfully.🎉</h6>     
-                                            <button class="btn btn-danger cancel-coupon btn-sm" onclick="cancelCoupon()">Cancel coupon</button>
-                                            <input type="text" id="cancelCouponId" value="<%= userCart.couponCode %>" hidden>                                    
-                                        </div>
-                                    <% } %>
-                                <% } %>
-                            </div>               
-                        </div>
-                    </div>
-                    
-                    
-                    <div class="product-subtotal col-md-4 d-none d-md-block">
-                        <div class="subtotal mt-4 shadow d-flex flex-column p-3">
-                            <div class="head text-center">
-                                <h4 class="">Payment</h4>
-                                <p class="text-success">Select payment and confirm order</p>
-                            </div>
-                            <hr>
-                            <div class="checkbox-payment">
-                                <div class="razorpay d-flex flex-row">
-                                    <input type="radio" name="paymentMethod" id="razorpay">
-                                    <label for="razorpay" class="mx-2">Razorpay</label>
-                                </div>
-                                <div class="cod d-flex flex-row">
-                                    <input type="radio" name="paymentMethod" id="cod">
-                                    <label for="cod" class="mx-2">Cash on delivery</label>
-                                </div>
-                                <div class="wallet d-flex flex-row">
-                                    <input type="radio" name="paymentMethod" id="wallet">
-                                    <label for="wallet" class="mx-2">Wallet</label>
-                                </div>
-                            </div>                            
-                            <hr>
-                            <div class="details">
-                                <% if(userCart){ %>
-                                    <div class="total d-flex justify-content-between">
-                                        <h6>Total : </h6> <h6>₹ <%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice + userCart.couponAmount ).toFixed(2) %></h6>
-                                    </div>
-                                    <div class="total d-flex justify-content-between">
-                                        <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                    </div>
-                                    <% if(userCart.couponApplied){ %>
-                                        <div class="total d-flex justify-content-between">
-                                            <h6>Coupon Discount : </h6> <h6>₹ <%= (userCart.couponAmount).toFixed(2) %></h6>
-                                        </div>
-                                    <% } %>
-                                    <div class="d-flex justify-content-between">
-                                        <h6>Product discount : </h6> <h6>₹ <%= (userCart.totalCartDiscountPrice).toFixed(2) %></h6>
-                                    </div> 
-                                <hr>
-                                <div class="total d-flex justify-content-between">
-                                    <h5>Subtotal : </h5> <h5>₹ <span id="subTotal"><%= (userCart.totalCartPrice).toFixed(2) %></span></h5>
-                                </div>
-                                <% } %>
-                            </div>
-                            <hr>
-                            <div class="button mt-3">
-                                <button onclick="confirmOrder()" class="btn btn-warning w-100 d-none d-md-block" id="goToPayment">Confirm order</button>
-                                <button onclick="confirmOrder()" class="btn btn-warning w-100 btn-sm d-block d-md-none" id="goToPayment">Confirm order</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="instruction-faq col-md-8 col-12 shadow mt-4 p-3">
-                        <div class="instructions">
-                            <h3>Payment Instructions:</h3>
-                            <p>"Select your preferred payment method from the options provided."</p>
-                            <p>"You can choose between cash on delivery, wallet payments, or online payment methods."</p>
-                            <hr>
-                            <h3>Coupon Application Instructions:</h3>
-                            <p>"If you have a coupon, enter the code in the designated field to apply the discount."</p>
-                            <p>"Make sure the coupon is valid and applicable to your purchase."</p>
-                            <hr>
-                            <h3>Order Review Instructions:</h3>
-                            <p>"Review your payment details carefully before completing the transaction."</p>
-                            <p>"Ensure all information is correct to avoid any issues with your order."</p>
-                            <hr>
-                            <h3>Order refund policy:</h3>
-                            <p>"Soory, there is no refund policy avaliable as of now."</p>
-                            <p>"Your cancelled or returned amount will be credited to your wallet."</p>
-                        </div>
-                        <div class="accordion" id="paymentFAQs">
-                            <h4 class="mx-2">FAQ's</h4>
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="faq1">
-                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
-                                        How can I apply a coupon?
-                                    </button>
-                                </h2>
-                                <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#paymentFAQs">
-                                    <div class="accordion-body">
-                                        You can apply a coupon by copying the code from the home page where available coupons are displayed. Paste the coupon code into the designated field on the payment page, and the discount will be applied if the coupon is valid.
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="faq2">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">
-                                        Why is the cash on delivery option not available?
-                                    </button>
-                                </h2>
-                                <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#paymentFAQs">
-                                    <div class="accordion-body">
-                                        The cash on delivery option is only available for orders below ₹1000. If your order exceeds this amount, you'll need to choose an alternative payment method.
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="faq3">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">
-                                        Can I use my wallet balance with another payment method?
-                                    </button>
-                                </h2>
-                                <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#paymentFAQs">
-                                    <div class="accordion-body">
-                                        Yes, if you don’t have enough funds in your wallet to cover the full amount, you can combine your wallet balance with an online payment method to complete your purchase.
-                                    </div>
-                                </div>
-                            </div>
-                        
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="faq4">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">
-                                        What happens if my payment fails?
-                                    </button>
-                                </h2>
-                                <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#paymentFAQs">
-                                    <div class="accordion-body">
-                                        If your payment fails, the order will not be placed for shipment. However, you can still see the order in your orders list with a status of "Payment Failed." From there, you can attempt to make the payment again.
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-    
+    <main class="payment-page">
+        <div class="container payment-container">
+            <header class="payment-page-header">
+                <div>
+                    <span class="payment-eyebrow">FINAL CHECKOUT STEP</span>
+                    <h1>Review &amp; payment</h1>
+                    <p>Confirm your delivery details, apply a coupon and choose how to pay.</p>
                 </div>
-            </div>
-        </div>
-
-        <div class="product-subtotal col-12 d-block d-md-none shadow-lg rounded-top-4 sticky-bottom bg-white">
-            <div class="subtotal p-3">
-                <div class="details">
-                    <% if(userCart){ %>
-                        <p class="subTotal fs-5 d-flex justify-content-center">
-                            <span>Subtotal:</span>
-                            <span class="subtotal fw-bold mx-2">₹ <%= userCart.totalCartPrice %></span>
-                        </p>
+                <button type="button" class="payment-header-btn" onclick="history.back()"><i class="fa-solid fa-arrow-left"></i> Back to checkout</button>
+            </header>
+            <div class="row g-4 payment-main">
+                <div class="col-lg-8">
+                    <section class="payment-panel">
+                        <div class="payment-panel-heading">
+                            <span class="payment-heading-icon"><i class="fa-solid fa-bag-shopping"></i></span>
+                            <div><h2>Order items</h2><p>Review the products in your order</p></div>
+                        </div>
+                        <div class="payment-items">
+                            <% userCart.items.forEach((item, index) => { %>
+                                <div class="payment-item">
+                                    <span class="payment-item-number"><%= index + 1 %></span>
+                                    <div class="payment-item-info">
+                                        <strong><%= item.product.brand.name %> <%= item.product.name %></strong>
+                                        <span>Quantity: <%= item.quantity %></span>
+                                    </div>
+                                    <strong class="payment-item-price">₹<%= Number(item.totalPrice).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) %></strong>
+                                </div>
+                            <% }) %>
+                        </div>
+                    </section>
+                    <section class="payment-panel payment-section-gap">
+                        <div class="payment-panel-heading">
+                            <span class="payment-heading-icon"><i class="fa-solid fa-location-dot"></i></span>
+                            <div><h2>Delivery address</h2><p>Where your order will be delivered</p></div>
+                        </div>
+                        <div class="payment-address">
+                            <% if (userAddress && userAddress.length > 0) { %>
+                                <strong><%= userAddress[0].name %></strong>
+                                <p><%= userAddress[0].addressLine %>, <%= userAddress[0].city %>, <%= userAddress[0].district %>, <%= userAddress[0].state %> - <%= userAddress[0].pincode %>, <%= userAddress[0].country %></p>
+                                <span><i class="fa-solid fa-phone"></i> <%= userAddress[0].phone %></span>
+                                <input type="hidden" id="userAddress" value="<%= userAddress[0]._id %>">
+                            <% } else { %>
+                                <p class="mb-0">No delivery address is selected.</p>
+                            <% } %>
+                        </div>
+                    </section>
+                    <% if (coupon && coupon.length > 0) { %>
+                        <section class="payment-panel payment-section-gap">
+                            <div class="payment-panel-heading">
+                                <span class="payment-heading-icon"><i class="fa-solid fa-ticket"></i></span>
+                                <div><h2>Have a coupon?</h2><p>Apply an eligible promotional code to your order</p></div>
+                            </div>
+                            <div class="payment-coupon-content">
+                                <% if (!userCart.couponApplied) { %>
+                                    <div class="coupon" id="coupon">
+                                        <div class="coupon-body" id="coupon-body">
+                                            <input type="text" class="form-control" placeholder="Enter coupon code" id="userCouponCode" aria-label="Coupon code">
+                                            <button type="button" class="payment-apply-btn" onclick="submitCoupon()">Apply code</button>
+                                        </div>
+                                    </div>
+                                <% } else { %>
+                                    <div class="coupon-applied" id="coupon-applied">
+                                        <div><i class="fa-solid fa-circle-check"></i> Coupon applied successfully</div>
+                                        <button type="button" class="cancel-coupon" onclick="cancelCoupon()">Remove coupon</button>
+                                        <input type="hidden" id="cancelCouponId" value="<%= userCart.couponCode %>">
+                                    </div>
+                                <% } %>
+                            </div>
+                        </section>
                     <% } %>
-                </div>
-                <hr>
-                <div class="button mt-3">
-                    <button onclick="confirmOrder()" class="btn btn-warning w-100 btn-md fw-bold shadow-sm" id="goToPayment">Confirm order</button>
-                </div>
-            </div>
-        </div>
-
-    </section>
-
-    <footer class="text-light" id="footer">
-        <div class="container-fluid">
-            <div class="row p-5 d-flex justify-content-center">
-                <div class="col-12">
-                    <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
-                        <div class="d-flex flex-column align-items-center justify-content-center">
-                            <img src="/static/images/Bg/desktop/Lapshoplogo.png" class="img-fluid w-25 h-25">
-                            <div class="text text-center">
-                                <h1>LapShop</h1>
-                                <h6>Discover Your Digital World with Us.</h6>
+                    <section class="payment-panel payment-section-gap payment-help-panel">
+                        <div class="payment-panel-heading">
+                            <span class="payment-heading-icon"><i class="fa-solid fa-circle-question"></i></span>
+                            <div><h2>Payment help</h2><p>Useful information before you place your order</p></div>
+                        </div>
+                        <div class="payment-help-content">
+                            <div class="instructions">
+                                <h3>Before you confirm</h3>
+                                <p>Choose your payment method, review the final amount and verify your delivery address.</p>
+                                <p>For eligible cancellations and returns, refunds are credited to your LapShop wallet under the current policy.</p>
+                            </div>
+                            <div class="accordion" id="paymentFAQs">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="faq1"><button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">How can I apply a coupon?</button></h2>
+                                    <div id="collapse1" class="accordion-collapse collapse show" aria-labelledby="faq1" data-bs-parent="#paymentFAQs"><div class="accordion-body">Copy an available coupon code from the home page, enter it above and select Apply code. The discount is applied if the coupon is eligible.</div></div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="faq2"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2" aria-expanded="false" aria-controls="collapse2">Why is cash on delivery unavailable?</button></h2>
+                                    <div id="collapse2" class="accordion-collapse collapse" aria-labelledby="faq2" data-bs-parent="#paymentFAQs"><div class="accordion-body">Cash on delivery is available only for orders below ₹1,000, subject to checkout eligibility.</div></div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="faq3"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3" aria-expanded="false" aria-controls="collapse3">Can I combine my wallet with online payment?</button></h2>
+                                    <div id="collapse3" class="accordion-collapse collapse" aria-labelledby="faq3" data-bs-parent="#paymentFAQs"><div class="accordion-body">If your wallet balance does not cover the full order amount, you may be able to pay the remainder online.</div></div>
+                                </div>
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="faq4"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4" aria-expanded="false" aria-controls="collapse4">What if my payment fails?</button></h2>
+                                    <div id="collapse4" class="accordion-collapse collapse" aria-labelledby="faq4" data-bs-parent="#paymentFAQs"><div class="accordion-body">A failed payment does not release the order for shipment. Check your orders page for the payment status and any available retry option.</div></div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </section>
                 </div>
+                <aside class="col-lg-4">
+                    <section class="payment-panel payment-summary">
+                        <div class="payment-panel-heading">
+                            <span class="payment-heading-icon"><i class="fa-solid fa-credit-card"></i></span>
+                            <div><h2>Payment method</h2><p>Choose how you want to pay</p></div>
+                        </div>
+                        <div class="checkbox-payment">
+                            <label class="payment-method" for="razorpay"><input type="radio" name="paymentMethod" id="razorpay"><span class="payment-method-icon"><i class="fa-solid fa-credit-card"></i></span><span><strong>Pay online</strong><small>Razorpay secure payment</small></span><i class="fa-solid fa-chevron-right payment-method-arrow"></i></label>
+                            <label class="payment-method" for="cod"><input type="radio" name="paymentMethod" id="cod"><span class="payment-method-icon"><i class="fa-solid fa-truck"></i></span><span><strong>Cash on delivery</strong><small>Pay when your order arrives</small></span><i class="fa-solid fa-chevron-right payment-method-arrow"></i></label>
+                            <label class="payment-method" for="wallet"><input type="radio" name="paymentMethod" id="wallet"><span class="payment-method-icon"><i class="fa-solid fa-wallet"></i></span><span><strong>LapShop wallet</strong><small>Use your available balance</small></span><i class="fa-solid fa-chevron-right payment-method-arrow"></i></label>
+                        </div>
+                        <% if (userCart) { %>
+                            <div class="payment-summary-calculation">
+                                <div class="payment-summary-line"><span>Original price</span><strong>₹<%= (userCart.totalCartPrice + userCart.totalCartDiscountPrice + userCart.couponAmount).toFixed(2) %></strong></div>
+                                <div class="payment-summary-line"><span>Product discount</span><strong class="payment-discount">− ₹<%= userCart.totalCartDiscountPrice.toFixed(2) %></strong></div>
+                                <% if (userCart.couponApplied) { %><div class="payment-summary-line"><span>Coupon discount</span><strong class="payment-discount">− ₹<%= userCart.couponAmount.toFixed(2) %></strong></div><% } %>
+                                <div class="payment-summary-line"><span>Delivery</span><strong class="payment-discount">FREE</strong></div>
+                                <div class="payment-summary-line payment-summary-total"><span>Total payable</span><strong>₹<span id="subTotal"><%= userCart.totalCartPrice.toFixed(2) %></span></strong></div>
+                            </div>
+                        <% } %>
+                        <button type="button" onclick="confirmOrder()" class="payment-confirm-btn" id="goToPayment"><i class="fa-solid fa-lock"></i> Confirm order</button>
+                        <p class="payment-secure-note"><i class="fa-solid fa-shield-halved"></i> Secure checkout</p>
+                    </section>
+                </aside>
             </div>
         </div>
-    </footer>
+    </main>
+    <% if (userCart) { %>
+        <div class="payment-mobile-bar">
+            <div class="payment-mobile-total"><span>Total payable</span><strong>₹<%= userCart.totalCartPrice.toFixed(2) %></strong></div>
+            <button type="button" onclick="confirmOrder()" class="payment-confirm-btn"><i class="fa-solid fa-lock"></i> Confirm order</button>
+        </div>
+    <% } %>
 
     <!-- script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

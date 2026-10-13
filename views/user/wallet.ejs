@@ -1,358 +1,160 @@
-<!-- User navbar -->
 <%-include("../userpartials/navbar.ejs")%>
 <head>
-    <!-- custom css for wallet page -->
     <link rel="stylesheet" href="/static/css/wallet.css" type="text/css">
 </head>
-    <section class="view">
-        <div class="mt-5">
-            <div class="container">
-                <div class="row mb-3">
-
-                    <div class="col-md-4 d-block d-md-none">
-                        <div class="wallet-intro mb-4 d-flex justify-content-between align-items-center shadow p-3">
-                            <h4 class="fw-bold mb-0">Your Wallet</h4>
-                            <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                              title="If you cancel or return an already paid order, the amount will be credited to your wallet. You can use this amount for future purchases.">
-                              <i class="fas fa-question-circle text-muted"></i>
-                            </a>
+<section class="view wallet-page">
+    <div class="wallet-wrap">
+        <div class="container wallet-container">
+            <div class="wallet-header">
+                <div>
+                    <span class="wallet-eyebrow">YOUR ACCOUNT BALANCE</span>
+                    <h1>Your Wallet</h1>
+                    <p>Track wallet credits, debits, and your available balance for future purchases.</p>
+                </div>
+                <a href="/shop" class="btn wallet-shop-link"><i class="fas fa-store" aria-hidden="true"></i> Continue shopping</a>
+            </div>
+            <div class="row g-4 align-items-start">
+                <div class="col-12 col-lg-8">
+                    <div class="wallet-panel">
+                        <div class="wallet-panel-header">
+                            <div>
+                                <h2>Transaction history</h2>
+                                <p>All your wallet credits and debits in one place.</p>
+                            </div>
+                            <span class="wallet-help" data-bs-toggle="tooltip" data-bs-placement="left" title="If you cancel or return an already paid order, the amount will be credited to your wallet. You can use this amount for future purchases."><i class="fas fa-question-circle" aria-hidden="true"></i></span>
                         </div>
-                        <div class="mt-4 shadow d-flex flex-column p-3 user-wallet-info">
-                            <div class="user-info text-center mt-3">
-                                <h5><%= userDetails.userName %></h5>
-                                <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check verified-icon"></i></h6>
-                            </div>
-                            <hr>
-                            <div class="cred-deb d-flex flex-row justify-content-around">
-                                <h6 class="mx-3">
-                                    Credits count : 
-                                    <% if(!creditCount){ %>
-                                        0
-                                    <% }else{ %>
-                                        <%= creditCount %>
-                                    <% } %>
-                                </h6>
-                                <h6 class="mx-3">
-                                    Debits count : 
-                                    <% if(!debitCount){ %>
-                                        0
-                                    <% }else{ %>
-                                        <%= debitCount %>
-                                    <% } %>
-                                </h6>
-                            </div>
-                            <hr>
-                            <div class="user-wallet-total-credit text-center text-md-start">
-                                <h6 class="mx-3">Total amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                <h6 class="mx-3">
-                                    <% if(!totalAmount){ %>
-                                        0
-                                    <% }else{ %>
-                                        ₹ <%= totalAmount %>
-                                    <% } %>
-                                </h6>
-                            </div>
-                            <hr>
-                            <div class="user-wallet-total-debit text-center text-md-start">
-                                <h6 class="mx-3">Total credited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                <h6 class="mx-3">
-                                    <% if(!totalCreditedAmount){ %>
-                                        0
-                                    <% }else{ %>
-                                        ₹ <%= totalCreditedAmount %>
-                                    <% } %>
-                                </h6>
-                            </div>
-                            <hr>
-                            <div class="user-wallet-total-amount text-center text-md-start">
-                                <h6 class="mx-3">Total debited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                <h6 class="mx-3">
-                                    <% if(!totalDebitedAmount){ %>
-                                        0
-                                    <% }else{ %>
-                                        ₹ <%= totalDebitedAmount %>
-                                    <% } %>
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-8 mt-4 d-none d-md-block custom-table shadow">
-                        <table class="table">
-                            <div class="wallet-intro mb-4 d-flex justify-content-between align-items-center p-2">
-                                <h4 class="fw-bold mb-0">Your Wallet</h4>
-                                <a href="#" data-bs-toggle="tooltip" data-bs-placement="left"
-                                    title="If you cancel or return an already paid order, the amount will be credited to your wallet. You can use this amount for future purchases.">
-                                    <i class="fas fa-question-circle text-muted"></i>
-                                </a>
-                            </div>
-                            <hr>
-                            <thead>
-                                <tr>
-                                    <th class="col-2">Id</th>
-                                    <th class="col-2">Type</th>
-                                    <th class="col-2">Amount</th>
-                                    <th class="col-2">Date</th>
-                                    <th class="col-2">Time</th>
-                                    <th class="col-2">Verified</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% if(wallet && wallet !== null){ %>
-                                    <% wallet.forEach((data,index)=>{ %>
-                                        <tr>
-                                            <td>
-                                                <%= data._id.toString().slice(-6) %>
-                                            </td>
-                                            <td>
-                                                <% if(data.type === "credit"){ %>
-                                                    <%= data.type %>
-                                                <% }else{ %>
-                                                    <span class="col-2 text-warning"><%= data.type %></span>
-                                                <% } %>
-                                            </td>
-                                            <td>
-                                                <% if(data.type === "credit"){ %>
-                                                    <span class="col-2 text-success"><%= data.amount %></span>
-                                                <% }else{ %>
-                                                    <span class="col-2 text-danger"><%= data.amount %></span>
-                                                <% } %>
-                                            </td>
-                                            <td>
-                                                <%= data.updatedAt.toLocaleDateString() %>
-                                            </td>
-                                            <td>
-                                                <%= data.updatedAt.toLocaleTimeString() %>
-                                            </td>
-                                            <td>
-                                                <span class="col-2"><i class="fa-solid fa-circle-check verified-icon"></i></span>
-                                            </td>
-                                        </tr>
-                                    <% }) %>
-                                    <% if(wallet.length < 5){ %>
-                                        <% for(let i = 0; i <= 4; i++){ %>
+                        <div class="wallet-table-wrap">
+                            <table class="table wallet-table" id="walletTransactionsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Transaction</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Date &amp; time</th>
+                                        <th>Verified</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% if(wallet && wallet !== null && wallet.length > 0){ %>
+                                        <% wallet.forEach((data,index)=>{ %>
                                             <tr>
-                                                <td>...</td>
-                                                <td>...</td>
-                                                <td>...</td>
-                                                <td>...</td>
-                                                <td>...</td>
-                                                <td>...</td>
+                                                <td data-label="Transaction"><span class="wallet-transaction-id">#<%= data._id.toString().slice(-6) %></span></td>
+                                                <td data-label="Type"><span class="wallet-type <%= data.type === 'credit' ? 'wallet-type-credit' : 'wallet-type-debit' %>"><%= data.type %></span></td>
+                                                <td data-label="Amount"><strong class="wallet-amount <%= data.type === 'credit' ? 'wallet-amount-credit' : 'wallet-amount-debit' %>"><%= data.type === 'credit' ? '+' : '-' %>₹ <%= data.amount %></strong></td>
+                                                <td data-label="Date & time"><span class="wallet-date"><%= data.updatedAt.toLocaleDateString() %><small><%= data.updatedAt.toLocaleTimeString() %></small></span></td>
+                                                <td data-label="Verified"><span class="wallet-verified"><i class="fa-solid fa-circle-check verified-icon" aria-hidden="true"></i><span>Verified</span></span></td>
                                             </tr>
-                                        <% } %>
+                                        <% }) %>
                                     <% } %>
-                                <% }else{ %>
-                                    <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
-                                        role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
-                                        <i class="fas fa-wallet me-3" style="font-size: 1.5rem;"></i>
-                                        <div>
-                                        <strong>Your wallest is empty!</strong><br>
-                                            Happy Shopping With Us......
-                                        </div>
-                                    </div>
-                                <% } %>
-                            </tbody>
-                        </table> 
-                    </div>
-
-                    <div class="col-md-8 mt-4 d-block d-md-none custom-table shadow">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th class="col-4">Type</th>
-                                    <th class="col-4">Amount</th>
-                                    <th class="col-4">Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% if(wallet && wallet !== null){ %>
-                                    <% wallet.forEach((data,index)=>{ %>
-                                        <tr>
-                                            <td>
-                                                <% if(data.type === "credit"){ %>
-                                                    <span class="col-4"><%= data.type %></span>
-                                                <% }else{ %>
-                                                    <span class="col-4 text-warning"><%= data.type %></span>
-                                                <% } %>
-                                            </td>
-                                            <td>
-                                                <% if(data.type === "credit"){ %>
-                                                    <span class="col-4 text-success"><%= data.amount %></span>
-                                                <% }else{ %>
-                                                    <span class="col-4 text-danger"><%= data.amount %></span>
-                                                <% } %>
-                                            </td>
-                                            <td>
-                                                <span class="col-4"><%= data.updatedAt.toLocaleDateString() %></span>
-                                            </td>
-                                        </tr>
-                                    <% }) %>
-                                <% }else{ %>
-                                    <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
-                                        role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
-                                        <i class="fas fa-wallet me-3" style="font-size: 1.5rem;"></i>
-                                        <div>
-                                        <strong>Your wallest is empty!</strong><br>
-                                            Happy Shopping With Us......
-                                        </div>
-                                    </div>
-                                <% } %>
-                            </tbody>
-                        </table> 
-                    </div>
-
-                    <div class="col-md-4 d-none d-md-block">
-                        <div class="mt-4 shadow d-flex flex-column p-3 user-wallet-info">
-                            <div class="user-info text-center mt-3">
-                                <h5><%= userDetails.userName %></h5>
-                                <h6 class="text-success">Verified user <i class="fa-solid fa-circle-check verified-icon"></i></h6>
-                            </div>
-                            <hr>
-                            <div class="cred-deb d-flex flex-row justify-content-around">
-                                <h6 class="mx-3">
-                                    Credits count : 
-                                    <% if(!creditCount){ %>
-                                        0
-                                    <% }else{ %>
-                                        <%= creditCount %>
-                                    <% } %>
-                                </h6>
-                                <h6 class="mx-3">
-                                    Debits count : 
-                                    <% if(!debitCount){ %>
-                                        0
-                                    <% }else{ %>
-                                        <%= debitCount %>
-                                    <% } %>
-                                </h6>
-                            </div>
-                            <hr>
-                            <div class="user-wallet-total-credit text-center text-md-start">
-                                <h6 class="mx-3">Total amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                <h6 class="mx-3">
-                                    <% if(!totalAmount){ %>
-                                            0
-                                    <% }else{ %>
-                                        ₹ <%= totalAmount %>
-                                    <% } %>
-                                </h6>
-                            </div>
-                            <hr>
-                            <div class="user-wallet-total-debit text-center text-md-start">
-                                <h6 class="mx-3">Total credited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                <h6 class="mx-3">
-                                    <% if(!totalCreditedAmount){ %>
-                                        0
-                                    <% }else{ %>
-                                        ₹ <%= totalCreditedAmount %>
-                                    <% } %>
-                                </h6>
-                            </div>
-                            <hr>
-                            <div class="user-wallet-total-amount text-center text-md-start">
-                                <h6 class="mx-3">Total debited amount <i class="fa-solid fa-indian-rupee-sign"></i></h6>
-                                <h6 class="mx-3">
-                                    <% if(!totalDebitedAmount){ %>
-                                        0
-                                    <% }else{ %>
-                                        ₹ <%= totalDebitedAmount %>
-                                    <% } %>
-                                </h6>
-                            </div>
+                                </tbody>
+                            </table>
+                            <% if(!wallet || wallet.length === 0){ %>
+                                <div class="wallet-empty"><span class="wallet-empty-icon"><i class="fas fa-wallet" aria-hidden="true"></i></span><h3>No transactions yet</h3><p>Your wallet transaction history will appear here.</p></div>
+                            <% } %>
                         </div>
                     </div>
-                
-                    <div class="instruction-faq col-md-8 col-12 shadow mt-4 p-3">
-                        <div class="instructions">
-                            <h3>Wallet Overview:</h3>
-                            <p>Your wallet balance reflects the total amount available for future purchases.</p>
-                            <p>You can view the detailed transaction history, including credited and debited amounts, along with the date and time of each transaction.</p>
-                            <hr>
-                            <h3>Credited Amounts:</h3>
-                            <p>Amounts credited to your wallet include refunds from canceled or returned orders.</p>
-                            <p>These amounts can be used for future purchases on our platform.</p>
-                            <hr>
-                            <h3>Debited Amounts:</h3>
-                            <p>Amounts debited from your wallet correspond to purchases or other transactions made using your wallet balance.</p>
-                            <p>Ensure that your wallet has sufficient funds before completing a transaction.</p>
-                            <hr>
-                            <h3>Using Wallet Balance:</h3>
-                            <p>You can apply your wallet balance towards any purchase during the payment process.</p>
-                            <p>If your wallet balance is insufficient, you can pay the remaining amount using another payment method.</p>
+                </div>
+                <aside class="col-12 col-lg-4">
+                    <div class="user-wallet-info wallet-summary">
+                        <div class="wallet-summary-heading">
+                            <span class="wallet-summary-icon"><i class="fas fa-wallet" aria-hidden="true"></i></span>
+                            <div><h2>Wallet summary</h2><p>Available balance and activity</p></div>
                         </div>
-                        <div class="faq">
-                            <h4>FAQ's</h4>
-                            <div class="accordion" id="walletFAQ">
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingOne">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            What is a wallet balance?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#walletFAQ">
-                                        <div class="accordion-body">
-                                            Your wallet balance is the total amount available in your account that you can use for future purchases. It includes refunds from canceled or returned orders.
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingTwo">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            How can I use my wallet balance for purchases?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#walletFAQ">
-                                        <div class="accordion-body">
-                                            During the checkout process, you can choose to apply your wallet balance towards your purchase. If the balance is insufficient, you can pay the remaining amount using another payment method.
-                                        </div>
-                                    </div>
-                                </div>
-                        
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingThree">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            Can I transfer my wallet balance to my bank account?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#walletFAQ">
-                                        <div class="accordion-body">
-                                            No, the wallet balance can only be used for purchases on our platform. It cannot be transferred to a bank account or withdrawn as cash.
-                                        </div>
-                                    </div>
-                                </div>
-                        
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header" id="headingFour">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                            Will my wallet balance expire?
-                                        </button>
-                                    </h2>
-                                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#walletFAQ">
-                                        <div class="accordion-body">
-                                            No, your wallet balance does not have an expiration date and can be used at any time for future purchases.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="user-info wallet-user">
+                            <span class="wallet-user-avatar"><i class="fas fa-user" aria-hidden="true"></i></span>
+                            <div><h3><%= userDetails.userName %></h3><span class="wallet-user-verified"><i class="fa-solid fa-circle-check verified-icon" aria-hidden="true"></i> Verified user</span></div>
                         </div>
-                                            
+                        <div class="wallet-balance"><span>Available wallet balance</span><strong>₹ <%= totalAmount || 0 %></strong></div>
+                        <div class="cred-deb wallet-counts">
+                            <div><span>Credits count</span><strong><%= creditCount || 0 %></strong></div>
+                            <div><span>Debits count</span><strong><%= debitCount || 0 %></strong></div>
+                        </div>
+                        <div class="wallet-summary-row user-wallet-total-credit"><span>Total credited</span><strong class="wallet-credit-value">₹ <%= totalCreditedAmount || 0 %></strong></div>
+                        <div class="wallet-summary-row user-wallet-total-debit"><span>Total debited</span><strong>₹ <%= totalDebitedAmount || 0 %></strong></div>
+                        <p class="wallet-summary-note">Refunds from eligible cancelled or returned orders are credited to your wallet.</p>
+                    </div>
+                </aside>
+                <div class="col-12 col-lg-8">
+                    <div class="instruction-faq">
+                    <div class="instructions">
+                    <h3>Wallet Overview:</h3>
+                    <p>Your wallet balance reflects the total amount available for future purchases.</p>
+                    <p>You can view the detailed transaction history, including credited and debited amounts, along with the date and time of each transaction.</p>
+                    <hr>
+                    <h3>Credited Amounts:</h3>
+                    <p>Amounts credited to your wallet include refunds from canceled or returned orders.</p>
+                    <p>These amounts can be used for future purchases on our platform.</p>
+                    <hr>
+                    <h3>Debited Amounts:</h3>
+                    <p>Amounts debited from your wallet correspond to purchases or other transactions made using your wallet balance.</p>
+                    <p>Ensure that your wallet has sufficient funds before completing a transaction.</p>
+                    <hr>
+                    <h3>Using Wallet Balance:</h3>
+                    <p>You can apply your wallet balance towards any purchase during the payment process.</p>
+                    <p>If your wallet balance is insufficient, you can pay the remaining amount using another payment method.</p>
+                    </div>
+                    <div class="faq">
+                    <h4>FAQ's</h4>
+                    <div class="accordion" id="walletFAQ">
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    What is a wallet balance?
+                    </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#walletFAQ">
+                    <div class="accordion-body">
+                    Your wallet balance is the total amount available in your account that you can use for future purchases. It includes refunds from canceled or returned orders.
+                    </div>
+                    </div>
+                    </div>
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    How can I use my wallet balance for purchases?
+                    </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#walletFAQ">
+                    <div class="accordion-body">
+                    During the checkout process, you can choose to apply your wallet balance towards your purchase. If the balance is insufficient, you can pay the remaining amount using another payment method.
+                    </div>
+                    </div>
+                    </div>
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Can I transfer my wallet balance to my bank account?
+                    </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#walletFAQ">
+                    <div class="accordion-body">
+                    No, the wallet balance can only be used for purchases on our platform. It cannot be transferred to a bank account or withdrawn as cash.
+                    </div>
+                    </div>
+                    </div>
+                    <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                    Will my wallet balance expire?
+                    </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#walletFAQ">
+                    <div class="accordion-body">
+                    No, your wallet balance does not have an expiration date and can be used at any time for future purchases.
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
-    <script>
-
-        ////// Script for the data table \\\\\\
-        $(document).ready(function(){
-            $("table").DataTable({
-                ordering : false
-            })
-        })
-        
-    </script>
-
-    <!-- User footer -->
-    <%-include("../userpartials/footer.ejs")%>
+    </div>
+</section>
+<script>
+    $(document).ready(function() {
+        $("#walletTransactionsTable").DataTable({ ordering: false, searching: false, lengthChange: false });
+    });
+</script>
+<%-include("../userpartials/footer.ejs")%>

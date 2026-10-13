@@ -14,10 +14,10 @@ function validateEmail() {
         document.getElementById('emailError').innerText = "Invalid email"
         document.getElementById('email-input').classList.add('mb-3');
         return false;
-    }else {
+    } else {
         emailInput.classList.remove("invalid-email");
         document.getElementById('emailError').innerText = ""
-            document.getElementById('email-input').classList.remove('mb-3');
+        document.getElementById('email-input').classList.remove('mb-3');
         return true;
     }
 }
@@ -25,7 +25,7 @@ function validateEmail() {
 ////// Alert script \\\\\\
 var alertElement = document.getElementById('myAlert');
 if (alertElement) {
-    function hideAlert(){
+    function hideAlert() {
         alertElement.style.transition = "opacity 1s";
         alertElement.style.opacity = "0";
         setTimeout(function () {
@@ -34,12 +34,12 @@ if (alertElement) {
     }
     setTimeout(hideAlert, 3000);
 }
-        
+
 ////// For showing the password \\\\\\
 function showpassword() {
     var checkbox = document.getElementById("showPasswordCheckbox");
     var passwordInput = document.getElementById("password");
-        
+
     if (checkbox.checked) {
         passwordInput.type = "text";
     } else {
@@ -50,7 +50,7 @@ function showpassword() {
 const loginForm = document.getElementById('loginForm');
 
 loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
 
     const formData = {
         email: document.getElementById('email').value,
@@ -60,8 +60,8 @@ loginForm.addEventListener('submit', async (e) => {
     try {
         Swal.fire({
             title: 'Authenticating...',
-            background: '#333', 
-            color: '#ffffff', 
+            background: '#333',
+            color: '#ffffff',
             allowOutsideClick: false,
             didOpen: () => {
                 Swal.showLoading();
@@ -71,7 +71,7 @@ loginForm.addEventListener('submit', async (e) => {
         const response = await fetch('/login', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json' 
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         });
@@ -84,11 +84,11 @@ loginForm.addEventListener('submit', async (e) => {
                 icon: 'success',
                 title: 'Login Successful',
                 text: 'Welcome back!',
-                timer: 2000, 
-                timerProgressBar: true, 
-                showConfirmButton: false, 
-                background: '#333', 
-                color: '#ffffff', 
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#333',
+                color: '#ffffff',
                 willClose: () => {
                     window.location.href = data.redirectUrl || '/';
                 }
@@ -98,11 +98,11 @@ loginForm.addEventListener('submit', async (e) => {
                 icon: 'error',
                 title: 'Login Failed',
                 text: data.message || 'Invalid credentials. Please try again.',
-                timer: 2000, 
-                timerProgressBar: true, 
-                showConfirmButton: false, 
-                background: '#333', 
-                color: '#ffffff', 
+                timer: 2000,
+                timerProgressBar: true,
+                showConfirmButton: false,
+                background: '#333',
+                color: '#ffffff',
             });
         }
     } catch (error) {
@@ -111,11 +111,11 @@ loginForm.addEventListener('submit', async (e) => {
             icon: 'error',
             title: 'Error',
             text: 'An unexpected error occurred. Please try again later.',
-            timer: 2000, 
-            timerProgressBar: true, 
-            showConfirmButton: false, 
-            background: '#333', 
-            color: '#ffffff', 
+            timer: 2000,
+            timerProgressBar: true,
+            showConfirmButton: false,
+            background: '#333',
+            color: '#ffffff',
         });
     }
 });
@@ -128,11 +128,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const label = input.nextElementSibling;
 
         const handleLabelPosition = () => {
-        if (input.value.trim() !== '') {
-            label.classList.add('active');
-        } else {
-            label.classList.remove('active');
-        }
+            if (input.value.trim() !== '') {
+                label.classList.add('active');
+            } else {
+                label.classList.remove('active');
+            }
         };
 
         handleLabelPosition();
@@ -142,3 +142,25 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('input', handleLabelPosition);
     });
 });
+
+// Auto-fill demo user credentials
+document
+    .getElementById("demoLoginBtn")
+    ?.addEventListener("click", () => {
+        const emailInput = document.getElementById("email");
+        const passwordInput = document.getElementById("password");
+
+        emailInput.value = "demouser@gmail.com";
+        passwordInput.value = "Demo@123";
+
+        // Trigger input events for existing validation logic
+        emailInput.dispatchEvent(
+            new Event("input", { bubbles: true })
+        );
+
+        passwordInput.dispatchEvent(
+            new Event("input", { bubbles: true })
+        );
+
+        emailInput.focus();
+    });

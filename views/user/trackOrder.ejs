@@ -1,157 +1,107 @@
-<!-- User Navbar -->
 <%- include("../userpartials/navbar.ejs") %>
-
 <head>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-    }
-
-    .order-tracker-container {
-      background-color: #f9f9f9;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .order-details {
-      background-color: #ffffff;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    .step {
-      display: flex;
-      align-items: center;
-      position: relative;
-      padding-left: 50px;
-      margin-bottom: 20px;
-    }
-
-    .step-icon {
-      width: 30px;
-      height: 30px;
-      background-color: #ddd;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 15px;
-      font-size: 18px;
-      color: #fff;
-    }
-
-    .step.completed .step-icon {
-      background-color: #4caf50;
-    }
-
-    .step.active .step-icon {
-      background-color: #ff9800; 
-    }
-
-    .step.cancelled .step-icon {
-      background-color: #f44336;
-    }
-
-    .step.request-return .step-icon {
-      background-color: #2196f3;
-    }
-
-    .step.return-accepted .step-icon {
-      background-color: #4caf50; 
-    }
-
-    .step.return-rejected .step-icon {
-      background-color: #f44336; 
-    }
-
-    .step-label {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .step-note {
-      font-size: 1rem;
-      color: #178b2e;
-    }
-
-    @media (max-width: 768px) {
-
-      .order-tracker-container,
-      .order-details {
-        margin-bottom: 20px;
-      }
-    }
-  </style>
+    <link rel="stylesheet" href="/static/css/track_order.css" type="text/css">
 </head>
-
-<section class="view">
-  <div class="container mt-5">
-    <div class="mb-4">
-      <h3 class="font-weight-bold">Track Your Order</h3>
-    </div>
-    <hr />
-    <div class="row">
-      <div class="col-lg-6 mb-4">
-        <div class="order-tracker-container">
-          <h4 class="mb-2">Order Progress</h4>
-          <hr>
-          <% order.trackArray.forEach((step, index) => { %>
-          <div
-            class="step <%= step.status === 'Cancelled' ? 'cancelled' : 
-                            step.status === 'Request Return' ? 'request-return' :
-                            step.status === 'Return Accepted' ? 'return-accepted' :
-                            step.status === 'Return Rejected' ? 'return-rejected' :
-                            (index === order.trackArray.length - 1 ? 'active' : 'completed') %>"
-          >
-            <div class="step-icon">
-              <% if (step.status === 'Processing') { %> 🔄 <% } else if
-              (step.status === 'Shipped') { %> 🚚 <% } else if
-              (step.status === 'Delivered') { %> 📦 <% } else if
-              (step.status === 'Cancelled') { %> ⛔ <% } else if
-              (step.status === 'Admin Cancelled') { %> ❌ <% } else if
-              (step.status === 'Request Return') { %> 📤 <% } else if
-              (step.status === 'Return Accepted') { %> ✅ <% } else if
-              (step.status === 'Return Rejected') { %> ❌ <% } %>
-            </div>
+<section class="view tracking-page">
+    <div class="container tracking-container">
+        <div class="tracking-header">
             <div>
-              <div class="d-flex">
-                <span class="step-label text-sm"><%= step.status %></span>
-                <span class="step-date mx-3 text-sm"><%= new Date(step.updatedAt).toLocaleDateString() %></span>
-              </div>
-              <span class="step-note text-sm"><%= step.note %></span>
-              <% if (step.note) { %>
-              <% } %>
+                <span class="tracking-eyebrow">ORDER UPDATES</span>
+                <h1>Track Your Order</h1>
+                <p>Follow your order's journey and review every status update in one place.</p>
             </div>
-          </div>
-          <% }) %>
+            <a href="/orders" class="btn tracking-back-link">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                Back to orders
+            </a>
         </div>
-      </div>
-      <div class="col-lg-6">
-        <div class="order-details">
-          <h4 class="mb-2">Order Details</h4>
-          <hr />
-          <p>
-            <strong>Order ID:</strong> <span class="text-primary"><%= order.orderId %></span>
-          </p>
-          <p>
-            <strong>Order Date:</strong> <%= new Date(order.createdAt).toLocaleDateString() %>
-          </p>
-          <p>
-            <strong>Total Amount:</strong> ₹<%= order.orderTotal.toLocaleString() %>
-          </p>
-          <p>
-            <strong>Payment Method:</strong> <%= order.paymentMethod %>
-          </p>
-          <p>
-            <strong>Status:</strong> <span class="text-danger"><%= order.status %></span>
-          </p>
+        <% const history = Array.isArray(order.trackArray) ? order.trackArray : []; %>
+        <% const latest = history.length ? history[history.length - 1] : null; %>
+        <% const normalizedStatus = String(order.status || '').toLowerCase(); %>
+        <% const isCancelled = normalizedStatus.includes('cancel'); %>
+        <% const isReturned = normalizedStatus.includes('return'); %>
+        <div class="tracking-overview">
+            <div class="tracking-overview-icon"><i class="fas fa-box-open" aria-hidden="true"></i></div>
+            <div class="tracking-overview-copy">
+                <span class="tracking-overview-kicker">CURRENT ORDER STATUS</span>
+                <h2><%= order.status %></h2>
+                <p>Order #<%= order.orderId %> <span class="tracking-dot">•</span> Placed <%= new Date(order.orderDate || order.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) %></p>
+            </div>
+            <span class="tracking-status <%= isCancelled ? 'tracking-status-danger' : isReturned ? 'tracking-status-warning' : 'tracking-status-success' %>"><span class="tracking-status-dot"></span><%= order.status %></span>
         </div>
-      </div>
+        <div class="row g-4 tracking-layout">
+            <div class="col-12 col-lg-8">
+                <section class="tracking-panel" aria-labelledby="tracking-progress-heading">
+                    <div class="tracking-panel-heading">
+                        <div>
+                            <span class="tracking-section-kicker">SHIPMENT JOURNEY</span>
+                            <h2 id="tracking-progress-heading">Order progress</h2>
+                        </div>
+                        <span class="tracking-count"><%= history.length %> <%= history.length === 1 ? 'update' : 'updates' %></span>
+                    </div>
+                    <% if (history.length > 0) { %>
+                        <ol class="tracking-timeline">
+                            <% history.forEach((step, index) => { %>
+                                <% const status = String(step.status || ''); %>
+                                <% const statusLower = status.toLowerCase(); %>
+                                <% const stepCancelled = statusLower.includes('cancel') || statusLower.includes('rejected'); %>
+                                <% const stepReturn = statusLower.includes('return'); %>
+                                <% const stepLatest = index === history.length - 1; %>
+                                <li class="tracking-step <%= stepCancelled ? 'tracking-step-danger' : stepReturn ? 'tracking-step-return' : stepLatest ? 'tracking-step-current' : 'tracking-step-complete' %>">
+                                    <div class="tracking-step-marker">
+                                        <% if (stepCancelled) { %>
+                                            <i class="fas fa-times" aria-hidden="true"></i>
+                                        <% } else if (statusLower.includes('deliver')) { %>
+                                            <i class="fas fa-check" aria-hidden="true"></i>
+                                        <% } else if (statusLower.includes('ship')) { %>
+                                            <i class="fas fa-truck" aria-hidden="true"></i>
+                                        <% } else if (stepReturn) { %>
+                                            <i class="fas fa-undo" aria-hidden="true"></i>
+                                        <% } else if (statusLower.includes('process')) { %>
+                                            <i class="fas fa-box" aria-hidden="true"></i>
+                                        <% } else { %>
+                                            <i class="fas fa-check" aria-hidden="true"></i>
+                                        <% } %>
+                                    </div>
+                                    <div class="tracking-step-content">
+                                        <div class="tracking-step-title-row">
+                                            <h3><%= status %></h3>
+                                            <% if (stepLatest) { %><span class="tracking-latest">Latest update</span><% } %>
+                                        </div>
+                                        <time class="tracking-step-date" datetime="<%= new Date(step.updatedAt).toISOString() %>">
+                                            <i class="far fa-clock" aria-hidden="true"></i>
+                                            <%= new Date(step.updatedAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) %>
+                                            <span class="tracking-time-separator">at</span>
+                                            <%= new Date(step.updatedAt).toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' }) %>
+                                        </time>
+                                        <% if (step.note) { %><p class="tracking-step-note"><%= step.note %></p><% } %>
+                                    </div>
+                                </li>
+                            <% }) %>
+                        </ol>
+                    <% } else { %>
+                        <div class="tracking-empty"><i class="far fa-clock" aria-hidden="true"></i><h3>No tracking updates yet</h3><p>Your order's progress will appear here as updates become available.</p></div>
+                    <% } %>
+                </section>
+                <div class="tracking-help">
+                    <div class="tracking-help-icon"><i class="fas fa-info-circle" aria-hidden="true"></i></div>
+                    <div><strong>About your tracking updates</strong><p>Each event is recorded when your order status changes. Check this page for the latest available information.</p></div>
+                </div>
+            </div>
+            <aside class="col-12 col-lg-4">
+                <section class="tracking-panel tracking-details" aria-labelledby="tracking-details-heading">
+                    <div class="tracking-panel-heading"><div><span class="tracking-section-kicker">AT A GLANCE</span><h2 id="tracking-details-heading">Order details</h2></div></div>
+                    <div class="tracking-details-body">
+                        <div class="tracking-detail-row"><span>Order number</span><strong class="tracking-order-number"><%= order.orderId %></strong></div>
+                        <div class="tracking-detail-row"><span>Order date</span><strong><%= new Date(order.orderDate || order.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) %></strong></div>
+                        <div class="tracking-detail-row"><span>Payment method</span><strong><%= order.paymentMethod === 'cod' ? 'Cash on delivery' : order.paymentMethod === 'razorpay' ? 'Razorpay' : order.paymentMethod === 'wallet' ? 'Wallet' : order.paymentMethod === 'wallet with razorpay' ? 'Wallet with Razorpay' : order.paymentMethod %></strong></div>
+                        <div class="tracking-detail-row"><span>Current status</span><strong><%= order.status %></strong></div>
+                        <div class="tracking-detail-total"><span>Order amount</span><strong>₹<%= Number(order.orderTotal || 0).toLocaleString('en-IN') %></strong></div>
+                        <a href="/orders" class="btn tracking-details-button"><i class="fas fa-list-alt" aria-hidden="true"></i> View all orders</a>
+                    </div>
+                </section>
+            </aside>
+        </div>
     </div>
-  </div>
 </section>
-
-<!-- User Footer -->
 <%- include("../userpartials/footer.ejs") %>

@@ -223,7 +223,6 @@ let cancelCouponInput = document.getElementById("cancelCouponId") || ""
                         currency: "INR",
                         name: "LapShop",
                         description: "Your laptop",
-                        image: `/static/images/Bg/desktop/Lapshoplogo.png`,
                         order_id: "" + data.order_id + "", 
                         handler: function (response) {
                             let redirectUrl = `/placeOrder?amount=${subTotal}&paymentMethod=${paymentMethod}&addressId=${userAddressId}&paymentStatus=true&coupon=${coupon}`;
