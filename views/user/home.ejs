@@ -1,249 +1,172 @@
-<!-- User navbar -->
-<%-include("../userpartials/navbar.ejs")%>
+<%- include("../userpartials/navbar.ejs") %>
+<link rel="stylesheet" href="/static/css/home.css">
 
-  <head>
-    <!-- User home css file -->
-    <link rel='stylesheet' href='/static/css/home.css' type="text/css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&family=Roboto:wght@300&display=swap"
-      rel="stylesheet">
-    <link rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
-  </head>
-
-  <section class="view mt-4 wrapper">
-
-    <% if(homeCarousel !="" ){ %>
-      <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <% homeCarousel.forEach((hc, index)=> { %>
-            <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-              <img src="/static/images/HomeCarousels/<%= hc.image %>" class="d-block w-100 homeCarousel-img">
-              <div class="carousel-caption">
-                <div class="tagline">
-                  <h4>
-                    <%= hc.tagline %>
-                  </h4>
+<main class="view mt-4 wrapper home-page">
+    <% if (homeCarousel && homeCarousel.length > 0) { %>
+        <section class="home-hero">
+            <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner">
+                    <% homeCarousel.forEach((hc, index) => { %>
+                        <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+                            <img src="/static/images/HomeCarousels/<%= hc.image %>" class="d-block w-100 homeCarousel-img" alt="<%= hc.tagline %>">
+                            <div class="carousel-caption">
+                                <div class="hero-content">
+                                    <span class="hero-eyebrow">LAPSHOP COLLECTION</span>
+                                    <div class="tagline"><h4><%= hc.tagline %></h4></div>
+                                    <div class="desc-btn">
+                                        <div class="desc"><h6><%= hc.desc %></h6></div>
+                                        <button type="button" class="btn shop-btn" id="shop-btn">Shop now <i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
                 </div>
-                <div>
-                  <button class="btn d-none d-lg-block" id="shop-btn">Shop</button>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev" aria-label="Previous slide">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next" aria-label="Next slide">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+                <div class="carousel-indicators">
+                    <% homeCarousel.forEach((hc, index) => { %>
+                        <button type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide-to="<%= index %>" class="<%= index === 0 ? 'active' : '' %>" <%= index === 0 ? 'aria-current="true"' : '' %> aria-label="Slide <%= index + 1 %>"></button>
+                    <% }) %>
                 </div>
-                <div class="desc-btn">
-                  <div class="desc d-none d-md-block">
-                    <h6>
-                      <%= hc.desc %>
-                    </h6>
-                  </div>
-                  <div class="desc d-block d-md-none">
-                    <a class="shop-link fs-6 fw-bolc" href="/shop">Shop</a>
-                  </div>
-                </div>
-              </div>
             </div>
-            <% }); %>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-          data-bs-slide="prev">
-          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-          data-bs-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="visually-hidden">Next</span>
-        </button>
-      </div>
+        </section>
     <% } %>
-    
-    
 
-    <% if (category.length > 0) { %>
-      <div class="caba">
-        <% if(category){ %>
-          <section class="parallax-one p-3">
-            <div class="container">
-              <div class="row p-3">
-                <% category.forEach((cat,index)=>{ %>
-                  <div class="col-md-6 col-lg-3">
-                    <div class="card m-3 border-0 shadow category-card">
-                      <div class="card-body d-flex flex-column justify-content-center align-items-center position-relative"
-                        style="background-image: url('/static/images/CategoryImages/<%= cat.image %>'); background-size: cover; background-position: center; height: 250px;">
-                        <h3 class="card-title text-light text-center position-absolute top-50 start-50 translate-middle fw-bold">
-                          <%= cat.name %>
-                        </h3>
-                        <h6 class="card-text text-light text-center position-absolute p-3">
-                          <%= cat.desc %>
-                        </h6>
-                      </div>
+    <% if (category && category.length > 0) { %>
+        <div class="caba">
+            <section class="parallax-one home-section">
+                <div class="container">
+                    <div class="home-section-heading">
+                        <div><span class="section-kicker">FIND YOUR FIT</span><h2>Shop by category</h2></div>
+                        <a href="/shop" class="section-action">Explore all <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                  </div>
-                <% }) %>
-              </div>
-            </div>
-          </section>
-        <% } %>
-      </div>
+                    <div class="row g-3 g-lg-4">
+                        <% category.forEach((cat, index) => { %>
+                            <div class="col-6 col-lg-3">
+                                <div class="card category-card">
+                                    <div class="card-body" style="background-image: url('/static/images/CategoryImages/<%= cat.image %>');">
+                                        <div class="category-content">
+                                            <h3 class="card-title"><%= cat.name %></h3>
+                                            <h6 class="card-text"><%= cat.desc %></h6>
+                                        </div>
+                                        <span class="category-arrow"><i class="fa-solid fa-arrow-up-right-from-square"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }) %>
+                    </div>
+                </div>
+            </section>
+        </div>
     <% } %>
 
     <div class="bsac">
-      <% if(bestSellingProducts !="" ){ %>
-        <section class="py-2 py-md-5 container" id="sectiontwo">
-          <h2 class="text-center fw-bold fs-3" style="text-decoration: underline; text-decoration-color: #50c878;">Best selling products</h2>
-          <div class="col-12 mt-2">
-            <div class="scroll-container">
-              <div class="d-flex overflow-auto p-3">
-                <% bestSellingProducts.forEach((product , index)=>{ %>
-                  <a href="/productDetail/<%= product._id %>" class="product-outline">
-                    <div class="box-two mx-2 border-0 small-card p-2" style="flex: 0 0 auto;background-color: rgb(243, 243, 243);">
-                      <div class="img">
-                          <img src="<%= product.imagePath %>"
-                              alt="product-image">
-                        </div>
-                        <div class="p-1 p-md-2">
-                          <h5 class="box-name text-dark"><%= product.name %></h5>
-                          <div class="box-price d-flex justify-content-between">
-                            <span class="text-danger">- <%= product.discount %> off</span>
-                            <span class="mx-2 text-success fw-bold"> ₹<%= product.realPrice %></span>
-                          </div>
-                        </div>
-                      </div>
-                    </a>
-                <% }) %>
-              </div>
-            </div>
-          </div>
-        </section>
-      <% } %>
-
-      <% if(coupon && coupon.length> 0){ %>
-        <section class="coupon-section">
-          <div class="container">
-            <% if(coupon.length > 1){ %>
-              <h2 class="text-center fw-bold fs-3" style="text-decoration: underline; text-decoration-color: #50c878;">Available Coupons</h2>
-            <% }else{ %>
-              <h2 class="text-center fw-bold fs-4 fs-md-3 fs-lg-2" style="text-decoration: underline; text-decoration-color: #50c878;">Available Coupon</h2>
-            <% } %>
-            <div class="coupon-container mt-2">
-              <% for(let i=0; i < coupon.length; i++ ){ %>
-                <div class="coupon">
-                  <div class="coupon-title fw-bold fs-4 fs-md-2">
-                    <%= coupon[i].couponName %>
-                  </div>
-                  <% if(coupon[i].couponAmount <=100){ %>
-                    <div class="coupon-description">
-                      Get <%= coupon[i].couponAmount %>% off on your purchase.
-                    </div>
-                  <% }else{ %>
-                    <div class="coupon-description">
-                      Get Rs. <%= coupon[i].couponAmount %> off on your purchase.
-                    </div>
-                  <% } %>
-                  <div class="coupon-code">
-                    <input type="text" value="<%= coupon[i].couponCode %>" class="text-center coupon-button" readonly>
-                    <button class="couponcode">Copy</button>
-                  </div>
-                  <div class="coupon-description">
-                    Minimum purchase amount Rs.<%= coupon[i].minAmount %>
-                  </div>
-                  <div class="coupon-expiry">Expires on: <%=
-                    coupon[i].endDate.toLocaleDateString(undefined, { weekday: 'short' ,
-                    year: 'numeric' , month: 'short' , day: 'numeric' }) %>
-                  </div>
+        <% if (bestSellingProducts && bestSellingProducts.length > 0) { %>
+            <section class="home-section container" id="sectiontwo">
+                <div class="home-section-heading">
+                    <div><span class="section-kicker">CUSTOMER FAVORITES</span><h2>Best selling products</h2></div>
+                    <a href="/shop" class="section-action">Shop all <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-              <% } %>
-            </div>
-          </div>
-        </section>
-      <% } %>
+                <div class="scroll-container">
+                    <div class="home-products-track d-flex overflow-auto">
+                        <% bestSellingProducts.forEach((product, index) => { %>
+                            <a href="/productDetail/<%= product._id %>" class="product-outline">
+                                <div class="box-two small-card">
+                                    <div class="img"><img src="<%= product.imagePath %>" alt="<%= product.name %>" loading="lazy"></div>
+                                    <div class="product-info">
+                                        <h5 class="box-name"><%= product.name %></h5>
+                                        <div class="box-price">
+                                            <span class="product-discount"><%= product.discount %> off</span>
+                                            <span class="product-price">₹<%= product.realPrice %></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        <% }) %>
+                    </div>
+                </div>
+            </section>
+        <% } %>
+
+        <% if (coupon && coupon.length > 0) { %>
+            <section class="coupon-section home-section">
+                <div class="container">
+                    <div class="home-section-heading">
+                        <div><span class="section-kicker">EXCLUSIVE SAVINGS</span><h2><%= coupon.length > 1 ? 'Available coupons' : 'Available coupon' %></h2></div>
+                        <span class="section-caption">A little extra off, just for you.</span>
+                    </div>
+                    <div class="coupon-container">
+                        <% for (let i = 0; i < coupon.length; i++) { %>
+                            <div class="coupon">
+                                <span class="coupon-label">SPECIAL OFFER</span>
+                                <div class="coupon-title"><%= coupon[i].couponName %></div>
+                                <div class="coupon-description">
+                                    <% if (coupon[i].couponAmount <= 100) { %>
+                                        Get <%= coupon[i].couponAmount %>% off on your purchase.
+                                    <% } else { %>
+                                        Get Rs. <%= coupon[i].couponAmount %> off on your purchase.
+                                    <% } %>
+                                </div>
+                                <div class="coupon-code">
+                                    <input type="text" value="<%= coupon[i].couponCode %>" class="text-center coupon-button" aria-label="Coupon code" readonly>
+                                    <button type="button" class="couponcode">COPY</button>
+                                </div>
+                                <div class="coupon-description coupon-minimum">Minimum purchase amount Rs.<%= coupon[i].minAmount %></div>
+                                <div class="coupon-expiry"><i class="fa-regular fa-clock"></i> Expires on: <%= coupon[i].endDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></div>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </section>
+        <% } %>
     </div>
 
-    <% if(brands !="" ){ %>
-      <section class="py-5 container" id="sectiontwo">
-        <h2 class="text-center fw-bold fs-3" style="text-decoration: underline; text-decoration-color: #50c878;">Our trusted brands</h2>
-          <div class="d-flex flex-wrap align-items-center justify-content-center col-12 mt-3 gap-1">
-            <% brands.forEach((brand , index)=>{ %>
-              <div class="image col-3 col-md-2 d-flex align-items-center justify-content-center">
-                <img src="/static/images/BrandImages/<%= brand.image %>" alt="No-image" class="img-fluid w-50">
-              </div>
-            <% }) %>
-          </div>
-      </section>
+    <% if (brands && brands.length > 0) { %>
+        <section class="home-section container home-brands" id="sectiontwo">
+            <div class="home-section-heading centered"><span class="section-kicker">NAMES YOU KNOW</span><h2>Our trusted brands</h2></div>
+            <div class="brands-grid">
+                <% brands.forEach((brand, index) => { %>
+                    <div class="image brand-box"><img src="/static/images/BrandImages/<%= brand.image %>" alt="Brand logo" class="img-fluid" loading="lazy"></div>
+                <% }) %>
+            </div>
+        </section>
     <% } %>
 
-    <section class="ourPromise py-5">
-      <div class="container">
-        <div class="row text-center mb-2 mb-md-5">
-          <div class="col-12">
-            <h2 class="display-4 fw-bold fs-3" style="text-decoration: underline; text-decoration-color: #50c878;">Our Promises</h2>
-            <p class="section-subtitle lead">Why We Are Your Best Choice for Laptop Needs</p>
-          </div>
+    <section class="ourPromise home-section">
+        <div class="container">
+            <div class="home-section-heading centered">
+                <span class="section-kicker">THE LAPSHOP EXPERIENCE</span>
+                <h2>Our promises</h2>
+                <p class="section-subtitle">Why we are your best choice for laptop needs</p>
+            </div>
+            <div class="row g-3 g-lg-4">
+                <% const promises = [
+                    ['fa-shipping-fast', 'Fast Delivery', 'We promise quick and reliable delivery of your orders.'],
+                    ['fa-dollar-sign', 'Best Prices', 'We offer the most competitive prices on all our products.'],
+                    ['fa-shield-alt', 'Secure Shopping', 'Your data is protected with our top-notch security measures.'],
+                    ['fa-headset', '24/7 Support', 'We are here to assist you at any time, day or night.'],
+                    ['fa-sync-alt', 'Easy Returns', 'Hassle-free returns and exchanges for your convenience.'],
+                    ['fa-star', 'Quality Products', 'We guarantee high-quality products from top brands.']
+                ]; %>
+                <% promises.forEach((promise) => { %>
+                    <div class="col-12 col-sm-6 col-lg-4">
+                        <div class="promise h-100">
+                            <div class="icon"><i class="fas <%= promise[0] %>"></i></div>
+                            <h4><%= promise[1] %></h4>
+                            <p><%= promise[2] %></p>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
         </div>
-        <div class="row">
-          <div class="col-md-4 mb-4">
-            <div class="promise shadow p-4 rounded text-center h-100">
-              <div class="icon text-white rounded-circle mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-shipping-fast fa-2x"></i>
-              </div>
-              <h4 class="font-weight-bold">Fast Delivery</h4>
-              <p>We promise quick and reliable delivery of your orders.</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="promise shadow p-4 rounded text-center h-100">
-              <div class="icon text-white rounded-circle mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-dollar-sign fa-2x"></i>
-              </div>
-              <h4 class="font-weight-bold">Best Prices</h4>
-              <p>We offer the most competitive prices on all our products.</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="promise shadow p-4 rounded text-center h-100">
-              <div class="icon text-white rounded-circle mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-shield-alt fa-2x"></i>
-              </div>
-              <h4 class="font-weight-bold">Secure Shopping</h4>
-              <p>Your data is protected with our top-notch security measures.</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="promise shadow p-4 rounded text-center h-100">
-              <div class="icon text-white rounded-circle mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-headset fa-2x"></i>
-              </div>
-              <h4 class="font-weight-bold">24/7 Support</h4>
-              <p>We are here to assist you at any time, day or night.</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="promise shadow p-4 rounded text-center h-100">
-              <div class="icon text-white rounded-circle mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-sync-alt fa-2x"></i>
-              </div>
-              <h4 class="font-weight-bold">Easy Returns</h4>
-              <p>Hassle-free returns and exchanges for your convenience.</p>
-            </div>
-          </div>
-          <div class="col-md-4 mb-4">
-            <div class="promise shadow p-4 rounded text-center h-100">
-              <div class="icon text-white rounded-circle mb-3 mx-auto" style="width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
-                <i class="fas fa-star fa-2x"></i>
-              </div>
-              <h4 class="font-weight-bold">Quality Products</h4>
-              <p>We guarantee high-quality products from top brands.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </section>
+</main>
 
-    
-  </section>
-
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="/static/scripts/user_home.js"></script>
-
-  <!-- User footer -->
-  <%-include("../userpartials/footer.ejs")%>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/static/scripts/user_home.js"></script>
+<%- include("../userpartials/footer.ejs") %>

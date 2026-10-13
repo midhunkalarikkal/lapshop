@@ -1,168 +1,190 @@
 <!-- User navbar -->
-<%-include("../userpartials/navbar.ejs")%>
-<head>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        
-        canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-        }
-      </style>
-</head>
-    <section class="view">
-        <div class="cart-wrap mt-5">
-            <div class="container">
-                <canvas id="confettiCanvas"></canvas>
-                <div class="row d-flex justify-content-center">
-                    <div class="col-12">    
-                        <div class="product-card-each mt-4 p-5 mb-4">
-                            <div class="head d-flex flex-column flex-md-row align-items-center justify-content-center">
-                                <lord-icon
-                                    src="https://cdn.lordicon.com/guqkthkk.json"
-                                    trigger="in"
-                                    delay="1500"
-                                    state="in-reveal"
-                                    style="width:100px;height:100px">
-                                </lord-icon>
-                                <h4 class="text-center">Your order has been placed.</h4>
-                            </div>
-                            <div class="thankyounote">
-                                <% if(data.paymentStatus === true){ %>
-                                    <p class="text-center">Thank you for your purchase from LapShop! Your order is confirmed. Happy shopping!</p>
-                                <% }else{ %>
-                                    <p class="text-center">Thank you for your purchase from LapShop! Your order has been saved. Once you complete the payment, your order will be confirmed.</p>
+<%- include("../userpartials/navbar.ejs") %>
+
+    <head>
+        <link rel="stylesheet" href="/static/css/order_confirmation.css" type="text/css" />
+    </head>
+    <section class="view order-success-page">
+        <canvas id="confettiCanvas" aria-hidden="true"></canvas>
+        <div class="container-fluid order-success-container">
+            <div class="order-success-header">
+                <div class="order-success-heading">
+                    <span class="order-success-eyebrow"><i class="fa-solid fa-circle-check"></i> ORDER UPDATE</span>
+                    <h1 class="order-success-title">
+                        <%= data && data.paymentStatus===true ? 'Your order is confirmed!'
+                            : 'Your order has been placed!' %>
+                    </h1>
+                    <p class="order-success-description">
+                        <% if (data && data.paymentStatus===true) { %>
+                            Thank you for shopping with LapShop. Your order is confirmed and will be on its way soon.
+                            <% } else { %>
+                                Thank you for shopping with LapShop. Your order has been saved. Complete your payment to
+                                confirm your order.
                                 <% } %>
-                            </div>
-                            <div class="buttons d-flex mt-3 d-flex justify-content-center d-block d-md-none">
-                                <button onclick="goToShop()" class="btn btn-success btn-sm" id="shopping">Continue shopping</button>
-                                <button onclick="goToOrder()" class="btn btn-success btn-sm mx-3" id="orders">Review orders</button>
-                            </div>
-                            <div class="center d-flex flex-column flex-md-row">
-                                <div class="left col-md-6">
-                                    <div class="Order details mt-4">
-                                        <% if(data && data !== ""){ %>
-                                            <% if(data.paymentStatus === true){ %>
-                                                <h6 class="fw-bold">Expected delivery : <span class="fw-normal"> <%= data.expectedDelivery.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></h6>
-                                            <% } %>
-                                        <h6 class="fw-bold">Payment : <span class="fw-normal"><%= data.paymentMethod %></span></h6>
-                                        <% if(data.paymentStatus === true){ %>
-                                            <h6 class="fw-bold">Payment status : <span class="fw-normal">Success</span></h6>
-                                        <% }else{ %>
-                                            <h6 class="fw-bold">Payment status : <span class="fw-normal">Pending</span></h6>
-                                            <p class="p-small">To proceed with your order, please complete the payment. You can find the payment option available in your Orders list.</p>
-                                        <% } %>
-                                        <h6 class="fw-bold">Amount : ₹ <span class="text-success fw-normal"><%= data.orderTotal %></span></h6>
-                                        <% if(data.walletDebitedAmount > 0){ %>
-                                            <h6 class="fw-bold">Wallet debited : ₹ <span class="text-success fw-normal"><%= data.walletDebitedAmount %></span></h6>
-                                        <% } %>
-                                        <h6 class="fw-bold mt-4">Deliverying to :</h6>
-                                        <p class="fw-normal">
-                                            <%= data.address.name %>, <br>
-                                            <%= data.address.addressLine %>, <br>
-                                            Phone : <%= data.address.phone %>,<br>
-                                             <%= data.address.city %>, <%= data.address.distrcit %>, <br>
-                                             <%= data.address.state %>, <%= data.address.pincode %>, <br>
-                                             <%= data.address.country %></p>
-                                        <% } %>
-                                    </div>
+                    </p>
+                    <div class="order-success-actions">
+                        <button type="button" onclick="goToOrder()" class="order-action-btn order-action-primary"><i
+                                class="fa-solid fa-box"></i> View orders <i
+                                class="fa-solid fa-arrow-right"></i></button>
+                        <button type="button" onclick="goToShop()" class="order-action-btn order-action-secondary"><i
+                                class="fa-solid fa-bag-shopping"></i> Continue shopping</button>
+                    </div>
+                </div>
+                <div class="order-success-hero-icon">
+                    <lord-icon src="https://cdn.lordicon.com/guqkthkk.json" trigger="in" delay="500" state="in-reveal"
+                        style="width:150px;height:150px"></lord-icon>
+                </div>
+            </div>
+            <% if (data && data !=="" ) { %>
+                <div class="row g-4 order-success-content">
+                    <div class="col-12 col-lg-7">
+                        <div class="order-success-panel">
+                            <div class="order-panel-heading"><span class="order-panel-icon"><i
+                                        class="fa-solid fa-receipt"></i></span>
+                                <div>
+                                    <h2>Order details</h2>
+                                    <p>Summary of your recent purchase</p>
                                 </div>
-                                <% if(data && data !== ""){ %>
-                                    <% if(data.paymentStatus === true){ %>        
-                                        <div class="right col-md-6 d-flex align-item-center justify-content-center">
-                                            <lord-icon
-                                                src="https://cdn.lordicon.com/hsrrkevt.json"
-                                                trigger="loop"
-                                                state="loop-cycle"
-                                                style="width:250px;height:250px">
-                                            </lord-icon>
-                                        </div>
-                                    <% } %>
-                                <% } %>
                             </div>
-                            <div class="buttons d-flex mt-3 d-flex justify-content-center d-none d-md-block">
-                                <button onclick="goToShop()" class="btn btn-success" id="shopping">Continue shopping</button>
-                                <button onclick="goToOrder()" class="btn btn-success mx-3" id="orders">Review orders</button>
+                            <div class="order-panel-body">
+                                <% if (data.paymentStatus===true && data.expectedDelivery) { %>
+                                    <div class="order-info-row"><span class="order-info-label">Expected
+                                            delivery</span><strong class="order-info-value">
+                                            <%= new Date(data.expectedDelivery).toLocaleDateString(undefined, {
+                                                weekday: 'short' , year: 'numeric' , month: 'short' , day: 'numeric' })
+                                                %>
+                                        </strong></div>
+                                    <% } %>
+                                        <div class="order-info-row"><span class="order-info-label">Payment
+                                                method</span><strong class="order-info-value">
+                                                <%= data.paymentMethod %>
+                                            </strong></div>
+                                        <div class="order-info-row"><span class="order-info-label">Payment
+                                                status</span><span
+                                                class="<%= data.paymentStatus === true ? 'order-status-success' : 'order-status-pending' %>"><i
+                                                    class="fa-solid <%= data.paymentStatus === true ? 'fa-circle-check' : 'fa-clock' %>"></i>
+                                                <%= data.paymentStatus===true ? 'Paid' : 'Pending' %>
+                                            </span></div>
+                                        <% if (data.walletDebitedAmount> 0) { %>
+                                            <div class="order-info-row"><span class="order-info-label">Wallet
+                                                    debited</span><strong class="order-info-value">₹ <%=
+                                                        Number(data.walletDebitedAmount).toLocaleString('en-IN',
+                                                        {minimumFractionDigits:2,maximumFractionDigits:2}) %></strong>
+                                            </div>
+                                            <% } %>
+                                                <div class="order-info-row order-total-row"><span
+                                                        class="order-info-label">Order amount</span><strong
+                                                        class="order-amount">₹ <%=
+                                                            Number(data.orderTotal).toLocaleString('en-IN',
+                                                            {minimumFractionDigits:2,maximumFractionDigits:2}) %>
+                                                            </strong></div>
+                                                <% if (data.paymentStatus !==true) { %>
+                                                    <p class="order-payment-note"><i
+                                                            class="fa-solid fa-circle-info"></i> Complete your payment
+                                                        from the Orders page to confirm this order.</p>
+                                                    <% } %>
                             </div>
                         </div>
                     </div>
+                    <div class="col-12 col-lg-5">
+                        <div class="order-success-panel order-address-panel">
+                            <div class="order-panel-heading"><span class="order-panel-icon"><i
+                                        class="fa-solid fa-location-dot"></i></span>
+                                <div>
+                                    <h2>Delivery address</h2>
+                                    <p>Where your order will be delivered</p>
+                                </div>
+                            </div>
+                            <div class="order-panel-body">
+                                <% if (data.address) { %>
+                                    <div class="order-address-details">
+                                        <strong class="order-recipient">
+                                            <%= data.address.name %>
+                                        </strong>
+                                        <p>
+                                            <%= data.address.addressLine %><br>
+                                                <%= data.address.city %>, <%= data.address.district ||
+                                                        data.address.distrcit %><br>
+                                                        <%= data.address.state %> - <%= data.address.pincode %><br>
+                                                                <%= data.address.country %>
+                                        </p>
+                                        <span class="order-address-phone"><i class="fa-solid fa-phone"></i>
+                                            <%= data.address.phone %>
+                                        </span>
+                                    </div>
+                                    <% } else { %>
+                                        <p class="order-address-empty">Delivery address details are unavailable.</p>
+                                        <% } %>
+                            </div>
+                        </div>
+                        <% if (data.paymentStatus===true) { %>
+                            <div class="order-delivery-note"><i class="fa-solid fa-truck-fast"></i>
+                                <div><strong>Order confirmed</strong>
+                                    <p>We will keep you updated as your order progresses.</p>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
                 </div>
-            </div>
+                <% } %>
         </div>
     </section>
-
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
+
     <script>
-
-        ////// Function to go to orders \\\\\\
-        function goToOrder(){
-            window.location.href = '/orders'
+        function goToOrder() {
+            window.location.href = "/orders";
         }
 
-        ////// Function to go to shop \\\\\\
-        function goToShop(){
-            window.location.href = "/shop"
+        function goToShop() {
+            window.location.href = "/shop";
         }
 
-        const canvas = document.getElementById('confettiCanvas');
-        const ctx = canvas.getContext('2d');
+        const canvas = document.getElementById("confettiCanvas");
+        const ctx = canvas.getContext("2d");
 
-        // Resize canvas to fit screen
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
 
-        // Create confetti particles
+        resizeCanvas();
+        window.addEventListener("resize", resizeCanvas);
         const confettiParticles = [];
+
         for (let i = 0; i < 200; i++) {
-        confettiParticles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height - canvas.height,
-            r: Math.random() * 4 + 1,
-            d: Math.random() * 10 + 5,
-            color: `hsl(${Math.random() * 360}, 100%, 50%)`,
-            tilt: Math.random() * 10 - 5,
-            tiltAngleIncrement: Math.random() * 0.1 + 0.05,
-            tiltAngle: 0
-        });
+            confettiParticles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height - canvas.height,
+                r: Math.random() * 4 + 1,
+                d: Math.random() * 10 + 5,
+                color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                tilt: Math.random() * 10 - 5,
+                tiltAngleIncrement: Math.random() * 0.1 + 0.05,
+                tiltAngle: 0
+            });
         }
-
-        // Animate confetti
         function drawConfetti() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        confettiParticles.forEach(p => {
-            ctx.beginPath();
-            ctx.lineWidth = p.r;
-            ctx.strokeStyle = p.color;
-            ctx.moveTo(p.x + p.tilt + p.r, p.y);
-            ctx.lineTo(p.x + p.tilt, p.y + p.r * 2);
-            ctx.stroke();
-
-            // Update particle position
-            p.y += p.d;
-            p.tiltAngle += p.tiltAngleIncrement;
-            p.tilt = Math.sin(p.tiltAngle) * 10;
-
-            // Reset position if out of bounds
-            if (p.y > canvas.height) {
-            p.x = Math.random() * canvas.width;
-            p.y = -20;
-            p.tilt = Math.random() * 10 - 5;
-            }
-        });
-
-        requestAnimationFrame(drawConfetti);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            confettiParticles.forEach(p => {
+                ctx.beginPath();
+                ctx.lineWidth = p.r;
+                ctx.strokeStyle = p.color;
+                ctx.moveTo(p.x + p.tilt + p.r, p.y);
+                ctx.lineTo(p.x + p.tilt, p.y + p.r * 2);
+                ctx.stroke();
+                p.y += p.d;
+                p.tiltAngle += p.tiltAngleIncrement;
+                p.tilt = Math.sin(p.tiltAngle) * 10;
+                if (p.y > canvas.height) {
+                    p.x = Math.random() * canvas.width;
+                    p.y = -20;
+                    p.tilt = Math.random() * 10 - 5;
+                }
+            });
+            requestAnimationFrame(drawConfetti);
         }
-
         drawConfetti();
     </script>
-
     <!-- User footer -->
-    <%-include("../userpartials/footer.ejs")%>
+    <%- include("../userpartials/footer.ejs") %>

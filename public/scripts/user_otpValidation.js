@@ -78,7 +78,7 @@ function startTimer() {
   }
 
   otpViewSpan.innerHTML = "Timer: 00:30";
-  let secondsLeft = 180;
+  let secondsLeft = 300;
 
   const countdown = setInterval(() => {
     secondsLeft--;

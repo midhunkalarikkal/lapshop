@@ -1,24 +1,17 @@
-<!-- User navbar -->
 <%-include("../userpartials/navbar.ejs")%>
-
     <head>
-        <!-- custom css for user profile -->
         <link rel='stylesheet' href='/static/css/profile.css' type="text/css" />
     </head>
-
     <section class="view">
-        
-        <div class="profile-wrap mt-5">
+        <div class="profile-wrap mt-5 profile-page">
             <div class="container">
                 <div class="row mb-3">
-
-                    <!-- For the small devices -->
                     <div class="col-md-4 d-block d-md-none">
-                        <div class="shadow d-flex flex-column p-2 user-info">
+                        <div class="shadow d-flex flex-column p-2 user-info profile-sidebar">
                             <div class="profile-intro mb-4 d-flex justify-content-between align-items-center">
                                 <h4 class="fw-bold mb-0">Your Profile</h4>
                             </div>
-                            <div class="gradient-custom text-center text-white d-flex flex-column align-items-center shadow">
+                            <div class="gradient-custom text-center text-white d-flex flex-column align-items-center shadow profile-hero">
                                 <% if(userData.profileimage ) { %>
                                     <img src="/static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3" style="width: 150px; height: 150px;" />
                                     <a onclick="deletePI()" class="text-danger mb-3 mb-md-0 prf-btn">Remove picture</a>
@@ -32,23 +25,23 @@
                                     <div class="col-4 mb-4">
                                         <% if(userData.profileimage ) { %>
                                             <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
-                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                     <i class="fas fa-upload icon mb-2"></i>
                                                     <p class="text-uppercase font-weight-bold">Update image</p>
                                                 </div>
                                             </a>
                                         <% }else{ %>
                                             <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
-                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                     <i class="fas fa-upload icon mb-2"></i>
                                                     <p class="text-uppercase font-weight-bold">Upload image</p>
                                                 </div>
-                                            </a>       
+                                            </a>
                                         <% } %>
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a data-bs-toggle="modal" data-bs-target="#verifyModal" class="prf-btn">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-lock icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Change  password</p>
                                             </div>
@@ -56,7 +49,7 @@
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a href="/cart">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-cart-shopping icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your cart</p>
                                             </div>
@@ -66,7 +59,7 @@
                                 <div class="row">
                                     <div class="col-4 mb-4">
                                         <a href="/wishlist">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-heart icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your wishlist</p>
                                             </div>
@@ -74,7 +67,7 @@
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a href="/wallet">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-wallet icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your wallet</p>
                                             </div>
@@ -82,7 +75,7 @@
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a href="/orders">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-boxes-stacked icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your orders</p>
                                             </div>
@@ -92,21 +85,19 @@
                             </div>
                         </div>
                     </div>
-                    <!-- For the small devices -->
-                    
                     <div class="col-md-8 mt-4">
-                        <div class="shadow d-flex user-info">
+                        <div class="shadow d-flex user-info profile-content-card">
                             <div class="col-12 p-3">
                                 <div class="profile-intro mb-4 d-flex justify-content-between align-items-center d-none d-md-block">
                                     <h4 class="fw-bold mb-0">Your Profile</h4>
                                 </div>
-                                <div class="row pt-1">  
+                                <div class="row pt-1">
                                     <div class="d-flex align-items-center">
                                         <div class="edit-btn col-4">
                                             <h5 class="m-0">Information</h5>
                                         </div>
                                         <div class="edit-btn col-8 d-flex justify-content-end">
-                                            <button class="btn btn-secondary btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#informationModal">
+                                            <button class="btn btn-secondary btn-sm mb-2 profile-edit-btn" data-bs-toggle="modal" data-bs-target="#informationModal">
                                                 <i class="fas fa-edit"></i> Edit
                                             </button>
                                         </div>
@@ -118,7 +109,7 @@
                                             <% if(userData.fullname){ %>
                                                 <%= userData.fullname %>
                                             <% }else{ %>
-                                                <span class="text danger">Fetching error!</span>
+                                                <span class="text-danger">Fetching error!</span>
                                             <% } %>
                                         </p>
                                     </div>
@@ -127,9 +118,9 @@
                                         <p class="col-4 fw-semibold">Email</p>
                                         <p class="text-muted col-8">
                                             <% if(userData.email){ %>
-                                                <%= userData.email %> 
+                                                <%= userData.email %>
                                             <% }else{ %>
-                                                <span class="text danger">Fetching error!</span>
+                                                <span class="text-danger">Fetching error!</span>
                                             <% } %>
                                         </p>
                                     </div>
@@ -138,9 +129,9 @@
                                         <p class="col-4 fw-semibold">Phone</p>
                                         <p class="text-muted col-8">
                                             <% if(userData.phone){ %>
-                                                <%= userData.phone %> 
+                                                <%= userData.phone %>
                                             <% }else{ %>
-                                                <span class="text danger">Fetching error!</span>
+                                                <span class="text-danger">Fetching error!</span>
                                             <% } %>
                                         </p>
                                     </div>
@@ -151,7 +142,7 @@
                                             <% if(formattedDate){ %>
                                                 <%= formattedDate %>
                                             <% }else{ %>
-                                                <span class="text danger">Fetching error!</span>
+                                                <span class="text-danger">Fetching error!</span>
                                             <% } %>
                                         </p>
                                     </div>
@@ -174,15 +165,14 @@
                                     </div>
                                     <hr>
                                 </div>
-
-                                <div class="row pt-1 address.container">
+                                <div class="row pt-1 address-container">
                                     <div class="col-12 d-flex align-items-center">
                                         <div class="edit-btn col-4">
                                             <h5 class="m-0">Address</h5>
                                         </div>
                                         <div class="edit-btn col-8 d-flex justify-content-end">
-                                            <button 
-                                                class="btn btn-secondary btn-sm mb-2"
+                                            <button
+                                                class="btn btn-secondary btn-sm mb-2 profile-edit-btn"
                                                 id="add-address"
                                                 data-userId="<%= userData._id %>">
                                                 <i class="fas fa-add"></i> Add new address
@@ -196,25 +186,25 @@
                                                 <p class="col-4 fw-semibold">Address <%= index+1 %> </p>
                                                 <div class="address text-muted col-8">
                                                     <p>
-                                                        <%= address.name %>, 
+                                                        <%= address.name %>,
                                                         <%= address.addressLine%>,
                                                         <span>Phone : </span>
                                                         <%= address.phone%>,
-                                                        <%= address.city%>, 
+                                                        <%= address.city%>,
                                                         <span>Pincode : </span>
-                                                        <%= address.pincode%>, 
+                                                        <%= address.pincode%>,
                                                         <%= address.district%>,
-                                                        <%= address.state%>, 
+                                                        <%= address.state%>,
                                                         <%= address.country%>
                                                     </p>
                                                     <div class="buttons d-flex justify-content-start">
-                                                        <button 
-                                                            class="btn btn-secondary btn-sm edit-address-btn mb-1"
+                                                        <button
+                                                            class="btn btn-secondary btn-sm edit-address-btn mb-1 profile-address-edit"
                                                             data-adId="<%= address._id %>" ><i
                                                             class="fas fa-edit"></i>
                                                         </button>
                                                         <button
-                                                            class="btn btn-danger btn-sm delete-address-btn mb-1 mx-2"
+                                                            class="btn btn-danger btn-sm delete-address-btn mb-1 mx-2 profile-address-delete"
                                                             data-adid="<%= address._id %>"><i
                                                             class="fas fa-trash"></i>
                                                         </button>
@@ -227,19 +217,17 @@
                                         <p class="text-muted">No addresses found.</p>
                                     <% } %>
                                 </div>
-
                             </div>
                         </div>
                     </div>
-                    
                     <div class="col-md-4 mt-4 d-none d-md-block">
-                        <div class="shadow d-flex flex-column p-2 user-info">
-                            <div class="gradient-custom text-center text-white d-flex flex-column align-items-center shadow">
+                        <div class="shadow d-flex flex-column p-2 user-info profile-sidebar">
+                            <div class="gradient-custom text-center text-white d-flex flex-column align-items-center shadow profile-hero">
                                 <% if(userData.profileimage ) { %>
-                                    <img src="../../static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3" style="width: 150px; height: 150px;" />
+                                    <img src="/static/images/UserProfile/<%= userData.profileimage %>" alt="Avatar" class="img-fluid mt-5 my-3" style="width: 150px; height: 150px;" />
                                     <a onclick="deletePI()" class="text-danger mb-3 mb-md-0 prf-btn">Remove picture</a>
                                 <% }else{ %>
-                                    <img src="../../static/images/icons/No profile image.jpg" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
+                                    <img src="/static/images/icons/No profile image.jpg" alt="Avatar" class="img-fluid mt-5 my-3 " style="width: 150px; height: 150px;" />
                                 <% } %>
                             </div>
                             <div class="container mt-5">
@@ -247,23 +235,23 @@
                                     <div class="col-4 mb-4">
                                         <% if(userData.profileimage ) { %>
                                             <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
-                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                     <i class="fas fa-upload icon mb-2"></i>
                                                     <p class="text-uppercase font-weight-bold">Update image</p>
                                                 </div>
                                             </a>
                                         <% }else{ %>
                                             <a data-bs-toggle="modal" data-bs-target="#profileImageModal" class="prf-btn">
-                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                                <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                     <i class="fas fa-upload icon mb-2"></i>
                                                     <p class="text-uppercase font-weight-bold">Upload image</p>
                                                 </div>
-                                            </a>       
+                                            </a>
                                         <% } %>
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a data-bs-toggle="modal" data-bs-target="#verifyModal" class="prf-btn">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-lock icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Change  password</p>
                                             </div>
@@ -271,7 +259,7 @@
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a href="/cart">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-cart-shopping icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your cart</p>
                                             </div>
@@ -281,7 +269,7 @@
                                 <div class="row">
                                     <div class="col-4 mb-4">
                                         <a href="/wishlist">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-heart icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your wishlist</p>
                                             </div>
@@ -289,7 +277,7 @@
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a href="/wallet">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-wallet icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your wallet</p>
                                             </div>
@@ -297,7 +285,7 @@
                                     </div>
                                     <div class="col-4 mb-4">
                                         <a href="/orders">
-                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center">
+                                            <div class="square shadow-sm p-3 d-flex flex-column align-items-center justify-content-center text-center profile-action">
                                                 <i class="fas fa-boxes-stacked icon mb-2"></i>
                                                 <p class="text-uppercase font-weight-bold">Your orders</p>
                                             </div>
@@ -307,24 +295,21 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="instruction-faq col-md-8 col-12 shadow mt-4 p-3">
+                    <div class="instruction-faq col-md-8 col-12 shadow mt-4 p-3 profile-help-card">
                         <div class="instructions mt-5">
                             <h3>Profile Information Instructions:</h3>
                             <p>"Your profile contains key information such as your name, mobile number, email ID, joined date, profile image, and referral code."</p>
                             <p>"Ensure your profile information is accurate and up-to-date."</p>
                             <hr>
-                            
                             <h3>Address Management Instructions:</h3>
                             <p>"To add a new address, click the 'Add Address' button and fill in the required details."</p>
                             <p>"You can edit or delete existing addresses by clicking the 'Edit' or 'Delete' buttons next to each address."</p>
                             <hr>
-                        
                             <h3>Password Change Instructions:</h3>
                             <p>"To change your password, first verify your email ID. A verification link will be sent to your registered email address."</p>
                             <p>"Once your email is verified, navigate to the 'Change Password' section, enter your current password, followed by the new password, and confirm it."</p>
                             <p>"Click 'Save' to update your password."</p>
-                        </div>                        
+                        </div>
                         <div class="accordion mt-5" id="userProfileFAQ">
                             <h4 class="mx-2">FAQ's</h4>
                             <div class="accordion-item">
@@ -399,18 +384,12 @@
                                     </div>
                                 </div>
                             </div>
-                        
                         </div>
-                        
                     </div>
-
                 </div>
             </div>
         </div>
-        
     </section>
-
-    <!-- User image Modal start -->
     <div class="modal fade" id="profileImageModal" tabindex="-1" aria-labelledby="profileImageModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -441,9 +420,6 @@
             </div>
         </div>
     </div>
-    <!-- User image Modal end -->
-
-    <!-- User info Modal start -->
     <div class="modal fade" id="informationModal" tabindex="-1" aria-labelledby="informationModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -475,9 +451,6 @@
             </div>
         </div>
     </div>
-    <!-- User info Modal end -->
-
-    <!-- User email verification for change password Modal start -->
     <div class="modal fade" id="verifyModal" tabindex="-1" aria-labelledby="verifyModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -511,9 +484,6 @@
             </div>
         </div>
     </div>
-    <!-- User email verification for change password Modal end -->
-
-    <!-- User change password Modal start -->
     <div class="modal fade" id="passModal" tabindex="-1" aria-labelledby="passModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -527,12 +497,12 @@
                         <% if(userData !="" ){ %>
                             <div class="mb-3">
                                 <label for="newPass" class="form-label">New password</label>
-                                <input type="text" class="form-control" id="newPass" name="newPass" required oninput="validatePassword()">
+                                <input type="password" class="form-control" id="newPass" name="newPass" required oninput="validatePassword()">
                                 <span id="newPassError" class="text-danger"></span>
                             </div>
                             <div class="mb-3">
                                 <label for="confirmPass" class="form-label">Confirm password</label>
-                                <input type="text" class="form-control" id="confirmPass" name="confirmPass" required oninput="validateConfirmPassword()">
+                                <input type="password" class="form-control" id="confirmPass" name="confirmPass" required oninput="validateConfirmPassword()">
                                 <span id="confirmPassError" class="text-danger"></span>
                             </div>
                             <input type="hidden" class="form-control" id="userId" name="userId" value="<%= userData._id %>">
@@ -546,12 +516,6 @@
             </div>
         </div>
     </div>
-    <!-- User change password Modal end -->
-
-
-    <!-- script for the sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/static/scripts/user_profile.js"></script>
-
-    <!-- User footer -->
     <%-include("../userpartials/footer.ejs")%>

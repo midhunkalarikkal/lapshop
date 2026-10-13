@@ -126,7 +126,7 @@ const postCartProductQtyInc = async (req, res, next) => {
       );
 
       await cart.save();
-      return res.status(200).json({ success: true, message: 'Quantity incremented' });
+      return res.status(200).json({ success: true, message: 'Quantity updated' });
    } catch (error) {
       return next(error);
    }
@@ -160,7 +160,7 @@ const postCartProductQtyDec = async (req, res, next) => {
       );
 
       await cart.save();
-      return res.status(200).json({ success: true, message: 'Quantity decremented' });
+      return res.status(200).json({ success: true, message: 'Quantity updated' });
    } catch (error) {
       return next(error);
    }

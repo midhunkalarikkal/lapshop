@@ -1,15 +1,24 @@
 <!-- User navbar -->
 <%-include("../userpartials/navbar.ejs")%>
-
   <head>
     <!-- Css for the cart page -->
     <link rel="stylesheet" href='/static/css/cart.css' type="text/css">
   </head>
-  <section class="view">
-    <div class="cart-wrap mt-5">
+  <section class="view cart-page">
+    <div class="cart-wrap">
       <div class="container">
+        <div class="cart-header">
+          <div>
+            <span class="cart-eyebrow">YOUR SHOPPING BAG</span>
+            <h1>Your Shopping Cart</h1>
+            <p>Review your selected products, update quantities, and check out when you are ready.</p>
+          </div>
+          <button type="button" class="btn cart-shop-link" onclick="goToShop()">
+            <i class="fas fa-store" aria-hidden="true"></i>
+            Continue shopping
+          </button>
+        </div>
         <div class="row mb-3">
-
           <div class="col-md-8 d-none d-md-block">
             <div class="product-card shadow mt-4 p-3">
               <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
@@ -22,7 +31,7 @@
               <hr>
               <% if(cartItems && cartItems.length !==0){ %>
                 <% cartItems.forEach((product,index)=>{ %>
-                  <div class="product-card-each d-flex border mt-1">
+                  <div class="product-card-each d-flex border mt-1 cart-item">
                     <div class="col-4 d-flex align-items-center justify-content-center">
                       <a href="/productDetail/" style="cursor: pointer;">
                         <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
@@ -38,7 +47,7 @@
                           <%= product.product.description.slice(0,75) %>
                         </span>
                         <span class="product-offerPrice text-success">
-                          ₹ <%= product.price %>
+                          ₹ <%= (product.price).toFixed(2) %>
                         </span>
                         <br>
                         <% if(product.product.noOfStock < 5){ %>
@@ -76,19 +85,18 @@
                   </div>
                 <% }) %>
               <% }else{ %>
-                <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
-                  role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                <div class="alert alert-warning cart-empty-state d-flex align-items-center justify-content-center p-4 rounded"
+                  role="alert" >
                   <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
                   <div>
                     <strong>Your cart is empty!</strong><br>
                       Browse our products and add items to your cart.
                   </div>
                 </div>
-                <button class="btn btn-primary" onclick="goToShop()">Continue shopping</button>
+                <button class="btn btn-primary continue-shopping-btn" onclick="goToShop()">Continue shopping</button>
               <% } %>
             </div>
           </div>
-
           <!-- For small devices -->
           <div class="d-block d-md-none">
             <div class="product-card shadow mt-4 p-3">
@@ -102,12 +110,12 @@
               <hr>
               <% if(cartItems && cartItems.length !==0){ %>
                 <% cartItems.forEach((product,index)=>{ %>
-                  <div class="product-card-each border">
+                  <div class="product-card-each border cart-item">
                     <div class="card-top d-flex flex-row">
                       <div class="col-4 d-flex align-items-center justify-content-center">
                         <a href="/productDetail/" style="cursor: pointer;">
                           <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt=""
-                            class="product-img shadow">
+                            class="product-img">
                         </a>
                       </div>
                       <div class="name d-flex align-items-center justify-content-center p-3">
@@ -117,7 +125,7 @@
                           </span>
                           <br>
                           <span class="product-offerPrice text-success">
-                            ₹ <%= product.price %>
+                            ₹ <%= (product.price).toFixed(2) %>
                           </span>
                           <br>
                           <% if(product.product.noOfStock < 5){ %>
@@ -154,22 +162,21 @@
                   </div>
                 <% }) %>
               <% }else{ %>
-                <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded"
-                  role="alert" style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                <div class="alert alert-warning cart-empty-state d-flex align-items-center justify-content-center p-4 rounded"
+                  role="alert" >
                   <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
                   <div>
                     <strong>Your cart is empty!</strong><br>
                       Browse our products and add items to your cart.
                   </div>
                 </div>
-                <button class="btn btn-primary btn-sm" onclick="goToShop()">Continue shopping</button>
+                <button class="btn btn-primary btn-sm continue-shopping-btn" onclick="goToShop()">Continue shopping</button>
               <% } %>
             </div>
           </div>
           <!-- For small devices -->
-
           <div class="product-subtotal col-12 col-md-4 d-none d-md-block">
-            <div class="subtotal mt-4 shadow d-flex flex-column p-3">
+            <div class="subtotal mt-4 shadow d-flex flex-column p-3 order-summary-card">
               <div class="head text-center">
                 <div class="head text-center">
                   <h4 class="">Order summary</h4>
@@ -180,20 +187,19 @@
               </div>
               <div class="details">
                 <hr>
-                <p class="countOfItems">Count of items : <span><%= cart.items.length %></span></p>
+                <p class="countOfItems">Products : <span><%= cart.items.length %></span></p>
                 <p class="purchaseSave">You will save in this purchace : <span class="purchace-discount"> ₹ <%=
                       cart.totalCartDiscountPrice.toFixed(2) %></span></p>
                 <hr>
-                <p class="subTotal">Subtotal : <span class="subtotal"> ₹ <%= cart.totalCartPrice %></span></p>
+                <p class="subTotal">Subtotal : <span class="subtotal"> ₹ <%= (cart.totalCartPrice).toFixed(2) %></span></p>
                 <hr>
               </div>
               <div class="button mt-3">
-                <button onclick="goToCheckout(this)" class="btn btn-warning w-100 d-none d-md-block" data-count="<%= cart.items.length %>">Proceed to
+                <button onclick="goToCheckout(this)" class="btn btn-warning checkout-btn w-100 d-none d-md-block" data-count="<%= cart.items.length %>">Proceed to
                   Checkout</button>
               </div>
             </div>
           </div>
-
           <div class="col-md-8 col-12">
             <div class="saveForLaterCart shadow p-3 mt-3">
               <div class="cart-intro mb-4 d-flex justify-content-between align-items-center">
@@ -205,8 +211,8 @@
               </div>
               <hr>
               <% if(!saveForLaterCart || saveForLaterCart.items.length === 0){ %>
-                <div class="alert alert-warning d-flex align-items-center justify-content-center p-4 rounded" role="alert"
-                  style="background-color: #ffcc00; color: #333; font-size: 1.2rem;">
+                <div class="alert alert-warning cart-empty-state d-flex align-items-center justify-content-center p-4 rounded" role="alert"
+                  >
                   <i class="fas fa-shopping-cart me-3" style="font-size: 1.5rem;"></i>
                   <div>
                     <strong>Your save for later list is empty!</strong><br>
@@ -215,11 +221,11 @@
                 </div>
               <% }else{ %>
                 <% saveForLaterCart.items.forEach((product, index)=> { %>
-                  <div class="product-card-each d-flex">
+                  <div class="product-card-each d-flex saved-item">
                     <div class="col-4 d-flex align-items-center justify-content-center mb-3 mb-md-0">
                       <a href="/productDetail/" style="cursor: pointer;">
                         <img src="/static/images/ProductImages/<%=  product.product.images[0] %>" alt="cart image"
-                          class="img-fluid">
+                          class="img-fluid saved-product-img">
                       </a>
                     </div>
                     <div class="col-8 d-flex flex-column justify-content-center p-2">
@@ -259,7 +265,6 @@
               <% } %>
             </div>
           </div>
-
           <div class="col-md-8 col-12">
             <div class="instruction-faq shadow mt-4 p-3">
               <div class="instructions">
@@ -292,7 +297,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="faq2">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -308,7 +312,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="faq3">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -323,7 +326,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="faq4">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -339,7 +341,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="faq6">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -355,7 +356,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="faq8">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -371,7 +371,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="faq9">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -387,7 +386,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="faq10">
                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
@@ -405,15 +403,13 @@
                 </div>
               </div>
             </div>
-
           </div>
         </div>
       </div>
     </div>
-
     <% if(cartItems && cartItems.length !==0){ %>
-    <div class="product-subtotal col-12 d-block d-md-none sticky-bottom shadow-xl rounded-top p-4" 
-     style="background-color: #ffffff;">
+    <div class="product-subtotal col-12 d-block d-md-none sticky-bottom shadow-xl rounded-top p-4 mobile-checkout" 
+     >
       <h4 class="text-center mb-3 fw-bold">Cart Total</h4>
       <hr>
       <p class="subTotal fs-5 d-flex justify-content-center">
@@ -422,26 +418,22 @@
       </p>
       <div class="button mt-4">
         <button onclick="goToCheckout(this)" 
-                class="btn btn-warning w-100 btn-md fw-bold shadow-sm" 
+                class="btn btn-warning checkout-btn w-100 btn-md fw-bold shadow-sm" 
                 data-count="<%= cart.items.length %>">
           Proceed to Checkout
         </button>
       </div>
     </div>
     <% } %>
-
   </section>
-
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-
-    ////// Function to delete a product from cart \\\\\\
+    ////// Function to delete a product from cart \\\\\\\\\\\\
     function deleteProduct(delbtn) {
       const productId = delbtn.getAttribute("data-product-id");
-
       Swal.fire({
         title: "Are you sure?",
-        text: "Do you want to remove this product from Save for Later?",
+        text: "Do you want to remove this product from your cart?",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#d33",
@@ -509,15 +501,12 @@
         }
       })
     }
-
-    ////// Function for the product quantity increment \\\\\\
+    ////// Function for the product quantity increment \\\\\\\\\\\\
     function increaseQuantity(element) {
       var input = element.parentElement.querySelector('.quantity-value');
       var value = parseInt(input.value);
       input.value = value + 1;
-
       const productId = element.getAttribute("data-product-id");
-
       fetch('/incrementCartProduct', {
         method: 'POST',
         headers: {
@@ -586,12 +575,10 @@
         });
       });
     }
-
-    ////// Function for the product quantity decrement \\\\\\
+    ////// Function for the product quantity decrement \\\\\\\\\\\\
     function decreaseQuantity(element) {
       var input = element.parentElement.querySelector('.quantity-value');
       var value = parseInt(input.value);
-
       if (value === 1) {
         Swal.fire({
           title: "Info",
@@ -605,11 +592,8 @@
         })
         return false
       }
-
       input.value = value - 1;
-
       const productId = element.getAttribute("data-product-id");
-
       fetch('/decrementCartProduct', {
         method: 'POST',
         headers: {
@@ -665,8 +649,7 @@
         });
       });
     }
-
-    ////// Function to go to checkout \\\\\\
+    ////// Function to go to checkout \\\\\\\\\\\\
     function goToCheckout(btn) {
       const productCount = btn.getAttribute('data-count')
       if(productCount > 0){
@@ -684,8 +667,7 @@
           })
       }
     }
-
-    ////// Function to save for later \\\\\\
+    ////// Function to save for later \\\\\\\\\\\\
     function saveForLater(savebtn) {
       const productId = savebtn.getAttribute("data-product-id");
       fetch('/saveForLater', {
@@ -743,13 +725,11 @@
         });
       });
     }
-
-    ////// Function to go to shop \\\\\\
+    ////// Function to go to shop \\\\\\\\\\\\
     function goToShop(){
       window.location.href ='/shop'
     }
-
-    ////// Function to move product from save for later to cart \\\\\\
+    ////// Function to move product from save for later to cart \\\\\\\\\\\\
     function moveToCart(btn) {
       const productId = btn.getAttribute("data-product-id");
       fetch('/moveToCartFromSaveForLater', {
@@ -807,11 +787,9 @@
         });
       });
     }
-
-    ////// Function to delete product from save for later \\\\\\
+    ////// Function to delete product from save for later \\\\\\\\\\\\
     function deleteProductFromSaveForLater(btn) {
       const productId = btn.getAttribute("data-product-id");
-
       Swal.fire({
         title: "Are you sure?",
         text: "Do you want to remove this product from Save for Later?",
@@ -882,8 +860,6 @@
         }
       })
     }
-
   </script>
-
   <!-- User footer -->
   <%-include("../userpartials/footer.ejs")%>

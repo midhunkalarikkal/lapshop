@@ -1,15 +1,13 @@
-<!-- User navbar -->
-<%-include("../userpartials/navbar.ejs")%>
 
+<%-include("../userpartials/navbar.ejs")%>
     <head>
-        <!-- Custom css for product detail page -->
+        
         <link rel="stylesheet" href="/static/css/product_Detail.css">
     </head>
-
     <section class="view">
         <div class="mx-2 mx-md-5 mt-5 d-md-flex mb-2">
             <% if(productData !="" ){ %>
-                <!-- images container and image container -->
+                
                 <div class="col-md-6">
                     <div class="d-flex justify-content-center">
                         <div class="divOne col-2 shadow side-img d-none d-lg-block " style="height: 450px; overflow-y: scroll;">
@@ -19,22 +17,21 @@
                                 </div>
                             <% }) %>
                         </div>
-                        <div class="divTwo col-10 product-image d-none d-md-block p-4 shadow" style="overflow:hidden">
+                        <div class="divTwo col-10 product-image d-none d-md-block shadow">
                             <% productData.images.forEach((image, index) => { %>
-                                <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
-                                    <span id="lens"></span>
-                                    <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
+                                <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first" data-index="<%= index %>">
+                                    <span class="zoom-lens"></span>
+                                    <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>">
                                 </div>
                             <% }); %>
                         </div>
-                        
                         <div class="divThree col-md-6 col-lg-5 product-image d-block d-md-none">
                             <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
                                 <div class="carousel-inner shadow">
                                     <% productData.images.forEach((image, index) => { %>
-                                        <div id="carousel-item-<%= index %>" class="carousel-item <%= index === 0 ? 'active' : '' %> first">
-                                            <span id="lens"></span>
-                                            <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>" id="target-image">
+                                        <div class="carousel-item <%= index === 0 ? 'active' : '' %> first" data-index="<%= index %>">
+                                            
+                                            <img class="w-100" src="/static/images/ProductImages/<%= image %>" alt="Image" data-selected="<%= index === 0 ? 'true' : 'false' %>">
                                         </div>
                                     <% }); %>
                                 </div>
@@ -131,10 +128,8 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- Details div -->
+                
                 <div class="divFour col-6 shadow px-4"  id="second" style="height: 450px">
-                    
                 </div>
                 <div class="mx-2 mx-md-0 col-md-4">                    
                     <div class="divFive col-12 d-flex flex-column mt-4 mt-md-0 px-md-4" id="product-detail">
@@ -160,12 +155,10 @@
                                 <i class="fas fa-tools text-danger mb-2 fs-5 icon-style"></i>
                                 <p class="mb-0 text-dark fw-medium small">7 Days Service Center Replacement</p>
                             </div>
-                            
                             <div class="d-flex flex-column align-items-center align-self-stretch text-center col-4">
                                 <i class="fas fa-truck text-dark mb-2 fs-5 icon-style"></i>
                                 <p class="mb-0 text-dark fw-medium small">Free Delivery</p>
                             </div>
-                            
                             <div class="d-flex flex-column align-items-center align-self-stretch text-center col-4">
                                 <i class="fas fa-shield-alt text-success mb-2 fs-5 icon-style"></i>
                                 <p class="mb-0 text-dark fw-medium small">1 Year Warranty</p>
@@ -186,7 +179,7 @@
                                         </button>
                                         <% break; %>
                                     <% } %>
-                                    <!-- If it's the last iteration and no match is found -->
+                                    
                                     <% if(i===cartProdId.length - 1){ %>
                                         <button class="btn addtocart-btn px-3 d-none d-lg-block"
                                             data-prod-id="<%= productData._id %>" onclick="addToCart(this)"><i
@@ -251,8 +244,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!--  Most popular products  -->
+                
                 <% if(mostPopular.length > 0) { %>
                     <div class="col-2 p-1 d-none d-md-block" id="product-detail" style="background-color: rgb(243, 243, 243);">
                     <h6 class="fw-bold p-2"> Most popular</h6>
@@ -276,7 +268,6 @@
                     </div>
                 <% } %>
                 
-                <!--  Technical details table for small devices -->
                 <div class="px-2 d-block d-md-none">
                     <h5>Technical details</h5>
                     <table class="table table-bordered table-hover shadow-sm">
@@ -356,7 +347,6 @@
                         </tbody>
                     </table>
                 </div>
-
             <% }else{ %>
                 <div class="container my-4">
                     <div class="row justify-content-center">
@@ -369,9 +359,8 @@
                 </div>
             <% } %>
         </div>
-
         <div class="mx-md-5">
-            <!-- Same category products -->
+            
             <% if(productData != "" && sameCategoryProduct !="" ){ %>
                 <div class="container-fluid py-5 mt-2">
                     <h5 class="section-title my-2 mx-3 fw-bold">Same category products</h5>
@@ -403,11 +392,10 @@
                     </section>
                 </div>
             <% } %>
-
-            <!-- Review -->
+            
             <div class="d-md-flex">
                 <div class="col-md-6">
-                    <!-- Add review -->
+                    
                     <% if(productData != ""){ %>
                         <input type="hidden" value="<%= productData._id %>" id="reviewProductId">
                         <input type="hidden" value="<%= productDelivered %>" id="productDelivered">
@@ -432,7 +420,6 @@
                                 <label for="userName" class="mx-2 fw-bold">User name</label>
                             <% } %>
                             <textarea class="form-control mb-3" rows="3" placeholder="Write your review..." id="reviewText"></textarea>
-                            
                             <div class="mb-3">
                                 <label for="rating" class="form-label">Rating</label>
                                 <select class="form-select" id="rating">
@@ -443,15 +430,12 @@
                                     <option value="5">5 Stars</option>
                                 </select>
                             </div>
-                    
                             <button class="btn btn-primary btn-sm" type="button" id="submitReview" onclick="submitReview()">Submit Review</button>
                         </div>
                     </div>
-                    
                 </div>
-
                 <div class="col-md-6">
-                    <!-- reviews -->
+                    
                     <h5 class="section-title my-2 mx-3 fw-bold">Top reviews</h5>
                     <% if(reviews && reviews.length > 0) { %>
                         <% reviews.forEach((review, index) => { %>
@@ -471,17 +455,15 @@
                                       }) %></span>
                                     </p>
                                     <p class="mb-1"><%= review.reviewText %></p>
-                                            
                                     <div class="mb-2">
                                         <% for (let i = 0; i < 5; i++) { %>
                                             <% if (i < review.rating) { %>
-                                                <span class="text-warning">&#9733;</span>
+                                                <span class="text-warning">★</span>
                                             <% } else { %>
-                                                <span class="text-muted">&#9733;</span>
+                                                <span class="text-muted">★</span>
                                             <% } %>
                                         <% } %>
                                     </div>
-                                    
                                     <% if(userDetails){ %>
                                         <% if(userDetails.userId.toString() !== review.userId._id.toString()) { %>
                                         <div class="d-flex align-items-center">
@@ -513,30 +495,24 @@
                     <% } %>
                 </div>   
             </div>
-
         </div>
     </section>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <!-- Script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
         <script>
 
-            ////// To get the cart page \\\\\\
             function toGetCart(){
                 window.location.href = "/cart";
             }
 
-            ////// To get the wishlist page \\\\\\
             function getWishlist(){
                 window.location.href = "/wishlist";
             }
 
-            ////// Funciton to add product to cart \\\\\\
             function addToCart(element) {
                 const productId = element.getAttribute('data-prod-id');
-
                 fetch('/addProductToCartFromShop', {
                     method: 'POST',
                     headers: {
@@ -554,6 +530,7 @@
                 })
                 .then(data => {
                     if (data.success) {
+                        console.log("data : ",data);
                         Swal.fire({
                             title: "Success",
                             text: data.message,
@@ -591,105 +568,89 @@
                     }
                 })
             }
-
-            ////// function to show the selected image \\\\\\
             function changeimage(element) {
-                var selectedImage;
-                var index = parseInt(element.getAttribute("data-index"));
-
-                document.querySelectorAll('.carousel-item').forEach(item => {
-                    item.classList.remove('active');
+                const index = Number(element.dataset.index);
+                const gallery = document.querySelector('.divTwo.product-image');
+                if (!gallery) return;
+                gallery.querySelectorAll('.carousel-item').forEach((slide) => {
+                    slide.classList.toggle('active', Number(slide.dataset.index) === index);
                 });
-
-                var carouselItem = document.getElementById(`carousel-item-${index}`);
-                if (carouselItem) { 
-                    var imgElement = carouselItem.querySelector('img');
-                    selectedImage = imgElement.getAttribute('src');
-                    carouselItem.classList.add('active');
-                }
-                customChange(selectedImage)
+                gallery.querySelectorAll('.each-img').forEach((thumb) => {
+                    thumb.classList.toggle('is-active', Number(thumb.dataset.index) === index);
+                });
+                hideProductZoom();
             }
-            
-            ////// for showing image in zoom div \\\\\\
-            document.addEventListener('DOMContentLoaded', function() {
-                var targetImage = document.querySelector("#target-image");
-                
-                var second = document.getElementById("second")
-                if (targetImage) {
-                    second.style.backgroundImage = `url(${targetImage.src})` 
-                }
-            });
 
-            ////// Function to show the selected image in zoom div \\\\\\
-            function customChange(selectedImage) {
-                var targetImage = document.querySelector("#target-image");
-                var second = document.getElementById("second")
-                second.style.backgroundImage = ""
-                
-                if (selectedImage) {
-                    second.style.backgroundImage = `url(${selectedImage})` 
+            const zoomGallery = document.querySelector('.divTwo.product-image');
+            const zoomPreview = document.getElementById('second');
+            const zoomDetails = document.querySelector('.divFive#product-detail');
+            const zoomEnabled = window.matchMedia('(min-width: 992px) and (hover: hover) and (pointer: fine)');
+            const zoomFactor = 2.5;
+
+            function hideProductZoom() {
+                if (zoomPreview) {
+                    zoomPreview.style.display = 'none';
+                }
+                if (zoomDetails) {
+                    zoomDetails.classList.remove('d-none');
+                }
+                if (zoomGallery) {
+                    zoomGallery.querySelectorAll('.zoom-lens').forEach((lens) => {
+                        lens.style.display = 'none';
+                    });
                 }
             }
 
-            ////// function to handle the zoom functionality of th image \\\\\\
-            var lens = document.querySelectorAll("#lens")
-            var first = document.querySelectorAll(".first")
-            var second = document.getElementById("second")
-            var productDetail = document.getElementById("product-detail")
-            var carouselButtonOne = document.getElementById("carousel-btnOne")
-            var carouselButtonTwo = document.getElementById("carousel-btnTwo")
-            
-            for(let i = 0; i < first.length ; i++){
-            
-                first[i].addEventListener("mousemove",function(e){
-                    
-                    var x = e.clientX - e.target.getBoundingClientRect().left;
-                    var y = e.clientY - e.target.getBoundingClientRect().top;
-                    
-                    var lensWidth = lens[i].offsetWidth;
-                    var lensHeight = lens[i].offsetHeight;
-                    var lensX = x - lensWidth / 2;
-                    var lensY = y - lensHeight / 2.3;
-                    
-                    lens[i].style.left = lensX + "px";
-                    lens[i].style.top = lensY + "px";
-                    
-                    var imageX = (x / e.target.offsetWidth) * 100;
-                    var imageY = (y / e.target.offsetHeight) * 100;
-                    
-                    second.style.backgroundPosition = `${imageX}% ${imageY}%`;
-                    
-                    lens[i].style.cursor = "none";
-                    document.body.style.cursor = "block";
-                    
-                })
-                
-                first[i].addEventListener("mouseenter", function() {
-                    if(window.innerWidth > 991) {
-                        carouselButtonOne.style.display = "none"
-                        carouselButtonTwo.style.display = "none"
-                        second.style.display = "block"
-                        lens[i].style.display = "block";
-                        productDetail.classList.add("d-none")
+            if (zoomGallery && zoomPreview) {
+                zoomGallery.addEventListener('mousemove', (event) => {
+                    if (!zoomEnabled.matches) {
+                        hideProductZoom();
+                        return;
                     }
+                    const slide = zoomGallery.querySelector('.carousel-item.active');
+                    const image = slide?.querySelector('img');
+                    const lens = slide?.querySelector('.zoom-lens');
+                    if (!image || !lens || !image.complete || !image.naturalWidth) {
+                        hideProductZoom();
+                        return;
+                    }
+                    const rect = image.getBoundingClientRect();
+                    const scale = Math.min(rect.width / image.naturalWidth, rect.height / image.naturalHeight);
+                    const drawnWidth = image.naturalWidth * scale;
+                    const drawnHeight = image.naturalHeight * scale;
+                    const drawnLeft = rect.left + (rect.width - drawnWidth) / 2;
+                    const drawnTop = rect.top + (rect.height - drawnHeight) / 2;
+                    const x = event.clientX - drawnLeft;
+                    const y = event.clientY - drawnTop;
+                    if (x < 0 || y < 0 || x > drawnWidth || y > drawnHeight) {
+                        hideProductZoom();
+                        return;
+                    }
+                    const lensWidth = Math.min(lens.offsetWidth, drawnWidth);
+                    const lensHeight = Math.min(lens.offsetHeight, drawnHeight);
+                    const lensX = Math.max(0, Math.min(x - lensWidth / 2, drawnWidth - lensWidth));
+                    const lensY = Math.max(0, Math.min(y - lensHeight / 2, drawnHeight - lensHeight));
+                    const slideRect = slide.getBoundingClientRect();
+                    lens.style.left = `${drawnLeft - slideRect.left + lensX}px`;
+                    lens.style.top = `${drawnTop - slideRect.top + lensY}px`;
+                    lens.style.display = 'block';
+                    zoomPreview.style.display = 'block';
+                    if (zoomDetails) zoomDetails.classList.add('d-none');
+                    zoomPreview.style.backgroundImage = `url("${image.currentSrc}")`;
+                    zoomPreview.style.backgroundSize = `${drawnWidth * zoomFactor}px ${drawnHeight * zoomFactor}px`;
+                    const previewX = zoomPreview.clientWidth / 2 - (lensX + lensWidth / 2) * zoomFactor;
+                    const previewY = zoomPreview.clientHeight / 2 - (lensY + lensHeight / 2) * zoomFactor;
+                    zoomPreview.style.backgroundPosition = `${previewX}px ${previewY}px`;
                 });
-                
-                first[i].addEventListener("mouseleave", function() {
-                    carouselButtonOne.style.display = "block"
-                    carouselButtonTwo.style.display = "block"
-                    second.style.display = "none"
-                    lens[i].style.display = "none";
-                    productDetail.classList.remove("d-none")
-                });
+                zoomGallery.addEventListener('mouseleave', hideProductZoom);
+                zoomEnabled.addEventListener('change', hideProductZoom);
             }
 
-            ////// Add a review \\\\\\
             async function submitReview() {
                 const productDelivered = document.getElementById('productDelivered').value;
                 const productId = document.getElementById('reviewProductId').value;
                 const reviewText = document.getElementById('reviewText').value;
                 const rating = document.getElementById('rating').value;
-
                 if(!productDelivered){
                     Swal.fire({
                         icon: 'info',
@@ -703,7 +664,6 @@
                     });
                     return;   
                 }
-
                 if(!reviewText || !rating){
                     Swal.fire({
                         icon: 'warning',
@@ -717,7 +677,6 @@
                     });
                     return;
                 }
-
                 if(reviewText.length > 200){
                     Swal.fire({
                         icon: 'warning',
@@ -731,7 +690,6 @@
                     });
                     return;
                 }
-
                 try {
                     const response = await fetch(`/addProductReview/${productId}/review`, {
                         method: 'POST',
@@ -740,7 +698,6 @@
                         },
                         body: JSON.stringify({ rating, reviewText })
                     });
-
                     const contentType = response.headers.get('content-type');
                     let data;
                     if (contentType && contentType.includes('application/json')) {
@@ -748,7 +705,6 @@
                     } else {
                         window.location.href = `/login`;
                     }
-
                     if (data.success) {
                         Swal.fire({
                             icon: 'success',
@@ -786,11 +742,9 @@
                 }
             }
 
-           ////// To like or dislike the review \\\\\\
            document.addEventListener('DOMContentLoaded', () => {
             const likeButtons = document.querySelectorAll('.btn-like');
             const dislikeButtons = document.querySelectorAll('.btn-dislike');
-
             const handleReviewAction = async (reviewId, action) => {
                 try {
                 const response = await fetch(`/review/${reviewId}/like-dislike`, {
@@ -798,7 +752,6 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ action }),
                 });
-
                 const contentType = response.headers.get('content-type');
                 let data;
                 if (contentType && contentType.includes('application/json')) {
@@ -807,7 +760,6 @@
                 } else {
                     window.location.href = `/login`;
                 }
-
                 if (data.success) {
                     Swal.fire({
                         icon: 'success',
@@ -846,14 +798,12 @@
                 });
                 }
             };
-
             likeButtons.forEach(button => {
                 button.addEventListener('click', () => {
                 const reviewId = button.getAttribute('data-review-id');
                 handleReviewAction(reviewId, 'like');
                 });
             });
-
             dislikeButtons.forEach(button => {
                 button.addEventListener('click', () => {
                 const reviewId = button.getAttribute('data-review-id');
@@ -861,8 +811,6 @@
                 });
             });
             });
-
         </script>
-
-    <!-- User footer -->
+    
     <%-include("../userpartials/footer.ejs")%>

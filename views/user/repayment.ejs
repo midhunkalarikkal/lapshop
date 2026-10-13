@@ -20,153 +20,114 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
         
     <link rel='stylesheet' href='/static/css/nav_footer.css' type="text/css" />
-    <link rel='stylesheet' href='/static/css/repayment.css' type="text/css" />
+     <link rel='stylesheet' href='/static/css/payment.css' type="text/css" />
 </head>
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top">
-        <div class="container">
-            <div class="logo col-2">
-                <a href="" class="navbar-brand">
-                    <span class="fw-bold fs-3">LapShop</span>
-                </a>
-            </div>
-            <div class="col-10 d-flex align-items-center justify-content-center">
-                <h3 class="text-light fs-3 mt-2">Re payment</h3>
-            </div>
+     <nav class="navbar navbar-expand-lg navbar-dark py-2 fixed-top payment-navbar">
+        <div class="container payment-container d-flex justify-content-between align-items-center">
+            <a href="/home" class="navbar-brand fw-bold fs-3">LapShop</a>
+            <span class="payment-nav-caption"><i class="fa-solid fa-lock me-2"></i>Secure checkout</span>
         </div>
     </nav>
-
-    <section class="view">
-        <div class="cart-wrap mt-5">
-            <div class="container">
-                <% if(order && order !=="" ){ %>
-                    <div class="row mb-3">
-                        <div class="product-card col-12 col-md-8">
-                            <div class="product-card-each mt-4 shadow d-flex">
-                                <div class="col-12 p-3">
-                                    <div class="payment-intro mb-4 d-flex justify-content-between align-items-center">
-                                        <h4 class="fw-bold mb-0">Complete your payment</h4>
-                                    </div>   
-                                    <hr>    
-                                    <h5>Order details</h5>
-                                    <hr>
-                                    <div class="order-header d-flex justify-content-between align-items-center mb-3">
-                                        <div class="order-id">Order ID: <strong><%= order.orderId %></strong></div>
-                                        <div class="order-date text-muted">Date: <%= order.orderDate %></div>
-                                    </div>
-                                    <div class="order-details row">
-                                        <div class="col-md-6 mb-2">
-                                            <p class="label">Coupon Applied:</p>
-                                            <p class="value"><%= order.couponApplied ? order.couponApplied : 'N/A' %></p>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <p class="label">Payment Method:</p>
-                                            <p class="value"><%= order.paymentMethod %></p>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <p class="label">Order Total:</p>
-                                            <p class="value"><strong>₹<%= order.orderTotal %></strong></p>
-                                        </div>
-                                        <div class="col-md-6 mb-2">
-                                            <p class="label">Delivery Charge:</p>
-                                            <p class="value"><strong>₹<%= order.deliveryCharge %></strong></p>
-                                        </div>
-                                    </div>
-                                    <hr>    
-                                    <h5>Your cart items</h5>
-                                    <hr>
-                                    <% order.orderedItems.forEach((item , index)=> { %>
-                                        <div class="row mb-1">
-                                            <h6>Item <%= index+1 %>
-                                            </h6>
-                                            <p class="small">
-                                                <%= item.product.brand.name %> ,
-                                                <%= item.product.name %> ,
-                                                Quantity : <%= item.quantity %>
-                                                <br>
-                                                Price (according to quantity) : <%= item.totalPrice %>
-                                            </p>
-                                        </div>
-                                    <% }) %>
-                                    <hr>
-                                    <h5>Selected address</h5>
-                                    <hr>
-                                    <% if(order.address){ %>
-                                        <h6>
-                                            <%= order.address.name %>
-                                        </h6>
-                                        <p>
-                                            <input type="hidden" id="userAddressId" value="<%= order.address._id  %>">
-                                            <%= order.address.addressLine %> ,
-                                            <%= order.address.city %> , <br>
-                                            <%= order.address.district %> ,
-                                            <%= order.address.state %> ,
-                                            Pincode : <%= order.address.pincode %> ,
-                                            <%= order.address.country %> <br>
-                                            Phone : <%= order.address.phone %>
-                                        </p>
-                                        <input type="hidden" id="userAddress" value="<%= order.address  %>">
-                                    <% } %>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="product-subtotal col-12 col-md-4">
-                            <div class="subtotal mt-4 shadow d-flex flex-column p-3">
-                                <div class="head text-center">
-                                    <h4 class="">Payment</h4>
-                                </div>
-                                <hr>
-                                <div class="checkbox-payment">
-                                    <div class="razorpay">
-                                        <h6 class="text-center">
-                                            Review and Complete Repayment
-                                        </h6>
-                                        <input type="hidden" id="paymentMethod" value="<%= order.paymentMethod %>">
-                                    </div>
-                                </div>
-                                <div class="details">
-                                    <hr>
-                                    <div class="total d-flex justify-content-between">
-                                        <h5>Order total : </h5>
-                                        <h5>₹ <span id="subTotal"><%= order.orderTotal %></span></h5>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="button mt-3">
-                                    <input type="hidden" id="orderId" value="<%= order._id %>">
-                                    <button class="btn btn-warning w-100 d-none d-md-block" id="goToPayment">Re pay</button>
-                                    <button class="btn btn-warning w-100 btn-sm d-block d-md-none" id="goToPayment">Re pay</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <% }else{ %>
-                        <div class="alert alert-info text-center" role="alert">No order found.</div>
-                <% } %>
-            </div>
-        </div>
-    </section>
-
-    <footer class="text-light" id="footer">
-        <div class="container-fluid">
-            <div class="row p-5 d-flex justify-content-center">
-                <div class="col-12">
-                    <div class="footer-section d-flex align-items-center justify-content-center" style="height: 100%;">
-                        <div class="d-flex flex-column align-items-center justify-content-center">
-                            <img src="/static/images/Bg/desktop/Lapshoplogo.png" class="img-fluid w-25 h-25">
-                            <div class="text text-center">
-                                <h1>LapShop</h1>
-                                <h6>Discover Your Digital World with Us.</h6>
-                            </div>
-                        </div>
-                    </div>
+    <main class="payment-page">
+        <div class="container payment-container">
+            <header class="payment-page-header">
+                <div>
+                    <span class="payment-eyebrow">SECURE ORDER PAYMENT</span>
+                    <h1>Complete your payment</h1>
+                    <p>Review your existing order and securely retry your payment.</p>
                 </div>
-            </div>
+                <a href="/orders" class="payment-header-btn text-decoration-none"><i class="fa-solid fa-arrow-left"></i> Back to orders</a>
+            </header>
+            <% if (order && order !== "") { %>
+                <div class="row g-4 align-items-start">
+                    <div class="col-12 col-lg-8">
+                        <section class="payment-panel">
+                            <div class="payment-panel-heading">
+                                <span class="payment-heading-icon"><i class="fa-solid fa-receipt"></i></span>
+                                <div><h2>Order details</h2><p>Review the details of the order you're paying for.</p></div>
+                            </div>
+                            <div class="payment-summary-calculation" style="border-top: 0; padding-bottom: 16px;">
+                                <div class="payment-summary-line"><span>Order ID</span><strong><%= order.orderId %></strong></div>
+                                <div class="payment-summary-line"><span>Order date</span><strong><%= order.orderDate %></strong></div>
+                                <div class="payment-summary-line"><span>Payment method</span><strong><%= order.paymentMethod %></strong></div>
+                                <div class="payment-summary-line"><span>Coupon applied</span><strong><%= order.couponApplied ? order.couponApplied : 'N/A' %></strong></div>
+                                <div class="payment-summary-line"><span>Delivery charge</span><strong>₹<%= order.deliveryCharge %></strong></div>
+                                <div class="payment-summary-line payment-summary-total"><span>Order total</span><strong>₹<%= order.orderTotal %></strong></div>
+                            </div>
+                        </section>
+                        <section class="payment-panel payment-section-gap">
+                            <div class="payment-panel-heading">
+                                <span class="payment-heading-icon"><i class="fa-solid fa-laptop"></i></span>
+                                <div><h2>Ordered products</h2><p>Items included in this order</p></div>
+                            </div>
+                            <div class="payment-items">
+                                <% order.orderedItems.forEach((item, index) => { %>
+                                    <div class="payment-item">
+                                        <span class="payment-item-number"><%= index + 1 %></span>
+                                        <div class="payment-item-info">
+                                            <strong><%= item.product.brand.name %> <%= item.product.name %></strong>
+                                            <span>Quantity: <%= item.quantity %></span>
+                                        </div>
+                                        <strong class="payment-item-price">₹<%= item.totalPrice %></strong>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </section>
+                        <section class="payment-panel payment-section-gap">
+                            <div class="payment-panel-heading">
+                                <span class="payment-heading-icon"><i class="fa-solid fa-location-dot"></i></span>
+                                <div><h2>Delivery address</h2><p>Where your order will be delivered</p></div>
+                            </div>
+                            <% if (order.address) { %>
+                                <div class="payment-address">
+                                    <strong><%= order.address.name %></strong>
+                                    <p><%= order.address.addressLine %>, <%= order.address.city %>,<br><%= order.address.district %>, <%= order.address.state %> - <%= order.address.pincode %>, <%= order.address.country %></p>
+                                    <span><i class="fa-solid fa-phone"></i><%= order.address.phone %></span>
+                                </div>
+                                <input type="hidden" id="userAddressId" value="<%= order.address._id %>">
+                                <input type="hidden" id="userAddress" value="<%= order.address %>">
+                            <% } else { %>
+                                <div class="payment-address"><p>No delivery address available.</p></div>
+                                <input type="hidden" id="userAddressId" value="">
+                            <% } %>
+                        </section>
+                    </div>
+                    <aside class="col-12 col-lg-4">
+                        <div class="payment-panel payment-summary">
+                            <div class="payment-panel-heading">
+                                <span class="payment-heading-icon"><i class="fa-solid fa-credit-card"></i></span>
+                                <div><h2>Complete repayment</h2><p>Secure payment for your order</p></div>
+                            </div>
+                            <div class="checkbox-payment">
+                                <div class="payment-method">
+                                    <span class="payment-method-icon"><i class="fa-solid fa-shield-halved"></i></span>
+                                    <span><strong>Secure online payment</strong><small>Continue using Razorpay</small></span>
+                                    <i class="fa-solid fa-chevron-right payment-method-arrow"></i>
+                                </div>
+                            </div>
+                            <input type="hidden" id="paymentMethod" value="<%= order.paymentMethod %>">
+                            <input type="hidden" id="orderId" value="<%= order._id %>">
+                            <div class="payment-summary-calculation">
+                                <div class="payment-summary-line"><span>Delivery</span><strong><%= Number(order.deliveryCharge) === 0 ? 'FREE' : '₹' + order.deliveryCharge %></strong></div>
+                                <div class="payment-summary-line payment-summary-total"><span>Total payable</span><strong>₹<span id="subTotal"><%= order.orderTotal %></span></strong></div>
+                            </div>
+                            <button type="button" id="goToPayment" class="payment-confirm-btn repayment-trigger"><i class="fa-solid fa-lock"></i> Pay now</button>
+                            <p class="payment-secure-note"><i class="fa-solid fa-shield-halved"></i> Secured payment powered by Razorpay</p>
+                        </div>
+                    </aside>
+                </div>
+                <div class="payment-mobile-bar">
+                    <div class="payment-mobile-total"><span>Total payable</span><strong>₹<%= order.orderTotal %></strong></div>
+                    <button type="button" class="payment-confirm-btn repayment-trigger"><i class="fa-solid fa-lock"></i> Pay now</button>
+                </div>
+            <% } else { %>
+                <div class="payment-panel p-4 text-center"><i class="fa-solid fa-circle-info text-success fs-2 mb-3"></i><h2 class="h5">No order found</h2><p class="text-muted mb-3">This order is not available for repayment.</p><a href="/orders" class="payment-header-btn text-decoration-none">View orders</a></div>
+            <% } %>
         </div>
-    </footer>
+    </main>
 
     <!-- script for sweet alert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

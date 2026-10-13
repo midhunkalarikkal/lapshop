@@ -78,12 +78,12 @@ const sendOtpMail = async (email, otp, subject, message) => {
          port: 465,
          secure: true,
          auth: {
-            user: process.env.AUTH_EMAIL,
-            pass: process.env.AUTH_PASS,
+            user: process.env.OFFICIAL_EMAIL,
+            pass: process.env.OFFICIALEMAIL_PASS,
          },
       });
       const mailOptions = {
-         from: 'lapshopotp@gmail.com',
+         from: process.env.OFFICIAL_EMAIL,
          to: email,
          subject: subject,
          html: `
@@ -105,7 +105,7 @@ const sendOtpMail = async (email, otp, subject, message) => {
                             </div>
 
                             <div style="background-color: #50c878; text-align: center; padding: 10px; color: #ffffff; font-size: 14px;">
-                                <p style="margin: 0;">Visit us: <a href="https://lapshop.site" style="color: #ffffff; text-decoration: none;">lapshop.site</a></p>
+                                <p style="margin: 0;">Visit us: <a href="https://lapshop.midhunkpaniker.online" style="color: #ffffff; text-decoration: none;">lapshop.site</a></p>
                                 <p style="margin: 0;">Contact: lapshopsite@gmail.com</p>
                             </div>
                         </div>
@@ -223,7 +223,7 @@ const postRegister = async (req, res, next) => {
       function clearSaveOtp() {
          registerOtp = '';
       }
-      setTimeout(clearSaveOtp, 180000);
+      setTimeout(clearSaveOtp, 300000);
 
       enteredFullname = req.body.fullname;
       enteredEmail = req.body.email;
@@ -247,7 +247,7 @@ const postRegister = async (req, res, next) => {
             return res.status(200).json({
                success: true,
                message: 'Redirecting to verification.',
-               redirectUrl: '/getOtpPage',
+               redirectUrl: '/otpverify',
             });
          } else {
             return res
@@ -1319,7 +1319,7 @@ const sendPurchaseDetails = async (mailData) => {
                         <!-- Footer -->
                         <div style="background-color: #50c878; text-align: center; padding: 20px; color: #ffffff; font-size: 14px;">
                             <p style="margin: 0;">If you have any questions, contact us at <a href="mailto:lapshopsite@gmail.com" style="color: #1b1b1b; text-decoration: none;">lapshopsite@gmail.com</a>.</p>
-                            <p style="margin: 0;">Check your order or visit us at: <a href="https://lapshop.site" style="color: #1b1b1b; text-decoration: none;">LapShop</a></p>
+                            <p style="margin: 0;">Check your order or visit us at: <a href="mailto:lapshop.site@gmail.com" style="color: #1b1b1b; text-decoration: none;">LapShop</a></p>
                         </div>
                     </div>
                 </body>
@@ -1485,8 +1485,8 @@ const sendContactMail = async (name, email, phone, message) => {
          port: 465,
          secure: true,
          auth: {
-            user: process.env.AUTH_EMAIL,
-            pass: process.env.AUTH_PASS,
+            user: process.env.OFFICIAL_EMAIL,
+            pass: process.env.OFFICIALEMAIL_PASS,
          },
       });
 
@@ -1526,7 +1526,7 @@ const sendContactMail = async (name, email, phone, message) => {
       await transporter.sendMail(mailOptions);
       return true;
    } catch (error) {
-      if (appConfig.is) {
+      if (appConfig.isDev) {
          console.log('Error : ', error);
       }
       return false;

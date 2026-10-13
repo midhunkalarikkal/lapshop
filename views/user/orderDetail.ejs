@@ -1,197 +1,111 @@
-<!-- User navbar -->
-<%-include("../userpartials/navbar.ejs")%>
-
+<%- include("../userpartials/navbar.ejs") %>
 <head>
-    <!-- order detail page css -->
-    <link rel='stylesheet' href='/static/css/order_detail.css' type="text/css" />
+    <link rel="stylesheet" href="/static/css/order_detail.css" type="text/css">
 </head>
-
-    <section class="view">
-        <div class="orderDetail-wrap mt-5">
-            <div class="container">
-                <div class="row">
-                    <h2>Order details</h2>
-                    <hr>
-                </div>
-                <div class="row justify-content-center mb-3">
-                    <div class="col-10 shadow orderDetail">
-                       <% if(order !== "" && order.length > 0){ %>
-                            <% for(let i = 0; i < order.length; i++){ %>
-                                <div class="details d-md-flex flex-row mt-3 border">
-                                    <div class="left d-flex flex-column p-3 col-md-8">
-                                        <span class="product-price "><span class="heads">Order# :</span> <%= order[i].orderId  %></span>
-                                        <span class="product-price "><span class="heads">Order date :</span> <%= order[i].orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })  %></span>
-                                        <%
-                                            const orderDate = new Date(order[i].orderDate);
-                                            orderDate.setDate(orderDate.getDate() + 4);
-                                            const deliveryDate = orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' });
-                                        %>
-                                        <span class="product-price "><span class="heads">Expected delivery date : </span> <%= deliveryDate  %></span>
-                                        <span class="product-price ">
-                                            <span class="heads">Order total : </span>
-                                            <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
-                                                ₹ <%= order[i].orderTotal + order[i].walletDebitedAmount %>
-                                            <% }else{ %>
-                                                ₹ <%= order[i].orderTotal %>
-                                            <% } %>
-                                        </span>
-                                        <span class="product-name"><span class="heads">Order status : </span><%= order[i].status %></span>
-                                        <span class="product-name"><span class="heads">Status date : </span><%= order[i].statusDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span>
-                                    </div>
-                                    <% if(order[i].status === "Delivered"){ %>
-                                        <div class="left d-flex flex-column p-3 col-md-4 justify-content-end">
-                                            <button class="btn btn-primary btn-sm col-lg-8 col-6 col-md-12" id="downloadInvoice" data-order-id="<%= order[i]._id %>" onclick="downloadInvoice('<%= order[i]._id %>')">
-                                                <i class="fa-solid fa-file" style="color: white;"></i> Generate Invoice
-                                            </button>
-                                        </div>
-                                    <% } %>
-                                </div>
-                                <div class="item-wrap-border border mt-3">
-                                    <% if(order[i].orderedItems.length ===  1){ %>
-                                        <div class="item-wrap-head mt-2 p-3">
-                                            <h5>Item</h5>
-                                            <hr>
-                                        </div>
-                                    <% }else{ %>
-                                        <div class="item-wrap-head mt-2 p-3">
-                                            <h5>Items</h5>
-                                            <hr>
-                                        </div>
-                                    <% } %>
-                                    <% for(let j = 0; j < order[i].orderedItems.length; j++){ %>
-                                        <div class="items-wrap d-md-flex p-3">
-                                            <div class="item-img col-md-4">
-                                                <span class="heads mx-3">Shipment <%= j+1 %> of <%= order[i].orderedItems.length %></span>
-                                                <a href="/productDetail/<%= order[i].orderedItems[j].product._id %>" style="cursor: pointer;">
-                                                    <img src="/static/images/ProductImages/<%= order[i].orderedItems[j].product.images[0] %>"
-                                                    alt="image loading" class="product-img shadow mt-2">
-                                                </a>
-                                            </div>
-                                            <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center mt-3 mt-md-0">
-                                                <span class="product-brand"><span class="heads fw-bold">Brand : </span><%= order[i].orderedItems[j].product.brand.name %></span>
-                                                <span class="product-name"><span class="heads fw-bold">Model : </span><%= order[i].orderedItems[j].product.name %></span>
-                                                <span class="product-name"><span class="heads fw-bold">Descroiption : </span><%= order[i].orderedItems[j].product.description %></span>
-                                            </div>
-                                            <div class="item-details col-md-4 d-flex flex-column align-item-center justify-content-center">
-                                                <span class="product-name"><span class="heads fw-bold">Category : </span><%= order[i].orderedItems[j].product.category.name %></span>
-                                            <span class="product-name"><span class="heads fw-bold">Black : </span><%= order[i].orderedItems[j].product.colour %></span>
-                                            <span class="product-name"><span class="heads fw-bold">Price : ₹ </span><%= order[i].orderedItems[j].product.offerPrice %></span>
-                                            <span class="product-name"><span class="heads fw-bold">RAM Size : </span><%= order[i].orderedItems[j].ramSize %></span>
-                                            <span class="product-name"><span class="heads fw-bold">Weight : </span><%= order[i].orderedItems[j].weight %></span>
-                                            <span class="product-name"><span class="heads fw-bold">Quantity : </span><%= order[i].orderedItems[j].quantity %></span>
-                                        </div>
-                                    </div>
-                                    <% } %>
-                                </div>
-                                <div class="order-paymentandAddress d-md-flex">
-                                    <div class="order-payment mt-3 col-md-5">
-                                        <div class="order-payment-head p-3 border">
-                                            <h5>Payment information</h5>
-                                            <hr>
-                                            <span class="product-name"><span class="heads">Payment method <br></span>
-                                                <% if(order[i].paymentMethod === "cod"){ %>
-                                                    Cash on delivery
-                                                <% }else if(order[i].paymentMethod === "razorpay"){ %>
-                                                    Razorpay
-                                                <% }else if(order[i].paymentMethod === "wallet"){ %>
-                                                    Wallet
-                                                <% }else if(order[i].paymentMethod === "wallet with razorpay"){ %>
-                                                    Wallet with Razorpay
-                                                <% } %>
-                                            </span>
-                                            <br>
-                                            <br>
-                                            <span class="heads">Payment status</span><br>
-                                            <% if (order[i].paymentStatus === false && order[i].paymentMethod !== "cod" && order[i].status !== "Cancelled" && order[i].status !== "Request return" && order[i].status !== "Request rejected" && order[i].status !== "Request accepted" && order[i].status !== "Admin cancelled") { %>
-                                                <span class="text-danger">Payment not completed <button class="btn btn-warning btn-sm" id="repayment" onclick="repayment(this)" data-orderId="<%= order[i]._id %>">Complete payment</button></span>            
-                                            <% } else if (order[i].paymentStatus) { %>
-                                                <span class="text-success">Payment completed <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span> <br>
-                                            <% } else if(order[i].paymentStatus === false && order[i].paymentMethod === "cod") { %>
-                                                <span class="text-danger">Payment not completed </span> <br>
-                                            <% } else if(order[i].paymentStatus === false){ %>
-                                                <% if(order[i].status === "Cancelled" || order[i].status === "Admin cancelled" || order[i].status === "Request return" || order[i].status === "Return accepted" || order[i].status === "Return rejected"){ %>
-                                                    <span class="text-danger">Payment not completed</span> <br>
-                                                <% } %>
-                                            <% } %>
-
-                                            <% if(order[i].paymentStatus !== false){ %>
-                                                <% if (order[i].status === "Cancelled" || order[i].status === "Return accepted") { %>
-                                                    <% if (["razorpay", "wallet", "wallet with razorpay"].includes(order[i].paymentMethod)) { %>
-                                                        <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
-                                                    <% } %>
-                                                <% } else if (order[i].status === "Return accepted" && order[i].paymentMethod === "cod") { %>
-                                                    <span class="text-success">Order amount Credited to your wallet <i class="fa-solid fa-circle-check" style="color: #29a33d;"></i></span>
-                                                <% } %>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                    <div class="gap col-1">
-                                    </div>
-                                    <div class="order-payment mt-3 col-md-6 mx-auto">
-                                        <div class="order-payment-head p-3 border">
-                                            <h5>Shipping & billing address</h5>
-                                            <hr>
-                                            <% if(order[i].address){ %>
-                                                <span class="product-name"><span class="heads"><%= order[i].address.name  %> <br></span>
-                                                    <%= order[i].address.addressLine %> <br>
-                                                    <%= order[i].address.city %>, <%= order[i].address.district %> <br>
-                                                    <%= order[i].address.state %>, <%= order[i].address.pincode %> <br>
-                                                    phone : <%= order[i].address.phone %>, <%= order[i].address.country %>
-                                                </span>
-                                            <% }else{ %>
-                                                <p class="text-center">Address not found</p>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="order-total mt-md-3 mt-0 mb-3 p-3">
-                                    <hr>
-                                    <h5>Order total</h5>
-                                    <hr>
-                                    <div class="col-md-4">
-                                        <div class="total d-flex justify-content-between">
-                                            <h6>Delivery : </h6> <h6 class="text-success">Free</h6>
-                                        </div>
-                                        <% if(order[i].couponApplied){ %>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Coupon : </h6> <h6 class="text-success">Applied</h6>
-                                            </div>
-                                        <% } %>
-                                        <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Online paid amount : </h6> <h6>₹ <%= order[i].orderTotal %> </h6>
-                                            </div>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Wallet used amount : </h6> <h6>₹ <%= order[i].walletDebitedAmount %> </h6>
-                                            </div>
-                                        <% }else{ %>
-                                            <div class="total d-flex justify-content-between">
-                                                <h6>Total paid amount : </h6> <h6>₹<%= order[i].orderTotal %> </h6>
-                                            </div>
-                                        <% } %>
-                                        <hr>
-                                        <div class="total d-flex justify-content-between">
-                                            <h5 class="text-danger">Order total : </h5> <h5 class="text-danger">
-                                                <% if(order[i].walletDebitedAmount && order[i].walletDeitedAmount !== 0){ %>
-                                                    ₹ <%= order[i].orderTotal + order[i].walletDebitedAmount %>
-                                                <% }else{ %>
-                                                    ₹ <%= order[i].orderTotal %>
-                                                <% } %>
-                                            </h5>
-                                        </div> 
-                                    </div>
-                                    <hr>
-                                </div>
-                            <% } %>
-                        <% } %>
-                    </div>   
-                </div>
+<section class="view order-detail-page">
+    <div class="container order-detail-container">
+        <div class="order-detail-header">
+            <div>
+                <span class="order-eyebrow">PURCHASE INFORMATION</span>
+                <h1>Order details</h1>
+                <p>Review your items, payment information and delivery details in one place.</p>
             </div>
+            <a class="btn order-back-btn" href="/orders"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to orders</a>
         </div>
-    </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/static/scripts/user_orderDetail.js"></script>
-
-    <!-- User footer -->
-    <%-include("../userpartials/footer.ejs")%>
+        <% if (order && order !== "" && order.length > 0) { %>
+            <% for (let i = 0; i < order.length; i++) { %>
+                <% const currentOrder = order[i]; %>
+                <% const walletUsed = Number(currentOrder.walletDebitedAmount) || 0; %>
+                <% const payableTotal = Number(currentOrder.orderTotal) || 0; %>
+                <% const displayTotal = payableTotal + walletUsed; %>
+                <% const deliveryEstimate = new Date(currentOrder.orderDate); deliveryEstimate.setDate(deliveryEstimate.getDate() + 4); %>
+                <div class="order-overview order-surface">
+                    <div class="order-overview-main">
+                        <span class="order-label">ORDER NUMBER</span>
+                        <h2>#<%= currentOrder.orderId %></h2>
+                        <p>Placed on <%= currentOrder.orderDate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></p>
+                    </div>
+                    <div class="order-overview-side">
+                        <span class="order-status <%= ['Cancelled', 'Admin cancelled', 'Return rejected'].includes(currentOrder.status) ? 'status-negative' : currentOrder.status === 'Delivered' || currentOrder.status === 'Return accepted' ? 'status-positive' : 'status-progress' %>"><i class="fas fa-circle" aria-hidden="true"></i> <%= currentOrder.status %></span>
+                        <span class="order-status-date">Updated <%= currentOrder.statusDate.toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' }) %></span>
+                    </div>
+                </div>
+                <div class="order-detail-layout row g-4">
+                    <div class="col-12 col-lg-8">
+                        <section class="order-surface order-items-panel">
+                            <div class="order-section-heading">
+                                <div><span class="order-section-eyebrow">YOUR PURCHASE</span><h3>Ordered items <span class="order-count"><%= currentOrder.orderedItems.length %></span></h3></div>
+                                <i class="fas fa-box-open order-heading-icon" aria-hidden="true"></i>
+                            </div>
+                            <% for (let j = 0; j < currentOrder.orderedItems.length; j++) { %>
+                                <% const item = currentOrder.orderedItems[j]; %>
+                                <article class="order-product">
+                                    <a class="order-product-image" href="/productDetail/<%= item.product._id %>"><img src="/static/images/ProductImages/<%= item.product.images[0] %>" alt="<%= item.product.name %>" loading="lazy"></a>
+                                    <div class="order-product-content">
+                                        <span class="order-product-brand"><%= item.product.brand.name %></span>
+                                        <a class="order-product-name" href="/productDetail/<%= item.product._id %>"><%= item.product.name %></a>
+                                        <p class="order-product-description"><%= item.product.description %></p>
+                                        <div class="order-product-specs">
+                                            <span><strong>Category:</strong> <%= item.product.category.name %></span>
+                                            <span><strong>Colour:</strong> <%= item.product.colour %></span>
+                                            <span><strong>RAM:</strong> <%= item.ramSize %></span>
+                                            <span><strong>Weight:</strong> <%= item.weight %></span>
+                                        </div>
+                                        <div class="order-product-bottom"><span class="order-quantity">Qty: <strong><%= item.quantity %></strong></span><strong class="order-item-price">₹ <%= item.product.offerPrice %></strong></div>
+                                    </div>
+                                </article>
+                            <% } %>
+                        </section>
+                        <div class="row g-4 order-info-row">
+                            <div class="col-12 col-md-6">
+                                <section class="order-surface order-info-card">
+                                    <div class="order-info-title"><span class="order-info-icon"><i class="fas fa-credit-card" aria-hidden="true"></i></span><h3>Payment information</h3></div>
+                                    <div class="order-info-field"><span>Payment method</span><strong><% if (currentOrder.paymentMethod === 'cod') { %>Cash on delivery<% } else if (currentOrder.paymentMethod === 'razorpay') { %>Razorpay<% } else if (currentOrder.paymentMethod === 'wallet') { %>Wallet<% } else if (currentOrder.paymentMethod === 'wallet with razorpay') { %>Wallet with Razorpay<% } else { %><%= currentOrder.paymentMethod %><% } %></strong></div>
+                                    <div class="order-info-field"><span>Payment status</span><strong class="<%= currentOrder.paymentStatus ? 'payment-success' : 'payment-pending' %>"><%= currentOrder.paymentStatus ? 'Payment completed' : 'Payment not completed' %></strong></div>
+                                    <% if (currentOrder.paymentStatus === false && currentOrder.paymentMethod !== 'cod' && !['Cancelled', 'Request return', 'Request rejected', 'Request accepted', 'Admin cancelled'].includes(currentOrder.status)) { %>
+                                        <button type="button" class="btn order-pay-btn" id="repayment" onclick="repayment(this)" data-orderId="<%= currentOrder._id %>">Complete payment <i class="fas fa-arrow-right" aria-hidden="true"></i></button>
+                                    <% } %>
+                                    <% if (currentOrder.paymentStatus !== false && ['Cancelled', 'Return accepted'].includes(currentOrder.status) && ['razorpay', 'wallet', 'wallet with razorpay'].includes(currentOrder.paymentMethod)) { %>
+                                        <p class="order-refund-note"><i class="fas fa-check-circle" aria-hidden="true"></i> Order amount credited to your wallet</p>
+                                    <% } %>
+                                </section>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <section class="order-surface order-info-card">
+                                    <div class="order-info-title"><span class="order-info-icon"><i class="fas fa-map-marker-alt" aria-hidden="true"></i></span><h3>Shipping & billing address</h3></div>
+                                    <% if (currentOrder.address) { %>
+                                        <address class="order-address"><strong><%= currentOrder.address.name %></strong><span><%= currentOrder.address.addressLine %></span><span><%= currentOrder.address.city %>, <%= currentOrder.address.district %></span><span><%= currentOrder.address.state %> - <%= currentOrder.address.pincode %></span><span><%= currentOrder.address.country %></span><span class="order-phone"><i class="fas fa-phone-alt" aria-hidden="true"></i> <%= currentOrder.address.phone %></span></address>
+                                    <% } else { %><p class="order-address-missing">Address not found</p><% } %>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                    <aside class="col-12 col-lg-4">
+                        <div class="order-summary order-surface">
+                            <div class="order-info-title"><span class="order-info-icon"><i class="fas fa-receipt" aria-hidden="true"></i></span><h3>Order summary</h3></div>
+                            <div class="order-summary-line"><span>Items</span><strong><%= currentOrder.orderedItems.length %></strong></div>
+                            <div class="order-summary-line"><span>Delivery</span><strong class="payment-success">Free</strong></div>
+                            <% if (currentOrder.couponApplied) { %><div class="order-summary-line"><span>Coupon</span><strong class="payment-success">Applied</strong></div><% } %>
+                            <% if (walletUsed > 0) { %>
+                                <div class="order-summary-line"><span>Online paid amount</span><strong>₹ <%= payableTotal %></strong></div>
+                                <div class="order-summary-line"><span>Wallet used amount</span><strong>₹ <%= walletUsed %></strong></div>
+                            <% } else { %>
+                                <div class="order-summary-line"><span>Order amount</span><strong>₹ <%= payableTotal %></strong></div>
+                            <% } %>
+                            <div class="order-summary-total"><span>Order total</span><strong>₹ <%= displayTotal %></strong></div>
+                            <div class="order-delivery-info"><i class="fas fa-truck" aria-hidden="true"></i><div><strong>Estimated delivery</strong><span><%= deliveryEstimate.toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' }) %></span></div></div>
+                            <% if (currentOrder.status === 'Delivered') { %>
+                                <button type="button" class="btn order-invoice-btn" id="downloadInvoice" data-order-id="<%= currentOrder._id %>" onclick="downloadInvoice('<%= currentOrder._id %>')"><i class="fas fa-file-invoice" aria-hidden="true"></i> Generate invoice</button>
+                            <% } %>
+                        </div>
+                    </aside>
+                </div>
+            <% } %>
+        <% } else { %>
+            <div class="order-surface order-empty"><i class="fas fa-box-open" aria-hidden="true"></i><h2>No order details found</h2><p>Explore the shop to discover products you may like.</p><a href="/shop" class="btn order-shop-btn">Continue shopping</a></div>
+        <% } %>
+    </div>
+</section>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/static/scripts/user_orderDetail.js"></script>
+<%- include("../userpartials/footer.ejs") %>

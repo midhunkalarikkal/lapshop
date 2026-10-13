@@ -78,9 +78,9 @@ app.use('/*', (_req, res) => {
 });
 
 app.listen(appConfig.port, () => {
-    const isProduction = !appConfig.isDev;
+   const isProduction = !appConfig.isDev;
 
-    console.log(`
+   console.log(`
 ╔══════════════════════════════════════════════════╗
 ║                                                  ║
 ║                  🛒 LAPSHOP                      ║

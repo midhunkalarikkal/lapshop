@@ -1,0 +1,184 @@
+@import url('https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;500;600;700;800&display=swap');
+
+.address-edit-page {
+    min-height: 100vh;
+    padding: 24px 16px 72px;
+    background: linear-gradient(145deg, #f4f8f5 0%, #ffffff 52%, #edf6ef 100%);
+    color: var(--third-color);
+    font-family: 'Saira Semi Condensed', sans-serif;
+}
+
+.address-edit-page .main {
+    overflow: hidden;
+    border: 1px solid #e3ece5;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 18px 55px rgba(27, 27, 27, 0.07);
+}
+
+.address-edit-page .address-form-content {
+    padding: clamp(24px, 4vw, 52px);
+}
+
+.address-edit-page .address-form-heading {
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #e9efea;
+}
+
+.address-edit-page .address-form-eyebrow {
+    display: inline-block;
+    margin-bottom: 10px;
+    color: var(--offerprice-color);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+}
+
+.address-edit-page .address-form-heading h4 {
+    color: var(--third-color);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+.address-edit-page .address-form-subtitle {
+    color: #68766c;
+    font-size: 1rem;
+    line-height: 1.6;
+}
+
+.address-edit-page .form-label {
+    display: block;
+    margin-bottom: 9px;
+    color: #28362c;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.address-edit-page .form-control {
+    width: 100%;
+    min-height: 48px;
+    padding: 11px 15px;
+    border: 1px solid #dce6df;
+    border-radius: 10px;
+    background: #fbfdfb;
+    color: var(--third-color);
+    font-family: inherit;
+    font-size: 0.98rem;
+    line-height: 1.5;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.address-edit-page textarea.form-control {
+    min-height: 108px;
+    resize: vertical;
+}
+
+.address-edit-page .form-control:hover:not(:disabled):not(:read-only) {
+    border-color: #a8d9b6;
+}
+
+.address-edit-page .form-control:focus {
+    border-color: var(--primary-color);
+    outline: 0;
+    background: #ffffff;
+    box-shadow: 0 0 0 4px rgba(80, 200, 120, 0.14);
+}
+
+.address-edit-page .form-control:read-only {
+    border-color: #e5ebe6;
+    background: #f1f5f2;
+    color: #6b756e;
+    cursor: not-allowed;
+}
+
+.address-edit-page .field-error {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.82rem;
+    line-height: 1.4;
+}
+
+.address-edit-page .field-error:empty {
+    display: none;
+}
+
+.address-edit-page .address-form-actions {
+    justify-content: flex-end;
+    padding-top: 26px;
+    border-top: 1px solid #e9efea;
+}
+
+.address-edit-page .address-form-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    min-height: 46px;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 0.96rem;
+    font-weight: 750;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.address-edit-page .address-form-actions .btn-secondary {
+    border: 1px solid #dce5de;
+    background: #ffffff;
+    color: #36443a;
+}
+
+.address-edit-page .address-form-actions .btn-secondary:hover {
+    border-color: #b9cbbd;
+    background: #f4f8f5;
+    color: var(--third-color);
+}
+
+.address-edit-page .address-form-actions .btn-success {
+    border: 1px solid var(--primary-color);
+    background: var(--primary-color);
+    color: var(--third-color);
+}
+
+.address-edit-page .address-form-actions .btn-success:hover {
+    border-color: var(--offerprice-color);
+    background: var(--offerprice-color);
+    color: #ffffff;
+    box-shadow: 0 8px 20px rgba(34, 167, 81, 0.18);
+    transform: translateY(-1px);
+}
+
+.address-edit-page .address-form-actions .btn:focus-visible {
+    outline: 3px solid var(--primary-color);
+    outline-offset: 3px;
+}
+
+@media (max-width: 767px) {
+    .address-edit-page {
+        padding: 12px 4px 44px;
+    }
+
+    .address-edit-page .main {
+        border-radius: 15px;
+    }
+
+    .address-edit-page .address-form-heading {
+        margin-bottom: 25px;
+    }
+
+    .address-edit-page .address-form-actions {
+        justify-content: stretch;
+    }
+
+    .address-edit-page .address-form-actions .btn {
+        flex: 1 1 135px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .address-edit-page .form-control,
+    .address-edit-page .address-form-actions .btn {
+        transition: none;
+    }
+}

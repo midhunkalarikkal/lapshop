@@ -1,232 +1,117 @@
-<!-- Admin navbar -->
-<%-include("../userpartials/navbar.ejs")%>
 
-    <head>
-        <!-- Css for the admin data edit form -->
-        <link rel="stylesheet" href='/static/css/admin_dataEdit.css' type="text/css">
-    </head>
-        <section class="view">
-            <div class="container d-flex align-items-center justify-content-center min-vh-100">
-                <div class="main shadow rounded p-4 bg-white" style="width: 100%; max-width: 600px;">
-                    <form method="POST" id="submit-form">
-                        <div class="text-center mb-4">
-                            <h4 class="fs-4 text-dark fw-bold">Send Your Response</h4>
-                            <a class="text-success" href="mailto:lapshopsite@gmail.com" style="text-decoration: none; color: #22a751;">lapshopsite@gmail.com</a>
-                        </div>
-                        <div class="input-box">
-                            <div class="col-12">
-                                <div class="mb-3">
-                                    <label for="Name" class="form-label fw-semibold">Name</label>
-                                    <input type="text" class="form-control" name="name" id="name" required oninput="validateName()">
-                                    <span id="nameError" class="text-danger small"></span>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Email" class="form-label fw-semibold">Email</label>
-                                    <input type="email" class="form-control" name="email" id="email" required oninput="validateEmail()">
-                                    <span id="emailError" class="text-danger small"></span>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Phone" class="form-label fw-semibold">Phone</label>
-                                    <input type="text" class="form-control" name="phone" id="phone" required oninput="validatePhone()">
-                                    <span id="phoneError" class="text-danger small"></span>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="Message" class="form-label fw-semibold">Message</label>
-                                    <textarea class="form-control" name="message" id="message" rows="4" required oninput="validateMessage()"></textarea>
-                                    <span id="messageError" class="text-danger small"></span>
-                                </div>
-                                <div class="d-flex justify-content-between align-items-center mt-4">
-                                    <button type="button" class="btn btn-secondary px-4" onclick="goBack()">Cancel</button>
-                                    <button type="submit" id="submitButton" class="btn btn-success px-4"><i class="fa-regular fa-paper-plane"></i> Send</button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+<%- include("../userpartials/navbar.ejs") %>
+
+<link rel="stylesheet" href="/static/css/contact_form.css">
+
+<section class="view contact-page">
+    <div class="container">
+        <div class="contact-container">
+            <div class="contact-heading">
+                <span class="contact-eyebrow">GET IN TOUCH</span>
+                <h1>We're here to help.</h1>
+                <p>
+                    Have a question, feedback, or need assistance?
+                    Send us a message and we'll get back to you.
+                </p>
+            </div>
+
+            <div class="contact-card">
+                <div class="contact-card-header">
+                    <div>
+                        <h2>Send us a message</h2>
+                        <p>Fill in the details below to reach our team.</p>
+                    </div>
+                    <div class="contact-header-icon">
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
                 </div>
-            </div>            
-        </section>
 
+                <form method="POST" id="submit-form" novalidate>
+                    <div class="row g-4">
+                        <div class="col-12">
+                            <label for="name" class="form-label">Full name <span>*</span></label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                name="name"
+                                id="name"
+                                placeholder="Enter your full name"
+                                autocomplete="name"
+                                required
+                                oninput="validateName()">
+                            <span id="nameError" class="field-error"></span>
+                        </div>
 
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        <script>
-            ////// Validation function for name input \\\\\\
-            function validateName() {
-                const nameInput = document.getElementById('name');
-                const name = nameInput.value.trim();
-                const nameError = document.getElementById('nameError');
+                        <div class="col-12 col-md-6">
+                            <label for="email" class="form-label">Email address <span>*</span></label>
+                            <input
+                                type="email"
+                                class="form-control"
+                                name="email"
+                                id="email"
+                                placeholder="you@example.com"
+                                autocomplete="email"
+                                required
+                                oninput="validateEmail()">
+                            <span id="emailError" class="field-error"></span>
+                        </div>
 
-                const namePattern = /^[a-zA-Z][a-zA-Z\s]*[a-zA-Z]$/;
+                        <div class="col-12 col-md-6">
+                            <label for="phone" class="form-label">Phone number <span>*</span></label>
+                            <input
+                                type="tel"
+                                class="form-control"
+                                name="phone"
+                                id="phone"
+                                placeholder="10-digit mobile number"
+                                autocomplete="tel"
+                                inputmode="numeric"
+                                maxlength="10"
+                                required
+                                oninput="validatePhone()">
+                            <span id="phoneError" class="field-error"></span>
+                        </div>
 
-                if (name === "") {
-                    nameInput.classList.remove('is-invalid');
-                    nameError.textContent = '';
-                    return false;
-                }
-                if (!namePattern.test(name)) {
-                    nameInput.classList.add('is-invalid');
-                    nameError.textContent = 'Name must contain only alphabets and spaces.';
-                    return false;
-                } else if (name.length < 5 || name.length > 25) {
-                    nameInput.classList.add('is-invalid');
-                    nameError.textContent = 'Name must be between 5 and 25 characters long';
-                    return false;
-                } else {
-                    nameInput.classList.remove('is-invalid');
-                    nameError.textContent = '';
-                    return true;
-                }
-            }
+                        <div class="col-12">
+                            <div class="message-label-row">
+                                <label for="message" class="form-label">Your message <span>*</span></label>
+                                <span id="messageCounter">0 / 400</span>
+                            </div>
+                            <textarea
+                                class="form-control contact-textarea"
+                                name="message"
+                                id="message"
+                                rows="5"
+                                maxlength="400"
+                                placeholder="Tell us how we can help you..."
+                                required
+                                oninput="validateMessage()"></textarea>
+                            <span id="messageError" class="field-error"></span>
+                        </div>
+                    </div>
 
-            ////// Validation function for phone input \\\\\\
-            function validatePhone() {
-                const phoneInput = document.getElementById('phone');
-                const phone = phoneInput.value.trim();
-                const phoneError = document.getElementById('phoneError');
+                    <div class="contact-form-footer">
+                        <button type="button" class="contact-cancel-btn" onclick="goBack()">
+                            Cancel
+                        </button>
+                        <button type="submit" id="submitButton" class="contact-submit-btn">
+                            <span>Send message</span>
+                            <i class="fa-regular fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-                const phonePattern = /^\d{10}$/;
+            <div class="contact-bottom-note">
+                <i class="fa-regular fa-envelope"></i>
+                <span>Prefer email? Reach us at</span>
+                <a href="mailto:lapshopsite@gmail.com">lapshopsite@gmail.com</a>
+            </div>
+        </div>
+    </div>
+</section>
 
-                if (phone === "") {
-                    phoneInput.classList.remove('is-invalid');
-                    phoneError.textContent = '';
-                    return false;
-                }
-                if (!phonePattern.test(phone)) {
-                    phoneInput.classList.add('is-invalid');
-                    phoneError.textContent = 'Phone number must contain only 10 digits';
-                    return false;
-                } else {
-                    phoneInput.classList.remove('is-invalid');
-                    phoneError.textContent = '';
-                    return true;
-                }
-            }
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/static/scripts/contact_form.js" defer></script>
 
-            ////// To validate the email \\\\\\
-            function validateEmail() {
-                const emailInput = document.getElementById('email');
-                const email = emailInput.value.trim();
-                const emailError = document.getElementById('emailError');
-
-                const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-                if (email === "") {
-                    emailInput.classList.remove('is-invalid');
-                    emailError.textContent = '';
-                    return false;
-                }
-                if (!emailPattern.test(email)) {
-                    emailInput.classList.add('is-invalid');
-                    emailError.textContent = 'Please enter a valid email address.';
-                    return false;
-                } else {
-                    emailInput.classList.remove('is-invalid');
-                    emailError.textContent = '';
-                    return true;
-                }
-            }
-
-            ////// To validate message \\\\\\
-            function validateMessage() {
-                const messageInput = document.getElementById('message');
-                const message = messageInput.value.trim();
-                const messageError = document.getElementById('messageError');
-
-                const minLength = 10;
-                const maxLength = 400;
-
-                if (message === "") {
-                    messageInput.classList.remove('is-invalid');
-                    messageError.textContent = '';
-                    return false;
-                }
-                if (message.length < minLength || message.length > maxLength) {
-                    messageInput.classList.add('is-invalid');
-                    messageError.textContent = `Message must be between ${minLength} and ${maxLength} characters long.`;
-                    return false;
-                } else {
-                    messageInput.classList.remove('is-invalid');
-                    messageError.textContent = '';
-                    return true;
-                }
-            }
-
-            ////// To submit the form \\\\\\
-            document.getElementById("submit-form").addEventListener("submit", async function (e) {
-        e.preventDefault(); // Prevent the default form submission
-
-        // Get form data
-        const formData = {
-            name: document.getElementById("name").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            phone: document.getElementById("phone").value.trim(),
-            message: document.getElementById("message").value.trim()
-        };
-
-        try {
-
-            Swal.fire({
-                title: "Sending....",
-                text: "Please wait",
-                background: "#333",
-                color: "#ffffff",
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                },
-            })
-
-            const response = await fetch("/contactForm", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(formData),
-            });
-
-            const result = await response.json();
-            Swal.close();
-
-            if (result.success) {
-                swal.fire({
-                    icon: "success",
-                    title: "Response sent successfully",
-                    text: "Thank you for your response.",
-                    showConfirmButton: true,
-                    background: "#333",
-                    color: "#ffffff",
-                    confirmButtonText: "Ok"
-                });
-                document.getElementById("submit-form").reset();
-            } else {
-                swal.fire({
-                    icon: "error",
-                    title: "Submission Failed",
-                    text: errorData.message || "Something went wrong.",
-                    showConfirmButton: true,
-                    background: "#333",
-                    color: "#ffffff",
-                    confirmButtonText: "Ok"
-                });
-            }
-        } catch (error) {
-            swal.fire({
-                icon: "error",
-                title: "Network Error",
-                text: "Unable to send your response. Please try again later.",
-                showConfirmButton: true,
-                background: "#333",
-                color: "#ffffff",
-                confirmButtonText: "Ok"
-            });
-        }
-    });
-
-        ////// Cancel button goBack function \\\\\\
-        function goBack() {
-            window.location.href = "/shop"
-        }
-
-        </script>
-
-        <!-- Admin footer -->
-        <%-include("../userpartials/footer.ejs")%>
+<%- include("../userpartials/footer.ejs") %>
