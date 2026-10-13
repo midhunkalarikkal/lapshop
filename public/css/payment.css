@@ -1,7 +1,9 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Saira+Semi+Condensed:wght@400;500;600;700;800&display=swap');
+
 .payment-page {
 	min-height: 100vh;
-	padding: 112px 0 95px;
+	padding: 24px 0 95px;
 	background: linear-gradient(145deg, #f4f8f5 0%, #fff 55%, #edf6ef 100%);
 	color: var(--third-color, #1b1b1b);
 }
@@ -21,48 +23,54 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	gap: 20px;
-	padding: 28px 32px;
-	margin-bottom: 26px;
+	gap: 24px;
+	margin-bottom: 24px;
+	padding: clamp(20px, 3vw, 32px);
+	font-family: 'Saira Semi Condensed', sans-serif;
 	background: #fff;
-	border: 1px solid #e4ebe6;
-	border-radius: 18px;
-	box-shadow: 0 8px 28px rgba(25, 58, 37, .055);
+	border: 1px solid #e4ece6;
+	border-radius: 20px;
+	box-shadow: 0 12px 40px rgba(27, 27, 27, 0.055);
 }
 .payment-eyebrow {
-	display: block;
-	margin-bottom: 7px;
-	color: #299c52;
-	font-size: .72rem;
+	color: var(--offerprice-color);
+	font-size: 0.78rem;
 	font-weight: 800;
-	letter-spacing: .13em;
+	letter-spacing: 0.15em;
 }
 .payment-page-header h1 {
-	margin: 0 0 7px;
-	font-size: clamp(1.7rem, 3vw, 2.3rem);
+	margin: 6px 0 8px;
+	font-size: clamp(2rem, 4vw, 2.8rem);
 	font-weight: 800;
-	letter-spacing: -.035em;
+	letter-spacing: -0.035em;
 }
 .payment-page-header p {
+	max-width: 560px;
 	margin: 0;
-	color: #69766e;
-	font-size: .95rem;
+	color: #68766c;
+	line-height: 1.6;
 }
 .payment-header-btn {
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	gap: 9px;
-	padding: 12px 20px;
-	border: 1px solid var(--primary-color, #50c878);
-	border-radius: 10px;
-	background: var(--primary-color, #50c878);
-	color: #10361f;
-	font-weight: 750;
-	white-space: nowrap;
+	gap: 10px;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+	flex-shrink: 0;
+	min-height: 45px;
+	padding: 10px 20px;
+	border: 1px solid var(--primary-color);
+	border-radius: 11px;
+	background: var(--primary-color);
+	color: #173420;
+	font-weight: 800;
 }
 .payment-header-btn:hover {
-	background: #36b863;
+	border-color: var(--offerprice-color);
+	background: var(--offerprice-color);
+	color: #ffffff;
 }
 .payment-panel {
 	overflow: hidden;
@@ -383,26 +391,16 @@
 	.payment-summary {
 		position: static;
 	}
-	.payment-page {
-		padding-top: 100px;
-	}
 }
 @media (max-width: 767px) {
 	.payment-page {
-		padding: 92px 0 135px;
+		padding: 24px 0 135px;
 	}
 	.payment-page-header {
 		flex-direction: column;
-		align-items: stretch;
-		gap: 17px;
-		padding: 21px 19px;
-		border-radius: 14px;
-	}
-	.payment-page-header h1 {
-		font-size: 1.8rem;
-	}
-	.payment-page-header p {
-		font-size: .86rem;
+		align-items: flex-start;
+		gap: 18px;
+		border-radius: 16px;
 	}
 	.payment-header-btn {
 		width: 100%;

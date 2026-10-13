@@ -30,7 +30,7 @@
             <span class="checkout-nav-title"><i class="fa-solid fa-lock me-2"></i>Secure checkout</span>
         </div>
     </nav>
-    <section class="view checkout-page">
+    <main class="view checkout-page">
         <div class="container checkout-container">
             <header class="checkout-header">
                 <div>
@@ -204,7 +204,7 @@ Use the “Delete” option next to the address you wish to remove. Ensure that 
         <% if (userCart) { %>
             <div class="checkout-mobile-bar"><div class="checkout-mobile-total"><span>Subtotal</span><strong>₹ <%= Number(userCart.totalCartPrice).toFixed(2) %></strong></div><button type="button" class="btn checkout-payment-btn" onclick="goToPayment()" id="goToPayment">Proceed to payment <i class="fa-solid fa-arrow-right"></i></button></div>
         <% } %>
-    </section>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/static/scripts/checkout.js"></script>

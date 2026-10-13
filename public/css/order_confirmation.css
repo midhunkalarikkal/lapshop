@@ -2,7 +2,7 @@
 .order-success-page {
     position: relative;
     min-height: 100vh;
-    padding: 112px 0 90px;
+    padding: 24px 0 90px;
     background: linear-gradient(145deg, #f4f8f5 0%, #ffffff 55%, #edf6ef 100%);
     color: var(--third-color, #1b1b1b);
     overflow: hidden;
@@ -267,14 +267,14 @@
 }
 @media (max-width: 767px) {
     .order-success-page {
-        padding: 92px 0 55px;
+        padding: 24px 0 55px;
     }
     .order-success-container {
         padding: 0 15px;
     }
     .order-success-header {
         flex-direction: column-reverse;
-        align-items: stretch;
+        align-items: center;
         gap: 18px;
         padding: 24px 20px;
         border-radius: 14px;

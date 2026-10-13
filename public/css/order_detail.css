@@ -16,12 +16,13 @@
     gap: 16px;
 }
 .order-detail-header {
-    margin-bottom: 26px;
-    padding: 26px 30px;
-    border: 1px solid #e1ebe3;
-    border-radius: 20px;
-    background: #ffffff;
-    box-shadow: 0 16px 48px rgba(27, 27, 27, 0.055);
+	gap: 24px;
+	margin-bottom: 24px;
+	padding: clamp(20px, 3vw, 32px);
+	border: 1px solid #e4ece6;
+	border-radius: 20px;
+	background: #ffffff;
+	box-shadow: 0 12px 40px rgba(27, 27, 27, 0.055);
 }
 .order-eyebrow, .order-section-eyebrow {
     color: var(--offerprice-color);
@@ -30,33 +31,40 @@
     letter-spacing: 0.15em;
 }
 .order-detail-header h1 {
-    margin: 6px 0 8px;
-    font-size: clamp(2rem, 4vw, 2.8rem);
-    font-weight: 800;
+	margin: 6px 0 8px;
+	font-size: clamp(2rem, 4vw, 2.8rem);
+	font-weight: 800;
+	letter-spacing: -0.035em;
 }
-.order-detail-header p, .order-overview-main p {
-    margin: 0;
-    color: #68766c;
-    line-height: 1.6;
+.order-detail-header p {
+	max-width: 560px;
+	margin: 0;
+	color: #68766c;
+	line-height: 1.6;
+}
+.order-overview-main p {
+	margin: 0;
+	color: #68766c;
+	line-height: 1.6;
 }
 .order-back-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    min-height: 45px;
-    padding: 10px 20px;
-    border: 1px solid #dce7df;
-    border-radius: 11px;
-    background: #ffffff;
-    color: #27382d;
-    font-weight: 700;
-    white-space: nowrap;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	flex-shrink: 0;
+	min-height: 45px;
+	padding: 10px 20px;
+	border: 1px solid var(--primary-color);
+	border-radius: 11px;
+	background: var(--primary-color);
+	color: #173420;
+	font-weight: 800;
 }
 .order-back-btn:hover {
-    border-color: #9cd5ad;
-    background: #f1f9f3;
-    color: #17592c;
+	border-color: var(--offerprice-color);
+	background: var(--offerprice-color);
+	color: #ffffff;
 }
 .order-surface {
     border: 1px solid #e1ebe3;
@@ -379,14 +387,14 @@
     .order-detail-page {
         padding: 26px 0 60px;
     }
-    .order-detail-header {
-        align-items: flex-start;
-        flex-direction: column;
-        padding: 22px;
-    }
-    .order-back-btn {
-        width: 100%;
-    }
+	.order-detail-header {
+		align-items: flex-start;
+		flex-direction: column;
+		gap: 18px;
+	}
+	.order-back-btn {
+		width: 100%;
+	}
     .order-overview {
         align-items: flex-start;
         flex-direction: column;
